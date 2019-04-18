@@ -1,5 +1,7 @@
-public class BattleMenu extends Menu {
-    public static Game makeSinglePlayerGame() {
+package menus;
+
+public class Battle extends Menu {
+/*    public static Game makeSinglePlayerGame() {
         return null;
     }
 
@@ -13,7 +15,7 @@ public class BattleMenu extends Menu {
 
     public static Game makeMultiplayerGame() {
         return null;
-    }
+    }*/
 
     public static void help() {
     }

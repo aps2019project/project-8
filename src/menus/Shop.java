@@ -1,9 +1,11 @@
+package menus;
+
 public class Shop extends Menu {
-    private static ArrayList<CollectionItem> collectionItems;
+/*    private static ArrayList<CollectionItem> collectionItems;
 
     public static CollectionItem getCollectionItem(String name) {
         return null;
-    }
+    }*/
 
     public static void search(String name) {
     }

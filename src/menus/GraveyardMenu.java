@@ -1,7 +1,9 @@
+package menus;
+
 public class GraveyardMenu extends InGameMenu {
-    public static void setGame(Game game) {
-        GraveyardMenu.game = game;
-    }
+/*    public static void setGame(Game game) {
+        menus.GraveyardMenu.game = game;
+    }*/
 
     public static void help() {
     }

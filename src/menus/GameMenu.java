@@ -1,7 +1,9 @@
+package menus;
+
 public class GameMenu extends InGameMenu {
-    public static void setGame(Game game) {
-        GameMenu.game = game;
-    }
+/*    public static void setGame(Game game) {
+        menus.GameMenu.game = game;
+    }*/
 
     public static void help() {
     }
