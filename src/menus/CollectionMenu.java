@@ -1,7 +1,24 @@
 package menus;
 
 public class CollectionMenu extends Menu {
-    public static void help() {
+    private static final String[] commands = {
+            "exit",
+            "show",
+            "search [card name | item name]",
+            "save",
+            "create deck [deck name]",
+            "delete deck [deck name]",
+            "add [card id | hero id] to deck [deck name]",
+            "remove [card id | hero id] from deck [deck name]",
+            "validate deck [deck name]",
+            "select deck [deck name]",
+            "show all decks",
+            "show deck [deck name]",
+            "help"
+    };
+
+    public static String[] help() {
+        return commands;
     }
 
     public static void show() {
@@ -31,7 +48,7 @@ public class CollectionMenu extends Menu {
     public static void showDeck(String name) {
     }
 
-    public String toString() {
+    public static String getString() {
         return "";
     }
 }

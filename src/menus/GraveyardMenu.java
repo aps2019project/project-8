@@ -1,11 +1,12 @@
 package menus;
 
 public class GraveyardMenu extends InGameMenu {
-/*    public static void setGame(Game game) {
+/*    public static  void setGame(Game game) {
         menus.GraveyardMenu.game = game;
     }*/
 
-    public static void help() {
+    public static String[] help() {
+        return null;
     }
 
     public static void showInfo(String cardID) {
@@ -14,7 +15,7 @@ public class GraveyardMenu extends InGameMenu {
     public static void showCards() {
     }
 
-    public String toString() {
+    public static String getString() {
         return "";
     }
 }

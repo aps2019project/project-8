@@ -45,7 +45,7 @@ public class CommandLineView implements View {
 
     @Override
     public void alertAccountCreation() {
-        System.out.println("model.Account successfully created.");
+        System.out.println("Account successfully created.");
     }
 
     @Override

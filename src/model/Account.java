@@ -3,14 +3,21 @@ package model;
 import java.util.ArrayList;
 
 public class Account implements Comparable {
-    static ArrayList<Account> accounts = new ArrayList<>();
-    String name;
-    String password;
-    int wins = 0;
+    private static ArrayList<Account> accounts = new ArrayList<>();
+    private String name;
+    private String password;
+    private int wins = 0;
 
     public Account(String name, String password) {
         this.name = name;
         this.password = password;
+        accounts.add(this);
+    }
+
+    public Account(String name, String password, int wins) {
+        this.name = name;
+        this.password = password;
+        this.wins = wins;
         accounts.add(this);
     }
 
@@ -37,7 +44,15 @@ public class Account implements Comparable {
     @Override
     public int compareTo(Object o) {
         if (o instanceof Account)
-            return wins - ((Account)o).wins;
+            return wins - ((Account) o).wins;
         return 0;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSaveData() {
+        return password + ":" + wins;
     }
 }

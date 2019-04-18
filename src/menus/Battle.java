@@ -17,10 +17,16 @@ public class Battle extends Menu {
         return null;
     }*/
 
-    public static void help() {
+    private static final String[] commands = {
+            "Single player",
+            "Multiplayer"
+    };
+
+    public static String[] help() {
+        return commands;
     }
 
-    public String toString() {
+    public static String getString() {
         return "";
     }
 }

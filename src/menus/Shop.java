@@ -1,11 +1,26 @@
 package menus;
 
 public class Shop extends Menu {
-/*    private static ArrayList<CollectionItem> collectionItems;
+/*    private ArrayList<CollectionItem> collectionItems;
 
-    public static CollectionItem getCollectionItem(String name) {
+    public CollectionItem getCollectionItem(String name) {
         return null;
     }*/
+
+    private static final String[] commands = {
+            "exit",
+            "show collection",
+            "search [item name | card name]",
+            "search collection [item name | card name]",
+            "buy [card name | item name]",
+            "sell [card id]",
+            "show",
+            "help"
+    };
+
+    public static String[] help() {
+        return commands;
+    }
 
     public static void search(String name) {
     }
@@ -16,7 +31,7 @@ public class Shop extends Menu {
     public static void sellCollectionItem(int collectionItemID) {
     }
 
-    public String toString() {
+    public static String getString() {
         return "";
     }
 }

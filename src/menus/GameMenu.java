@@ -1,11 +1,11 @@
 package menus;
 
 public class GameMenu extends InGameMenu {
-/*    public static void setGame(Game game) {
-        menus.GameMenu.game = game;
-    }*/
-
-    public static void help() {
+    /*    public static  void setGame(Game game) {
+            menus.GameMenu.game = game;
+        }*/
+    public static String[] help() {
+        return null;
     }
 
     public static void showGameInfo() {
@@ -56,8 +56,7 @@ public class GameMenu extends InGameMenu {
     public static void showNextCard() {
     }
 
-    @Override
-    public String toString() {
+    public static String getString() {
         return "";
     }
 }

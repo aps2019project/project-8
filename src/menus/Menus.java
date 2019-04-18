@@ -10,6 +10,6 @@ public enum Menus {
     MULTIPLAYER,
     STORY,
     CUSTOM_GAME,
-    IN_GAME,
-    GRAVEYARD
+    GAME_MENU,
+    GRAVEYARD_MENU
 }

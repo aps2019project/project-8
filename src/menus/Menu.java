@@ -3,7 +3,7 @@ package menus;
 import model.Account;
 import view.View;
 
-abstract public class Menu {
+public abstract class Menu {
     protected static Account account = null;
     protected static View view = null;
 
@@ -13,8 +13,5 @@ abstract public class Menu {
 
     public static void setView(View view) {
         Menu.view = view;
-    }
-
-    public static void help() {
     }
 }
