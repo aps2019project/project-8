@@ -1,0 +1,10 @@
+# Directories:
+out/
+
+# Runnable files:
+*.out
+*.exe
+
+# Other
+*.iml
+
