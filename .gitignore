@@ -1,5 +1,6 @@
 # Directories:
 out/
+.idea/
 
 # Runnable files:
 *.out
