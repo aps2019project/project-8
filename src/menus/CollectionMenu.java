@@ -1,5 +1,12 @@
 package menus;
 
+import model.Card;
+import model.CollectionItem;
+import model.Item;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class CollectionMenu extends Menu {
     private static final String[] commands = {
             "exit",
@@ -17,29 +24,37 @@ public class CollectionMenu extends Menu {
             "help"
     };
 
+    private static HashMap<String, Card> cards = null;
+    private static HashMap<String, Item> items = null;
+
     public static String[] help() {
         return commands;
     }
 
-    public static void show() {
+    public static ArrayList<CollectionItem> show() {
+        return null;
     }
 
-    public static void search(String name) {
+    public static ArrayList<String> search(String collectionItemName) {
+        return null;
     }
 
-    public static void createDeck(String name) {
+    public static boolean createDeck(String name) {
+        return false;
     }
 
-    public static void deleteDeck(String name) {
+    public static boolean deleteDeck(String name) {
+        return false;
     }
 
-    public static void addCard(String cardName, String deckName) {
+    public static void addCollectionItem(String deckName, String cardName) {
     }
 
-    public static void removeCard(String cardName, String deckName) {
+    public static void removeCard(String deckName, String cardName) {
     }
 
-    public static void validateDeck(String deckName) {
+    public static boolean validateDeck(String deckName) {
+        return false;
     }
 
     public static void showAllDecks() {
@@ -50,5 +65,33 @@ public class CollectionMenu extends Menu {
 
     public static String getString() {
         return "";
+    }
+
+    public static boolean hasCollectionItem(String collectionItemID) {
+        return false;
+    }
+
+    public static boolean isCollectionItemInDeck(String deckName, String collectionItemID) {
+        return false;
+    }
+
+    public static boolean isDeckFull(String deckName) {
+        return false;
+    }
+
+    public static boolean isAddingASecondHero(String deckName, String cardName) {
+        return false;
+    }
+
+    public static boolean selectDeck(String deckName) {
+        return false;
+    }
+
+    public static HashMap<String, ArrayList<CollectionItem>> getDecks() {
+        return null;
+    }
+
+    public static ArrayList<CollectionItem> getDeck(String s) {
+        return null;
     }
 }

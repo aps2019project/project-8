@@ -7,17 +7,15 @@ public class Account implements Comparable {
     private String name;
     private String password;
     private int wins = 0;
+    private int money = 0;
+
+    public Account(Account account) {
+        accounts.add(account);
+    }
 
     public Account(String name, String password) {
         this.name = name;
         this.password = password;
-        accounts.add(this);
-    }
-
-    public Account(String name, String password, int wins) {
-        this.name = name;
-        this.password = password;
-        this.wins = wins;
         accounts.add(this);
     }
 
@@ -52,7 +50,11 @@ public class Account implements Comparable {
         return name;
     }
 
-    public String getSaveData() {
-        return password + ":" + wins;
+    public int getMoney() {
+        return money;
+    }
+
+    public boolean hasThreeItems() {
+        return false;
     }
 }

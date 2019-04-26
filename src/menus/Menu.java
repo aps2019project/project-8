@@ -14,4 +14,8 @@ public abstract class Menu {
     public static void setView(View view) {
         Menu.view = view;
     }
+
+    public static Account getAccount() {
+        return account;
+    }
 }

@@ -1,5 +1,9 @@
 package menus;
 
+import model.CollectionItem;
+
+import java.util.ArrayList;
+
 public class Shop extends Menu {
 /*    private ArrayList<CollectionItem> collectionItems;
 
@@ -22,16 +26,36 @@ public class Shop extends Menu {
         return commands;
     }
 
-    public static void search(String name) {
+    public static ArrayList<String> search(String collectionItemName) {
+        return null;
     }
 
     public static void buyCollectionItem(String name) {
     }
 
-    public static void sellCollectionItem(int collectionItemID) {
+    public static void sellCollectionItem(String collectionItemID) {
     }
 
     public static String getString() {
         return "";
+    }
+
+    public static boolean hasCollectionItem(String collectionItemName) {
+        return false;
+    }
+
+    public static int getPrice(String collectionItemName) {
+        return 0;
+    }
+
+    public static boolean isItem(String collectionItemName) {
+        return false;
+    }
+
+    public static void buy(String collectionItemName) {
+    }
+
+    public static ArrayList<CollectionItem> show() {
+        return null;
     }
 }
