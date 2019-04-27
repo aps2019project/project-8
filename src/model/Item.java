@@ -1,4 +1,4 @@
 package model;
 
-public class Item {
+public class Item extends CollectionItem {
 }

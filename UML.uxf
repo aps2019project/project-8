@@ -4,10 +4,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>16</x>
-      <y>312</y>
+      <x>240</x>
+      <y>344</y>
       <w>488</w>
-      <h>472</h>
+      <h>520</h>
     </coordinates>
     <panel_attributes>/Game/
 --
@@ -17,10 +17,12 @@ _-HERO_INITIAL_ROW: int[]_
 -turn: int
 -map: Map
 -players: Player[]
+-hasAI: boolean[]
 -accounts: Account[]
 -selectedUnit: Unit
 -selectedCard: Card
--gameState: GameState
+-selectedCollectible: Collectible
+-gameType : GameType
 --
 +Game(players: Player[])
 +getMap(): Map
@@ -29,11 +31,12 @@ _-HERO_INITIAL_ROW: int[]_
 +attackCombo(targetCard: Card, friendlyCards: Card[]): void
 +castSpellCard(row: int, column: int): boolean
 +castAbiltiy(spell: Spell, row: int, column: int): void
--finalize(): void
-/-checkWinningCondition(): int/
--reward(): void
--eraseCard(card: Card): void
+-endGame(): void
+-getGameState() : GameState
+-reward(Player player): void
+-moveCardToGraveYard(card: Card): void
 +selectCard(cardID: String): void
++selectUnit(row: int, column: int): void
 -initiate(): void
 _-useSpecialPower(x: int, y: int): void_
 +showHand(): void
@@ -44,16 +47,14 @@ _-useSpecialPower(x: int, y: int): void_
 +showCollectible(): void
 +showNextCard(): void
 +showGraveyardInfo(cardID: String): void
-+showGraveyardCards(): void
-+endGame(): void
-+getGameState(): GameState</panel_attributes>
++showGraveyardCards(): void</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>736</x>
-      <y>536</y>
+      <x>960</x>
+      <y>592</y>
       <w>472</w>
       <h>120</h>
     </coordinates>
@@ -72,8 +73,8 @@ _-ROW_LENGTH: int_
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>992</x>
-      <y>1752</y>
+      <x>1216</x>
+      <y>1808</y>
       <w>120</w>
       <h>40</h>
     </coordinates>
@@ -86,8 +87,8 @@ _-ROW_LENGTH: int_
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>928</x>
-      <y>1200</y>
+      <x>1152</x>
+      <y>1256</y>
       <w>104</w>
       <h>80</h>
     </coordinates>
@@ -103,8 +104,8 @@ _-ROW_LENGTH: int_
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1192</x>
-      <y>1232</y>
+      <x>1416</x>
+      <y>1288</y>
       <w>208</w>
       <h>464</h>
     </coordinates>
@@ -150,8 +151,8 @@ _-ROW_LENGTH: int_
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1024</x>
-      <y>1688</y>
+      <x>1248</x>
+      <y>1744</y>
       <w>216</w>
       <h>80</h>
     </coordinates>
@@ -161,10 +162,10 @@ _-ROW_LENGTH: int_
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>360</x>
-      <y>824</y>
+      <x>584</x>
+      <y>880</y>
       <w>232</w>
-      <h>328</h>
+      <h>144</h>
     </coordinates>
     <panel_attributes>/Player/
 --
@@ -174,94 +175,27 @@ _-ROW_LENGTH: int_
 -units: ArrayList&lt;Unit&gt;
 -mana: int
 -graveyard: ArrayList&lt;Card&gt;
--game: Game
 -collectibles: ArrayList&lt;Collectible&gt;
 --
-+initialize(): Hero
-+initiate(turn: int): void
-+getCurrentDeck(): Deck
-/+move(): void/
-+eraseCard(card: Card): void
-+showMinions(): void
-+showHand(): void
-+getCard(name: String): Card
-+showAllCollectibles(): void
-+showCollectible(name: String): void
-+getCollectible(): Collectible
-+showNextCard(): void
-+showGraveyardInfo(cardID: String): void
--getGraveyardInfo(cardID: String): Card
-+showGraveyardCards(): void</panel_attributes>
++initialize(): Hero</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>264</x>
-      <y>776</y>
+      <x>488</x>
+      <y>856</y>
       <w>216</w>
-      <h>64</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes>10.0;10.0;250.0;60.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>352</x>
-      <y>1280</y>
-      <w>264</w>
-      <h>64</h>
-    </coordinates>
-    <panel_attributes>HumanPlayer
---
--scanner: Scanner
---
-+HumanPlayer(name: String, scanner: Scanner)
-+move(): void</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>624</x>
-      <y>1368</y>
-      <w>88</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>AIPlayer
---
---
-+move(): void</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>584</x>
-      <y>1112</y>
-      <w>96</w>
-      <h>272</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;100.0;320.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>392</x>
-      <y>1144</y>
-      <w>56</w>
-      <h>152</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;50.0;170.0</additional_attributes>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;250.0;30.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>264</x>
-      <y>1160</y>
+      <x>488</x>
+      <y>1216</y>
       <w>120</w>
       <h>80</h>
     </coordinates>
@@ -277,8 +211,8 @@ _-ROW_LENGTH: int_
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>296</x>
-      <y>1232</y>
+      <x>520</x>
+      <y>1288</y>
       <w>24</w>
       <h>144</h>
     </coordinates>
@@ -288,8 +222,8 @@ _-ROW_LENGTH: int_
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>672</x>
-      <y>1416</y>
+      <x>896</x>
+      <y>1472</y>
       <w>112</w>
       <h>64</h>
     </coordinates>
@@ -304,8 +238,8 @@ _-ROW_LENGTH: int_
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1408</x>
-      <y>1744</y>
+      <x>1632</x>
+      <y>1800</y>
       <w>104</w>
       <h>40</h>
     </coordinates>
@@ -318,8 +252,8 @@ _-ROW_LENGTH: int_
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>704</x>
-      <y>1272</y>
+      <x>928</x>
+      <y>1328</y>
       <w>256</w>
       <h>160</h>
     </coordinates>
@@ -329,8 +263,8 @@ _-ROW_LENGTH: int_
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1352</x>
-      <y>1688</y>
+      <x>1576</x>
+      <y>1744</y>
       <w>120</w>
       <h>72</h>
     </coordinates>
@@ -340,8 +274,8 @@ _-ROW_LENGTH: int_
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>464</x>
-      <y>1360</y>
+      <x>688</x>
+      <y>1416</y>
       <w>160</w>
       <h>176</h>
     </coordinates>
@@ -364,8 +298,8 @@ _-ROW_LENGTH: int_
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>168</x>
-      <y>1360</y>
+      <x>392</x>
+      <y>1416</y>
       <w>280</w>
       <h>440</h>
     </coordinates>
@@ -409,89 +343,8 @@ _+getAccount(name: String): Account_
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1032</x>
-      <y>848</y>
-      <w>176</w>
-      <h>64</h>
-    </coordinates>
-    <panel_attributes>KillTheHero
---
---
--checkWinningCondition(): int
-+toString(): String</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>848</x>
-      <y>880</y>
-      <w>176</w>
-      <h>64</h>
-    </coordinates>
-    <panel_attributes>HoldTheFlag
---
--flagTime: int[]
---
--checkWinningCondition(): int
-+toString(): String</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>760</x>
-      <y>960</y>
-      <w>176</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>CollectTheFlags
---
--flagsNeededToWin: int
--numberOfFlags: int[]
---
--checkWinningCondition(): int
-+toString(): String</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>496</x>
-      <y>648</y>
-      <w>552</w>
-      <h>224</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;670.0;260.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>496</x>
-      <y>712</y>
-      <w>368</w>
-      <h>192</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;440.0;220.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>496</x>
-      <y>776</y>
-      <w>280</w>
-      <h>208</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;330.0;240.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1824</x>
-      <y>800</y>
+      <x>2048</x>
+      <y>856</y>
       <w>280</w>
       <h>104</h>
     </coordinates>
@@ -511,8 +364,8 @@ _+help(): String[]_</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>664</x>
-      <y>1176</y>
+      <x>672</x>
+      <y>1200</y>
       <w>176</w>
       <h>176</h>
     </coordinates>
@@ -535,8 +388,8 @@ _+help(): String[]_</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1024</x>
-      <y>1240</y>
+      <x>1248</x>
+      <y>1296</y>
       <w>184</w>
       <h>32</h>
     </coordinates>
@@ -546,8 +399,8 @@ _+help(): String[]_</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>696</x>
-      <y>1512</y>
+      <x>920</x>
+      <y>1568</y>
       <w>112</w>
       <h>56</h>
     </coordinates>
@@ -561,8 +414,8 @@ _+help(): String[]_</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>808</x>
-      <y>1696</y>
+      <x>1032</x>
+      <y>1752</y>
       <w>104</w>
       <h>56</h>
     </coordinates>
@@ -576,8 +429,8 @@ _+help(): String[]_</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>616</x>
-      <y>1704</y>
+      <x>840</x>
+      <y>1760</y>
       <w>104</w>
       <h>56</h>
     </coordinates>
@@ -591,8 +444,8 @@ _+help(): String[]_</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>648</x>
-      <y>1560</y>
+      <x>872</x>
+      <y>1616</y>
       <w>96</w>
       <h>160</h>
     </coordinates>
@@ -602,8 +455,8 @@ _+help(): String[]_</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>752</x>
-      <y>1560</y>
+      <x>976</x>
+      <y>1616</y>
       <w>128</w>
       <h>152</h>
     </coordinates>
@@ -613,8 +466,8 @@ _+help(): String[]_</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>640</x>
-      <y>1056</y>
+      <x>704</x>
+      <y>1072</y>
       <w>176</w>
       <h>104</h>
     </coordinates>
@@ -625,7 +478,6 @@ _+help(): String[]_</panel_attributes>
 --
 +isFull(): boolean
 +addCard(card: Card): void
-+getCard(card: Card): Card
 +removeCard(card: Card): void
 +toString(): String</panel_attributes>
     <additional_attributes/>
@@ -633,8 +485,8 @@ _+help(): String[]_</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1048</x>
-      <y>360</y>
+      <x>1272</x>
+      <y>416</y>
       <w>200</w>
       <h>144</h>
     </coordinates>
@@ -655,8 +507,8 @@ _+help(): String[]_</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1488</x>
-      <y>616</y>
+      <x>1712</x>
+      <y>672</y>
       <w>112</w>
       <h>176</h>
     </coordinates>
@@ -679,8 +531,8 @@ GRAVEYARD_MENU</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1496</x>
-      <y>1096</y>
+      <x>1720</x>
+      <y>1152</y>
       <w>112</w>
       <h>104</h>
     </coordinates>
@@ -697,8 +549,8 @@ MELEE
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>616</x>
-      <y>1408</y>
+      <x>840</x>
+      <y>1464</y>
       <w>72</w>
       <h>40</h>
     </coordinates>
@@ -708,8 +560,8 @@ MELEE
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1008</x>
-      <y>1288</y>
+      <x>1232</x>
+      <y>1344</y>
       <w>112</w>
       <h>128</h>
     </coordinates>
@@ -728,8 +580,8 @@ COMBO</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1112</x>
-      <y>1320</y>
+      <x>1336</x>
+      <y>1376</y>
       <w>96</w>
       <h>40</h>
     </coordinates>
@@ -739,19 +591,19 @@ COMBO</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>584</x>
-      <y>1000</y>
-      <w>72</w>
+      <x>632</x>
+      <y>1016</y>
+      <w>88</w>
       <h>136</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>10.0;10.0;70.0;150.0</additional_attributes>
+    <additional_attributes>10.0;10.0;90.0;150.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1680</x>
-      <y>1128</y>
+      <x>1904</x>
+      <y>1184</y>
       <w>296</w>
       <h>264</h>
     </coordinates>
@@ -781,10 +633,10 @@ COMBO</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>80</x>
-      <y>952</y>
-      <w>248</w>
-      <h>104</h>
+      <x>312</x>
+      <y>1000</y>
+      <w>240</w>
+      <h>112</h>
     </coordinates>
     <panel_attributes>Collection
 --
@@ -800,8 +652,8 @@ _-MAX_NUMBER_OF_ITEMS: int_
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>144</x>
-      <y>1048</y>
+      <x>368</x>
+      <y>1104</y>
       <w>144</w>
       <h>328</h>
     </coordinates>
@@ -811,8 +663,8 @@ _-MAX_NUMBER_OF_ITEMS: int_
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>824</x>
-      <y>1064</y>
+      <x>1048</x>
+      <y>1120</y>
       <w>168</w>
       <h>56</h>
     </coordinates>
@@ -826,8 +678,8 @@ _-MAX_NUMBER_OF_ITEMS: int_
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>936</x>
-      <y>1112</y>
+      <x>1160</x>
+      <y>1168</y>
       <w>80</w>
       <h>104</h>
     </coordinates>
@@ -837,8 +689,8 @@ _-MAX_NUMBER_OF_ITEMS: int_
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>784</x>
-      <y>1112</y>
+      <x>1008</x>
+      <y>1168</y>
       <w>120</w>
       <h>416</h>
     </coordinates>
@@ -848,8 +700,8 @@ _-MAX_NUMBER_OF_ITEMS: int_
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>624</x>
-      <y>1472</y>
+      <x>848</x>
+      <y>1528</y>
       <w>80</w>
       <h>248</h>
     </coordinates>
@@ -859,8 +711,8 @@ _-MAX_NUMBER_OF_ITEMS: int_
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1816</x>
-      <y>424</y>
+      <x>2040</x>
+      <y>480</y>
       <w>120</w>
       <h>72</h>
     </coordinates>
@@ -875,8 +727,8 @@ _+save(): void_</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>2192</x>
-      <y>920</y>
+      <x>2416</x>
+      <y>976</y>
       <w>328</w>
       <h>208</h>
     </coordinates>
@@ -902,8 +754,8 @@ _+getString(): String_</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1776</x>
-      <y>640</y>
+      <x>2000</x>
+      <y>696</y>
       <w>128</w>
       <h>72</h>
     </coordinates>
@@ -918,9 +770,9 @@ _+getString(): String_</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>2368</x>
-      <y>696</y>
-      <w>184</w>
+      <x>2592</x>
+      <y>752</y>
+      <w>256</w>
       <h>96</h>
     </coordinates>
     <panel_attributes>GraveyardMenu
@@ -937,10 +789,10 @@ _+getString(): String_</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>2640</x>
-      <y>608</y>
+      <x>2864</x>
+      <y>664</y>
       <w>360</w>
-      <h>272</h>
+      <h>328</h>
     </coordinates>
     <panel_attributes>GameMenu
 --
@@ -963,14 +815,15 @@ _+selectCollectible(name: String): void_
 _+showCollectible(name: String): void_
 _+useCollectible(x: int, y: int): void_
 _+showNextCard(): void_
-_+getString(): String_</panel_attributes>
+_+getString(): String_
+_+goToGraveYardMenu(): void_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1928</x>
-      <y>424</y>
+      <x>2152</x>
+      <y>480</y>
       <w>248</w>
       <h>48</h>
     </coordinates>
@@ -980,8 +833,8 @@ _+getString(): String_</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1832</x>
-      <y>456</y>
+      <x>2056</x>
+      <y>512</y>
       <w>344</w>
       <h>200</h>
     </coordinates>
@@ -991,8 +844,8 @@ _+getString(): String_</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>2512</x>
-      <y>528</y>
+      <x>2736</x>
+      <y>584</y>
       <w>192</w>
       <h>96</h>
     </coordinates>
@@ -1002,8 +855,8 @@ _+getString(): String_</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>2192</x>
-      <y>472</y>
+      <x>2416</x>
+      <y>528</y>
       <w>24</w>
       <h>464</h>
     </coordinates>
@@ -1013,8 +866,8 @@ _+getString(): String_</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>2040</x>
-      <y>472</y>
+      <x>2264</x>
+      <y>528</y>
       <w>136</w>
       <h>344</h>
     </coordinates>
@@ -1024,8 +877,8 @@ _+getString(): String_</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>2240</x>
-      <y>472</y>
+      <x>2464</x>
+      <y>528</y>
       <w>168</w>
       <h>48</h>
     </coordinates>
@@ -1035,8 +888,8 @@ _+getString(): String_</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1544</x>
-      <y>1536</y>
+      <x>1768</x>
+      <y>1592</y>
       <w>288</w>
       <h>120</h>
     </coordinates>
@@ -1056,8 +909,8 @@ _-MAP_COLUMNS: int_
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1616</x>
-      <y>1384</y>
+      <x>1840</x>
+      <y>1440</y>
       <w>192</w>
       <h>168</h>
     </coordinates>
@@ -1067,8 +920,8 @@ _-MAP_COLUMNS: int_
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1176</x>
-      <y>1120</y>
+      <x>1400</x>
+      <y>1176</y>
       <w>128</w>
       <h>80</h>
     </coordinates>
@@ -1083,8 +936,8 @@ Ghoul</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>2408</x>
-      <y>528</y>
+      <x>2632</x>
+      <y>584</y>
       <w>40</w>
       <h>184</h>
     </coordinates>
@@ -1094,23 +947,8 @@ Ghoul</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>648</x>
-      <y>336</y>
-      <w>88</w>
-      <h>64</h>
-    </coordinates>
-    <panel_attributes>&lt;&lt;enumeration&gt;&gt;
-GameState
---
-GAME
-GRAVEYARD</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1912</x>
-      <y>216</y>
+      <x>2136</x>
+      <y>272</y>
       <w>80</w>
       <h>40</h>
     </coordinates>
@@ -1122,10 +960,10 @@ View
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1528</x>
-      <y>24</y>
+      <x>1752</x>
+      <y>0</y>
       <w>232</w>
-      <h>536</h>
+      <h>616</h>
     </coordinates>
     <panel_attributes>UI
 --
@@ -1169,14 +1007,15 @@ _-login(String name): void_
 _-showLeaderboard(): void_
 _-help(): String[]_
 _-switchTo(Menus menu): void_
-_-load(): void_</panel_attributes>
+_-load(): void_
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1824</x>
-      <y>0</y>
+      <x>2048</x>
+      <y>56</y>
       <w>328</w>
       <h>160</h>
     </coordinates>
@@ -1197,8 +1036,8 @@ View
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>2160</x>
-      <y>64</y>
+      <x>2384</x>
+      <y>120</y>
       <w>328</w>
       <h>144</h>
     </coordinates>
@@ -1219,8 +1058,8 @@ View
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>2160</x>
-      <y>392</y>
+      <x>2384</x>
+      <y>448</y>
       <w>216</w>
       <h>88</h>
     </coordinates>
@@ -1236,8 +1075,8 @@ _+setView(View view): void_</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>2392</x>
-      <y>480</y>
+      <x>2616</x>
+      <y>536</y>
       <w>184</w>
       <h>56</h>
     </coordinates>
@@ -1251,8 +1090,8 @@ _+setGame(game: Game): void_</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1824</x>
-      <y>728</y>
+      <x>2048</x>
+      <y>784</y>
       <w>128</w>
       <h>56</h>
     </coordinates>
@@ -1266,8 +1105,8 @@ _+setGame(game: Game): void_</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>2448</x>
-      <y>376</y>
+      <x>2672</x>
+      <y>432</y>
       <w>128</w>
       <h>56</h>
     </coordinates>
@@ -1281,8 +1120,8 @@ _+setGame(game: Game): void_</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>2096</x>
-      <y>280</y>
+      <x>2320</x>
+      <y>336</y>
       <w>128</w>
       <h>56</h>
     </coordinates>
@@ -1296,8 +1135,8 @@ _+setGame(game: Game): void_</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>2224</x>
-      <y>632</y>
+      <x>2448</x>
+      <y>688</y>
       <w>96</w>
       <h>40</h>
     </coordinates>
@@ -1310,8 +1149,8 @@ _+setGame(game: Game): void_</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1944</x>
-      <y>472</y>
+      <x>2168</x>
+      <y>528</y>
       <w>248</w>
       <h>304</h>
     </coordinates>
@@ -1321,8 +1160,8 @@ _+setGame(game: Game): void_</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>2368</x>
-      <y>400</y>
+      <x>2592</x>
+      <y>456</y>
       <w>96</w>
       <h>32</h>
     </coordinates>
@@ -1332,8 +1171,8 @@ _+setGame(game: Game): void_</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>2216</x>
-      <y>472</y>
+      <x>2440</x>
+      <y>528</y>
       <w>64</w>
       <h>176</h>
     </coordinates>
@@ -1343,12 +1182,56 @@ _+setGame(game: Game): void_</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>2192</x>
-      <y>328</y>
+      <x>2416</x>
+      <y>384</y>
       <w>64</w>
       <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>60.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>552</y>
+      <w>168</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enumeration&gt;&gt;
+GameType
+--
+HOLD_THE_FLAG
+COLLECT_THE_FLAGS
+KILL_OPPONENT_HERO</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>336</y>
+      <w>168</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enumeration&gt;&gt;
+GameState
+--
+WIN_FIRST_PLAYER
+DRAW
+WIN_SECOND_PLAYER</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>8</x>
+      <y>720</y>
+      <w>168</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>AI
+--</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>
