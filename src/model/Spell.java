@@ -33,4 +33,7 @@ public class Spell {
         return ans;
     }
 
+=======
+public class Spell {
+>>>>>>> origin/master
 }
