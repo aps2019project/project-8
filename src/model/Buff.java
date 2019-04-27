@@ -11,6 +11,9 @@ public class Buff {
     private int weaknessHP;
     private boolean stun;
     private boolean disarm;
+
+    private int githubtest;
+
     private int unholy;
 
 
