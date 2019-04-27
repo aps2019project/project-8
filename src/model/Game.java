@@ -13,5 +13,25 @@ public class Game {
     private Unit selectedUnit;
     private Card selectedCard;
 
-    
+    Map getMap() {
+        return this.map;
+    }
+
+    void moveSelectedUnit(int destinationRow, int destinationColumn) {
+
+    }
+
+    void attackTargetCardWithSelectedUnit(Card targetCard) {
+
+    }
+
+    void attackCombo(Card targetCard, Card[] friendlyCards) {
+
+    }
+
+    void castSpellCard(int destinationRow, int destinationColumn) {
+
+    }
+
+    void
 }
