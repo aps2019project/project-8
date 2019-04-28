@@ -68,9 +68,9 @@ public class CommandLineView implements View {
     }
 
     @Override
-    public void showID(ArrayList<String> collectionItemID) {
-        if (collectionItemID != null) {
-            collectionItemID.forEach(System.out::println);
+    public void showID(ArrayList<String> collectionItemIDs) {
+        if (collectionItemIDs != null) {
+            collectionItemIDs.forEach(System.out::println);
             return;
         }
         System.out.println("No such item found.");
@@ -182,5 +182,14 @@ public class CommandLineView implements View {
     @Override
     public void showShop(ArrayList<CollectionItem> collectionItems) {
         collectionItems.forEach(System.out::println);
+    }
+
+    @Override
+    public void showName(String name) {
+        if (name != null) {
+            System.out.println(name);
+            return;
+        }
+        System.out.println("No such collection item found.");
     }
 }

@@ -29,7 +29,7 @@ public interface View {
 
     void showCollection(ArrayList<CollectionItem> collectionItems);
 
-    void showID(ArrayList<String> collectionItemID);
+    void showID(ArrayList<String> collectionItemIDs);
 
     void showAlreadyExistingDeckError();
 
@@ -72,4 +72,6 @@ public interface View {
     void alertSell();
 
     void showShop(ArrayList<CollectionItem> collectionItems);
+
+    void showName(String name);
 }

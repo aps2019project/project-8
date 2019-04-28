@@ -29,8 +29,8 @@ public class Shop extends Menu {
         return commands;
     }
 
-    public static ArrayList<String> search(String collectionItemName) {
-        return new ArrayList<CollectionItem>(getCollectionItemByName(collectionItemName));
+    public static String search(String collectionItemName) {
+        return getCollectionItemByName(collectionItemName).getName();
     }
 
     public static void buyCollectionItem(String name) {

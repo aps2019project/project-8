@@ -245,7 +245,7 @@ public class UI {
         else if (command.matches(SEARCH_COLLECTION))
             view.showID(CollectionMenu.search(commandSplit[2]));
         else if (command.matches(SEARCH))
-            view.showID(Shop.search(commandSplit[1]));
+            view.showName(Shop.search(commandSplit[1]));
         else if (command.matches(BUY)) {
             String collectionItemName = commandSplit[2];
             if (Shop.hasCollectionItem(collectionItemName))
