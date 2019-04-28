@@ -8,6 +8,7 @@ public class Account implements Comparable {
     private String password;
     private int wins = 0;
     private int money = 0;
+    private Collection collection;
 
     public Account(Account account) {
         accounts.add(account);
@@ -56,5 +57,17 @@ public class Account implements Comparable {
 
     public boolean hasThreeItems() {
         return false;
+    }
+
+    public Collection getCollection() {
+        return collection;
+    }
+
+    public void payMoney(int sum) {
+        money -= sum;
+    }
+
+    public void receiveMoney(int sum) {
+        money += sum;
     }
 }

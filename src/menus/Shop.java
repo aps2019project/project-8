@@ -1,6 +1,7 @@
 package menus;
 
 import model.CollectionItem;
+import model.Item;
 
 import java.util.ArrayList;
 
@@ -33,10 +34,10 @@ public class Shop extends Menu {
         return getCollectionItemByName(collectionItemName).getName();
     }
 
-    public static void buyCollectionItem(String name) {
-    }
-
     public static void sellCollectionItem(String collectionItemID) {
+        CollectionItem collectionItem = account.getCollection().getCollectionItem(collectionItemID);
+        account.receiveMoney(collectionItem.getPrice());
+        account.getCollection().removeCollectionItem(collectionItemID);
     }
 
     public static String getString() {
@@ -44,21 +45,24 @@ public class Shop extends Menu {
     }
 
     public static boolean hasCollectionItem(String collectionItemName) {
-        return false;
+        return getCollectionItemByName(collectionItemName) != null;
     }
 
     public static int getPrice(String collectionItemName) {
-        return 0;
+        return getCollectionItemByName(collectionItemName).getPrice();
     }
 
     public static boolean isItem(String collectionItemName) {
-        return false;
+        return getCollectionItemByName(collectionItemName) instanceof Item;
     }
 
     public static void buy(String collectionItemName) {
+        CollectionItem collectionItem = getCollectionItemByName(collectionItemName);
+        account.payMoney(collectionItem.getPrice());
+        account.getCollection().addCollectionItem(collectionItem);
     }
 
     public static ArrayList<CollectionItem> show() {
-        return null;
+        return collectionItems;
     }
 }

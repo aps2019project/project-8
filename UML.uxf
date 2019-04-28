@@ -633,9 +633,9 @@ COMBO</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>312</x>
+      <x>216</x>
       <y>1000</y>
-      <w>240</w>
+      <w>368</w>
       <h>112</h>
     </coordinates>
     <panel_attributes>Collection
@@ -645,20 +645,20 @@ _-MAX_NUMBER_OF_ITEMS: int_
 --
 +getCard(name: String): Card
 +toString(): String
-+addCollectionItem(collectionItem: CollectionItem: void
++addCollectionItem(collectionItem: CollectionItem: void)
 +isFull(): boolean</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>368</x>
+      <x>272</x>
       <y>1104</y>
-      <w>144</w>
+      <w>240</w>
       <h>328</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>10.0;10.0;160.0;390.0</additional_attributes>
+    <additional_attributes>10.0;10.0;280.0;390.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>

@@ -194,20 +194,19 @@ public class UI {
                 view.showNoSuchDeckError();
         else if (command.matches(ADD_COLLECTION_ITEM_TO_DECK)) {
             String collectionItemID = commandSplit[1];
-            if (CollectionMenu.hasCollectionItem(collectionItemID)) {
-                String deckName = commandSplit[4];
-                if (CollectionMenu.isCollectionItemInDeck(deckName, collectionItemID))
-                    view.showDeckAlreadyHasCollectionItemError();
-                else if (CollectionMenu.isDeckFull(deckName))
-                    view.showDeckIsFullError();
-                else if (CollectionMenu.isAddingASecondHero(deckName, collectionItemID))
-                    view.showAddingASecondHeroError();
-                else {
-                    CollectionMenu.addCollectionItem(deckName, collectionItemID);
-                    view.alertCollectionItemAddedToDeck();
-                }
-            } else
+            String deckName = commandSplit[4];
+            if (!CollectionMenu.hasCollectionItem(collectionItemID))
                 view.showNoSuchCollectionItemError();
+            else if (CollectionMenu.isCollectionItemInDeck(deckName, collectionItemID))
+                view.showDeckAlreadyHasCollectionItemError();
+            else if (CollectionMenu.isDeckFull(deckName))
+                view.showDeckIsFullError();
+            else if (CollectionMenu.isAddingASecondHero(deckName, collectionItemID))
+                view.showAddingASecondHeroError();
+            else {
+                CollectionMenu.addCollectionItem(deckName, collectionItemID);
+                view.alertCollectionItemAddedToDeck();
+            }
         } else if (command.matches(REMOVE_COLLECTION_ITEM_FROM_DECK)) {
             String collectionItemID = commandSplit[1];
             String deckName = commandSplit[4];
@@ -248,17 +247,16 @@ public class UI {
             view.showName(Shop.search(commandSplit[1]));
         else if (command.matches(BUY)) {
             String collectionItemName = commandSplit[2];
-            if (Shop.hasCollectionItem(collectionItemName))
-                if (Menu.getAccount().getMoney() < Shop.getPrice(collectionItemName))
-                    view.showNotEnoughMoneyError();
-                else if (Menu.getAccount().hasThreeItems() && Shop.isItem(collectionItemName))
-                    view.showFourthItemError();
-                else {
-                    Shop.buy(collectionItemName);
-                    view.alertBuy();
-                }
-            else
+            if (!Shop.hasCollectionItem(collectionItemName))
                 view.showNoSuchCollectionItemError();
+            else if (Menu.getAccount().getMoney() < Shop.getPrice(collectionItemName))
+                view.showNotEnoughMoneyError();
+            else if (Menu.getAccount().hasThreeItems() && Shop.isItem(collectionItemName))
+                view.showFourthItemError();
+            else {
+                Shop.buy(collectionItemName);
+                view.alertBuy();
+            }
         } else if (command.matches(SELL)) {
             String collectionItemID = commandSplit[1];
             if (CollectionMenu.hasCollectionItem(collectionItemID)) {
