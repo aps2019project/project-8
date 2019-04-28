@@ -32,8 +32,5 @@ public class Spell {
         String ans = new String("");
         return ans;
     }
-
-=======
-public class Spell {
->>>>>>> origin/master
 }
+
