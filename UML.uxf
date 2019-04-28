@@ -773,7 +773,7 @@ _+getString(): String_</panel_attributes>
       <x>2592</x>
       <y>752</y>
       <w>256</w>
-      <h>96</h>
+      <h>104</h>
     </coordinates>
     <panel_attributes>GraveyardMenu
 --
@@ -1140,7 +1140,7 @@ _+setGame(game: Game): void_</panel_attributes>
       <w>96</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>menus::Story
+    <panel_attributes>Story
 --
 --
 +help(): String[]</panel_attributes>

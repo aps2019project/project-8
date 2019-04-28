@@ -5,12 +5,6 @@ import model.CollectionItem;
 import java.util.ArrayList;
 
 public class Shop extends Menu {
-/*    private ArrayList<CollectionItem> collectionItems;
-
-    public CollectionItem getCollectionItem(String name) {
-        return null;
-    }*/
-
     private static final String[] commands = {
             "exit",
             "show collection",
@@ -21,13 +15,22 @@ public class Shop extends Menu {
             "show",
             "help"
     };
+    private static ArrayList<CollectionItem> collectionItems;
+
+    public static CollectionItem getCollectionItemByName(String collectionItemName) {
+        for (CollectionItem collectionItem : collectionItems) {
+            if (collectionItem.equalsName(collectionItemName))
+                return collectionItem;
+        }
+        return null;
+    }
 
     public static String[] help() {
         return commands;
     }
 
     public static ArrayList<String> search(String collectionItemName) {
-        return null;
+        return new ArrayList<CollectionItem>(getCollectionItemByName(collectionItemName));
     }
 
     public static void buyCollectionItem(String name) {
