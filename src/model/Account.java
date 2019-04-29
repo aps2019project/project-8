@@ -10,6 +10,7 @@ public class Account implements Comparable {
     private int wins = 0;
     private int money = 0;
     private Collection collection = new Collection();
+    private Deck mainDeck = null;
 
     public Account(Account account) {
         accounts.add(account);
@@ -34,6 +35,10 @@ public class Account implements Comparable {
 
     public boolean isPasswordValid(String password) {
         return this.password.equals(password);
+    }
+
+    public void setMainDeck(Deck mainDeck) {
+        this.mainDeck = mainDeck;
     }
 
     @Override

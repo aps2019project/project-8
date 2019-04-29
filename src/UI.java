@@ -190,40 +190,19 @@ public class UI {
         else if (command.matches(ADD_COLLECTION_ITEM_TO_DECK)) {
             String collectionItemID = commandSplit[1];
             String deckName = commandSplit[4];
-            if (!CollectionMenu.hasCollectionItem(collectionItemID))
-                view.showNoSuchCollectionItemError();
-            else if (CollectionMenu.isCollectionItemInDeck(deckName, collectionItemID))
-                view.showDeckAlreadyHasCollectionItemError();
-            else if (CollectionMenu.isDeckFull(deckName))
-                view.showDeckIsFullError();
-            else if (CollectionMenu.isAddingASecondHero(deckName, collectionItemID))
-                view.showAddingASecondHeroError();
-            else {
-                CollectionMenu.addCollectionItem(deckName, collectionItemID);
-                view.alertCollectionItemAddedToDeck();
-            }
+            CollectionMenu.addCollectionItem(deckName, collectionItemID);
         } else if (command.matches(REMOVE_COLLECTION_ITEM_FROM_DECK)) {
             String collectionItemID = commandSplit[1];
             String deckName = commandSplit[4];
-            if (CollectionMenu.isCollectionItemInDeck(deckName, collectionItemID)) {
-                CollectionMenu.removeCard(deckName, collectionItemID);
-                view.alertCollectionItemRemovedFromDeck();
-            } else
-                view.showDeckHasNoSuchCollectionItemError();
+            CollectionMenu.removeCard(deckName, collectionItemID);
         } else if (command.matches(VALIDATE_DECK))
-            if (CollectionMenu.validateDeck(commandSplit[2]))
-                view.alertValidDeck();
-            else
-                view.showInvalidDeckError();
+            CollectionMenu.validateDeck(commandSplit[2]);
         else if (command.matches(SELECT_DECK))
-            if (CollectionMenu.selectDeck(commandSplit[2]))
-                view.alertDeckSelection();
-            else
-                view.showInvalidDeckError();
+            CollectionMenu.selectDeck(commandSplit[2]);
         else if (command.matches(SHOW_ALL_DECKS))
-            view.showDecks(CollectionMenu.getDecks());
+            CollectionMenu.showAllDecks();
         else if (command.matches(SHOW_DECK))
-            view.showDeck(CollectionMenu.getDeck(commandSplit[2]));
+            CollectionMenu.showDeck(commandSplit[2]);
         else
             view.showInvalidCommandError();
     }
@@ -362,7 +341,7 @@ public class UI {
                 view.showHelp(MainMenu.help());
                 break;
             case COLLECTION:
-                view.showHelp(CollectionMenu.help());
+                CollectionMenu.help();
                 break;
             case SHOP:
                 view.showHelp(Shop.help());

@@ -2,6 +2,7 @@ package view;
 
 import model.Account;
 import model.CollectionItem;
+import model.Deck;
 
 import java.util.*;
 
@@ -112,8 +113,18 @@ public class CommandLineView implements View {
     }
 
     @Override
-    public void showAddingASecondHeroError() {
+    public void showDeckDoesNotExistError() {
+        System.out.println("Deck with this name doesn't exist");
+    }
+
+    @Override
+    public void showAddingASecondHeroToDeckError() {
         System.out.println("Cannot have 2 heroes in a single deck.");
+    }
+
+    @Override
+    public void showAddingASecondItemToDeckError() {
+        System.out.println("Cannot have 2 items in a single deck.");
     }
 
     @Override
@@ -152,16 +163,19 @@ public class CommandLineView implements View {
     }
 
     @Override
-    public void showDecks(HashMap<String, ArrayList<CollectionItem>> decks) {
-        decks.forEach((deckName, deckCollectionItems) -> {
-            System.out.println(deckName);
-            deckCollectionItems.forEach(System.out::println);
-        });
+    public void showDecks(ArrayList<Deck> decks) {
+        for (int i = 0; i < decks.size(); i++) {
+            Deck deck = decks.get(i);
+            System.out.println((i + 1) + " : " + deck.getDeckName());
+            deck.incrementTabsOnToString();
+            System.out.println(deck);
+            deck.decrementTabsOnToString();
+        }
     }
 
     @Override
-    public void showDeck(ArrayList<CollectionItem> deck) {
-        deck.forEach(System.out::println);
+    public void showDeck(Deck deck) {
+        System.out.println(deck);
     }
 
     @Override

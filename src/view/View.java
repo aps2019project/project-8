@@ -2,6 +2,7 @@ package view;
 
 import model.Account;
 import model.CollectionItem;
+import model.Deck;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,7 +44,11 @@ public interface View {
 
     void showDeckIsFullError();
 
-    void showAddingASecondHeroError();
+    void showDeckDoesNotExistError();
+
+    void showAddingASecondItemToDeckError();
+
+    void showAddingASecondHeroToDeckError();
 
     void alertCollectionItemAddedToDeck();
 
@@ -59,9 +64,9 @@ public interface View {
 
     void alertDeckSelection();
 
-    void showDecks(HashMap<String, ArrayList<CollectionItem>> decks);
+    void showDecks(ArrayList<Deck>decks);
 
-    void showDeck(ArrayList<CollectionItem> deck);
+    void showDeck(Deck deck);
 
     void showNotEnoughMoneyError();
 

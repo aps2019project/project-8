@@ -3,7 +3,7 @@ package model;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Unit {
+public class Unit extends Card{
     private String name;
     private int hitPoint;
     private int attackPoint;
