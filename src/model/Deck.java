@@ -8,17 +8,14 @@ import java.util.Queue;
 
 public class Deck {
     private static final int DECK_CARD_CAPACITY = 20;
-    private Queue<Card> cards;
-    private Item deckItem;
-    private Hero deckHero;
-    private String deckName;
+    private Queue<Card> cards = new ArrayDeque<>();
+    private Item deckItem = null;
+    private Hero deckHero = null;
+    private String deckName = null;
     private int numberOfTabsOnToString = 0;
 
     Deck(String deckName) {
         this.deckName = deckName;
-        deckHero = null;
-        deckItem = null;
-        cards = new ArrayDeque<Card>();
     }
 
     boolean isValid() {
