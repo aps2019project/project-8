@@ -1,9 +1,8 @@
 package model;
 
-public class SpellCard extends Usable {
+public class SpellCard extends Card {
     private Spell spell;
 
-    @Override
     public Spell getSpell() {
         return spell;
     }

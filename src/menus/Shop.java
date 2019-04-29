@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import model.Card;
 import model.CollectionItem;
 import model.Item;
+import model.Usable;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -37,6 +38,10 @@ public class Shop extends Menu {
     }
 
     public static String search(String collectionItemName) {
+        CollectionItem collectionItem = getCollectionItemByName(collectionItemName);
+        if (collectionItem == null) {
+            return null;
+        }
         return getCollectionItemByName(collectionItemName).getName();
     }
 
@@ -78,6 +83,11 @@ public class Shop extends Menu {
                 Gson gson = new Gson();
                 collectionItems.add(new Card(gson.fromJson(new BufferedReader(new FileReader(file)).readLine(),
                         Card.class)));
+            }
+            for (File file : new File("./gameData/usables").listFiles()) {
+                Gson gson = new Gson();
+                collectionItems.add(gson.fromJson(new BufferedReader(new FileReader(file)).readLine(),
+                        Usable.class));
             }
         } catch (IOException ignored) {}
     }
