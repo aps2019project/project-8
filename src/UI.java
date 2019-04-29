@@ -246,7 +246,7 @@ public class UI {
         else if (command.matches(SEARCH))
             view.showName(Shop.search(commandSplit[1]));
         else if (command.matches(BUY)) {
-            String collectionItemName = commandSplit[2];
+            String collectionItemName = commandSplit[1];
             if (!Shop.hasCollectionItem(collectionItemName))
                 view.showNoSuchCollectionItemError();
             else if (Menu.getAccount().getMoney() < Shop.getPrice(collectionItemName))
@@ -267,6 +267,8 @@ public class UI {
                 view.showNoSuchCollectionItemError();
         } else if (command.matches(SHOW))
             view.showShop(Shop.show());
+        else
+            view.showInvalidCommandError();
     }
 
     private static void actBattle(String command) {
@@ -394,8 +396,8 @@ public class UI {
                 Gson gson = new Gson();
                 new Account(gson.fromJson(new BufferedReader(new FileReader(file)).readLine(), Account.class));
             }
-        } catch (IOException ignored) {
-        }
+            Shop.load();
+        } catch (IOException ignored) {}
     }
 
     public static void save() {
@@ -404,7 +406,6 @@ public class UI {
             Gson gson = new Gson();
             out.write(gson.toJson(Menu.getAccount()));
             out.flush();
-        } catch (IOException ignored) {
-        }
+        } catch (IOException ignored) {}
     }
 }

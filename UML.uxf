@@ -634,7 +634,7 @@ COMBO</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>216</x>
-      <y>1000</y>
+      <y>1032</y>
       <w>368</w>
       <h>112</h>
     </coordinates>
@@ -653,12 +653,12 @@ _-MAX_NUMBER_OF_ITEMS: int_
     <id>Relation</id>
     <coordinates>
       <x>272</x>
-      <y>1104</y>
+      <y>1136</y>
       <w>240</w>
-      <h>328</h>
+      <h>296</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>10.0;10.0;280.0;390.0</additional_attributes>
+    <additional_attributes>10.0;10.0;280.0;350.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>

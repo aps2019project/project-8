@@ -80,3 +80,5 @@ fabric.properties
 .idea/
 project-8.iml
 save/
+/gameData/
+gameData/

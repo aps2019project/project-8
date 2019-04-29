@@ -3,9 +3,7 @@ package view;
 import model.Account;
 import model.CollectionItem;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 public class CommandLineView implements View {
     @Override
@@ -62,14 +60,21 @@ public class CommandLineView implements View {
     }
 
     @Override
-    public void showCollection(ArrayList<CollectionItem> collectionItems) {
-        for (CollectionItem collectionItem : collectionItems)
-            System.out.println(collectionItem + String.valueOf(collectionItem.getPrice()));
+    public void showCollection(HashMap<String, CollectionItem> collectionItems) {
+        if (collectionItems.isEmpty()) {
+            System.out.println("Your collection is empty!");
+            return;
+        }
+        Iterator<Map.Entry<String, CollectionItem>> iterator = collectionItems.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry pair = iterator.next();
+            System.out.println(pair.getKey() + " -> " + pair.getValue());
+        }
     }
 
     @Override
     public void showID(ArrayList<String> collectionItemIDs) {
-        if (collectionItemIDs != null) {
+        if (!collectionItemIDs.isEmpty()) {
             collectionItemIDs.forEach(System.out::println);
             return;
         }

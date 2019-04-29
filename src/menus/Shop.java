@@ -1,8 +1,14 @@
 package menus;
 
+import com.google.gson.Gson;
+import model.Card;
 import model.CollectionItem;
 import model.Item;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Shop extends Menu {
@@ -16,7 +22,7 @@ public class Shop extends Menu {
             "show",
             "help"
     };
-    private static ArrayList<CollectionItem> collectionItems;
+    private static ArrayList<CollectionItem> collectionItems = new ArrayList<>();
 
     public static CollectionItem getCollectionItemByName(String collectionItemName) {
         for (CollectionItem collectionItem : collectionItems) {
@@ -35,7 +41,7 @@ public class Shop extends Menu {
     }
 
     public static void sellCollectionItem(String collectionItemID) {
-        CollectionItem collectionItem = account.getCollection().getCollectionItem(collectionItemID);
+        CollectionItem collectionItem = account.getCollection().getCollectionItemByID(collectionItemID);
         account.receiveMoney(collectionItem.getPrice());
         account.getCollection().removeCollectionItem(collectionItemID);
     }
@@ -64,5 +70,15 @@ public class Shop extends Menu {
 
     public static ArrayList<CollectionItem> show() {
         return collectionItems;
+    }
+
+    public static void load() {
+        try {
+            for (File file : new File("./gameData/cards").listFiles()) {
+                Gson gson = new Gson();
+                collectionItems.add(new Card(gson.fromJson(new BufferedReader(new FileReader(file)).readLine(),
+                        Card.class)));
+            }
+        } catch (IOException ignored) {}
     }
 }

@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Account implements Comparable {
     private static ArrayList<Account> accounts = new ArrayList<>();
@@ -8,7 +9,7 @@ public class Account implements Comparable {
     private String password;
     private int wins = 0;
     private int money = 0;
-    private Collection collection;
+    private Collection collection = new Collection();
 
     public Account(Account account) {
         accounts.add(account);
@@ -69,5 +70,9 @@ public class Account implements Comparable {
 
     public void receiveMoney(int sum) {
         money += sum;
+    }
+
+    public HashMap<String, CollectionItem> getCollectionItems() {
+        return collection.getCollectionItems();
     }
 }

@@ -31,12 +31,12 @@ public class CollectionMenu extends Menu {
         return commands;
     }
 
-    public static ArrayList<CollectionItem> show() {
-        return null;
+    public static HashMap<String, CollectionItem> show() {
+        return account.getCollectionItems();
     }
 
     public static ArrayList<String> search(String collectionItemName) {
-        return null;
+        return account.getCollection().getCollectionItemIDs(collectionItemName);
     }
 
     public static boolean createDeck(String name) {
@@ -68,7 +68,7 @@ public class CollectionMenu extends Menu {
     }
 
     public static boolean hasCollectionItem(String collectionItemID) {
-        return false;
+        return account.getCollection().getCollectionItemByID(collectionItemID) != null;
     }
 
     public static boolean isCollectionItemInDeck(String deckName, String collectionItemID) {

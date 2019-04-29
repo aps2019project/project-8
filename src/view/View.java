@@ -27,7 +27,7 @@ public interface View {
 
     void alertSave();
 
-    void showCollection(ArrayList<CollectionItem> collectionItems);
+    void showCollection(HashMap<String, CollectionItem> collectionItems);
 
     void showID(ArrayList<String> collectionItemIDs);
 

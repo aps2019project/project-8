@@ -1,15 +1,22 @@
 package model;
 
-public class Card {
+public class Card extends CollectionItem {
     private int manaCost;
-    private int price;
+
+    public Card(int price, int collectionItemID, String name, int manaCost) {
+        super(price, collectionItemID, name);
+        this.manaCost = manaCost;
+    }
+
+    public Card(Card card) {
+        this(card.getPrice(), card.getCollectionItemID(), card.getName(), card.getManaCost());
+    }
 
     public int getManaCost() {
         return manaCost;
     }
 
     public int getPrice() {
-        return price;
+        return super.getPrice();
     }
-
 }

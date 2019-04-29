@@ -7,7 +7,6 @@ public abstract class Menu {
     protected static Account account = null;
     protected static View view = null;
 
-
     public static void setAccount(Account account) {
         Menu.account = account;
     }
