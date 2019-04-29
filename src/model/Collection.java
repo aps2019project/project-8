@@ -12,11 +12,11 @@ public class Collection {
         return collectionItems.get(collectionItemID);
     }
 
-    void removeCollectionItem(String collectionItemID) {
+    public void removeCollectionItem(String collectionItemID) {
         collectionItems.remove(collectionItemID);
     }
 
-    void addCollectionItem(CollectionItem collectionItem) {
+    public void addCollectionItem(CollectionItem collectionItem) {
         collectionItems.put(getNewID(), collectionItem);
     }
 
