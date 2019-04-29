@@ -27,24 +27,23 @@ public class CollectionMenu extends Menu {
     private static HashMap<String, Card> cards = null;
     private static HashMap<String, Item> items = null;
 
-    public static String[] help() {
-        return commands;
+    public static void help() {
+        view.showHelp(commands);
     }
 
-    public static HashMap<String, CollectionItem> show() {
-        return account.getCollectionItems();
+    public static void show() {
+        view.showCollection(getAccount().getCollectionItems());
     }
 
-    public static ArrayList<String> search(String collectionItemName) {
-        return account.getCollection().getCollectionItemIDs(collectionItemName);
+    public static void search(String collectionItemName) {
+        view.showID(account.getCollection().getCollectionItemIDs(collectionItemName));
     }
 
-    public static boolean createDeck(String name) {
-        return false;
+    public static void createDeck(String name) {
+
     }
 
-    public static boolean deleteDeck(String name) {
-        return false;
+    public static void deleteDeck(String name) {
     }
 
     public static void addCollectionItem(String deckName, String cardName) {
