@@ -42,6 +42,7 @@ public class GameMenu extends InGameMenu {
     }
 
     public static void insertCard(String name, int x, int y) {
+        // ? redundant?
     }
 
     public static void endTurn() {

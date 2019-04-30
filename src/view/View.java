@@ -7,7 +7,8 @@ import model.Deck;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public interface View {
+public interface
+View {
     void showAccountCreationError();
 
     void showNoSuchAccountError();
@@ -77,4 +78,14 @@ public interface View {
     void showShop(ArrayList<CollectionItem> collectionItems);
 
     void showName(String name);
+
+    void showInvalidCardError();
+
+    void showInvalidTargetError();
+
+    void showNotEnoughManaError();
+
+    void showInvalidCardIDError();
+
+    void logMessage(String message);
 }

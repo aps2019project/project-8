@@ -1,8 +1,10 @@
 package model;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Unit extends Card{
+    private String name;
     private int hitPoint;
     private int attackPoint;
     private ArrayList<Buff> buffs;
@@ -10,6 +12,10 @@ public class Unit extends Card{
     private Player player;
     private boolean canMove;
     private boolean canAttack;
+
+    private int x;
+    private int y;
+
     private UnitType unitType;
     private Spell specialPower;
     private SpecialPowerType specialPowerType;
@@ -20,6 +26,9 @@ public class Unit extends Card{
     private Faction faction;
     private ArrayList<Card> hasAttacked;
     private int attackRange;
+
+    public Unit() {
+    }
 
     public int getAttackRange() {
         return attackRange;
@@ -93,4 +102,35 @@ public class Unit extends Card{
         return unitType;
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public boolean getCanMove() {
+        return canMove;
+    }
+
+    public void setCanMove(boolean canMove) {
+        this.canMove = canMove;
+    }
+
+    public boolean getCanAttack() {
+        return canAttack;
+    }
+
+    public void setCanAttack(boolean canAttack) {
+        this.canAttack = canAttack;
+    }
 }

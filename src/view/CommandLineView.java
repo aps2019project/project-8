@@ -212,4 +212,29 @@ public class CommandLineView implements View {
         }
         System.out.println("No such collection item found.");
     }
+
+    @Override
+    public void showInvalidCardError() {
+        System.out.println("Invalid card name");
+    }
+
+    @Override
+    public void showInvalidTargetError() {
+        System.out.println("Invalid target");
+    }
+
+    @Override
+    public void showNotEnoughManaError() {
+        System.out.println("You don't have enough mana");
+    }
+
+    @Override
+    public void showInvalidCardIDError() {
+        System.out.println("Invalid card id");
+    }
+
+    @Override
+    public void logMessage(String message) {
+        System.out.println(message);
+    }
 }

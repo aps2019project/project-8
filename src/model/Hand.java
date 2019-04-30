@@ -18,6 +18,15 @@ public class Hand{
         cards.remove(card);
     }
 
+    Card findCard(String cardName) {
+        for (Card card : cards) {
+            if (card.getName().contentEquals(cardName)) {
+                return card;
+            }
+        }
+        return null;
+    }
+
     public String toString() {
         return "blah blah";
     }

@@ -19,4 +19,16 @@ public class Player {
         return new Hero();
     }
 
+    Card findCard(String cardName) {
+        return hand.findCard(cardName);
+    }
+
+    int getMana() {
+        return mana;
+    }
+
+    void decreaseMana(int mana) {
+        this.mana -= mana;
+    }
+
 }
