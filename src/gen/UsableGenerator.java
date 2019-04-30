@@ -1,6 +1,6 @@
 package gen;
 
-import com.google.gson.Gson;
+import com.gilecode.yagson.YaGson;
 import model.Usable;
 
 import java.io.FileWriter;
@@ -16,8 +16,8 @@ public class UsableGenerator {
     private static void saveUsable(Usable usable) {
         try {
             FileWriter out = new FileWriter("./gameData/usables/" + usable.getName() + ".txt", false);
-            Gson gson = new Gson();
-            out.write(gson.toJson(usable));
+            YaGson yaGson = new YaGson();
+            out.write(yaGson.toJson(usable, Usable.class));
             out.flush();
         } catch (IOException ignored) {}
     }

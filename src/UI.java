@@ -1,7 +1,8 @@
-import com.google.gson.Gson;
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
 import menus.*;
+import model.AI;
 import model.Account;
-import model.Collection;
 import view.CommandLineView;
 import view.View;
 
@@ -161,10 +162,9 @@ public class UI {
             switchTo(Menus.BATTLE);
         else if (command.matches(HELP))
             view.showHelp(MainMenu.help());
-        else if (command.matches(SAVE)) {
+        else if (command.matches(SAVE))
             save();
-            view.alertSave();
-        } else if (command.matches(LOGOUT))
+        else if (command.matches(LOGOUT))
             switchTo(Menus.LOGIN);
         else
             view.showInvalidCommandError();
@@ -228,7 +228,7 @@ public class UI {
             else if (Menu.getAccount().hasThreeItems() && Shop.isItem(collectionItemName))
                 view.showFourthItemError();
             else {
-                Shop.buy(collectionItemName);
+                Shop.buyCollectionItem(collectionItemName);
                 view.alertBuy();
             }
         } else if (command.matches(SELL)) {
@@ -248,6 +248,8 @@ public class UI {
     private static void actBattle(String command) {
         if (command.matches(EXIT))
             switchTo(Menus.MAIN_MENU);
+        else if (command.matches(HELP))
+            view.showHelp(Battle.help());
         else if (command.matches(SINGLE_PLAYER))
             switchTo(Menus.SINGLE_PLAYER);
         else if (command.matches(MULTIPLAYER))
@@ -259,6 +261,8 @@ public class UI {
     private static void actSinglePlayer(String command) {
         if (command.matches(EXIT))
             switchTo(Menus.BATTLE);
+        else if (command.matches(HELP))
+            view.showHelp(SinglePlayer.help());
         else if (command.matches(STORY))
             switchTo(Menus.STORY);
         else if (command.matches(CUSTOM_GAME))
@@ -270,11 +274,18 @@ public class UI {
     private static void actStory(String command) {
         if (command.matches(EXIT))
             switchTo(Menus.SINGLE_PLAYER);
+        else if (command.matches(HELP))
+            view.showHelp(Story.help());
+        else if (command.matches(LEVEL)) {
+            GameMenu.startGame(AI.getAI(Integer.parseInt(command)));
+            switchTo(Menus.GAME_MENU);
+        }
         else
             view.showInvalidCommandError();
     }
 
     private static void actCustomGame(String command) {
+//        CustomGame.showDecksList();
         if (command.matches(EXIT))
             switchTo(Menus.SINGLE_PLAYER);
         else
@@ -367,8 +378,8 @@ public class UI {
     private static void load() {
         try {
             for (File file : new File("./save").listFiles()) {
-                Gson gson = new Gson();
-                new Account(gson.fromJson(new BufferedReader(new FileReader(file)).readLine(), Account.class));
+                YaGson yaGson = new YaGson();
+                new Account(yaGson.fromJson(new BufferedReader(new FileReader(file)), Account.class));
             }
             Shop.load();
         } catch (IOException ignored) {}
@@ -377,9 +388,10 @@ public class UI {
     public static void save() {
         try {
             FileWriter out = new FileWriter("./save/" + Menu.getAccount().getName() + ".txt", false);
-            Gson gson = new Gson();
-            out.write(gson.toJson(Menu.getAccount()));
+            YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
+            out.write(yaGson.toJson(Menu.getAccount(), Account.class));
             out.flush();
+            view.alertSave();
         } catch (IOException ignored) {}
     }
 }

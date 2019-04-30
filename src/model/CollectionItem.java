@@ -1,6 +1,6 @@
 package model;
 
-public class CollectionItem {
+public abstract class CollectionItem {
     private int price;
     private int collectionItemID;
     private String name;

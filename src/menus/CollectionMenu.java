@@ -22,9 +22,6 @@ public class CollectionMenu extends Menu {
             "help"
     };
 
-    private static HashMap<String, Card> cards = null;
-    private static HashMap<String, Item> items = null;
-
     public static void help() {
         view.showHelp(commands);
     }
@@ -43,6 +40,7 @@ public class CollectionMenu extends Menu {
             return;
         }
         getAccount().getCollection().createDeck(name);
+        view.alertDeckCreation();
     }
 
     public static void deleteDeck(String name) {
@@ -51,6 +49,7 @@ public class CollectionMenu extends Menu {
             return;
         }
         getAccount().getCollection().deleteDeck(name);
+        view.alertDeckDeletion();
     }
 
     private static Deck getDeck(String deckName) { // if successful returns false
@@ -118,6 +117,8 @@ public class CollectionMenu extends Menu {
 
     public static void validateDeck(String deckName) {
         Deck deck = getDeck(deckName);
+        if (deck == null)
+            return;
         if (deck.hasHero() && deck.isFull()) {
             view.alertValidDeck();
             return;

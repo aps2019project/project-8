@@ -1,7 +1,7 @@
 package model;
 
-import java.util.*;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Collection {
     private int newID = 0;
@@ -26,20 +26,16 @@ public class Collection {
 
     public ArrayList<String> getCollectionItemIDs(String collectionItemName) {
         ArrayList<String> collectionItemIDs = new ArrayList<>();
-        Iterator<Map.Entry<String, CollectionItem>> iterator = collectionItems.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry pair = iterator.next();
-            if (((CollectionItem) pair.getValue()).getName().equals(collectionItemName))
-                collectionItemIDs.add(String.valueOf(pair.getKey()));
-        }
+        collectionItems.forEach((collectionItemID, collectionItem) -> {
+            if (collectionItem.getName().equals(collectionItemName))
+                collectionItemIDs.add(collectionItemID);
+        });
         return collectionItemIDs;
     }
 
     HashMap<String, CollectionItem> getCollectionItems() {
         return collectionItems;
     }
-
-
 
     public void createDeck(String deckName) { // deck hasn't been created before
         decks.put(deckName, new Deck(deckName));
@@ -60,6 +56,7 @@ public class Collection {
     public ArrayList<Deck> getDecks() {
         return new ArrayList<>(decks.values());
     }
+
     public CollectionItem getCollectionItem(String collectionItemID) {
         return collectionItems.get(collectionItemID);
     }

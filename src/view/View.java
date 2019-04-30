@@ -38,8 +38,6 @@ public interface View {
 
     void alertDeckDeletion();
 
-    void showNoSuchDeckError();
-
     void showDeckAlreadyHasCollectionItemError();
 
     void showDeckIsFullError();
@@ -64,7 +62,7 @@ public interface View {
 
     void alertDeckSelection();
 
-    void showDecks(ArrayList<Deck>decks);
+    void showDecks(ArrayList<Deck> decks);
 
     void showDeck(Deck deck);
 

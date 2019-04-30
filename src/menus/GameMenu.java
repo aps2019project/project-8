@@ -1,9 +1,15 @@
 package menus;
 
+import model.AI;
+import model.Player;
+
 public class GameMenu extends InGameMenu {
+    private static boolean hasAI;
+    private static Player[] players;
+
     /*    public static  void setGame(Game game) {
-            menus.GameMenu.game = game;
-        }*/
+                menus.GameMenu.game = game;
+            }*/
     public static String[] help() {
         return null;
     }
@@ -58,5 +64,10 @@ public class GameMenu extends InGameMenu {
 
     public static String getString() {
         return "";
+    }
+
+    public static void startGame(AI ai) {
+        hasAI = true;
+        players[1] = ai.getPlayer();
     }
 }

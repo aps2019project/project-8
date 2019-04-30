@@ -29,7 +29,7 @@ public class Deck {
         return deckName;
     }
 
-    Hero getHero() {
+    public Hero getHero() {
         return deckHero;
     }
 
@@ -103,7 +103,7 @@ public class Deck {
         StringBuilder stringBuilder = new StringBuilder();
 
         appendTabs(stringBuilder, numberOfTabsOnToString);
-        stringBuilder.append("Heros :\n");
+        stringBuilder.append("Heroes :\n");
         if (hasHero()) {
             stringBuilder.append("1 : ");
             appendTabs(stringBuilder, numberOfTabsOnToString + 1);
@@ -132,8 +132,10 @@ public class Deck {
         }
 
         appendTabs(stringBuilder, numberOfTabsOnToString + 1);
-        stringBuilder.append(deckHero.toString());
-        stringBuilder.append("\n");
+        if (deckHero != null) {
+            stringBuilder.append(deckHero.toString());
+            stringBuilder.append("\n");
+        }
 
         return stringBuilder.toString();
     }

@@ -1,10 +1,7 @@
 package menus;
 
-import com.google.gson.Gson;
-import model.Card;
-import model.CollectionItem;
-import model.Item;
-import model.Usable;
+import com.gilecode.yagson.YaGson;
+import model.*;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -25,7 +22,7 @@ public class Shop extends Menu {
     };
     private static ArrayList<CollectionItem> collectionItems = new ArrayList<>();
 
-    public static CollectionItem getCollectionItemByName(String collectionItemName) {
+    private static CollectionItem getCollectionItemByName(String collectionItemName) {
         for (CollectionItem collectionItem : collectionItems) {
             if (collectionItem.equalsName(collectionItemName))
                 return collectionItem;
@@ -67,7 +64,7 @@ public class Shop extends Menu {
         return getCollectionItemByName(collectionItemName) instanceof Item;
     }
 
-    public static void buy(String collectionItemName) {
+    public static void buyCollectionItem(String collectionItemName) {
         CollectionItem collectionItem = getCollectionItemByName(collectionItemName);
         account.payMoney(collectionItem.getPrice());
         account.getCollection().addCollectionItem(collectionItem);
@@ -80,14 +77,13 @@ public class Shop extends Menu {
     public static void load() {
         try {
             for (File file : new File("./gameData/cards").listFiles()) {
-                Gson gson = new Gson();
-                collectionItems.add(new Card(gson.fromJson(new BufferedReader(new FileReader(file)).readLine(),
-                        Card.class)));
+                YaGson yaGson = new YaGson();
+                collectionItems.add(yaGson.fromJson(new BufferedReader(new FileReader(file)).readLine(),
+                        Card.class));
             }
             for (File file : new File("./gameData/usables").listFiles()) {
-                Gson gson = new Gson();
-                collectionItems.add(gson.fromJson(new BufferedReader(new FileReader(file)).readLine(),
-                        Usable.class));
+                YaGson yaGson = new YaGson();
+                collectionItems.add(yaGson.fromJson(new BufferedReader(new FileReader(file)).readLine(), Usable.class));
             }
         } catch (IOException ignored) {}
     }

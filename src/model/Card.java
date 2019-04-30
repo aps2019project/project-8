@@ -8,10 +8,6 @@ public class Card extends CollectionItem {
         this.manaCost = manaCost;
     }
 
-    public Card(Card card) {
-        this(card.getPrice(), card.getCollectionItemID(), card.getName(), card.getManaCost());
-    }
-
     protected Card() {}
 
     public int getManaCost() {

@@ -1,19 +1,16 @@
 package model;
 
-public class Game {
-    private static enum GameState{WIN_FIRST_PLAYER, DRAW, WIN_SECOND_PLAYER}
-    private static enum GameType{HOLD_THE_FLAG, COLLECT_THE_FLAGS, KILL_OPPONENT_HERO}
+import menus.InGameMenu;
 
+public class Game extends InGameMenu {
     private static final int NUMBER_OF_PLAYERS = 2;
     private static final int[] HERO_INITIAL_ROW = {2, 2};
     private static final int[] HERO_INITIAL_COLUMN = {0, 8};
-
     private int turn;
     private Map map;
     private Player[] players;
     private boolean[] hasAI;
     private Account[] accounts;
-
     private Unit selectedUnit;
     private Card selectedCard;
     private Collectible selectedCollectible;
@@ -115,4 +112,5 @@ public class Game {
 
     }
 
+    private enum GameState {WIN_FIRST_PLAYER, DRAW, WIN_SECOND_PLAYER}
 }

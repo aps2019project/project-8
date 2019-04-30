@@ -1,10 +1,8 @@
 package model;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class Unit extends Card{
-    private String name;
     private int hitPoint;
     private int attackPoint;
     private ArrayList<Buff> buffs;

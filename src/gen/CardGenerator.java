@@ -1,6 +1,6 @@
 package gen;
 
-import com.google.gson.Gson;
+import com.gilecode.yagson.YaGson;
 import model.Card;
 
 import java.io.FileWriter;
@@ -16,8 +16,8 @@ public class CardGenerator {
     private static void saveCard(Card card) {
         try {
             FileWriter out = new FileWriter("./gameData/cards/" + card.getName() + ".txt", false);
-            Gson gson = new Gson();
-            out.write(gson.toJson(card));
+            YaGson yaGson = new YaGson();
+            out.write(yaGson.toJson(card, Card.class));
             out.flush();
         } catch (IOException ignored) {}
     }

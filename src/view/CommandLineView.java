@@ -1,6 +1,7 @@
 package view;
 
 import model.Account;
+import model.Card;
 import model.CollectionItem;
 import model.Deck;
 
@@ -36,6 +37,9 @@ public class CommandLineView implements View {
 
     @Override
     public void showHelp(String[] commands) {
+        if (commands == null) {
+            return;
+        }
         for (String command : commands)
             System.out.println(command);
     }
@@ -66,11 +70,9 @@ public class CommandLineView implements View {
             System.out.println("Your collection is empty!");
             return;
         }
-        Iterator<Map.Entry<String, CollectionItem>> iterator = collectionItems.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry pair = iterator.next();
-            System.out.println(pair.getKey() + " -> " + pair.getValue());
-        }
+        collectionItems.forEach((collectionItemID, collectionItem) -> {
+            System.out.println(collectionItemID + " -> " + collectionItem.getName());
+        });
     }
 
     @Override
@@ -95,11 +97,6 @@ public class CommandLineView implements View {
     @Override
     public void alertDeckDeletion() {
         System.out.println("Deck successfully deleted.");
-    }
-
-    @Override
-    public void showNoSuchDeckError() {
-        System.out.println("No deck with this name exists.");
     }
 
     @Override
@@ -164,6 +161,10 @@ public class CommandLineView implements View {
 
     @Override
     public void showDecks(ArrayList<Deck> decks) {
+        if (decks.isEmpty()) {
+            System.out.println("No deck.");
+            return;
+        }
         for (int i = 0; i < decks.size(); i++) {
             Deck deck = decks.get(i);
             System.out.println((i + 1) + " : " + deck.getDeckName());
