@@ -5,7 +5,7 @@ public class CustomGame extends Menu {
             "Start game [deck name] [mode] [number of flags]"
     };
 
-    public static String[] help() {
-        return commands;
+    public static void help() {
+        view.showHelp(commands);
     }
 }

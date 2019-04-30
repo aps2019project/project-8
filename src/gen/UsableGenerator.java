@@ -19,6 +19,9 @@ public class UsableGenerator {
             YaGson yaGson = new YaGson();
             out.write(yaGson.toJson(usable, Usable.class));
             out.flush();
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+            System.out.println("Can't Read file for some reason: ");
+            System.out.println("File can't be created / File can't be opened / A directory rather than file");
+        }
     }
 }
