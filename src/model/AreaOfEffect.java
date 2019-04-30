@@ -10,6 +10,5 @@ public class AreaOfEffect extends Spell {
 
     @Override
     public void cast(int x, int y, Map map, Player player) {
-
     }
 }

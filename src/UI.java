@@ -160,7 +160,7 @@ public class UI {
         else if (command.matches(BATTLE))
             switchTo(Menus.BATTLE);
         else if (command.matches(HELP))
-            view.showHelp(MainMenu.help());
+            MainMenu.help();
         else if (command.matches(SAVE)) {
             save();
             view.alertSave();
@@ -212,35 +212,21 @@ public class UI {
         if (command.matches(EXIT))
             switchTo(Menus.MAIN_MENU);
         else if (command.matches(HELP))
-            view.showHelp(Shop.help());
+            Shop.help();
         else if (command.matches(SHOW_COLLECTION))
             CollectionMenu.show();
         else if (command.matches(SEARCH_COLLECTION))
             CollectionMenu.search(commandSplit[2]);
         else if (command.matches(SEARCH))
-            view.showName(Shop.search(commandSplit[1]));
+            Shop.search(commandSplit[1]);
         else if (command.matches(BUY)) {
             String collectionItemName = commandSplit[1];
-            if (!Shop.hasCollectionItem(collectionItemName))
-                view.showNoSuchCollectionItemError();
-            else if (Menu.getAccount().getMoney() < Shop.getPrice(collectionItemName))
-                view.showNotEnoughMoneyError();
-            else if (Menu.getAccount().hasThreeItems() && Shop.isItem(collectionItemName))
-                view.showFourthItemError();
-            else {
-                Shop.buy(collectionItemName);
-                view.alertBuy();
-            }
+            Shop.buy(collectionItemName);
         } else if (command.matches(SELL)) {
             String collectionItemID = commandSplit[1];
-            if (CollectionMenu.hasCollectionItem(collectionItemID)) {
-                Shop.sellCollectionItem(collectionItemID);
-                view.alertSell();
-            }
-            else
-                view.showNoSuchCollectionItemError();
+            Shop.sellCollectionItem(collectionItemID);
         } else if (command.matches(SHOW))
-            view.showShop(Shop.show());
+            Shop.show();
         else
             view.showInvalidCommandError();
     }
@@ -338,28 +324,28 @@ public class UI {
                 view.showHelp(help());
                 break;
             case MAIN_MENU:
-                view.showHelp(MainMenu.help());
+                MainMenu.help();
                 break;
             case COLLECTION:
                 CollectionMenu.help();
                 break;
             case SHOP:
-                view.showHelp(Shop.help());
+                Shop.help();
                 break;
             case BATTLE:
-                view.showHelp(Battle.help());
+                Battle.help();
                 break;
             case SINGLE_PLAYER:
-                view.showHelp(SinglePlayer.help());
+                SinglePlayer.help();
                 break;
             case MULTIPLAYER:
-                view.showHelp(Multiplayer.help());
+                Multiplayer.help();
                 break;
             case STORY:
-                view.showHelp(Story.help());
+                Story.help();
                 break;
             case CUSTOM_GAME:
-                view.showHelp(CustomGame.help());
+                CustomGame.help();
                 break;
         }
     }

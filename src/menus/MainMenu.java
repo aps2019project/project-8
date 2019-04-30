@@ -11,7 +11,7 @@ public class MainMenu extends Menu {
             "Save"
     };
 
-    public static String[] help() {
-        return commands;
+    public static void help() {
+        view.showHelp(commands);
     }
 }

@@ -12,7 +12,7 @@ public class Card extends CollectionItem {
         this(card.getPrice(), card.getCollectionItemID(), card.getName(), card.getManaCost());
     }
 
-    protected Card() {}
+    public Card() {}
 
     public int getManaCost() {
         return manaCost;

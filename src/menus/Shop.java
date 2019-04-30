@@ -33,22 +33,28 @@ public class Shop extends Menu {
         return null;
     }
 
-    public static String[] help() {
-        return commands;
+    public static void help() {
+        view.showHelp(commands);
     }
 
-    public static String search(String collectionItemName) {
+    public static void search(String collectionItemName) {
         CollectionItem collectionItem = getCollectionItemByName(collectionItemName);
         if (collectionItem == null) {
-            return null;
+            view.showNoSuchCollectionItemError();
+            return;
         }
-        return getCollectionItemByName(collectionItemName).getName();
+        view.showName(collectionItem.getName());
     }
 
     public static void sellCollectionItem(String collectionItemID) {
-        CollectionItem collectionItem = account.getCollection().getCollectionItemByID(collectionItemID);
-        account.receiveMoney(collectionItem.getPrice());
-        account.getCollection().removeCollectionItem(collectionItemID);
+        if (CollectionMenu.hasCollectionItem(collectionItemID)) {
+            CollectionItem collectionItem = account.getCollection().getCollectionItemByID(collectionItemID);
+            account.receiveMoney(collectionItem.getPrice());
+            account.getCollection().removeCollectionItem(collectionItemID);
+            view.alertSell();
+            return;
+        }
+        view.showNoSuchCollectionItemError();
     }
 
     public static String getString() {
@@ -68,23 +74,36 @@ public class Shop extends Menu {
     }
 
     public static void buy(String collectionItemName) {
+        if (!hasCollectionItem(collectionItemName)) {
+            view.showNoSuchCollectionItemError();
+            return;
+        }
+        if (getAccount().getMoney() < getPrice(collectionItemName)) {
+            view.showNotEnoughMoneyError();
+            return;
+        }
+        if (getAccount().hasThreeItems() && isItem(collectionItemName)) {
+            view.showFourthItemError();
+            return;
+        }
         CollectionItem collectionItem = getCollectionItemByName(collectionItemName);
         account.payMoney(collectionItem.getPrice());
         account.getCollection().addCollectionItem(collectionItem);
+        view.alertBuy();
     }
 
-    public static ArrayList<CollectionItem> show() {
-        return collectionItems;
+    public static void show() {
+        view.showShop(collectionItems);
     }
 
     public static void load() {
         try {
-            for (File file : new File("./gameData/cards").listFiles()) {
+            for (File file : new File("./GameData/cards").listFiles()) {
                 Gson gson = new Gson();
                 collectionItems.add(new Card(gson.fromJson(new BufferedReader(new FileReader(file)).readLine(),
                         Card.class)));
             }
-            for (File file : new File("./gameData/usables").listFiles()) {
+            for (File file : new File("./GameData/usables").listFiles()) {
                 Gson gson = new Gson();
                 collectionItems.add(gson.fromJson(new BufferedReader(new FileReader(file)).readLine(),
                         Usable.class));

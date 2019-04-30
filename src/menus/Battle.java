@@ -22,8 +22,8 @@ public class Battle extends Menu {
             "Multiplayer"
     };
 
-    public static String[] help() {
-        return commands;
+    public static void help() {
+        view.showHelp(commands);
     }
 
     public static String getString() {

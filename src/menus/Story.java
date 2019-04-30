@@ -1,7 +1,7 @@
 package menus;
 
 public class Story extends Menu {
-    public static String[] help() {
-        return null;
+    public static void help() {
+
     }
 }

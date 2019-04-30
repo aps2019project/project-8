@@ -6,7 +6,7 @@ public class SinglePlayer extends Menu {
             "Custom game"
     };
 
-    public static String[] help() {
-        return commands;
+    public static void help() {
+        view.showHelp(commands);
     }
 }

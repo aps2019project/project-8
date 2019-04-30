@@ -6,7 +6,7 @@ public class Multiplayer extends Menu {
             "Start multiplayer game [mode] [number of flags]"
     };
 
-    public static String[] help() {
-        return commands;
+    public static void help() {
+        view.showHelp(commands);
     }
 }

@@ -11,8 +11,7 @@ public class CollectionItem {
         this.name = name;
     }
 
-    public CollectionItem() {
-    }
+    protected CollectionItem() {}
 
     public int getPrice() {
         return price;

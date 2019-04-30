@@ -19,6 +19,9 @@ public class UsableGenerator {
             Gson gson = new Gson();
             out.write(gson.toJson(usable));
             out.flush();
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+            System.out.println("Can't Read file for some reason: ");
+            System.out.println("File can't be created / File can't be opened / A directory rather than file");
+        }
     }
 }
