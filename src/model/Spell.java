@@ -3,21 +3,100 @@ package model;
 import java.util.ArrayList;
 
 public class Spell {
+    SpellTarget spellTarget;
     protected Buff buff;
-    protected boolean enemyMinion;
-    protected boolean enemyHero;
-    protected boolean friendlyMinion;
-    protected boolean friendlyHero;
     private boolean global;
     protected int attack;
     protected int heal;
     protected boolean dispel;
     private boolean adjacent;
-    private Unit unitAdjacency;
 
     private Faction comboAplifier;
     private int addMana;
     private int addRange;
+
+    public Spell(SpellTarget spellTarget,Buff buff,boolean global,int attack,int heal,boolean dispel,
+                 boolean adjacent,Faction comboAplifier,int addMana,int addRange) {
+        this.spellTarget = spellTarget;
+        this.buff = buff;
+        this.global = global;
+        this.attack = attack;
+        this.heal = heal;
+        this.dispel = dispel;
+        this.adjacent = adjacent;
+        this.comboAplifier = comboAplifier;
+        this.addMana = addMana;
+        this.addRange = addRange;
+    }
+
+    public static class SpellBuilder {
+        SpellTarget spellTarget;
+        private Buff buff;
+        private boolean global = false;
+        private int attack = 0;
+        private int heal = 0;
+        private boolean dispel = false;
+        private boolean adjacent = false;
+
+        private Faction comboAplifier;
+        private int addMana = 0;
+        private int addRange = 0;
+
+        public SpellBuilder setBuff(Buff buff) {
+            this.buff = buff;
+            return this;
+        }
+
+        public SpellBuilder setSpellTarget(SpellTarget spellTarget) {
+            this.spellTarget = spellTarget;
+            return this;
+        }
+
+        public SpellBuilder setGlobal(boolean global) {
+            this.global = global;
+            return this;
+        }
+
+        public SpellBuilder setAttack(int attack) {
+            this.attack = attack;
+            return this;
+        }
+
+        public SpellBuilder setHeal(int heal) {
+            this.heal = heal;
+            return this;
+        }
+
+        public SpellBuilder setDispel(boolean dispel) {
+            this.dispel = dispel;
+            return this;
+        }
+
+        public SpellBuilder setAdjacent(boolean adjacent) {
+            this.adjacent = adjacent;
+            return this;
+        }
+
+        public SpellBuilder setComboAmplifier(Faction comboAmplifier) {
+            this.comboAplifier = comboAmplifier;
+            return this;
+        }
+
+        public SpellBuilder setAddMana(int addMana) {
+            this.addMana = addMana;
+            return this;
+        }
+
+        public SpellBuilder setAddRange(int addRange) {
+            this.addRange = addRange;
+            return this;
+        }
+
+        public Spell build() {
+            return new Spell(spellTarget, buff, global, attack, heal, dispel, adjacent, comboAplifier, addMana, addRange);
+        }
+    }
+
 
     public void cast(int x, int y, Map map, Player player) {
 

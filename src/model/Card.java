@@ -14,6 +14,10 @@ public class Card extends CollectionItem {
         return manaCost;
     }
 
+    public void setManaCost(int manaCost) {
+        this.manaCost = manaCost;
+    }
+
     public int getPrice() {
         return super.getPrice();
     }

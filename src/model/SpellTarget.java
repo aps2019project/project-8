@@ -1,0 +1,19 @@
+package model;
+
+// Target Types:
+
+public enum SpellTarget {
+    UNIT,
+    ENEMY_UNIT,
+    FRIENDLY_UNIT,
+    ENEMY_HERO,
+    FRIENDLY_HERO,
+    ENEMY_MINION,
+    FRIENDLY_MINION,
+    GRID_2_2,
+    GRID_3_3,
+    ALL_ENEMY_UNITS,
+    ALL_FRIENDLY_UNITS,
+    ALL_ENEMY_MINIONS_IN_ONE_COLUMN,
+    RANDOM_ADJACENT_MINION
+}

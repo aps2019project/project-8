@@ -13,6 +13,18 @@ public abstract class CollectionItem {
 
     protected CollectionItem() {}
 
+    public void setCollectionItemID(int collectionItemID) {
+        this.collectionItemID = collectionItemID;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public int getPrice() {
         return price;
     }
