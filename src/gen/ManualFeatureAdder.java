@@ -1,7 +1,10 @@
 package gen;
 
+import com.gilecode.yagson.YaGson;
 import model.*;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -58,12 +61,13 @@ public class ManualFeatureAdder {
             disarm = feedBack.equals("yes");
         }
 
-        System.out.println("Add extra features \"none\" to end!");
+        System.out.println("Add extra features to buff \"none\" to end!");
         String command = scanner.nextLine();
         while (!command.matches("none")) {
             command = scanner.nextLine();
         }
 
+        System.out.println("buff created");
         return new Buff.BuffBuilder()
                 .setDuration(duration)
                 .setHoly(holy)
@@ -89,19 +93,20 @@ public class ManualFeatureAdder {
                 System.out.println(i + ". " + st);
                 i++;
             }
-            int selectedIndex = scanner.nextInt();
+            int selectedIndex = scanner.nextInt() - 1;
             spellTarget = spellTargets.get(selectedIndex);
         }
         {
             buff = addBuff();
         }
 
-        System.out.println("Add extra features \"none\" to end!");
+        System.out.println("Add extra features to spell \"none\" to end!");
         String command = scanner.nextLine();
         while (!command.matches("none")) {
             command = scanner.nextLine();
         }
 
+        System.out.println("spell created!");
         return new Spell.SpellBuilder()
                 .setSpellTarget(spellTarget)
                 .setBuff(buff)
@@ -114,6 +119,7 @@ public class ManualFeatureAdder {
         {
             spell = addSpell();
         }
+        System.out.println("spell card created!");
         return new SpellCard(spell);
     }
 
@@ -163,6 +169,20 @@ public class ManualFeatureAdder {
             myCard.setPrice(price);
         } catch (NullPointerException except) {
             System.out.println("failed to get card");
+        }
+        saveCard(myCard);
+    }
+
+
+    private static void saveCard(Card card) {
+        try {
+            FileWriter out = new FileWriter("./gameData/cards/" + card.getName() + ".txt", false);
+            YaGson yaGson = new YaGson();
+            out.write(yaGson.toJson(card, Card.class));
+            out.flush();
+        } catch (IOException ignored) {
+            System.out.println("Can't Read file for some reason: ");
+            System.out.println("File can't be created / File can't be opened / A directory rather than file");
         }
     }
 }

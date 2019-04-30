@@ -15,6 +15,9 @@ public class Spell {
     private int addMana;
     private int addRange;
 
+    protected Spell() {
+
+    }
     public Spell(SpellTarget spellTarget,Buff buff,boolean global,int attack,int heal,boolean dispel,
                  boolean adjacent,Faction comboAplifier,int addMana,int addRange) {
         this.spellTarget = spellTarget;
