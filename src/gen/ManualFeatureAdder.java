@@ -1,6 +1,7 @@
 package gen;
 
 import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
 import model.*;
 
 import java.io.FileWriter;
@@ -124,6 +125,18 @@ public class ManualFeatureAdder {
     }
 
     private static Unit addUnit() {
+        System.out.println("***Enter Unit***");
+        int hitPoint, attackPoint;
+        ArrayList<Buff>buffs;
+        int flags;
+        boolean canMove;
+        boolean canAttack;
+        UnitType unitType;
+        Spell specialPower;
+
+        {
+
+        }
         return new Unit();
     }
 
@@ -177,7 +190,7 @@ public class ManualFeatureAdder {
     private static void saveCard(Card card) {
         try {
             FileWriter out = new FileWriter("./gameData/cards/" + card.getName() + ".txt", false);
-            YaGson yaGson = new YaGson();
+            YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
             out.write(yaGson.toJson(card, Card.class));
             out.flush();
         } catch (IOException ignored) {

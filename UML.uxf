@@ -531,17 +531,27 @@ GRAVEYARD_MENU</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1720</x>
-      <y>1152</y>
+      <x>1736</x>
+      <y>1288</y>
       <w>112</w>
       <h>104</h>
     </coordinates>
     <panel_attributes>&lt;&lt;enumeration&gt;&gt;
-UnitType
+SpellTarget
 --
-RANGED
-HYBRID
-MELEE
+UNIT,
+ENEMY_UNIT,
+FRIENDLY_UNIT,
+ENEMY_HERO,
+FRIENDLY_HERO,
+ENEMY_MINION,
+FRIENDLY_MINION,
+GRID_2_2,
+GRID_3_3,
+ALL_ENEMY_UNITS,
+ALL_FRIENDLY_UNITS,
+ALL_ENEMY_MINIONS_IN_ONE_COLUMN,
+RANDOM_ADJACENT_MINION
 --
 +toString(): String</panel_attributes>
     <additional_attributes/>
@@ -609,11 +619,8 @@ COMBO</panel_attributes>
     </coordinates>
     <panel_attributes>Spell
 --
+#spellTarget: SpellTarget
 #buff: Buff
-#enemyMinion: boolean
-#enemyHero: boolean
-#friendlyMinion: boolean
-#friendlyHero: boolean
 -global: boolean
 #attack: int
 #heal: int
@@ -1232,6 +1239,24 @@ WIN_SECOND_PLAYER</panel_attributes>
     </coordinates>
     <panel_attributes>AI
 --</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1736</x>
+      <y>1168</y>
+      <w>112</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enumeration&gt;&gt;
+UnitType
+--
+RANGED
+HYBRID
+MELEE
+--
++toString(): String</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>
