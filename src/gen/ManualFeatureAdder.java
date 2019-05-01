@@ -7,10 +7,7 @@ import model.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 // Incomplete!
 
@@ -127,17 +124,78 @@ public class ManualFeatureAdder {
     private static Unit addUnit() {
         System.out.println("***Enter Unit***");
         int hitPoint, attackPoint;
-        ArrayList<Buff>buffs;
-        int flags;
-        boolean canMove;
-        boolean canAttack;
         UnitType unitType;
+        SpecialPowerType specialPowerType;
         Spell specialPower;
+        boolean canFly;
+        Faction faction;
+        int attackRange;
 
         {
-
+            System.out.println("Enter hit point");
+            hitPoint = scanner.nextInt();
         }
-        return new Unit();
+        {
+            System.out.println("Enter attack point");
+            attackPoint = scanner.nextInt();
+        }
+        {
+            System.out.println("Enter unit type");
+            ArrayList<UnitType> unitTypes = new ArrayList<>(EnumSet.allOf(UnitType.class));
+            int i = 1;
+            for (UnitType ut : unitTypes) {
+                System.out.println(i + ". " + ut);
+                i++;
+            }
+            int index = scanner.nextInt() - 1;
+            unitType = unitTypes.get(index);
+        }
+        {
+            System.out.println("Enter Special power type");
+            ArrayList<SpecialPowerType> specialPowerTypes = new ArrayList<>(EnumSet.allOf(SpecialPowerType.class));
+            int i = 1;
+            for (SpecialPowerType spt : specialPowerTypes) {
+                System.out.println(i + ". " + spt);
+                i++;
+            }
+            int index = scanner.nextInt() - 1;
+            specialPowerType = specialPowerTypes.get(index);
+        }
+        {
+            System.out.println("Enter Unit Special power");
+            specialPower = addSpell();
+        }
+        {
+            System.out.println("Enter can fly (yes/no)");
+            String feedBack = scanner.next();
+            canFly = feedBack.equals("yes");
+        }
+        {
+            System.out.println("Enter Faction");
+            ArrayList<Faction> factions = new ArrayList<>(EnumSet.allOf(Faction.class));
+            int i = 1;
+            for (Faction f : factions) {
+                System.out.println(i + ". " + f);
+                i++;
+            }
+            int index = scanner.nextInt() - 1;
+            faction = factions.get(index);
+        }
+        {
+            System.out.println("Enter attack range");
+            attackRange = scanner.nextInt();
+        }
+
+        return new Unit.UnitBuilder()
+                .setAttackPoint(attackPoint)
+                .setHitPoint(hitPoint)
+                .setAttackRange(attackRange)
+                .setUnitType(unitType)
+                .setFaction(faction)
+                .setCanFly(canFly)
+                .setSpecialPowerType(specialPowerType)
+                .setSpell(specialPower)
+                .build();
     }
 
     public static void main(String[] args) {
