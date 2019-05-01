@@ -14,7 +14,7 @@ public abstract class CollectionItem {
     protected CollectionItem() {}
 
     public void setCollectionItemID(int collectionItemID) {
-        this.collectionItemID = collectionItemID;
+        this.id = Integer.toString(collectionItemID);
     }
 
     public void setPrice(int price) {
