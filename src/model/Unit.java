@@ -29,6 +29,10 @@ public class Unit extends Card{
     public Unit() {
     }
 
+    public Unit(int price, String id, String name, int manaCost) {
+        super(price, id, name, manaCost);
+    }
+
     public int getAttackRange() {
         return attackRange;
     }

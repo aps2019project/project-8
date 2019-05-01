@@ -2,18 +2,18 @@ package model;
 
 public abstract class CollectionItem {
     private int price;
-    private String id;
+    private String collectionItemID;
     private String name;
 
-    protected CollectionItem(int price, String id, String name) {
+    protected CollectionItem(int price, String collectionItemID, String name) {
         this.price = price;
-        this.id = id;
+        this.collectionItemID = collectionItemID;
         this.name = name;
     }
 
     protected CollectionItem() {}
 
-    public void setCollectionItemID(int collectionItemID) {
+    public void setCollectionItemID(String collectionItemID) {
         this.collectionItemID = collectionItemID;
     }
 
@@ -30,7 +30,7 @@ public abstract class CollectionItem {
     }
 
     public String getID() {
-        return id;
+        return collectionItemID;
     }
 
     public boolean equalsName(String collectionItemName) {

@@ -7,6 +7,7 @@ import view.CommandLineView;
 import view.View;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class UI {
@@ -51,7 +52,7 @@ public class UI {
     private static final String SHOW_MY_MINIONS = "(?i:show my minions)";
     private static final String SHOW_OPPONENT_MINIONS = "(?i:show opponent minions)";
     private static final String SHOW_CARD_INFO = "(?i:show card info) " + ID;
-    private static final String SELECT_COLLETION_ITME = "(?i:select) " + ID;
+    private static final String SELECT_COLLECTION_ITEM = "(?i:select) " + ID;
     private static final String COORDINATES = "\\(\\d+, \\d+\\)";
     private static final String MOVE = "(?i:move to) " + COORDINATES;
     private static final String ATTACK = "(?i:attack) " + ID;
@@ -82,6 +83,7 @@ public class UI {
     private static View view = new CommandLineView();
     private static Menus menu = Menus.LOGIN;
     private static String command = null;
+    private static boolean selectingUser = true;
 
     public static void main(String[] args) {
         load();
@@ -261,38 +263,134 @@ public class UI {
         if (command.matches(EXIT))
             switchTo(Menus.SINGLE_PLAYER);
         else if (command.matches(HELP))
-            view.showHelp(Story.help());
+            Story.help();
         else if (command.matches(LEVEL)) {
-            GameMenu.startGame(AI.getAI(Integer.parseInt(command)));
-            switchTo(Menus.GAME_MENU);
+            if (GameMenu.startGame(AI.getAI(Integer.parseInt(command))))
+                switchTo(Menus.GAME_MENU);
         }
         else
             view.showInvalidCommandError();
     }
 
     private static void actCustomGame(String command) {
-//        CustomGame.showDecksList();
+        String[] commandSplit = command.split(" ");
         if (command.matches(EXIT))
             switchTo(Menus.SINGLE_PLAYER);
         else if (command.matches(HELP))
             CustomGame.help();
+        else if (command.matches(START_CUSTOM_GAME)) {
+            if (GameMenu.startGame(commandSplit[2], Integer.parseInt(commandSplit[3]), (commandSplit.length > 4 ?
+                    Integer.parseInt(commandSplit[4]) : -1)))
+                switchTo(Menus.GAME_MENU);
+        }
         else
             view.showInvalidCommandError();
     }
 
     private static void actMultiplayer(String command) {
-        if (command.matches(EXIT))
+        String[] commandSplit = command.split(" ");
+        if (command.matches(EXIT)) {
+            selectingUser = true;
             switchTo(Menus.BATTLE);
-        else if (command.matches(HELP))
-            Multiplayer.help();
-        else
+        } else if (command.matches(HELP))
+            Multiplayer.help(selectingUser);
+        else if (selectingUser && command.matches(SELECT_USER)) {
+            if (Multiplayer.selectUser(commandSplit[2])) {
+                selectingUser = false;
+                Multiplayer.help(false);
+            }
+        } else if (!selectingUser && command.matches(START_MULTIPLAYER_GAME)) {
+            if (GameMenu.startGame(Multiplayer.getSecondAccount(), Integer.parseInt(commandSplit[3]), (commandSplit.length > 4 ?
+                    Integer.parseInt(commandSplit[4]) : -1))) {
+                switchTo(Menus.GAME_MENU);
+            }
+        } else
             view.showInvalidCommandError();
     }
 
+    private static boolean gameEnded = false;
+
+    public static void endGame() {
+        gameEnded = true;
+    }
+
     private static void actInGame(String command) {
+        if (!gameEnded) {
+            if (command.matches(EXIT))
+                switchTo(Menus.MAIN_MENU);
+            else if (command.matches(HELP))
+                GameMenu.help();
+            else if (command.matches(ENTER_GRAVEYARD))
+                switchTo(Menus.GRAVEYARD_MENU);
+            else if (command.matches(GAME_INFO))
+                GameMenu.showGameInfo();
+            else if (command.matches(SHOW_MY_MINIONS))
+                GameMenu.showMinions(0);
+            else if (command.matches(SHOW_OPPONENT_MINIONS))
+                GameMenu.showMinions(1);
+            else if (command.matches(SHOW_CARD_INFO))
+                GameMenu.showCardInfo(command.split(" ")[3]);
+            else if (command.matches(SELECT_COLLECTION_ITEM))
+                GameMenu.selectCollectible(command.split(" ")[1]);
+            else if (command.matches(MOVE)) {
+                int[] coordinates = getCoordinates(command);
+                GameMenu.moveUnit(coordinates[0], coordinates[1]);
+            } else if (command.matches(ATTACK))
+                GameMenu.attackUnit(command.split(" ")[1]);
+            else if (command.matches(ATTACK_COMBO)) {
+                String[] commandSplit = command.split(" ");
+                GameMenu.attackCombo(commandSplit[2], Arrays.copyOfRange(commandSplit, 3, commandSplit.length));
+            } else if (command.matches(SPECIAL_POWER)) {
+                int[] coordinates = getCoordinates(command);
+                GameMenu.useSpecialPower(coordinates[0], coordinates[1]);
+            } else if (command.matches(SHOW_HAND))
+                GameMenu.showHand();
+            else if (command.matches(INSERT)) {
+                int[] coordinates = getCoordinates(command);
+                GameMenu.insertCard(command.split(" ")[1], coordinates[0], coordinates[1]);
+            } else if (command.matches(END_TURN))
+                GameMenu.endTurn();
+            else if (command.matches(SHOW_COLLECTIBLES))
+                GameMenu.showAllCollectibles();
+            else if (command.matches(SHOW_INFO))
+                GameMenu.showCollectibleInfo();
+            else if (command.matches(USE_COLLECTIBLE)) {
+                int[] coordinates = getCoordinates(command);
+                GameMenu.useCollectible(coordinates[0], coordinates[1]);
+            } else if (command.matches(SHOW_NEXT_CARD))
+                GameMenu.showNextCard();
+            else if (command.matches(SHOW_MENU))
+                GameMenu.showMenu();
+            else
+                view.showInvalidCommandError();
+        } else {
+            if (command.matches(END_GAME))
+                switchTo(Menus.MAIN_MENU);
+            else
+                view.showInvalidCommandError();
+        }
+    }
+
+    private static int[] getCoordinates(String command) {
+        command = command.split("\\(")[1];
+        command = command.split("\\)")[0];
+        String[] commandSplit = command.split(",");
+        return new int[] {Integer.parseInt(commandSplit[0]), Integer.parseInt(commandSplit[1])};
     }
 
     private static void actGraveyard(String command) {
+        if (command.matches(EXIT))
+            switchTo(Menus.GAME_MENU);
+        else if (command.matches(HELP))
+            GraveyardMenu.help();
+        else if (command.matches(SHOW_CARD_INFO))
+            GraveyardMenu.showInfo(command.split(" ")[2]);
+        else if (command.matches(SHOW_CARDS))
+            GraveyardMenu.showCards();
+        else if (command.matches(SHOW_MENU))
+            GraveyardMenu.showMenu();
+        else
+            view.showInvalidCommandError();
     }
 
     private static void createAccount(String name) {
@@ -354,13 +452,19 @@ public class UI {
                 SinglePlayer.help();
                 break;
             case MULTIPLAYER:
-                Multiplayer.help();
+                Multiplayer.help(selectingUser);
                 break;
             case STORY:
                 Story.help();
                 break;
             case CUSTOM_GAME:
                 CustomGame.help();
+                break;
+            case GAME_MENU:
+                GameMenu.help();
+                break;
+            case GRAVEYARD_MENU:
+                GraveyardMenu.help();
                 break;
         }
     }

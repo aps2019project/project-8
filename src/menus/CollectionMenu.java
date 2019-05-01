@@ -90,7 +90,7 @@ public class CollectionMenu extends Menu {
             return;
         }
 
-        if (collectionItem instanceof Item && deck.hasHero()) {
+        if (collectionItem instanceof Hero && deck.hasHero()) {
             view.showAddingASecondHeroToDeckError();
             return;
         }

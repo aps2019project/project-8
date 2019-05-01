@@ -7,6 +7,7 @@ public class Game extends InGameMenu {
     private static final int[] HERO_INITIAL_ROW = {2, 2};
     private static final int[] HERO_INITIAL_COLUMN = {0, 8};
 
+    private int numberOfFlags;
     private int turn;
     private Map map;
     private Player[] players;
