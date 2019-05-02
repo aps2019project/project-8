@@ -15,8 +15,6 @@ public class Buff {
     private int unholy;
     private boolean dispellable;
 
-    private int githubtest;
-
     // Constructor for BuffBuilder
     public Buff(int duration, int holy, int powerHp, int powerAp, int poison, int weaknessAP, int weaknessHP,
                 boolean stun, boolean disarm,int unholy, boolean dispellable) {
