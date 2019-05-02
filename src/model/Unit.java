@@ -39,6 +39,9 @@ public class Unit extends Card{
         this.attackRange = attackRange;
     }
 
+    public Unit() {
+    }
+
     public static class UnitBuilder {
         private int hitPoint = 0;
         private int attackPoint = 0;

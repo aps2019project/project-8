@@ -4,16 +4,36 @@ import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import model.*;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Array;
 import java.util.*;
 
 // Incomplete!
 
-public class ManualFeatureAdder {
+/*
+ *  this class gets the features from your input and stores
+ *  your feedback in ManualFeatureInputLogs
+ */
+
+class ManualFeatureAdder {
     private static int numberOfCards = 0;
     private static Scanner scanner = new Scanner(System.in);
+    private static BufferedWriter writer;
+    private static boolean hasArg = false;
+    private static String arg3;
+
+    private static String getInput() {
+        String string = scanner.nextLine();
+        if (!hasArg) {
+
+            try {
+                writer.write(string + "\n");
+            } catch (IOException io) {
+                System.out.println("IO Exception while reading");
+            }
+        }
+        return string;
+    }
 
     private static Buff addBuff() {
         System.out.println("***Enter Buff***");
@@ -22,47 +42,47 @@ public class ManualFeatureAdder {
 
         {
             System.out.println("Enter duration of the buff");
-            duration = scanner.nextInt();
+            duration = Integer.parseInt(getInput());
         }
         {
             System.out.println("Enter holy");
-            holy = scanner.nextInt();
+            holy = Integer.parseInt(getInput());
         }
         {
             System.out.println("Enter power");
-            power = scanner.nextInt();
+            power = Integer.parseInt(getInput());
         }
         {
             System.out.println("Enter poison");
-            poison = scanner.nextInt();
+            poison = Integer.parseInt(getInput());
         }
         {
             System.out.println("Enter weakness AP");
-            weaknessAP = scanner.nextInt();
+            weaknessAP = Integer.parseInt(getInput());
         }
         {
             System.out.println("Enter weakness HP");
-            weaknessHP = scanner.nextInt();
+            weaknessHP = Integer.parseInt(getInput());
         }
         {
             System.out.println("Enter unholy");
-            unholy = scanner.nextInt();
+            unholy = Integer.parseInt(getInput());
         }
         {
             System.out.println("Enter can stun (yes/no)");
-            String feedBack = scanner.next();
+            String feedBack = getInput();
             stun = feedBack.equals("yes");
         }
         {
             System.out.println("Enter can disarm (yes/no)");
-            String feedBack = scanner.next();
+            String feedBack = getInput();
             disarm = feedBack.equals("yes");
         }
 
         System.out.println("Add extra features to buff \"none\" to end!");
-        String command = scanner.nextLine();
+        String command = getInput();
         while (!command.matches("none")) {
-            command = scanner.nextLine();
+            command = getInput();
         }
 
         System.out.println("buff created");
@@ -91,7 +111,7 @@ public class ManualFeatureAdder {
                 System.out.println(i + ". " + st);
                 i++;
             }
-            int selectedIndex = scanner.nextInt() - 1;
+            int selectedIndex = Integer.parseInt(getInput()) - 1;
             spellTarget = spellTargets.get(selectedIndex);
         }
         {
@@ -99,9 +119,9 @@ public class ManualFeatureAdder {
         }
 
         System.out.println("Add extra features to spell \"none\" to end!");
-        String command = scanner.nextLine();
+        String command = getInput();
         while (!command.matches("none")) {
-            command = scanner.nextLine();
+            command = getInput();
         }
 
         System.out.println("spell created!");
@@ -133,11 +153,11 @@ public class ManualFeatureAdder {
 
         {
             System.out.println("Enter hit point");
-            hitPoint = scanner.nextInt();
+            hitPoint = Integer.parseInt(getInput());
         }
         {
             System.out.println("Enter attack point");
-            attackPoint = scanner.nextInt();
+            attackPoint = Integer.parseInt(getInput());
         }
         {
             System.out.println("Enter unit type");
@@ -147,7 +167,7 @@ public class ManualFeatureAdder {
                 System.out.println(i + ". " + ut);
                 i++;
             }
-            int index = scanner.nextInt() - 1;
+            int index = Integer.parseInt(getInput()) - 1;
             unitType = unitTypes.get(index);
         }
         {
@@ -158,7 +178,7 @@ public class ManualFeatureAdder {
                 System.out.println(i + ". " + spt);
                 i++;
             }
-            int index = scanner.nextInt() - 1;
+            int index = Integer.parseInt(getInput()) - 1;
             specialPowerType = specialPowerTypes.get(index);
         }
         {
@@ -167,7 +187,7 @@ public class ManualFeatureAdder {
         }
         {
             System.out.println("Enter can fly (yes/no)");
-            String feedBack = scanner.next();
+            String feedBack = getInput();
             canFly = feedBack.equals("yes");
         }
         {
@@ -178,12 +198,12 @@ public class ManualFeatureAdder {
                 System.out.println(i + ". " + f);
                 i++;
             }
-            int index = scanner.nextInt() - 1;
+            int index = Integer.parseInt(getInput()) - 1;
             faction = factions.get(index);
         }
         {
             System.out.println("Enter attack range");
-            attackRange = scanner.nextInt();
+            attackRange = Integer.parseInt(getInput());
         }
 
         return new Unit.UnitBuilder()
@@ -198,7 +218,46 @@ public class ManualFeatureAdder {
                 .build();
     }
 
+    private static void setUpWriterAndScanner() {
+        if (!hasArg) {
+            scanner = new Scanner(System.in);
+            try {
+                System.out.println("Enter Log File Name:");
+                String string = scanner.nextLine();
+                writer = new BufferedWriter(new FileWriter("./gameData/ManualFeatureInputLogs/" + string + ".txt"));
+                System.out.println("./gameData/ManualFeatureInputLogs/" + string + ".txt " + " FILE CREATED!");
+            } catch (IOException io) {
+                System.out.println("IO Exception : No such file name");
+            }
+        } else {
+            try {
+                scanner = new Scanner(new File(arg3));
+            } catch (IOException io) {
+                System.out.println("No Such File exists");
+            }
+        }
+    }
+
+    private static void closeWriter() {
+        if (!hasArg) {
+            try {
+                writer.close();
+            } catch (IOException io) {
+                System.out.println("IO Exception while closing");
+            }
+        }
+    }
+
     public static void main(String[] args) {
+
+        // set up args and writer and scanner
+        {
+            hasArg = args.length >= 3;
+            if (hasArg)
+                arg3 = args[2];
+            setUpWriterAndScanner();
+        }
+
         System.out.println("-----------Add Card Feature Console Section-----------");
         System.out.println("Here you can enter your own card:");
 
@@ -206,23 +265,23 @@ public class ManualFeatureAdder {
         int price, manaCost;
         {
             System.out.print("\tEnter Card Name: ");
-            cardName = scanner.next();
+            cardName = getInput();
         }
         {
             System.out.print("\tEnter price: ");
-            price = scanner.nextInt();
+            price = Integer.parseInt(getInput());
         }
         {
             System.out.print("\tEnter Mana Cost: ");
-            manaCost = scanner.nextInt();
+            manaCost = Integer.parseInt(getInput());
         }
         numberOfCards++;
 
         System.out.print ("What is your card type? (SpellCard, Unit) ");
-        String cardType = scanner.next();
+        String cardType = getInput();
         while(!cardType.matches("(SpellCard|Unit)")) {
             System.out.print ("Enter again: (SpellCard, Unit) ");
-            cardType = scanner.next();
+            cardType = getInput();
         }
 
         Card myCard = null;
@@ -241,7 +300,14 @@ public class ManualFeatureAdder {
         } catch (NullPointerException except) {
             System.out.println("failed to get card");
         }
-        saveCard(myCard);
+        if(hasArg) {
+            saveCard(myCard);
+        }
+
+        // close the writer
+        {
+            closeWriter();
+        }
     }
 
 
