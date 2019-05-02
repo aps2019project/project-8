@@ -473,19 +473,19 @@ class ManualFeatureAdder {
             YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
             FileWriter out;
             if (collectionItem instanceof Hero) {
-                out = new FileWriter("./gameData/Heros/" + collectionItem.getName() + ".txt", false);
+                out = new FileWriter("./gameData/Heros/" + collectionItem.getName() + ".json", false);
                 out.write(yaGson.toJson(collectionItem, Hero.class));
             } else if (collectionItem instanceof SpellCard) {
-                out = new FileWriter("./gameData/SpellCards/" + collectionItem.getName() + ".txt", false);
+                out = new FileWriter("./gameData/SpellCards/" + collectionItem.getName() + ".json", false);
                 out.write(yaGson.toJson(collectionItem, SpellCard.class));
             } else if (collectionItem instanceof Minion) {
-                out = new FileWriter("./gameData/Minions/" + collectionItem.getName() + ".txt", false);
+                out = new FileWriter("./gameData/Minions/" + collectionItem.getName() + ".json", false);
                 out.write(yaGson.toJson(collectionItem, Minion.class));
             } else if (collectionItem instanceof Usable) {
-                out = new FileWriter("./gameData/Usables/" + collectionItem.getName() + ".txt", false);
+                out = new FileWriter("./gameData/Usables/" + collectionItem.getName() + ".json", false);
                 out.write(yaGson.toJson(collectionItem, Usable.class));
             } else if (collectionItem instanceof Collectible) {
-                out = new FileWriter("./gameData/Collectibles/" + collectionItem.getName() + ".txt", false);
+                out = new FileWriter("./gameData/Collectibles/" + collectionItem.getName() + ".json", false);
                 out.write(yaGson.toJson(collectionItem, Collectible.class));
             } else {
                 ShengdeBaoPrinter.println("INSTANCE OF NOTHING");
