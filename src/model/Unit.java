@@ -131,12 +131,16 @@ public class Unit extends Card{
         return attackPoint;
     }
 
-    public void recieveAttack(int attackPoint) {
+    public boolean canFly() { return canFly; }
+
+    public void receiveHit(int attackPoint) {
         hitPoint -= attackPoint;
         if (hitPoint <= 0) { // ?
 
         }
     }
+
+    public void decreaseHealth(int amount) {}
 
     public boolean isAlive() {
         return hitPoint > 0;

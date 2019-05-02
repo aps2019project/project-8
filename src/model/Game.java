@@ -39,8 +39,7 @@ public class Game extends InGameMenu {
     }
 
     void moveSelectedUnit(int destinationRow, int destinationColumn) {
-        // ? some units can move more than 2 distance
-        if (getDistance(selectedUnit.getX(), selectedUnit.getY(), destinationRow, destinationColumn) <= 2) { // possibly we could add some moveRange to Unit class variables
+        if (getDistance(selectedUnit.getX(), selectedUnit.getY(), destinationRow, destinationColumn) <= 2 || selectedUnit.canFly()) { // possibly we could add some moveRange to Unit class variables
             if (map.isPathEmpty(selectedUnit.getX(), selectedUnit.getY(), destinationRow, destinationColumn)) {
                 map.getGrid()[selectedUnit.getX()][selectedUnit.getY()].setContent(null);
                 map.getGrid()[destinationRow][destinationColumn].setContent(selectedUnit);
@@ -54,22 +53,21 @@ public class Game extends InGameMenu {
     }
 
     private boolean isAdjacent(int x1, int y1, int x2, int y2) {
-        return Math.abs(x1 - x2) <= 1 && Math.abs(y1 - y2) <= 1 && x1 != x2;
+        return Math.abs(x1 - x2) <= 1 && Math.abs(y1 - y2) <= 1 && (x1 != x2 || y1 != y2);
     }
 
-    // Unit a attacks Unit b
-    // returns true of attack happens
-    private boolean attackUnitByUnit(Unit a, Unit b) {
-        int distance = getDistance(a.getX(), a.getY(), b.getX(), b.getY());
-        boolean isAdjacent = isAdjacent(a.getX(), a.getY(), b.getX(), b.getY());
-        if ((a.getUnitType() == UnitType.MELEE || a.getUnitType() == UnitType.HYBRID) && isAdjacent) {
-            b.recieveAttack(a.getAttackPoint());
-            // attack point of a should be calculated considering buffs and items a has
+    // returns true if attack happens
+    private boolean attackUnitByUnit(Unit attacker, Unit defender) {
+        int distance = getDistance(attacker.getX(), attacker.getY(), defender.getX(), defender.getY());
+        boolean isAdjacent = isAdjacent(attacker.getX(), attacker.getY(), defender.getX(), defender.getY());
+        if ((attacker.getUnitType() == UnitType.MELEE || attacker.getUnitType() == UnitType.HYBRID) && isAdjacent) {
+            defender.receiveHit(attacker.getAttackPoint());
+            // attack point of attacker should be calculated considering buffs and items attacker has
             return true;
         }
-        if (a.getUnitType() == UnitType.RANGED && !isAdjacent && a.getAttackRange() >= distance) {
-            b.recieveAttack(a.getAttackPoint());
-            // attack point of a should be calculated considering buffs and items a has
+        if ((attacker.getUnitType() == UnitType.RANGED || attacker.getUnitType() == UnitType.HYBRID) && !isAdjacent && attacker.getAttackRange() >= distance) {
+            defender.receiveHit(attacker.getAttackPoint());
+            // attack point of attacker should be calculated considering buffs and items attacker has
             return true;
         }
         return false;
@@ -157,6 +155,10 @@ public class Game extends InGameMenu {
         Card card = player.findCard(cardName);
         if (card == null) { // no such card is found in player's hand
             view.showInvalidCardError();
+            return;
+        }
+        if (x < 0 || x >= Map.NUMBER_OF_COLUMNS || y < 0 || y >= Map.NUMBER_OF_ROWS) {
+            view.showInvalidCoordinatesError();
             return;
         }
         Cell[][] grid = map.getGrid();

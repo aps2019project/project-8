@@ -3,7 +3,7 @@ package model;
 // Target Types:
 
 public enum SpellTarget {
-    UNIT,
+    /*ANY_*/UNIT,
     ENEMY_UNIT,
     FRIENDLY_UNIT,
     ENEMY_HERO,

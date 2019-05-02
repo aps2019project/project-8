@@ -44,7 +44,7 @@ class ManualFeatureAdder {
     private static Buff addBuff() throws Exception {
         ShengdeBaoPrinter.println("***Enter Buff***");
         int duration, holy, powerHp, powerAp, poison, weaknessAP, weaknessHP, unholy;
-        boolean stun, disarm;
+        boolean stun, disarm, dispellable;
         ShengdeBaoPrinter.addString("Buff: ");
 
         {
@@ -89,6 +89,11 @@ class ManualFeatureAdder {
             String feedBack = getInput();
             disarm = feedBack.equals("yes");
         }
+        {
+            ShengdeBaoPrinter.println("Enter dispellable (yes/no)");
+            String feedback = getInput();
+            dispellable = feedback.equals("yes");
+        }
 
         ShengdeBaoPrinter.println("Add extra features to buff \"none\" to end!");
         String command = getInput();
@@ -110,6 +115,7 @@ class ManualFeatureAdder {
                 .setStun(stun)
                 .setDisarm(disarm)
                 .setUnholy(unholy)
+                .setDispellable(dispellable)
                 .build();
     }
 

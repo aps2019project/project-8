@@ -13,11 +13,13 @@ public class Buff {
     private boolean stun;
     private boolean disarm;
     private int unholy;
+    private boolean dispellable;
 
     private int githubtest;
 
     // Constructor for BuffBuilder
-    public Buff(int duration, int holy, int powerHp, int powerAp, int poison, int weaknessAP, int weaknessHP, boolean stun, boolean disarm,int unholy) {
+    public Buff(int duration, int holy, int powerHp, int powerAp, int poison, int weaknessAP, int weaknessHP,
+                boolean stun, boolean disarm,int unholy, boolean dispellable) {
         this.duration = duration;
         this.holy = holy;
         this.powerHp = powerHp;
@@ -28,6 +30,7 @@ public class Buff {
         this.stun = stun;
         this.disarm = disarm;
         this.unholy = unholy;
+        this.dispellable = dispellable;
     }
 
     public static class BuffBuilder {
@@ -41,6 +44,7 @@ public class Buff {
         private boolean stun = false;
         private boolean disarm = false;
         private int unholy = 0;
+        private boolean dispellable = false;
 
         public BuffBuilder setDuration(int duration) {
             this.duration = duration;
@@ -83,8 +87,12 @@ public class Buff {
             this.unholy = unholy;
             return this;
         }
+        public BuffBuilder setDispellable(boolean dispellable) {
+            this.dispellable = dispellable;
+            return this;
+        }
         public Buff build() {
-            return new Buff(duration, holy, powerHp, powerAp, poison, weaknessAP, weaknessHP, stun, disarm, unholy);
+            return new Buff(duration, holy, powerHp, powerAp, poison, weaknessAP, weaknessHP, stun, disarm, unholy, dispellable);
         }
     }
 
