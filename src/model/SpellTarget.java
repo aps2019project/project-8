@@ -12,6 +12,7 @@ public enum SpellTarget {
     FRIENDLY_MINION,
     GRID_2_2,
     GRID_3_3,
+    GRID_2_2_UNITS,
     ALL_ENEMY_UNITS,
     ALL_FRIENDLY_UNITS,
     ALL_ENEMY_MINIONS_IN_ONE_COLUMN,
