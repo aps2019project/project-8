@@ -1,0 +1,18 @@
+taajeDanayi
+1
+300
+Item
+adds mana for first three turns
+Usable
+7
+3
+0
+0
+0
+0
+0
+0
+no
+no
+none
+none

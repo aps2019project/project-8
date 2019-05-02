@@ -4,6 +4,7 @@ import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import model.*;
 import model.Collection;
+import view.ShengdeBaoPrinter;
 
 import java.io.*;
 import java.lang.reflect.Array;
@@ -22,7 +23,8 @@ class ManualFeatureAdder {
     private static BufferedWriter writer;
     private static boolean hasArg = false;
     private static String arg3;
-
+    private static String preffix = "";
+    
     private static String getInput() {
         String string = scanner.nextLine();
         if (!hasArg) {
@@ -30,63 +32,66 @@ class ManualFeatureAdder {
             try {
                 writer.write(string + "\n");
             } catch (IOException io) {
-                System.out.println("IO Exception while reading");
+                ShengdeBaoPrinter.println("IO Exception while reading");
             }
         }
         return string;
     }
 
     private static Buff addBuff() {
-        System.out.println("***Enter Buff***");
+        ShengdeBaoPrinter.println("***Enter Buff***");
         int duration, holy, power, poison, weaknessAP, weaknessHP, unholy;
         boolean stun, disarm;
+        ShengdeBaoPrinter.addString("Buff: ");
 
         {
-            System.out.println("Enter duration of the buff");
+            ShengdeBaoPrinter.println("Enter duration of the buff");
             duration = Integer.parseInt(getInput());
         }
         {
-            System.out.println("Enter holy");
+            ShengdeBaoPrinter.println("Enter holy");
             holy = Integer.parseInt(getInput());
         }
         {
-            System.out.println("Enter power");
+            ShengdeBaoPrinter.println("Enter power");
             power = Integer.parseInt(getInput());
         }
         {
-            System.out.println("Enter poison");
+            ShengdeBaoPrinter.println("Enter poison");
             poison = Integer.parseInt(getInput());
         }
         {
-            System.out.println("Enter weakness AP");
+            ShengdeBaoPrinter.println("Enter weakness AP");
             weaknessAP = Integer.parseInt(getInput());
         }
         {
-            System.out.println("Enter weakness HP");
+            ShengdeBaoPrinter.println("Enter weakness HP");
             weaknessHP = Integer.parseInt(getInput());
         }
         {
-            System.out.println("Enter unholy");
+            ShengdeBaoPrinter.println("Enter unholy");
             unholy = Integer.parseInt(getInput());
         }
         {
-            System.out.println("Enter can stun (yes/no)");
+            ShengdeBaoPrinter.println("Enter can stun (yes/no)");
             String feedBack = getInput();
             stun = feedBack.equals("yes");
         }
         {
-            System.out.println("Enter can disarm (yes/no)");
+            ShengdeBaoPrinter.println("Enter can disarm (yes/no)");
             String feedBack = getInput();
             disarm = feedBack.equals("yes");
         }
 
-        System.out.println("Add extra features to buff \"none\" to end!");
+        ShengdeBaoPrinter.println("Add extra features to buff \"none\" to end!");
         String command = getInput();
         while (!command.matches("none")) {
             command = getInput();
         }
 
-        System.out.println("buff created");
+        ShengdeBaoPrinter.println("buff created");
+
+        ShengdeBaoPrinter.undo();
         return new Buff.BuffBuilder()
                 .setDuration(duration)
                 .setHoly(holy)
@@ -101,15 +106,16 @@ class ManualFeatureAdder {
     }
 
     private static Spell addSpell() {
-        System.out.println("***Enter Spell***");
+        ShengdeBaoPrinter.println("***Enter Spell***");
         Buff buff;
         SpellTarget spellTarget;
+        ShengdeBaoPrinter.addString("Spell: ");
         {
-            System.out.println("Enter spell type:");
+            ShengdeBaoPrinter.println("Enter spell type:");
             int i = 1;
             ArrayList<SpellTarget> spellTargets = new ArrayList<>(EnumSet.allOf(SpellTarget.class));
             for (SpellTarget st : spellTargets) {
-                System.out.println(i + ". " + st);
+                ShengdeBaoPrinter.println(i + ". " + st);
                 i++;
             }
             int selectedIndex = Integer.parseInt(getInput()) - 1;
@@ -119,26 +125,29 @@ class ManualFeatureAdder {
             buff = addBuff();
         }
 
-        System.out.println("Add extra features to spell \"none\" to end!");
+        ShengdeBaoPrinter.println("Add extra features to spell \"none\" to end!");
         String command = getInput();
         while (!command.matches("none")) {
             command = getInput();
         }
 
-        System.out.println("spell created!");
+        ShengdeBaoPrinter.println("spell created!");
+        ShengdeBaoPrinter.undo();
         return new Spell.SpellBuilder()
                 .setSpellTarget(spellTarget)
                 .setBuff(buff)
                 .build();
     }
-
+    
     private static SpellCard addSpellCard(Card card) {
-        System.out.println("***Enter Spell Card***");
+        ShengdeBaoPrinter.println("***Enter Spell Card***");
         Spell spell;
+        ShengdeBaoPrinter.addString("Spell: ");
         {
             spell = addSpell();
         }
-        System.out.println("spell card created!");
+        ShengdeBaoPrinter.println("spell card created!");
+        ShengdeBaoPrinter.undo();
         return new SpellCard.SpellCardBuilder()
                 .setCard(card)
                 .setSpell(spell)
@@ -146,7 +155,7 @@ class ManualFeatureAdder {
     }
 
     private static Unit addUnit(Card card) {
-        System.out.println("***Enter Unit***");
+        ShengdeBaoPrinter.println("***Enter Unit***");
         int hitPoint, attackPoint;
         UnitType unitType;
         SpecialPowerType specialPowerType;
@@ -154,62 +163,65 @@ class ManualFeatureAdder {
         boolean canFly;
         Faction faction;
         int attackRange;
+        ShengdeBaoPrinter.addString("Unit: ");
 
         {
-            System.out.println("Enter hit point");
+            ShengdeBaoPrinter.println("Enter hit point");
             hitPoint = Integer.parseInt(getInput());
         }
         {
-            System.out.println("Enter attack point");
+            ShengdeBaoPrinter.println("Enter attack point");
             attackPoint = Integer.parseInt(getInput());
         }
         {
-            System.out.println("Enter unit type");
+            ShengdeBaoPrinter.println("Enter unit type");
             ArrayList<UnitType> unitTypes = new ArrayList<>(EnumSet.allOf(UnitType.class));
             int i = 1;
             for (UnitType ut : unitTypes) {
-                System.out.println(i + ". " + ut);
+                ShengdeBaoPrinter.println(i + ". " + ut);
                 i++;
             }
             int index = Integer.parseInt(getInput()) - 1;
             unitType = unitTypes.get(index);
         }
         {
-            System.out.println("Enter Special power type");
+            ShengdeBaoPrinter.println("Enter Special power type");
             ArrayList<SpecialPowerType> specialPowerTypes = new ArrayList<>(EnumSet.allOf(SpecialPowerType.class));
             int i = 1;
             for (SpecialPowerType spt : specialPowerTypes) {
-                System.out.println(i + ". " + spt);
+                ShengdeBaoPrinter.println(i + ". " + spt);
                 i++;
             }
             int index = Integer.parseInt(getInput()) - 1;
             specialPowerType = specialPowerTypes.get(index);
         }
         {
-            System.out.println("Enter Unit Special power");
+            ShengdeBaoPrinter.println("Enter Unit Special power");
             specialPower = addSpell();
         }
         {
-            System.out.println("Enter can fly (yes/no)");
+            ShengdeBaoPrinter.println("Enter can fly (yes/no)");
             String feedBack = getInput();
             canFly = feedBack.equals("yes");
         }
         {
-            System.out.println("Enter Faction");
+            ShengdeBaoPrinter.println("Enter Faction");
             ArrayList<Faction> factions = new ArrayList<>(EnumSet.allOf(Faction.class));
             int i = 1;
             for (Faction f : factions) {
-                System.out.println(i + ". " + f);
+                ShengdeBaoPrinter.println(i + ". " + f);
                 i++;
             }
             int index = Integer.parseInt(getInput()) - 1;
             faction = factions.get(index);
         }
         {
-            System.out.println("Enter attack range");
+            ShengdeBaoPrinter.println("Enter attack range");
             attackRange = Integer.parseInt(getInput());
         }
 
+        ShengdeBaoPrinter.println("Unit created!");
+        ShengdeBaoPrinter.undo();
         return new Unit.UnitBuilder()
                 .setAttackPoint(attackPoint)
                 .setHitPoint(hitPoint)
@@ -224,73 +236,92 @@ class ManualFeatureAdder {
     }
 
     private static Hero addHero(Unit unit) {
-        System.out.println("***Enter Hero***");
-        System.out.println("Hero created!");
+        ShengdeBaoPrinter.println("***Enter Hero***");
+        ShengdeBaoPrinter.addString("Hero: ");
+        ShengdeBaoPrinter.println("Hero created!");
+        ShengdeBaoPrinter.undo();
         return new Hero(unit);
     }
 
     private static Minion addMinion(Unit unit) {
-        System.out.println("***Enter Minion***");
-        System.out.println("Minion created!");
+        ShengdeBaoPrinter.println("***Enter Minion***");
+        ShengdeBaoPrinter.addString("Minion: ");
+        ShengdeBaoPrinter.println("Minion created!");
+        ShengdeBaoPrinter.undo();
         return new Minion(unit);
     }
 
     private static Item addItem(CollectionItem collectionItem) {
-        System.out.println("***Enter Item***");
+        ShengdeBaoPrinter.println("***Enter Item***");
         String description;
+        ShengdeBaoPrinter.addString("Item: ");
         {
-            System.out.println("Enter item descriprion");
+            ShengdeBaoPrinter.println("Enter item descriprion");
             description = getInput();
         }
+        ShengdeBaoPrinter.undo();
         return new Item(collectionItem, description);
     }
 
     private static Usable addUsable(Item item) {
-        System.out.println("***Enter Usable***");
+        ShengdeBaoPrinter.println("***Enter Usable***");
         Spell spell;
+        ShengdeBaoPrinter.addString("Usable: ");
         {
-            System.out.println("Enter item spell");
+            ShengdeBaoPrinter.println("Enter item spell");
             spell = addSpell();
         }
+        ShengdeBaoPrinter.println("Usable created!");
+        ShengdeBaoPrinter.undo();
         return new Usable(item, spell);
     }
 
     private static Collectible addCollectible(Item item) {
-        System.out.println("***Enter collectible***");
+        ShengdeBaoPrinter.println("***Enter collectible***");
         Spell spell;
+        ShengdeBaoPrinter.addString("Collectible: ");
         {
-            System.out.println("Enter item spell");
+            ShengdeBaoPrinter.println("Enter item spell");
             spell = addSpell();
         }
+        ShengdeBaoPrinter.println("Collectible created!");
+        ShengdeBaoPrinter.undo();
         return new Collectible(item, spell);
     }
 
     private static CollectionItem addCollectionItem() {
-        System.out.println("***Enter collection Item***");
+        ShengdeBaoPrinter.println("***Enter collection Item***");
         String name, collectionItemID;
         int price;
+        ShengdeBaoPrinter.addString("Collection Item: ");
+
         {
-            System.out.println("Enter collection item name");
+            ShengdeBaoPrinter.println("Enter collection item name");
             name = getInput();
         }
         {
-            System.out.println("Enter collection item id");
+            ShengdeBaoPrinter.println("Enter collection item id");
             collectionItemID = getInput();
         }
         {
-            System.out.println("Enter collection item price");
+            ShengdeBaoPrinter.println("Enter collection item price");
             price = Integer.parseInt(getInput());
         }
+        ShengdeBaoPrinter.println("Collection item created!");
+        ShengdeBaoPrinter.undo();
         return new CollectionItem(price, collectionItemID, name);
     }
 
     private static Card addCard(CollectionItem collectionItem) {
-        System.out.println("***Enter Card***");
+        ShengdeBaoPrinter.println("***Enter Card***");
         int manaCost;
+        ShengdeBaoPrinter.addString("Card: ");
         {
-            System.out.println("Enter mana cost");
+            ShengdeBaoPrinter.println("Enter mana cost");
             manaCost = Integer.parseInt(getInput());
         }
+        ShengdeBaoPrinter.println("Card created!");
+        ShengdeBaoPrinter.undo();
         return new Card(collectionItem, manaCost);
     }
 
@@ -298,18 +329,17 @@ class ManualFeatureAdder {
         if (!hasArg) {
             scanner = new Scanner(System.in);
             try {
-                System.out.println("Enter Log File Name:");
-                String string = scanner.nextLine();
-                writer = new BufferedWriter(new FileWriter("./gameData/ManualFeatureInputLogs/" + string + ".txt"));
-                System.out.println("./gameData/ManualFeatureInputLogs/" + string + ".txt " + " FILE CREATED!");
+                ShengdeBaoPrinter.println("Lets start!");
+                writer = new BufferedWriter(new FileWriter("./gameData/ManualFeatureInputLogs/" + "tempLog" + ".txt"));
+                ShengdeBaoPrinter.println("./gameData/ManualFeatureInputLogs/" + "tempLog" + ".txt " + " FILE CREATED!");
             } catch (IOException io) {
-                System.out.println("IO Exception : No such file name");
+                ShengdeBaoPrinter.println("IO Exception : No such file name");
             }
         } else {
             try {
                 scanner = new Scanner(new File(arg3));
             } catch (IOException io) {
-                System.out.println("No Such File exists");
+                ShengdeBaoPrinter.println("No Such File exists");
             }
         }
     }
@@ -319,23 +349,24 @@ class ManualFeatureAdder {
             try {
                 writer.close();
             } catch (IOException io) {
-                System.out.println("IO Exception while closing");
+                ShengdeBaoPrinter.println("IO Exception while closing");
             }
         }
     }
 
     private static String getMultipleChoice(String message, String... args) {
+        ShengdeBaoPrinter.print("");
         System.out.print(message + " ");
-        String reg = "";
+        StringBuilder stringBuilder = new StringBuilder();
         for (String arg: args) {
             System.out.print(arg + " ");
-            if(!reg.isEmpty())
-                reg += "|";
-            reg += arg;
+            if(!stringBuilder.toString().isEmpty())
+                stringBuilder.append("|");
+            stringBuilder.append(arg);
         }
         String response = getInput();
-        while (!response.matches(reg)) {
-            System.out.print("Again! " + reg);
+        while (!response.matches(stringBuilder.toString())) {
+            System.out.print("Again! " + stringBuilder + " ");
             response = getInput();
         }
         return response;
@@ -398,16 +429,28 @@ class ManualFeatureAdder {
                 arg3 = args[2];
             setUpWriterAndScanner();
         }
-        System.out.println("-----------Add Collection Item Feature Console Section-----------");
+        ShengdeBaoPrinter.println("-----------Add Collection Item Feature Console Section-----------");
         CollectionItem collectionItem = addCollectionItem();
         collectionItem = askCollectionItem(collectionItem);
         if (hasArg) {
-            System.out.println("************** I HAVA ARG!!! ********** " + arg3);
+            ShengdeBaoPrinter.println("************** I HAVA ARG!!! ********** " + arg3);
             saveCollectionItem(collectionItem);
         }
         // close the writer
         {
             closeWriter();
+        }
+        if (!hasArg) {
+            if (collectionItem == null) {
+                System.out.println("Collection Item not created correctly! Something went wrong");
+            } else {
+                File f1 = new File("./gameData/ManualFeatureInputLogs/tempLog.txt");
+                File f2 = new File("./gameData/ManualFeatureInputLogs/" + collectionItem.getName() + ".txt");
+                if (f2.exists()) {
+                    System.out.println("delet result is: " + f2.delete());
+                }
+                System.out.println("rename result is : " + f1.renameTo(f2));
+            }
         }
     }
 
@@ -426,19 +469,19 @@ class ManualFeatureAdder {
                 out = new FileWriter("./gameData/Minions/" + collectionItem.getName() + ".txt", false);
                 out.write(yaGson.toJson(collectionItem, Minion.class));
             } else if (collectionItem instanceof Usable) {
-                out = new FileWriter("./gameData/UsableItems/" + collectionItem.getName() + ".txt", false);
+                out = new FileWriter("./gameData/Usables/" + collectionItem.getName() + ".txt", false);
                 out.write(yaGson.toJson(collectionItem, Usable.class));
             } else if (collectionItem instanceof Collectible) {
                 out = new FileWriter("./gameData/Collectibles/" + collectionItem.getName() + ".txt", false);
                 out.write(yaGson.toJson(collectionItem, Collectible.class));
             } else {
-                System.out.println("INSTANCE OF NOTHING");
+                ShengdeBaoPrinter.println("INSTANCE OF NOTHING");
                 throw new IOException();
             }
             out.flush();
         } catch (IOException ignored) {
-            System.out.println("Can't Read file for some reason: ");
-            System.out.println("File can't be created / File can't be opened / A directory rather than file");
+            ShengdeBaoPrinter.println("Can't Read file for some reason: ");
+            ShengdeBaoPrinter.println("File can't be created / File can't be opened / A directory rather than file");
         }
     }
 
