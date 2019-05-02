@@ -4,7 +4,7 @@ public class Card extends CollectionItem {
     protected int manaCost;
 
     // Main constructor
-    protected Card(CollectionItem collectionItem, int manaCost) {
+    public Card(CollectionItem collectionItem, int manaCost) {
         super(collectionItem);
         this.manaCost = manaCost;
     }

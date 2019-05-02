@@ -6,7 +6,7 @@ public class Collectible extends Item {
     Spell spell;
 
     // Main constructor
-    protected Collectible(Item item, Spell spell) {
+    public Collectible(Item item, Spell spell) {
         super(item);
         this.spell = spell;
     }

@@ -6,7 +6,7 @@ public class Item extends CollectionItem {
     protected String description;
 
     // Main constructor
-    protected Item(CollectionItem collectionItem, String description) {
+    public Item(CollectionItem collectionItem, String description) {
         super(collectionItem);
         this.description = "this is an empty description!! viva shengdebao!! haha!!!";
     }

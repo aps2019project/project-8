@@ -11,7 +11,7 @@ public class HeroGenerator {
     public static void main(String[] args) {
         int n = 100;
         for (int i = 0; i < n; i++) {
-            saveHero(new Hero(i, String.valueOf(i), String.valueOf(i), i));
+         //   saveHero(new Hero(i, String.valueOf(i), String.valueOf(i), i));
         }
     }
     private static void saveHero(Hero hero) {

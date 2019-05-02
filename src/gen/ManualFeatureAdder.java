@@ -132,17 +132,20 @@ class ManualFeatureAdder {
                 .build();
     }
 
-    private static SpellCard addSpellCard() {
+    private static SpellCard addSpellCard(Card card) {
         System.out.println("***Enter Spell Card***");
         Spell spell;
         {
             spell = addSpell();
         }
         System.out.println("spell card created!");
-        return new SpellCard(spell);
+        return new SpellCard.SpellCardBuilder()
+                .setCard(card)
+                .setSpell(spell)
+                .build();
     }
 
-    private static Unit addUnit() {
+    private static Unit addUnit(Card card) {
         System.out.println("***Enter Unit***");
         int hitPoint, attackPoint;
         UnitType unitType;
@@ -216,7 +219,79 @@ class ManualFeatureAdder {
                 .setCanFly(canFly)
                 .setSpecialPowerType(specialPowerType)
                 .setSpell(specialPower)
+                .setCard(card)
                 .build();
+    }
+
+    private static Hero addHero(Unit unit) {
+        System.out.println("***Enter Hero***");
+        System.out.println("Hero created!");
+        return new Hero(unit);
+    }
+
+    private static Minion addMinion(Unit unit) {
+        System.out.println("***Enter Minion***");
+        System.out.println("Minion created!");
+        return new Minion(unit);
+    }
+
+    private static Item addItem(CollectionItem collectionItem) {
+        System.out.println("***Enter Item***");
+        String description;
+        {
+            System.out.println("Enter item descriprion");
+            description = getInput();
+        }
+        return new Item(collectionItem, description);
+    }
+
+    private static Usable addUsable(Item item) {
+        System.out.println("***Enter Usable***");
+        Spell spell;
+        {
+            System.out.println("Enter item spell");
+            spell = addSpell();
+        }
+        return new Usable(item, spell);
+    }
+
+    private static Collectible addCollectible(Item item) {
+        System.out.println("***Enter collectible***");
+        Spell spell;
+        {
+            System.out.println("Enter item spell");
+            spell = addSpell();
+        }
+        return new Collectible(item, spell);
+    }
+
+    private static CollectionItem addCollectionItem() {
+        System.out.println("***Enter collection Item***");
+        String name, collectionItemID;
+        int price;
+        {
+            System.out.println("Enter collection item name");
+            name = getInput();
+        }
+        {
+            System.out.println("Enter collection item id");
+            collectionItemID = getInput();
+        }
+        {
+            System.out.println("Enter collection item price");
+            price = Integer.parseInt(getInput());
+        }
+        return new CollectionItem(price, collectionItemID, name);
+    }
+
+    private static Card addCard(CollectionItem collectionItem) {
+        System.out.println("***Enter Card***");
+        int manaCost;
+        {
+            System.out.println("Enter mana cost");
+            manaCost = Integer.parseInt(getInput());
+        }
+        return new Card(collectionItem, manaCost);
     }
 
     private static void setUpWriterAndScanner() {
@@ -267,6 +342,53 @@ class ManualFeatureAdder {
 
     }
 
+    private static CollectionItem askUnit(Unit unit) {
+        String response = getMultipleChoice("What type of unit?", "Hero", "Minion");
+        switch (response) {
+            case "Hero":
+                return addHero(unit);
+            case "Minion":
+                return addMinion(unit);
+        }
+        return null;
+    }
+
+    private static CollectionItem askCard(Card card) {
+        String response = getMultipleChoice("What type of card?", "Unit", "SpellCard");
+        switch (response) {
+            case "SpellCard":
+                return addSpellCard(card);
+            case "Unit":
+                card = addUnit(card);
+                return askUnit((Unit) card);
+        }
+        return null;
+    }
+
+    private static CollectionItem askItem(Item item) {
+        String response = getMultipleChoice("What type of item?", "Usable", "Collectible");
+        switch (response) {
+            case "Usable":
+                return addUsable(item);
+            case "Collectible":
+                return addCollectible(item);
+        }
+        return null;
+    }
+
+    private static CollectionItem askCollectionItem(CollectionItem collectionItem) {
+        String response = getMultipleChoice("What do you want to enter?", "Card", "Item");
+        switch (response) {
+            case "Card":
+                collectionItem = addCard(collectionItem);
+                return askCard((Card) collectionItem);
+            case "Item":
+                collectionItem = addItem(collectionItem);
+                return askItem((Item) collectionItem);
+        }
+        return null;
+    }
+
     public static void main(String[] args) {
 
         // set up args and writer and scanner
@@ -276,23 +398,13 @@ class ManualFeatureAdder {
                 arg3 = args[2];
             setUpWriterAndScanner();
         }
-
         System.out.println("-----------Add Collection Item Feature Console Section-----------");
-        System.out.println("What do you want to enter? (SpellCard/UsableItem/Minion/Hero)");
-        String response = getMultipleChoice("Whaat do you want to enter?", "Card", "Item");
-        switch (response) {
-            case "Card":
-                Card card = addCard();
-                SpellCard spellCard = addSpellCard();
-
-                break;
-            case "Item":
-                Item item = addItem();
-                saveItem(item)
-                break;
+        CollectionItem collectionItem = addCollectionItem();
+        collectionItem = askCollectionItem(collectionItem);
+        if (hasArg) {
+            System.out.println("************** I HAVA ARG!!! ********** " + arg3);
+            saveCollectionItem(collectionItem);
         }
-
-
         // close the writer
         {
             closeWriter();
@@ -305,25 +417,22 @@ class ManualFeatureAdder {
             YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
             FileWriter out;
             if (collectionItem instanceof Hero) {
-                out = new FileWriter("./gameData/heros/" + collectionItem.getName() + ".txt", false);
+                out = new FileWriter("./gameData/Heros/" + collectionItem.getName() + ".txt", false);
                 out.write(yaGson.toJson(collectionItem, Hero.class));
-            }
-            if (collectionItem instanceof SpellCard) {
-                out = new FileWriter("./gameData/spellCards/" + collectionItem.getName() + ".txt", false);
+            } else if (collectionItem instanceof SpellCard) {
+                out = new FileWriter("./gameData/SpellCards/" + collectionItem.getName() + ".txt", false);
                 out.write(yaGson.toJson(collectionItem, SpellCard.class));
-            }
-            if (collectionItem instanceof Minion) {
-                out = new FileWriter("./gameData/minions/" + collectionItem.getName() + ".txt", false);
+            } else if (collectionItem instanceof Minion) {
+                out = new FileWriter("./gameData/Minions/" + collectionItem.getName() + ".txt", false);
                 out.write(yaGson.toJson(collectionItem, Minion.class));
-            }
-            if (collectionItem instanceof Usable) {
-                out = new FileWriter("./gameData/usableItems/" + collectionItem.getName() + ".txt", false);
+            } else if (collectionItem instanceof Usable) {
+                out = new FileWriter("./gameData/UsableItems/" + collectionItem.getName() + ".txt", false);
                 out.write(yaGson.toJson(collectionItem, Usable.class));
-            }
-            if (collectionItem instanceof Collectible) {
-                out = new FileWriter("./gameData/collectibles/" + collectionItem.getName() + ".txt", false);
+            } else if (collectionItem instanceof Collectible) {
+                out = new FileWriter("./gameData/Collectibles/" + collectionItem.getName() + ".txt", false);
                 out.write(yaGson.toJson(collectionItem, Collectible.class));
             } else {
+                System.out.println("INSTANCE OF NOTHING");
                 throw new IOException();
             }
             out.flush();
@@ -333,27 +442,4 @@ class ManualFeatureAdder {
         }
     }
 
-    private static void saveHero(Hero hero) {
-    }
-
-    private static void saveSpellCard(SpellCard spellCard) {
-    }
-
-    private static void saveMinion(Minion minion) {
-    }
-
-    private static void saveUsable(Usable usable) {
-    }
-
-    private static void saveCard(Card card) {
-        try {
-            FileWriter out = new FileWriter("./gameData/cards/" + card.getName() + ".txt", false);
-            YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
-            out.write(yaGson.toJson(card, Card.class));
-            out.flush();
-        } catch (IOException ignored) {
-            System.out.println("Can't Read file for some reason: ");
-            System.out.println("File can't be created / File can't be opened / A directory rather than file");
-        }
-    }
 }

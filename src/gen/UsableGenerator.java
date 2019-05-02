@@ -10,7 +10,7 @@ public class UsableGenerator {
     public static void main(String[] args) {
         int n = 100;
         for (int i = 0; i < n; i++) {
-            saveUsable(new Usable(i + 1000, String.valueOf(i + 1000), String.valueOf(i + 1000), null));
+         //   saveUsable(new Usable(i + 1000, String.valueOf(i + 1000), String.valueOf(i + 1000), null));
         }
     }
     private static void saveUsable(Usable usable) {

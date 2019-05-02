@@ -4,7 +4,7 @@ public class Usable extends Item {
     private Spell spell = null;
 
     // Main constructor
-    protected Usable(Item item, Spell spell) {
+    public Usable(Item item, Spell spell) {
         super(item);
         this.spell = spell;
     }

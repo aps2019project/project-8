@@ -11,7 +11,7 @@ public class CardGenerator {
     public static void main(String[] args) {
         int n = 100;
         for (int i = 0; i < n; i++) {
-            saveCard(new Card(i, String.valueOf(i), String.valueOf(i), i));
+          //  saveCard(new Card(i, String.valueOf(i), String.valueOf(i), i));
         }
     }
     private static void saveCard(Card card) {

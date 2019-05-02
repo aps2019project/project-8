@@ -1,12 +1,12 @@
 package model;
 
-public abstract class CollectionItem {
+public class CollectionItem {
     protected int price;
     protected String collectionItemID;
     protected String name;
 
     // Main constructor
-    protected CollectionItem(int price, String collectionItemID, String name) {
+    public CollectionItem(int price, String collectionItemID, String name) {
         this.price = price;
         this.collectionItemID = collectionItemID;
         this.name = name;

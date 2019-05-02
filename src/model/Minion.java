@@ -1,7 +1,7 @@
 package model;
 
 public class Minion extends Unit{
-    Minion(Unit unit) {
+    public Minion(Unit unit) {
         super(unit);
     }
 }
