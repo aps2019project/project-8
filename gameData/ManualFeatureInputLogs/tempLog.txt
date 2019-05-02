@@ -1,20 +1,12 @@
-totalDisarm
-1001
-1000
+hellFire
+1006
+600
 Card
-0
+3
 SpellCard
+8
 2
-1000
 0
 0
 0
-0
-0
-0
-0
-no
-yes
-no
-none
-none
+Spell: Spell: Buff: Enter powerAp

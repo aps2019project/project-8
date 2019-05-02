@@ -1,0 +1,20 @@
+areaDispel
+1002
+1500
+Card
+2
+SpellCard
+8
+0
+0
+0
+0
+0
+0
+0
+0
+no
+no
+no
+add dispel
+none
