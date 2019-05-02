@@ -5,7 +5,8 @@ import java.util.ArrayList;
 public class Buff {
     private int duration;
     private int holy;
-    private int power;
+    private int powerHp;
+    private int powerAp;
     private int poison;
     private int weaknessAP;
     private int weaknessHP;
@@ -16,10 +17,11 @@ public class Buff {
     private int githubtest;
 
     // Constructor for BuffBuilder
-    public Buff(int duration, int holy, int power, int poison, int weaknessAP, int weaknessHP, boolean stun, boolean disarm,int unholy) {
+    public Buff(int duration, int holy, int powerHp, int powerAp, int poison, int weaknessAP, int weaknessHP, boolean stun, boolean disarm,int unholy) {
         this.duration = duration;
         this.holy = holy;
-        this.power = power;
+        this.powerHp = powerHp;
+        this.powerAp = powerAp;
         this.poison = poison;
         this.weaknessAP = weaknessAP;
         this.weaknessHP = weaknessHP;
@@ -31,7 +33,8 @@ public class Buff {
     public static class BuffBuilder {
         private int duration = 0;
         private int holy = 0;
-        private int power = 0;
+        private int powerHp = 0;
+        private int powerAp = 0;
         private int poison = 0;
         private int weaknessAP = 0;
         private int weaknessHP = 0;
@@ -48,8 +51,12 @@ public class Buff {
             this.holy = holy;
             return this;
         }
-        public BuffBuilder setPower(int power) {
-            this.power = power;
+        public BuffBuilder setPowerHp(int powerHp) {
+            this.powerHp = powerHp;
+            return this;
+        }
+        public BuffBuilder setPowerAp(int powerAp) {
+            this.powerAp = powerAp;
             return this;
         }
         public BuffBuilder setPoison(int poison) {
@@ -77,7 +84,7 @@ public class Buff {
             return this;
         }
         public Buff build() {
-            return new Buff(duration, holy, power, poison, weaknessAP, weaknessHP, stun, disarm, unholy);
+            return new Buff(duration, holy, powerHp, powerAp, poison, weaknessAP, weaknessHP, stun, disarm, unholy);
         }
     }
 

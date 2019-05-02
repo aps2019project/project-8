@@ -42,7 +42,7 @@ class ManualFeatureAdder {
 
     private static Buff addBuff() throws Exception{
         ShengdeBaoPrinter.println("***Enter Buff***");
-        int duration, holy, power, poison, weaknessAP, weaknessHP, unholy;
+        int duration, holy, powerHp, powerAp, poison, weaknessAP, weaknessHP, unholy;
         boolean stun, disarm;
         ShengdeBaoPrinter.addString("Buff: ");
 
@@ -55,8 +55,12 @@ class ManualFeatureAdder {
             holy = Integer.parseInt(getInput());
         }
         {
-            ShengdeBaoPrinter.println("Enter power");
-            power = Integer.parseInt(getInput());
+            ShengdeBaoPrinter.println("Enter powerHp");
+            powerHp = Integer.parseInt(getInput());
+        }
+        {
+            ShengdeBaoPrinter.println("Enter powerAp");
+            powerAp = Integer.parseInt(getInput());
         }
         {
             ShengdeBaoPrinter.println("Enter poison");
@@ -97,7 +101,8 @@ class ManualFeatureAdder {
         return new Buff.BuffBuilder()
                 .setDuration(duration)
                 .setHoly(holy)
-                .setPower(power)
+                .setPowerHp(powerHp)
+                .setPowerAp(powerAp)
                 .setPoison(poison)
                 .setWeaknessAP(weaknessAP)
                 .setWeaknessHP(weaknessHP)
