@@ -3,11 +3,9 @@ package gen;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import model.*;
-import model.Collection;
 import view.ShengdeBaoPrinter;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.nio.file.*;
 import java.util.*;
 
@@ -169,8 +167,8 @@ class ManualFeatureAdder {
         ShengdeBaoPrinter.println("***Enter Unit***");
         int hitPoint, attackPoint;
         UnitType unitType;
-        SpecialPowerType specialPowerType = null;
-        Spell specialPower = null;
+        ArrayList<SpecialPowerType> specialPowerType = new ArrayList<>();
+        ArrayList<Spell> specialPower = new ArrayList<>();
         boolean canFly;
         int attackRange;
         ShengdeBaoPrinter.addString("Unit: ");
@@ -198,24 +196,28 @@ class ManualFeatureAdder {
             String response = getMultipleChoice("has special power", "yes", "no");
             if (response.equals("yes")) {
                 {
-                    ShengdeBaoPrinter.println("Enter Special power type");
-                    ArrayList<SpecialPowerType> specialPowerTypes = new ArrayList<>(EnumSet.allOf(SpecialPowerType.class));
-                    int i = 1;
-                    for (SpecialPowerType spt : specialPowerTypes) {
-                        ShengdeBaoPrinter.println(i + ". " + spt);
-                        i++;
+                    ShengdeBaoPrinter.println("Enter number of special powers");
+                    int numberOfSpecialPowers = Integer.parseInt(getInput());
+                    for (int i = 0; i < numberOfSpecialPowers; i++) {
+                        ShengdeBaoPrinter.println("Enter Special power type");
+                        ArrayList<SpecialPowerType> specialPowerTypes = new ArrayList<>(EnumSet.allOf(SpecialPowerType.class));
+                        int j = 1;
+                        for (SpecialPowerType spt : specialPowerTypes) {
+                            ShengdeBaoPrinter.println(j + ". " + spt);
+                            j++;
+                        }
+                        int index = Integer.parseInt(getInput()) - 1;
+                        specialPowerType.add(specialPowerTypes.get(index));
                     }
-                    int index = Integer.parseInt(getInput()) - 1;
-                    specialPowerType = specialPowerTypes.get(index);
-                }
-                {
-                    ShengdeBaoPrinter.println("Enter Unit Special power");
-                    specialPower = addSpell();
+                    {
+                        ShengdeBaoPrinter.println("Enter Unit Special power");
+                        specialPower.add(addSpell());
+                    }
                 }
             }
         }
         {
-            String feedBack = getMultipleChoice("Enter can fly (yes/no)");
+            String feedBack = getMultipleChoice("Enter can fly", "yes", "no");
             canFly = feedBack.equals("yes");
         }
         {
