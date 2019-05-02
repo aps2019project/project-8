@@ -10,6 +10,7 @@ public class Spell {
     protected int heal;
     protected boolean dispel;
     private boolean adjacent;
+    private boolean canDispel = false;
 
     private int addMana;
     private int addRange;
@@ -17,6 +18,12 @@ public class Spell {
     protected Spell() {
 
     }
+
+    public Spell setCanDispel(boolean canDispel) {
+        this.canDispel = canDispel;
+        return this;
+    }
+
     public Spell(SpellTarget spellTarget,Buff buff,boolean global,int attack,int heal,boolean dispel,
                  boolean adjacent,int addMana,int addRange) {
         this.spellTarget = spellTarget;

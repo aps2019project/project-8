@@ -136,18 +136,23 @@ class ManualFeatureAdder {
             buff = addBuff();
         }
 
+        Spell spell = new Spell.SpellBuilder()
+                .setSpellTarget(spellTarget)
+                .setBuff(buff)
+                .build();
+
         ShengdeBaoPrinter.println("Add extra features to spell \"none\" to end!");
         String command = getInput();
         while (!command.matches("none")) {
+            if (command.equals("add Dispel")) {
+                spell.setCanDispel(true);
+            }
             command = getInput();
         }
 
         ShengdeBaoPrinter.println("spell created!");
         ShengdeBaoPrinter.undo();
-        return new Spell.SpellBuilder()
-                .setSpellTarget(spellTarget)
-                .setBuff(buff)
-                .build();
+        return spell;
     }
 
     private static SpellCard addSpellCard(Card card) throws Exception {
