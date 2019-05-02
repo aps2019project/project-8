@@ -215,7 +215,7 @@ class ManualFeatureAdder {
             }
         }
         {
-            String feedBack = getMultipleChoice("Enter can fly (yes/no)");
+            String feedBack = getMultipleChoice("Enter can fly", "yes", "no");
             canFly = feedBack.equals("yes");
         }
         {
