@@ -1,8 +1,6 @@
 package model;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.jar.Attributes;
 
 public class Unit extends Card{
     private int hitPoint;
@@ -17,8 +15,8 @@ public class Unit extends Card{
     private int y = 0;
 
     private UnitType unitType;
-    private Spell specialPower;
-    private SpecialPowerType specialPowerType;
+    private ArrayList<Spell> specialPower;
+    private ArrayList<SpecialPowerType> specialPowerType;
     private String cardID = "";
     private boolean canFly;
     private int attackTimes = 0;
@@ -28,8 +26,8 @@ public class Unit extends Card{
 
     // Main constructor
     protected Unit(Card card,
-                   int hitPoint, int attackPoint, UnitType unitType, SpecialPowerType specialPowerType,
-                   Spell specialPower, boolean canFly, int attackRange) { // Main constructor
+                   int hitPoint, int attackPoint, UnitType unitType, ArrayList<SpecialPowerType> specialPowerType,
+                   ArrayList<Spell> specialPower, boolean canFly, int attackRange) { // Main constructor
         super(card);
         this.hitPoint = hitPoint;
         this.attackPoint = attackPoint;
@@ -64,8 +62,8 @@ public class Unit extends Card{
         private int attackPoint = 0;
 
         private UnitType unitType;
-        private Spell specialPower;
-        private SpecialPowerType specialPowerType;
+        private ArrayList<Spell> specialPower;
+        private ArrayList<SpecialPowerType> specialPowerType;
         private boolean canFly = false;
         private int attackRange = 0;
         private Card card;
@@ -85,12 +83,12 @@ public class Unit extends Card{
             return this;
         }
 
-        public UnitBuilder setSpecialPowerType(SpecialPowerType specialPowerType) {
+        public UnitBuilder setSpecialPowerType(ArrayList<SpecialPowerType> specialPowerType) {
             this.specialPowerType = specialPowerType;
             return this;
         }
 
-        public UnitBuilder setSpell(Spell specialPower) {
+        public UnitBuilder setSpell(ArrayList<Spell> specialPower) {
             this.specialPower = specialPower;
             return this;
         }
@@ -150,14 +148,7 @@ public class Unit extends Card{
         // ?
     }
 
-    public Spell castSpecialPower() {
-        // ?
-        return new Spell();
-    }
-
-    // is this correct ?
-    // ?
-    public SpecialPowerType getSpecialPower() {
+    public ArrayList<SpecialPowerType> getSpecialPowerType() {
         return specialPowerType;
     }
 
