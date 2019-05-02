@@ -160,8 +160,8 @@ class ManualFeatureAdder {
         ShengdeBaoPrinter.println("***Enter Unit***");
         int hitPoint, attackPoint;
         UnitType unitType;
-        SpecialPowerType specialPowerType;
-        Spell specialPower;
+        SpecialPowerType specialPowerType = null;
+        Spell specialPower = null;
         boolean canFly;
         Faction faction;
         int attackRange;
