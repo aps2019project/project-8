@@ -274,4 +274,9 @@ public class CommandLineView implements View {
     public void showSecondPlayerHasNoMainDeckError() {
         System.out.println("The selected player has no main deck.");
     }
+
+    @Override
+    public void showInvalidCoordinatesError() {
+        System.out.println("Coordinates out of range");
+    }
 }

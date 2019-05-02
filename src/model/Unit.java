@@ -23,14 +23,13 @@ public class Unit extends Card{
     private boolean canFly;
     private int attackTimes = 0;
     private int defenceTimes = 0;
-    private Faction faction;
     private ArrayList<Card> hasAttacked = new ArrayList<>();
     private int attackRange;
 
     // Main constructor
     protected Unit(Card card,
                    int hitPoint, int attackPoint, UnitType unitType, SpecialPowerType specialPowerType,
-                   Spell specialPower, boolean canFly, Faction faction, int attackRange) { // Main constructor
+                   Spell specialPower, boolean canFly, int attackRange) { // Main constructor
         super(card);
         this.hitPoint = hitPoint;
         this.attackPoint = attackPoint;
@@ -38,7 +37,6 @@ public class Unit extends Card{
         this.specialPowerType = specialPowerType;
         this.specialPower = specialPower;
         this.canFly = canFly;
-        this.faction = faction;
         this.attackRange = attackRange;
     }
 
@@ -54,7 +52,6 @@ public class Unit extends Card{
         this.specialPowerType = unit.specialPowerType;
         this.specialPower = unit.specialPower;
         this.canFly = unit.canFly;
-        this.faction = unit.faction;
         this.attackRange = unit.attackRange;
     }
 
@@ -70,7 +67,6 @@ public class Unit extends Card{
         private Spell specialPower;
         private SpecialPowerType specialPowerType;
         private boolean canFly = false;
-        private Faction faction;
         private int attackRange = 0;
         private Card card;
 
@@ -104,11 +100,6 @@ public class Unit extends Card{
             return this;
         }
 
-        public UnitBuilder setFaction(Faction faction) {
-            this.faction = faction;
-            return this;
-        }
-
         public UnitBuilder setAttackRange(int attackRange) {
             this.attackRange = attackRange;
             return this;
@@ -120,7 +111,7 @@ public class Unit extends Card{
         }
 
         public Unit build() {
-            return new Unit(card, hitPoint, attackPoint, unitType, specialPowerType, specialPower, canFly, faction, attackRange);
+            return new Unit(card, hitPoint, attackPoint, unitType, specialPowerType, specialPower, canFly, attackRange);
         }
     }
 
@@ -140,12 +131,16 @@ public class Unit extends Card{
         return attackPoint;
     }
 
-    public void recieveAttack(int attackPoint) {
+    public boolean canFly() { return canFly; }
+
+    public void receiveHit(int attackPoint) {
         hitPoint -= attackPoint;
         if (hitPoint <= 0) { // ?
 
         }
     }
+
+    public void decreaseHealth(int amount) {}
 
     public boolean isAlive() {
         return hitPoint > 0;

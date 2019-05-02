@@ -105,4 +105,6 @@ View {
     void showNoSuchGameModeError();
 
     void showSecondPlayerHasNoMainDeckError();
+
+    void showInvalidCoordinatesError();
 }

@@ -8,6 +8,7 @@ import view.ShengdeBaoPrinter;
 
 import java.io.*;
 import java.lang.reflect.Array;
+import java.nio.file.*;
 import java.util.*;
 
 // Incomplete!
@@ -24,8 +25,8 @@ class ManualFeatureAdder {
     private static boolean hasArg = false;
     private static String arg3;
     private static String preffix = "";
-    
-    private static String getInput() throws Exception{
+
+    private static String getInput() throws Exception {
         String string = scanner.nextLine();
         if (string.equals("exit"))
             throw new Exception();
@@ -40,10 +41,10 @@ class ManualFeatureAdder {
         return string;
     }
 
-    private static Buff addBuff() throws Exception{
+    private static Buff addBuff() throws Exception {
         ShengdeBaoPrinter.println("***Enter Buff***");
-        int duration, holy, power, poison, weaknessAP, weaknessHP, unholy;
-        boolean stun, disarm;
+        int duration, holy, powerHp, powerAp, poison, weaknessAP, weaknessHP, unholy;
+        boolean stun, disarm, dispellable;
         ShengdeBaoPrinter.addString("Buff: ");
 
         {
@@ -55,8 +56,12 @@ class ManualFeatureAdder {
             holy = Integer.parseInt(getInput());
         }
         {
-            ShengdeBaoPrinter.println("Enter power");
-            power = Integer.parseInt(getInput());
+            ShengdeBaoPrinter.println("Enter powerHp");
+            powerHp = Integer.parseInt(getInput());
+        }
+        {
+            ShengdeBaoPrinter.println("Enter powerAp");
+            powerAp = Integer.parseInt(getInput());
         }
         {
             ShengdeBaoPrinter.println("Enter poison");
@@ -75,14 +80,16 @@ class ManualFeatureAdder {
             unholy = Integer.parseInt(getInput());
         }
         {
-            ShengdeBaoPrinter.println("Enter can stun (yes/no)");
-            String feedBack = getInput();
+            String feedBack = getMultipleChoice("Enter can stun", "yes", "no");
             stun = feedBack.equals("yes");
         }
         {
-            ShengdeBaoPrinter.println("Enter can disarm (yes/no)");
-            String feedBack = getInput();
+            String feedBack = getMultipleChoice("Enter can stun", "yes", "no");
             disarm = feedBack.equals("yes");
+        }
+        {
+            String feedBack = getMultipleChoice("Enter dipellable" , "yes", "no");
+            dispellable = feedBack.equals("yes");
         }
 
         ShengdeBaoPrinter.println("Add extra features to buff \"none\" to end!");
@@ -97,17 +104,19 @@ class ManualFeatureAdder {
         return new Buff.BuffBuilder()
                 .setDuration(duration)
                 .setHoly(holy)
-                .setPower(power)
+                .setPowerHp(powerHp)
+                .setPowerAp(powerAp)
                 .setPoison(poison)
                 .setWeaknessAP(weaknessAP)
                 .setWeaknessHP(weaknessHP)
                 .setStun(stun)
                 .setDisarm(disarm)
                 .setUnholy(unholy)
+                .setDispellable(dispellable)
                 .build();
     }
 
-    private static Spell addSpell() throws Exception{
+    private static Spell addSpell() throws Exception {
         ShengdeBaoPrinter.println("***Enter Spell***");
         Buff buff;
         SpellTarget spellTarget;
@@ -140,7 +149,7 @@ class ManualFeatureAdder {
                 .setBuff(buff)
                 .build();
     }
-    
+
     private static SpellCard addSpellCard(Card card) throws Exception {
         ShengdeBaoPrinter.println("***Enter Spell Card***");
         Spell spell;
@@ -160,10 +169,9 @@ class ManualFeatureAdder {
         ShengdeBaoPrinter.println("***Enter Unit***");
         int hitPoint, attackPoint;
         UnitType unitType;
-        SpecialPowerType specialPowerType;
-        Spell specialPower;
+        SpecialPowerType specialPowerType = null;
+        Spell specialPower = null;
         boolean canFly;
-        Faction faction;
         int attackRange;
         ShengdeBaoPrinter.addString("Unit: ");
 
@@ -187,35 +195,28 @@ class ManualFeatureAdder {
             unitType = unitTypes.get(index);
         }
         {
-            ShengdeBaoPrinter.println("Enter Special power type");
-            ArrayList<SpecialPowerType> specialPowerTypes = new ArrayList<>(EnumSet.allOf(SpecialPowerType.class));
-            int i = 1;
-            for (SpecialPowerType spt : specialPowerTypes) {
-                ShengdeBaoPrinter.println(i + ". " + spt);
-                i++;
+            String response = getMultipleChoice("has special power", "yes", "no");
+            if (response.equals("yes")) {
+                {
+                    ShengdeBaoPrinter.println("Enter Special power type");
+                    ArrayList<SpecialPowerType> specialPowerTypes = new ArrayList<>(EnumSet.allOf(SpecialPowerType.class));
+                    int i = 1;
+                    for (SpecialPowerType spt : specialPowerTypes) {
+                        ShengdeBaoPrinter.println(i + ". " + spt);
+                        i++;
+                    }
+                    int index = Integer.parseInt(getInput()) - 1;
+                    specialPowerType = specialPowerTypes.get(index);
+                }
+                {
+                    ShengdeBaoPrinter.println("Enter Unit Special power");
+                    specialPower = addSpell();
+                }
             }
-            int index = Integer.parseInt(getInput()) - 1;
-            specialPowerType = specialPowerTypes.get(index);
         }
         {
-            ShengdeBaoPrinter.println("Enter Unit Special power");
-            specialPower = addSpell();
-        }
-        {
-            ShengdeBaoPrinter.println("Enter can fly (yes/no)");
-            String feedBack = getInput();
+            String feedBack = getMultipleChoice("Enter can fly (yes/no)");
             canFly = feedBack.equals("yes");
-        }
-        {
-            ShengdeBaoPrinter.println("Enter Faction");
-            ArrayList<Faction> factions = new ArrayList<>(EnumSet.allOf(Faction.class));
-            int i = 1;
-            for (Faction f : factions) {
-                ShengdeBaoPrinter.println(i + ". " + f);
-                i++;
-            }
-            int index = Integer.parseInt(getInput()) - 1;
-            faction = factions.get(index);
         }
         {
             ShengdeBaoPrinter.println("Enter attack range");
@@ -229,7 +230,6 @@ class ManualFeatureAdder {
                 .setHitPoint(hitPoint)
                 .setAttackRange(attackRange)
                 .setUnitType(unitType)
-                .setFaction(faction)
                 .setCanFly(canFly)
                 .setSpecialPowerType(specialPowerType)
                 .setSpell(specialPower)
@@ -360,9 +360,9 @@ class ManualFeatureAdder {
         ShengdeBaoPrinter.print("");
         System.out.print(message + " ");
         StringBuilder stringBuilder = new StringBuilder();
-        for (String arg: args) {
+        for (String arg : args) {
             System.out.print(arg + " ");
-            if(!stringBuilder.toString().isEmpty())
+            if (!stringBuilder.toString().isEmpty())
                 stringBuilder.append("|");
             stringBuilder.append(arg);
         }
@@ -443,18 +443,17 @@ class ManualFeatureAdder {
                 if (collectionItem == null) {
                     System.out.println("Collection Item not created correctly! Something went wrong");
                 } else {
-                    File f1 = new File("./gameData/ManualFeatureInputLogs/tempLog.txt");
-                    File f2 = new File("./gameData/ManualFeatureInputLogs/" + collectionItem.getName() + ".txt");
-                    if (f2.exists()) {
-                        System.out.println("delet result is: " + f2.delete());
-                    }
-                    System.out.println("rename result is : " + f1.renameTo(f2));
+                    closeWriter();
+                    Path original = Paths.get("./gameData/ManualFeatureInputLogs/tempLog.txt");
+                    Path copied = Paths.get("./gameData/ManualFeatureInputLogs/" + collectionItem.getName() + ".txt");
+                    CopyOption[] options = new CopyOption[]{
+                            StandardCopyOption.REPLACE_EXISTING,
+                            StandardCopyOption.COPY_ATTRIBUTES
+                    };
+                    Files.copy(original, copied, options);
                 }
             }
         } catch (Exception allException) {
-            System.out.println("HAD EXCEPTION");
-        } finally {
-            // close the writer
             {
                 closeWriter();
             }
