@@ -84,7 +84,7 @@ class ManualFeatureAdder {
             stun = feedBack.equals("yes");
         }
         {
-            String feedBack = getMultipleChoice("Enter can stun", "yes", "no");
+            String feedBack = getMultipleChoice("Enter can dsarm", "yes", "no");
             disarm = feedBack.equals("yes");
         }
         {
