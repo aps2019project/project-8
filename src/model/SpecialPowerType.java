@@ -7,5 +7,6 @@ public enum SpecialPowerType {
     ON_DEFEND,
     ON_DEATH,
     ON_HIT,
-    COMBO
+    COMBO,
+    ON_USE
 }
