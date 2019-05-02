@@ -187,19 +187,24 @@ class ManualFeatureAdder {
             unitType = unitTypes.get(index);
         }
         {
-            ShengdeBaoPrinter.println("Enter Special power type");
-            ArrayList<SpecialPowerType> specialPowerTypes = new ArrayList<>(EnumSet.allOf(SpecialPowerType.class));
-            int i = 1;
-            for (SpecialPowerType spt : specialPowerTypes) {
-                ShengdeBaoPrinter.println(i + ". " + spt);
-                i++;
+            String response = getMultipleChoice("has special power", "yes", "no");
+            if (response.equals("yes")) {
+                {
+                    ShengdeBaoPrinter.println("Enter Special power type");
+                    ArrayList<SpecialPowerType> specialPowerTypes = new ArrayList<>(EnumSet.allOf(SpecialPowerType.class));
+                    int i = 1;
+                    for (SpecialPowerType spt : specialPowerTypes) {
+                        ShengdeBaoPrinter.println(i + ". " + spt);
+                        i++;
+                    }
+                    int index = Integer.parseInt(getInput()) - 1;
+                    specialPowerType = specialPowerTypes.get(index);
+                }
+                {
+                    ShengdeBaoPrinter.println("Enter Unit Special power");
+                    specialPower = addSpell();
+                }
             }
-            int index = Integer.parseInt(getInput()) - 1;
-            specialPowerType = specialPowerTypes.get(index);
-        }
-        {
-            ShengdeBaoPrinter.println("Enter Unit Special power");
-            specialPower = addSpell();
         }
         {
             ShengdeBaoPrinter.println("Enter can fly (yes/no)");
