@@ -357,16 +357,16 @@ class ManualFeatureAdder {
     private static String getMultipleChoice(String message, String... args) {
         ShengdeBaoPrinter.print("");
         System.out.print(message + " ");
-        String reg = "";
+        StringBuilder stringBuilder = new StringBuilder();
         for (String arg: args) {
             System.out.print(arg + " ");
-            if(!reg.isEmpty())
-                reg += "|";
-            reg += arg;
+            if(!stringBuilder.toString().isEmpty())
+                stringBuilder.append("|");
+            stringBuilder.append(arg);
         }
         String response = getInput();
-        while (!response.matches(reg)) {
-            System.out.print("Again! " + reg + " ");
+        while (!response.matches(stringBuilder.toString())) {
+            System.out.print("Again! " + stringBuilder + " ");
             response = getInput();
         }
         return response;
@@ -441,13 +441,16 @@ class ManualFeatureAdder {
             closeWriter();
         }
         if (!hasArg) {
-            File f1 = new File("./gameData/ManualFeatureInputLogs/tempLog.txt");
-            File f2 = new File("./gameData/ManualFeatureInputLogs/" + collectionItem.getName() + ".txt");
-            if (f2.exists()) {
-                f2.delete();
+            if (collectionItem == null) {
+                System.out.println("Collection Item not created correctly! Something went wrong");
+            } else {
+                File f1 = new File("./gameData/ManualFeatureInputLogs/tempLog.txt");
+                File f2 = new File("./gameData/ManualFeatureInputLogs/" + collectionItem.getName() + ".txt");
+                if (f2.exists()) {
+                    System.out.println("delet result is: " + f2.delete());
+                }
+                System.out.println("rename result is : " + f1.renameTo(f2));
             }
-            boolean b = f1.renameTo(f2);
-            System.out.println("Result is : " + b);
         }
     }
 
