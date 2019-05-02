@@ -80,13 +80,11 @@ class ManualFeatureAdder {
             unholy = Integer.parseInt(getInput());
         }
         {
-            ShengdeBaoPrinter.println("Enter can stun (yes/no)");
-            String feedBack = getInput();
+            String feedBack = getMultipleChoice("Enter can stun", "yes", "no");
             stun = feedBack.equals("yes");
         }
         {
-            ShengdeBaoPrinter.println("Enter can disarm (yes/no)");
-            String feedBack = getInput();
+            String feedBack = getMultipleChoice("Enter can stun", "yes", "no");
             disarm = feedBack.equals("yes");
         }
         {
@@ -218,8 +216,7 @@ class ManualFeatureAdder {
             }
         }
         {
-            ShengdeBaoPrinter.println("Enter can fly (yes/no)");
-            String feedBack = getInput();
+            String feedBack = getMultipleChoice("Enter can fly (yes/no)");
             canFly = feedBack.equals("yes");
         }
         {
