@@ -1,20 +1,12 @@
-godStrength
-1005
-450
+hellFire
+1006
+600
 Card
-2
+3
 SpellCard
-5
-1
-0
-0
-4
+8
+2
 0
 0
 0
-0
-no
-no
-no
-none
-none
+Spell: Spell: Buff: Enter powerAp
