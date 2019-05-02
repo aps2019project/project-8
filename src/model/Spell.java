@@ -11,7 +11,6 @@ public class Spell {
     protected boolean dispel;
     private boolean adjacent;
 
-    private Faction comboAplifier;
     private int addMana;
     private int addRange;
 
@@ -19,7 +18,7 @@ public class Spell {
 
     }
     public Spell(SpellTarget spellTarget,Buff buff,boolean global,int attack,int heal,boolean dispel,
-                 boolean adjacent,Faction comboAplifier,int addMana,int addRange) {
+                 boolean adjacent,int addMana,int addRange) {
         this.spellTarget = spellTarget;
         this.buff = buff;
         this.global = global;
@@ -27,7 +26,6 @@ public class Spell {
         this.heal = heal;
         this.dispel = dispel;
         this.adjacent = adjacent;
-        this.comboAplifier = comboAplifier;
         this.addMana = addMana;
         this.addRange = addRange;
     }
@@ -41,7 +39,6 @@ public class Spell {
         private boolean dispel = false;
         private boolean adjacent = false;
 
-        private Faction comboAplifier;
         private int addMana = 0;
         private int addRange = 0;
 
@@ -79,12 +76,6 @@ public class Spell {
             this.adjacent = adjacent;
             return this;
         }
-
-        public SpellBuilder setComboAmplifier(Faction comboAmplifier) {
-            this.comboAplifier = comboAmplifier;
-            return this;
-        }
-
         public SpellBuilder setAddMana(int addMana) {
             this.addMana = addMana;
             return this;
@@ -96,7 +87,7 @@ public class Spell {
         }
 
         public Spell build() {
-            return new Spell(spellTarget, buff, global, attack, heal, dispel, adjacent, comboAplifier, addMana, addRange);
+            return new Spell(spellTarget, buff, global, attack, heal, dispel, adjacent, addMana, addRange);
         }
     }
 
