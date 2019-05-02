@@ -25,10 +25,12 @@ class ManualFeatureAdder {
     private static String arg3;
     private static String preffix = "";
     
-    private static String getInput() {
+    private static String getInput() throws Exception{
         String string = scanner.nextLine();
-        if (!hasArg) {
+        if (string.equals("exit"))
+            throw new Exception();
 
+        if (!hasArg) {
             try {
                 writer.write(string + "\n");
             } catch (IOException io) {
@@ -38,7 +40,7 @@ class ManualFeatureAdder {
         return string;
     }
 
-    private static Buff addBuff() {
+    private static Buff addBuff() throws Exception{
         ShengdeBaoPrinter.println("***Enter Buff***");
         int duration, holy, power, poison, weaknessAP, weaknessHP, unholy;
         boolean stun, disarm;
@@ -105,7 +107,7 @@ class ManualFeatureAdder {
                 .build();
     }
 
-    private static Spell addSpell() {
+    private static Spell addSpell() throws Exception{
         ShengdeBaoPrinter.println("***Enter Spell***");
         Buff buff;
         SpellTarget spellTarget;
@@ -139,7 +141,7 @@ class ManualFeatureAdder {
                 .build();
     }
     
-    private static SpellCard addSpellCard(Card card) {
+    private static SpellCard addSpellCard(Card card) throws Exception {
         ShengdeBaoPrinter.println("***Enter Spell Card***");
         Spell spell;
         ShengdeBaoPrinter.addString("Spell: ");
@@ -154,7 +156,7 @@ class ManualFeatureAdder {
                 .build();
     }
 
-    private static Unit addUnit(Card card) {
+    private static Unit addUnit(Card card) throws Exception {
         ShengdeBaoPrinter.println("***Enter Unit***");
         int hitPoint, attackPoint;
         UnitType unitType;
@@ -235,7 +237,7 @@ class ManualFeatureAdder {
                 .build();
     }
 
-    private static Hero addHero(Unit unit) {
+    private static Hero addHero(Unit unit) throws Exception {
         ShengdeBaoPrinter.println("***Enter Hero***");
         ShengdeBaoPrinter.addString("Hero: ");
         ShengdeBaoPrinter.println("Hero created!");
@@ -243,7 +245,7 @@ class ManualFeatureAdder {
         return new Hero(unit);
     }
 
-    private static Minion addMinion(Unit unit) {
+    private static Minion addMinion(Unit unit) throws Exception {
         ShengdeBaoPrinter.println("***Enter Minion***");
         ShengdeBaoPrinter.addString("Minion: ");
         ShengdeBaoPrinter.println("Minion created!");
@@ -251,7 +253,7 @@ class ManualFeatureAdder {
         return new Minion(unit);
     }
 
-    private static Item addItem(CollectionItem collectionItem) {
+    private static Item addItem(CollectionItem collectionItem) throws Exception {
         ShengdeBaoPrinter.println("***Enter Item***");
         String description;
         ShengdeBaoPrinter.addString("Item: ");
@@ -263,7 +265,7 @@ class ManualFeatureAdder {
         return new Item(collectionItem, description);
     }
 
-    private static Usable addUsable(Item item) {
+    private static Usable addUsable(Item item) throws Exception {
         ShengdeBaoPrinter.println("***Enter Usable***");
         Spell spell;
         ShengdeBaoPrinter.addString("Usable: ");
@@ -276,7 +278,7 @@ class ManualFeatureAdder {
         return new Usable(item, spell);
     }
 
-    private static Collectible addCollectible(Item item) {
+    private static Collectible addCollectible(Item item) throws Exception {
         ShengdeBaoPrinter.println("***Enter collectible***");
         Spell spell;
         ShengdeBaoPrinter.addString("Collectible: ");
@@ -289,7 +291,7 @@ class ManualFeatureAdder {
         return new Collectible(item, spell);
     }
 
-    private static CollectionItem addCollectionItem() {
+    private static CollectionItem addCollectionItem() throws Exception {
         ShengdeBaoPrinter.println("***Enter collection Item***");
         String name, collectionItemID;
         int price;
@@ -312,7 +314,7 @@ class ManualFeatureAdder {
         return new CollectionItem(price, collectionItemID, name);
     }
 
-    private static Card addCard(CollectionItem collectionItem) {
+    private static Card addCard(CollectionItem collectionItem) throws Exception {
         ShengdeBaoPrinter.println("***Enter Card***");
         int manaCost;
         ShengdeBaoPrinter.addString("Card: ");
@@ -354,7 +356,7 @@ class ManualFeatureAdder {
         }
     }
 
-    private static String getMultipleChoice(String message, String... args){
+    private static String getMultipleChoice(String message, String... args) throws Exception {
         ShengdeBaoPrinter.print("");
         System.out.print(message + " ");
         StringBuilder stringBuilder = new StringBuilder();
@@ -373,7 +375,7 @@ class ManualFeatureAdder {
 
     }
 
-    private static CollectionItem askUnit(Unit unit) {
+    private static CollectionItem askUnit(Unit unit) throws Exception {
         String response = getMultipleChoice("What type of unit?", "Hero", "Minion");
         switch (response) {
             case "Hero":
@@ -384,7 +386,7 @@ class ManualFeatureAdder {
         return null;
     }
 
-    private static CollectionItem askCard(Card card) {
+    private static CollectionItem askCard(Card card) throws Exception {
         String response = getMultipleChoice("What type of card?", "Unit", "SpellCard");
         switch (response) {
             case "SpellCard":
@@ -396,7 +398,7 @@ class ManualFeatureAdder {
         return null;
     }
 
-    private static CollectionItem askItem(Item item) {
+    private static CollectionItem askItem(Item item) throws Exception {
         String response = getMultipleChoice("What type of item?", "Usable", "Collectible");
         switch (response) {
             case "Usable":
@@ -407,7 +409,7 @@ class ManualFeatureAdder {
         return null;
     }
 
-    private static CollectionItem askCollectionItem(CollectionItem collectionItem) {
+    private static CollectionItem askCollectionItem(CollectionItem collectionItem) throws Exception {
         String response = getMultipleChoice("What do you want to enter?", "Card", "Item");
         switch (response) {
             case "Card":
