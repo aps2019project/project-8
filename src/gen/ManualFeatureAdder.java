@@ -354,7 +354,7 @@ class ManualFeatureAdder {
         }
     }
 
-    private static String getMultipleChoice(String message, String... args) {
+    private static String getMultipleChoice(String message, String... args){
         ShengdeBaoPrinter.print("");
         System.out.print(message + " ");
         StringBuilder stringBuilder = new StringBuilder();
@@ -429,27 +429,32 @@ class ManualFeatureAdder {
                 arg3 = args[2];
             setUpWriterAndScanner();
         }
-        ShengdeBaoPrinter.println("-----------Add Collection Item Feature Console Section-----------");
-        CollectionItem collectionItem = addCollectionItem();
-        collectionItem = askCollectionItem(collectionItem);
-        if (hasArg) {
-            ShengdeBaoPrinter.println("************** I HAVA ARG!!! ********** " + arg3);
-            saveCollectionItem(collectionItem);
-        }
-        // close the writer
-        {
-            closeWriter();
-        }
-        if (!hasArg) {
-            if (collectionItem == null) {
-                System.out.println("Collection Item not created correctly! Something went wrong");
-            } else {
-                File f1 = new File("./gameData/ManualFeatureInputLogs/tempLog.txt");
-                File f2 = new File("./gameData/ManualFeatureInputLogs/" + collectionItem.getName() + ".txt");
-                if (f2.exists()) {
-                    System.out.println("delet result is: " + f2.delete());
+        try {
+            ShengdeBaoPrinter.println("-----------Add Collection Item Feature Console Section-----------");
+            CollectionItem collectionItem = addCollectionItem();
+            collectionItem = askCollectionItem(collectionItem);
+            if (hasArg) {
+                ShengdeBaoPrinter.println("************** I HAVA ARG!!! ********** " + arg3);
+                saveCollectionItem(collectionItem);
+            }
+            if (!hasArg) {
+                if (collectionItem == null) {
+                    System.out.println("Collection Item not created correctly! Something went wrong");
+                } else {
+                    File f1 = new File("./gameData/ManualFeatureInputLogs/tempLog.txt");
+                    File f2 = new File("./gameData/ManualFeatureInputLogs/" + collectionItem.getName() + ".txt");
+                    if (f2.exists()) {
+                        System.out.println("delet result is: " + f2.delete());
+                    }
+                    System.out.println("rename result is : " + f1.renameTo(f2));
                 }
-                System.out.println("rename result is : " + f1.renameTo(f2));
+            }
+        } catch (Exception allException) {
+            System.out.println("HAD EXCEPTION");
+        } finally {
+            // close the writer
+            {
+                closeWriter();
             }
         }
     }
