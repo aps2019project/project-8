@@ -1,5 +1,6 @@
 package view;
 
+import model.AI;
 import model.Account;
 import model.CollectionItem;
 import model.Deck;
@@ -88,4 +89,20 @@ View {
     void showInvalidCardIDError();
 
     void logMessage(String message);
+
+    void showAIDeckInformation(AI ai);
+
+    void showAccount(Account account);
+
+    void alertSecondAccountSelection();
+
+    void showInvalidParametersError();
+
+    void showSecondPlayerInvalidMainDeckError();
+
+    void showDeckInformation(Deck deck);
+
+    void showNoSuchGameModeError();
+
+    void showSecondPlayerHasNoMainDeckError();
 }

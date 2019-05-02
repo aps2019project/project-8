@@ -95,15 +95,14 @@ public class Shop extends Menu {
 
     public static void load() {
         try {
-            for (File file : new File("./gameData/cards").listFiles()) {
-                YaGson yaGson = new YaGson();
-                collectionItems.add(yaGson.fromJson(new BufferedReader(new FileReader(file)).readLine(),
-                        Card.class));
-            }
             for (File file : new File("./gameData/usables").listFiles()) {
                 YaGson yaGson = new YaGson();
                 collectionItems.add(yaGson.fromJson(new BufferedReader(new FileReader(file)).readLine(), Usable.class));
             }
-        } catch (IOException ignored) {}
+            for (File file : new File("./gameData/heroes").listFiles()) {
+                YaGson yaGson = new YaGson();
+                collectionItems.add(yaGson.fromJson(new BufferedReader(new FileReader(file)).readLine(), Hero.class));
+            }
+        } catch (Exception ignored) {}
     }
 }

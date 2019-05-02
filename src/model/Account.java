@@ -80,4 +80,20 @@ public class Account implements Comparable {
     public HashMap<String, CollectionItem> getCollectionItems() {
         return collection.getCollectionItems();
     }
+
+    public Deck getDeck(String deckName) {
+        return collection.getDeck(deckName);
+    }
+
+    public Deck getMainDeck() {
+        return mainDeck;
+    }
+
+    public Player getPlayer() {
+        return null;
+    }
+
+    public ArrayList<Deck> getDecks() {
+        return collection.getDecks();
+    }
 }

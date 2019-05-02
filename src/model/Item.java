@@ -1,14 +1,26 @@
 package model;
 
-public class Item extends CollectionItem {
-    private String description;
+import java.util.Iterator;
 
-    public Item(int price, int collectionItemID, String name) {
-        super(price, collectionItemID, name);
-        description = "desc";
+public class Item extends CollectionItem {
+    protected String description;
+
+    // Main constructor
+    public Item(CollectionItem collectionItem, String description) {
+        super(collectionItem);
+        this.description = "this is an empty description!! viva shengdebao!! haha!!!";
+    }
+
+    // Copy constructor
+    public Item(Item item) {
+        this.price = item.price;
+        this.collectionItemID = item.collectionItemID;
+        this.name = item.name;
+        this.description = item.description;
     }
 
     protected Item() {}
+
 
     @Override
     public String toString() {

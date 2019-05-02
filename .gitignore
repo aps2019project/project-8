@@ -83,6 +83,7 @@ fabric.properties
 
 .idea/
 project-8.iml
-save/
-/gameData/
-gameData/
+/gameData/cards/
+gameData/cards/
+/src/UITest.java
+src/UITest.java

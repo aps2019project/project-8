@@ -2,7 +2,7 @@
 <diagram program="umlet" version="14.3.0">
   <zoom_level>8</zoom_level>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>240</x>
       <y>344</y>
@@ -51,7 +51,7 @@ _-useSpecialPower(x: int, y: int): void_
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>960</x>
       <y>592</y>
@@ -71,7 +71,7 @@ _-ROW_LENGTH: int_
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>1216</x>
       <y>1808</y>
@@ -85,7 +85,7 @@ _-ROW_LENGTH: int_
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>1152</x>
       <y>1256</y>
@@ -102,7 +102,7 @@ _-ROW_LENGTH: int_
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>1416</x>
       <y>1288</y>
@@ -149,7 +149,7 @@ _-ROW_LENGTH: int_
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>1248</x>
       <y>1744</y>
@@ -160,7 +160,7 @@ _-ROW_LENGTH: int_
     <additional_attributes>250.0;10.0;10.0;80.0</additional_attributes>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>584</x>
       <y>880</y>
@@ -181,7 +181,7 @@ _-ROW_LENGTH: int_
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>488</x>
       <y>856</y>
@@ -192,7 +192,7 @@ _-ROW_LENGTH: int_
     <additional_attributes>10.0;10.0;250.0;30.0</additional_attributes>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>488</x>
       <y>1216</y>
@@ -209,7 +209,7 @@ _-ROW_LENGTH: int_
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>520</x>
       <y>1288</y>
@@ -220,7 +220,7 @@ _-ROW_LENGTH: int_
     <additional_attributes>10.0;160.0;10.0;10.0</additional_attributes>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>896</x>
       <y>1472</y>
@@ -236,7 +236,7 @@ _-ROW_LENGTH: int_
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>1632</x>
       <y>1800</y>
@@ -250,7 +250,7 @@ _-ROW_LENGTH: int_
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>928</x>
       <y>1328</y>
@@ -261,7 +261,7 @@ _-ROW_LENGTH: int_
     <additional_attributes>300.0;10.0;10.0;180.0</additional_attributes>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>1576</x>
       <y>1744</y>
@@ -272,7 +272,7 @@ _-ROW_LENGTH: int_
     <additional_attributes>10.0;10.0;130.0;70.0</additional_attributes>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>688</x>
       <y>1416</y>
@@ -296,7 +296,7 @@ _-ROW_LENGTH: int_
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>392</x>
       <y>1416</y>
@@ -341,7 +341,7 @@ _+getAccount(name: String): Account_
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>2048</x>
       <y>856</y>
@@ -362,7 +362,7 @@ _+help(): String[]_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>672</x>
       <y>1200</y>
@@ -386,7 +386,7 @@ _+help(): String[]_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>1248</x>
       <y>1296</y>
@@ -397,7 +397,7 @@ _+help(): String[]_</panel_attributes>
     <additional_attributes>10.0;20.0;210.0;10.0</additional_attributes>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>920</x>
       <y>1568</y>
@@ -412,7 +412,7 @@ _+help(): String[]_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>1032</x>
       <y>1752</y>
@@ -427,7 +427,7 @@ _+help(): String[]_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>840</x>
       <y>1760</y>
@@ -442,7 +442,7 @@ _+help(): String[]_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>872</x>
       <y>1616</y>
@@ -453,7 +453,7 @@ _+help(): String[]_</panel_attributes>
     <additional_attributes>100.0;10.0;10.0;180.0</additional_attributes>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>976</x>
       <y>1616</y>
@@ -464,7 +464,7 @@ _+help(): String[]_</panel_attributes>
     <additional_attributes>10.0;10.0;140.0;170.0</additional_attributes>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>704</x>
       <y>1072</y>
@@ -483,7 +483,7 @@ _+help(): String[]_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>1272</x>
       <y>416</y>
@@ -505,7 +505,7 @@ _+help(): String[]_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>1712</x>
       <y>672</y>
@@ -529,25 +529,35 @@ GRAVEYARD_MENU</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
-      <x>1720</x>
-      <y>1152</y>
+      <x>1736</x>
+      <y>1288</y>
       <w>112</w>
       <h>104</h>
     </coordinates>
     <panel_attributes>&lt;&lt;enumeration&gt;&gt;
-UnitType
+SpellTarget
 --
-RANGED
-HYBRID
-MELEE
+UNIT,
+ENEMY_UNIT,
+FRIENDLY_UNIT,
+ENEMY_HERO,
+FRIENDLY_HERO,
+ENEMY_MINION,
+FRIENDLY_MINION,
+GRID_2_2,
+GRID_3_3,
+ALL_ENEMY_UNITS,
+ALL_FRIENDLY_UNITS,
+ALL_ENEMY_MINIONS_IN_ONE_COLUMN,
+RANDOM_ADJACENT_MINION
 --
 +toString(): String</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>840</x>
       <y>1464</y>
@@ -558,7 +568,7 @@ MELEE
     <additional_attributes>10.0;10.0;70.0;30.0</additional_attributes>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>1232</x>
       <y>1344</y>
@@ -578,7 +588,7 @@ COMBO</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>1336</x>
       <y>1376</y>
@@ -589,7 +599,7 @@ COMBO</panel_attributes>
     <additional_attributes>10.0;30.0;100.0;10.0</additional_attributes>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>632</x>
       <y>1016</y>
@@ -600,7 +610,7 @@ COMBO</panel_attributes>
     <additional_attributes>10.0;10.0;90.0;150.0</additional_attributes>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>1904</x>
       <y>1184</y>
@@ -609,11 +619,8 @@ COMBO</panel_attributes>
     </coordinates>
     <panel_attributes>Spell
 --
+#spellTarget: SpellTarget
 #buff: Buff
-#enemyMinion: boolean
-#enemyHero: boolean
-#friendlyMinion: boolean
-#friendlyHero: boolean
 -global: boolean
 #attack: int
 #heal: int
@@ -631,7 +638,7 @@ COMBO</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>216</x>
       <y>1032</y>
@@ -650,7 +657,7 @@ _-MAX_NUMBER_OF_ITEMS: int_
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>272</x>
       <y>1136</y>
@@ -661,7 +668,7 @@ _-MAX_NUMBER_OF_ITEMS: int_
     <additional_attributes>10.0;10.0;280.0;350.0</additional_attributes>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>1048</x>
       <y>1120</y>
@@ -676,7 +683,7 @@ _-MAX_NUMBER_OF_ITEMS: int_
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>1160</x>
       <y>1168</y>
@@ -687,7 +694,7 @@ _-MAX_NUMBER_OF_ITEMS: int_
     <additional_attributes>10.0;10.0;80.0;110.0</additional_attributes>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>1008</x>
       <y>1168</y>
@@ -698,7 +705,7 @@ _-MAX_NUMBER_OF_ITEMS: int_
     <additional_attributes>130.0;10.0;10.0;500.0</additional_attributes>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>848</x>
       <y>1528</y>
@@ -709,7 +716,7 @@ _-MAX_NUMBER_OF_ITEMS: int_
     <additional_attributes>80.0;10.0;10.0;290.0</additional_attributes>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>2040</x>
       <y>480</y>
@@ -725,7 +732,7 @@ _+save(): void_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>2416</x>
       <y>976</y>
@@ -752,7 +759,7 @@ _+getString(): String_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>2000</x>
       <y>696</y>
@@ -768,7 +775,7 @@ _+getString(): String_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>2592</x>
       <y>752</y>
@@ -787,7 +794,7 @@ _+getString(): String_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>2864</x>
       <y>664</y>
@@ -820,7 +827,7 @@ _+goToGraveYardMenu(): void_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>2152</x>
       <y>480</y>
@@ -831,7 +838,7 @@ _+goToGraveYardMenu(): void_</panel_attributes>
     <additional_attributes>290.0;10.0;10.0;40.0</additional_attributes>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>2056</x>
       <y>512</y>
@@ -842,7 +849,7 @@ _+goToGraveYardMenu(): void_</panel_attributes>
     <additional_attributes>410.0;10.0;10.0;230.0</additional_attributes>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>2736</x>
       <y>584</y>
@@ -853,7 +860,7 @@ _+goToGraveYardMenu(): void_</panel_attributes>
     <additional_attributes>10.0;10.0;220.0;100.0</additional_attributes>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>2416</x>
       <y>528</y>
@@ -864,7 +871,7 @@ _+goToGraveYardMenu(): void_</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;560.0</additional_attributes>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>2264</x>
       <y>528</y>
@@ -875,7 +882,7 @@ _+goToGraveYardMenu(): void_</panel_attributes>
     <additional_attributes>150.0;10.0;10.0;410.0</additional_attributes>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>2464</x>
       <y>528</y>
@@ -886,7 +893,7 @@ _+goToGraveYardMenu(): void_</panel_attributes>
     <additional_attributes>10.0;10.0;190.0;40.0</additional_attributes>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>1768</x>
       <y>1592</y>
@@ -907,7 +914,7 @@ _-MAP_COLUMNS: int_
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>1840</x>
       <y>1440</y>
@@ -918,7 +925,7 @@ _-MAP_COLUMNS: int_
     <additional_attributes>220.0;10.0;10.0;190.0</additional_attributes>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>1400</x>
       <y>1176</y>
@@ -934,7 +941,7 @@ Ghoul</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>2632</x>
       <y>584</y>
@@ -945,7 +952,7 @@ Ghoul</panel_attributes>
     <additional_attributes>10.0;10.0;30.0;210.0</additional_attributes>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>2136</x>
       <y>272</y>
@@ -958,7 +965,7 @@ View
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>1752</x>
       <y>0</y>
@@ -1012,7 +1019,7 @@ _-load(): void_
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>2048</x>
       <y>56</y>
@@ -1034,7 +1041,7 @@ View
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>2384</x>
       <y>120</y>
@@ -1056,7 +1063,7 @@ View
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>2384</x>
       <y>448</y>
@@ -1073,7 +1080,7 @@ _+setView(View view): void_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>2616</x>
       <y>536</y>
@@ -1088,7 +1095,7 @@ _+setGame(game: Game): void_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>2048</x>
       <y>784</y>
@@ -1103,7 +1110,7 @@ _+setGame(game: Game): void_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>2672</x>
       <y>432</y>
@@ -1118,7 +1125,7 @@ _+setGame(game: Game): void_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>2320</x>
       <y>336</y>
@@ -1133,7 +1140,7 @@ _+setGame(game: Game): void_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>2448</x>
       <y>688</y>
@@ -1147,7 +1154,7 @@ _+setGame(game: Game): void_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>2168</x>
       <y>528</y>
@@ -1158,7 +1165,7 @@ _+setGame(game: Game): void_</panel_attributes>
     <additional_attributes>290.0;10.0;10.0;360.0</additional_attributes>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>2592</x>
       <y>456</y>
@@ -1169,7 +1176,7 @@ _+setGame(game: Game): void_</panel_attributes>
     <additional_attributes>10.0;20.0;100.0;10.0</additional_attributes>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>2440</x>
       <y>528</y>
@@ -1180,7 +1187,7 @@ _+setGame(game: Game): void_</panel_attributes>
     <additional_attributes>10.0;10.0;60.0;200.0</additional_attributes>
   </element>
   <element>
-    <id>Relation</id>
+    <collectionItemID>Relation</collectionItemID>
     <coordinates>
       <x>2416</x>
       <y>384</y>
@@ -1191,7 +1198,7 @@ _+setGame(game: Game): void_</panel_attributes>
     <additional_attributes>60.0;80.0;10.0;10.0</additional_attributes>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>0</x>
       <y>552</y>
@@ -1207,7 +1214,7 @@ KILL_OPPONENT_HERO</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>0</x>
       <y>336</y>
@@ -1223,7 +1230,7 @@ WIN_SECOND_PLAYER</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
+    <collectionItemID>UMLClass</collectionItemID>
     <coordinates>
       <x>8</x>
       <y>720</y>
@@ -1232,6 +1239,24 @@ WIN_SECOND_PLAYER</panel_attributes>
     </coordinates>
     <panel_attributes>AI
 --</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <collectionItemID>UMLClass</collectionItemID>
+    <coordinates>
+      <x>1736</x>
+      <y>1168</y>
+      <w>112</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enumeration&gt;&gt;
+UnitType
+--
+RANGED
+HYBRID
+MELEE
+--
++toString(): String</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>

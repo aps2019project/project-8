@@ -1,9 +1,6 @@
 package view;
 
-import model.Account;
-import model.Card;
-import model.CollectionItem;
-import model.Deck;
+import model.*;
 
 import java.util.*;
 
@@ -236,5 +233,45 @@ public class CommandLineView implements View {
     @Override
     public void logMessage(String message) {
         System.out.println(message);
+    }
+
+    @Override
+    public void showAIDeckInformation(AI ai) {
+        System.out.println(ai.getDeck().getHero().getName() + " : " + ai.getMode());
+    }
+
+    @Override
+    public void showAccount(Account account) {
+        System.out.println(account.getName());
+    }
+
+    @Override
+    public void alertSecondAccountSelection() {
+        System.out.println("Second account successfully selected.");
+    }
+
+    @Override
+    public void showInvalidParametersError() {
+        System.out.println("The entered parameters are invalid.");
+    }
+
+    @Override
+    public void showSecondPlayerInvalidMainDeckError() {
+        System.out.println("Selected deck for second player is invalid.");
+    }
+
+    @Override
+    public void showDeckInformation(Deck deck) {
+        System.out.println(deck.getDeckName() + " : " + deck.getHero().getName());
+    }
+
+    @Override
+    public void showNoSuchGameModeError() {
+        System.out.println("No such game mode exists.");
+    }
+
+    @Override
+    public void showSecondPlayerHasNoMainDeckError() {
+        System.out.println("The selected player has no main deck.");
     }
 }

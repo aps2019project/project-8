@@ -1,9 +1,6 @@
 package model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Queue;
 
 public class Deck {
@@ -18,8 +15,8 @@ public class Deck {
         this.deckName = deckName;
     }
 
-    boolean isValid() {
-        return (deckItem != null) && (deckHero != null) && (cards.size() == DECK_CARD_CAPACITY);
+    public boolean isValid() {
+        return (deckHero != null) && (cards.size() == DECK_CARD_CAPACITY);
     }
 
     void shuffle() {
@@ -99,11 +96,12 @@ public class Deck {
         }
     }
 
+    @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
 
         appendTabs(stringBuilder, numberOfTabsOnToString);
-        stringBuilder.append("Heroes :\n");
+        stringBuilder.append("Hero :\n");
         if (hasHero()) {
             stringBuilder.append("1 : ");
             appendTabs(stringBuilder, numberOfTabsOnToString + 1);
@@ -132,10 +130,10 @@ public class Deck {
         }
 
         appendTabs(stringBuilder, numberOfTabsOnToString + 1);
-        if (deckHero != null) {
+        /*if (deckHero != null) {
             stringBuilder.append(deckHero.toString());
             stringBuilder.append("\n");
-        }
+        }*/
 
         return stringBuilder.toString();
     }
