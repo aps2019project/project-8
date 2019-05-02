@@ -88,9 +88,8 @@ class ManualFeatureAdder {
             disarm = feedBack.equals("yes");
         }
         {
-            ShengdeBaoPrinter.println("Enter dispellable (yes/no)");
-            String feedback = getInput();
-            dispellable = feedback.equals("yes");
+            String feedBack = getMultipleChoice("Enter dipellable" , "yes", "no");
+            dispellable = feedBack.equals("yes");
         }
 
         ShengdeBaoPrinter.println("Add extra features to buff \"none\" to end!");
