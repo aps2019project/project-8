@@ -9,7 +9,23 @@ import java.io.File;
 import java.util.Iterator;
 
 class JsonMaker {
+
+    private static void deleteAll(String dir) {
+        File myDir = new File(dir);
+        File[] files = myDir.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (!file.delete()) {
+                    System.out.println("Failed To delete!");
+                }
+            }
+        }
+    }
     public static void main(String[] args) {
+        deleteAll("./gamaData/Collectibles/");
+        deleteAll("./gameData/Heros/");
+        deleteAll("./gameData/Minions/");
+        deleteAll("./gameData/SpellCards/");
         File dir = new File("./gameData/ManualFeatureInputLogs/");
         File[] directoryListing = dir.listFiles();
         if (directoryListing != null) {

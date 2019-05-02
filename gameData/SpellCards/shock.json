@@ -1,0 +1,30 @@
+{
+  "spell": {
+    "spellTarget": "ENEMY_UNIT",
+    "buff": {
+      "duration": 2,
+      "holy": 0,
+      "powerHp": 0,
+      "powerAp": 0,
+      "poison": 0,
+      "weaknessAP": 0,
+      "weaknessHP": 0,
+      "stun": true,
+      "disarm": false,
+      "unholy": 0,
+      "dispellable": false
+    },
+    "global": false,
+    "attack": 0,
+    "heal": 0,
+    "dispel": false,
+    "adjacent": false,
+    "canDispel": false,
+    "addMana": 0,
+    "addRange": 0
+  },
+  "manaCost": 1,
+  "price": 1200,
+  "collectionItemID": "1041",
+  "name": "shock"
+}

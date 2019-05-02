@@ -1,0 +1,30 @@
+{
+  "spell": {
+    "spellTarget": "ALL_FRIENDLY_UNITS",
+    "buff": {
+      "duration": 1000000,
+      "holy": 0,
+      "powerHp": 0,
+      "powerAp": 2,
+      "poison": 0,
+      "weaknessAP": 0,
+      "weaknessHP": 0,
+      "stun": false,
+      "disarm": false,
+      "unholy": 0,
+      "dispellable": true
+    },
+    "global": false,
+    "attack": 0,
+    "heal": 0,
+    "dispel": false,
+    "adjacent": false,
+    "canDispel": false,
+    "addMana": 0,
+    "addRange": 0
+  },
+  "manaCost": 4,
+  "price": 2000,
+  "collectionItemID": "1100",
+  "name": "allPower"
+}

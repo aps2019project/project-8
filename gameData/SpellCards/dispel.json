@@ -1,0 +1,30 @@
+{
+  "spell": {
+    "spellTarget": "UNIT",
+    "buff": {
+      "duration": 0,
+      "holy": 0,
+      "powerHp": 0,
+      "powerAp": 0,
+      "poison": 0,
+      "weaknessAP": 0,
+      "weaknessHP": 0,
+      "stun": false,
+      "disarm": false,
+      "unholy": 0,
+      "dispellable": false
+    },
+    "global": false,
+    "attack": 0,
+    "heal": 0,
+    "dispel": false,
+    "adjacent": false,
+    "canDispel": true,
+    "addMana": 0,
+    "addRange": 0
+  },
+  "manaCost": 0,
+  "price": 2100,
+  "collectionItemID": "1120",
+  "name": "dispel"
+}

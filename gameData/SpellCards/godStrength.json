@@ -1,0 +1,30 @@
+{
+  "spell": {
+    "spellTarget": "FRIENDLY_HERO",
+    "buff": {
+      "duration": 1,
+      "holy": 0,
+      "powerHp": 0,
+      "powerAp": 4,
+      "poison": 0,
+      "weaknessAP": 0,
+      "weaknessHP": 0,
+      "stun": false,
+      "disarm": false,
+      "unholy": 0,
+      "dispellable": false
+    },
+    "global": false,
+    "attack": 0,
+    "heal": 0,
+    "dispel": false,
+    "adjacent": false,
+    "canDispel": false,
+    "addMana": 0,
+    "addRange": 0
+  },
+  "manaCost": 2,
+  "price": 450,
+  "collectionItemID": "1005",
+  "name": "godStrength"
+}

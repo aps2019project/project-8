@@ -1,0 +1,30 @@
+{
+  "spell": {
+    "spellTarget": "ALL_ENEMY_UNITS",
+    "buff": {
+      "duration": 4,
+      "holy": 0,
+      "powerHp": 0,
+      "powerAp": 0,
+      "poison": 1,
+      "weaknessAP": 0,
+      "weaknessHP": 0,
+      "stun": false,
+      "disarm": false,
+      "unholy": 0,
+      "dispellable": true
+    },
+    "global": false,
+    "attack": 0,
+    "heal": 0,
+    "dispel": false,
+    "adjacent": false,
+    "canDispel": false,
+    "addMana": 0,
+    "addRange": 0
+  },
+  "manaCost": 8,
+  "price": 1500,
+  "collectionItemID": "1200",
+  "name": "allPoison"
+}
