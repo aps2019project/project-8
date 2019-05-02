@@ -1,8 +1,6 @@
 package model;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.jar.Attributes;
 
 public class Unit extends Card{
     private int hitPoint;
