@@ -1,15 +1,20 @@
 package model;
 
 public class Card extends CollectionItem {
-    private int manaCost;
+    protected int manaCost;
 
-    public Card(int price, String id, String name, int manaCost) {
-        super(price, id, name);
+    // Main constructor
+    protected Card(CollectionItem collectionItem, int manaCost) {
+        super(collectionItem);
         this.manaCost = manaCost;
     }
 
+    // Copy Constructor
     public Card(Card card) {
-        this(card.getPrice(), card.getID(), card.getName(), card.getManaCost());
+        this.price = card.price;
+        this.collectionItemID = card.collectionItemID;
+        this.name = card.name;
+        this.manaCost = card.manaCost;
     }
 
     protected Card() {}

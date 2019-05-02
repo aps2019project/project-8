@@ -3,6 +3,7 @@ package gen;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import model.*;
+import model.Collection;
 
 import java.io.*;
 import java.lang.reflect.Array;
@@ -248,6 +249,24 @@ class ManualFeatureAdder {
         }
     }
 
+    private static String getMultipleChoice(String message, String... args) {
+        System.out.print(message + " ");
+        String reg = "";
+        for (String arg: args) {
+            System.out.print(arg + " ");
+            if(!reg.isEmpty())
+                reg += "|";
+            reg += arg;
+        }
+        String response = getInput();
+        while (!response.matches(reg)) {
+            System.out.print("Again! " + reg);
+            response = getInput();
+        }
+        return response;
+
+    }
+
     public static void main(String[] args) {
 
         // set up args and writer and scanner
@@ -258,51 +277,21 @@ class ManualFeatureAdder {
             setUpWriterAndScanner();
         }
 
-        System.out.println("-----------Add Card Feature Console Section-----------");
-        System.out.println("Here you can enter your own card:");
+        System.out.println("-----------Add Collection Item Feature Console Section-----------");
+        System.out.println("What do you want to enter? (SpellCard/UsableItem/Minion/Hero)");
+        String response = getMultipleChoice("Whaat do you want to enter?", "Card", "Item");
+        switch (response) {
+            case "Card":
+                Card card = addCard();
+                SpellCard spellCard = addSpellCard();
 
-        String cardName;
-        int price, manaCost;
-        {
-            System.out.print("\tEnter Card Name: ");
-            cardName = getInput();
-        }
-        {
-            System.out.print("\tEnter price: ");
-            price = Integer.parseInt(getInput());
-        }
-        {
-            System.out.print("\tEnter Mana Cost: ");
-            manaCost = Integer.parseInt(getInput());
-        }
-        numberOfCards++;
-
-        System.out.print ("What is your card type? (SpellCard, Unit) ");
-        String cardType = getInput();
-        while(!cardType.matches("(SpellCard|Unit)")) {
-            System.out.print ("Enter again: (SpellCard, Unit) ");
-            cardType = getInput();
-        }
-
-        Card myCard = null;
-        switch (cardType) {
-            case "SpellCard" :
-                myCard = addSpellCard();
                 break;
-            case "Unit" :
-                myCard = addUnit();
+            case "Item":
+                Item item = addItem();
+                saveItem(item)
                 break;
         }
-        try {
-            myCard.setManaCost(manaCost);
-            myCard.setName(cardName);
-            myCard.setPrice(price);
-        } catch (NullPointerException except) {
-            System.out.println("failed to get card");
-        }
-        if(hasArg) {
-            saveCard(myCard);
-        }
+
 
         // close the writer
         {
@@ -310,6 +299,51 @@ class ManualFeatureAdder {
         }
     }
 
+
+    private static void saveCollectionItem(CollectionItem collectionItem) {
+        try {
+            YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
+            FileWriter out;
+            if (collectionItem instanceof Hero) {
+                out = new FileWriter("./gameData/heros/" + collectionItem.getName() + ".txt", false);
+                out.write(yaGson.toJson(collectionItem, Hero.class));
+            }
+            if (collectionItem instanceof SpellCard) {
+                out = new FileWriter("./gameData/spellCards/" + collectionItem.getName() + ".txt", false);
+                out.write(yaGson.toJson(collectionItem, SpellCard.class));
+            }
+            if (collectionItem instanceof Minion) {
+                out = new FileWriter("./gameData/minions/" + collectionItem.getName() + ".txt", false);
+                out.write(yaGson.toJson(collectionItem, Minion.class));
+            }
+            if (collectionItem instanceof Usable) {
+                out = new FileWriter("./gameData/usableItems/" + collectionItem.getName() + ".txt", false);
+                out.write(yaGson.toJson(collectionItem, Usable.class));
+            }
+            if (collectionItem instanceof Collectible) {
+                out = new FileWriter("./gameData/collectibles/" + collectionItem.getName() + ".txt", false);
+                out.write(yaGson.toJson(collectionItem, Collectible.class));
+            } else {
+                throw new IOException();
+            }
+            out.flush();
+        } catch (IOException ignored) {
+            System.out.println("Can't Read file for some reason: ");
+            System.out.println("File can't be created / File can't be opened / A directory rather than file");
+        }
+    }
+
+    private static void saveHero(Hero hero) {
+    }
+
+    private static void saveSpellCard(SpellCard spellCard) {
+    }
+
+    private static void saveMinion(Minion minion) {
+    }
+
+    private static void saveUsable(Usable usable) {
+    }
 
     private static void saveCard(Card card) {
         try {

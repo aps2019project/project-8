@@ -1,14 +1,22 @@
 package model;
 
 public abstract class CollectionItem {
-    private int price;
-    private String collectionItemID;
-    private String name;
+    protected int price;
+    protected String collectionItemID;
+    protected String name;
 
+    // Main constructor
     protected CollectionItem(int price, String collectionItemID, String name) {
         this.price = price;
         this.collectionItemID = collectionItemID;
         this.name = name;
+    }
+
+    // Copy constructor
+    public CollectionItem(CollectionItem collectionItem) {
+        this.price = collectionItem.price;
+        this.collectionItemID = collectionItem.collectionItemID;
+        this.name = collectionItem.name;
     }
 
     protected CollectionItem() {}
