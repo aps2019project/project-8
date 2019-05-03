@@ -24,5 +24,6 @@ public enum SpellTarget {
     RANDOM_ENEMY_UNIT,
     ENEMY_ADJACENT_MINIONS,
     UNITS_IN_HERO_ROW,
-    SELF
+    SELF,
+    ALL_UNITS_IN_GRID_2_2
 }

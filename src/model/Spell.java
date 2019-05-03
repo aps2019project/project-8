@@ -3,107 +3,47 @@ package model;
 import java.util.ArrayList;
 
 public class Spell {
-    SpellTarget spellTarget;
-    protected Buff buff;
-    private boolean global;
-    protected int attack;
-    protected int heal;
-    protected boolean dispel;
-    private boolean adjacent;
-    private boolean canDispel = false;
+    protected Buff[] buffs;
+    private boolean canDispel;
 
-    private int addMana;
-    private int addRange;
+    // Main Constructor
+    public Spell(Buff[] buffs,boolean canDispel) {
+        this.buffs = buffs;
+        this.canDispel = canDispel;
+    }
+
+    // Copy constructor
+    public Spell(Spell spell) {
+        this.buffs = spell.buffs;
+        this.canDispel = spell.canDispel;
+    }
 
     protected Spell() {
-
     }
 
-    public Spell setCanDispel(boolean canDispel) {
-        this.canDispel = canDispel;
-        return this;
-    }
-
-    public Spell(SpellTarget spellTarget,Buff buff,boolean global,int attack,int heal,boolean dispel,
-                 boolean adjacent,int addMana,int addRange) {
-        this.spellTarget = spellTarget;
-        this.buff = buff;
-        this.global = global;
-        this.attack = attack;
-        this.heal = heal;
-        this.dispel = dispel;
-        this.adjacent = adjacent;
-        this.addMana = addMana;
-        this.addRange = addRange;
-    }
 
     public static class SpellBuilder {
-        SpellTarget spellTarget;
-        private Buff buff;
-        private boolean global = false;
-        private int attack = 0;
-        private int heal = 0;
-        private boolean dispel = false;
-        private boolean adjacent = false;
+        Buff[] buffs;
+        boolean canDispel = false;
 
-        private int addMana = 0;
-        private int addRange = 0;
-
-        public SpellBuilder setBuff(Buff buff) {
-            this.buff = buff;
+        public SpellBuilder setBuffs(Buff[] buffs) {
+            this.buffs = buffs;
             return this;
         }
 
-        public SpellBuilder setSpellTarget(SpellTarget spellTarget) {
-            this.spellTarget = spellTarget;
-            return this;
-        }
 
-        public SpellBuilder setGlobal(boolean global) {
-            this.global = global;
-            return this;
-        }
-
-        public SpellBuilder setAttack(int attack) {
-            this.attack = attack;
-            return this;
-        }
-
-        public SpellBuilder setHeal(int heal) {
-            this.heal = heal;
-            return this;
-        }
-
-        public SpellBuilder setDispel(boolean dispel) {
-            this.dispel = dispel;
-            return this;
-        }
-
-        public SpellBuilder setAdjacent(boolean adjacent) {
-            this.adjacent = adjacent;
-            return this;
-        }
-        public SpellBuilder setAddMana(int addMana) {
-            this.addMana = addMana;
-            return this;
-        }
-
-        public SpellBuilder setAddRange(int addRange) {
-            this.addRange = addRange;
+        public SpellBuilder setCanDispel(boolean canDispel) {
+            this.canDispel = canDispel;
             return this;
         }
 
         public Spell build() {
-            return new Spell(spellTarget, buff, global, attack, heal, dispel, adjacent, addMana, addRange);
+            return new Spell(buffs, canDispel);
         }
     }
 
 
     public void cast(int x, int y, Map map, Player player) {
-
-    }
-
-    public void amplify(ArrayList<Card> friendlyCards) {
 
     }
 
