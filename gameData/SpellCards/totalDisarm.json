@@ -1,30 +1,25 @@
 {
   "spell": {
-    "spellTarget": "ENEMY_UNIT",
-    "buff": {
-      "duration": 1000,
-      "holy": 0,
-      "powerHp": 0,
-      "powerAp": 0,
-      "poison": 0,
-      "weaknessAP": 0,
-      "weaknessHP": 0,
-      "stun": false,
-      "disarm": true,
-      "unholy": 0,
-      "dispellable": false
-    },
-    "global": false,
-    "attack": 0,
-    "heal": 0,
-    "dispel": false,
-    "adjacent": false,
-    "canDispel": false,
-    "addMana": 0,
-    "addRange": 0
+    "targetType": "UNIT",
+    "targetArea": "ALL_OF_THE_MAP",
+    "targetUnit": "ENEMY_UNIT",
+    "targetUnitType": "ALL",
+    "numberOfRandomTargets": 100,
+    "buffs": [
+      {
+        "duration": 1000000,
+        "holy": 0,
+        "effectHp": 0,
+        "effectAp": 0,
+        "stun": false,
+        "disarm": true,
+        "dispellable": true
+      }
+    ],
+    "canDispel": false
   },
   "manaCost": 0,
-  "price": 1000,
-  "collectionItemID": "1001",
+  "price": 10000,
+  "collectionItemID": "10001",
   "name": "totalDisarm"
 }

@@ -9,7 +9,7 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.*;
 
-// Incomplete!
+// Complete!
 
 /*
  *  this class gets the features from your input and stores
@@ -17,13 +17,10 @@ import java.util.*;
  */
 
 class ManualFeatureAdder {
-    private static int numberOfCards = 0;
     private static Scanner scanner = new Scanner(System.in);
     private static BufferedWriter writer;
     private static boolean hasArg = false;
     private static String arg3;
-    private static String preffix = "";
-
     private static String getInput() throws Exception {
         String string = scanner.nextLine();
         if (string.equals("exit"))
@@ -41,54 +38,10 @@ class ManualFeatureAdder {
 
     private static Buff addBuff() throws Exception {
         ShengdeBaoPrinter.println("***Enter Buff***");
-        Buff.BuffTargetType buffTargetType = null;
-        Buff.BuffTargetArea buffTargetArea = null;
-        Buff.BuffTargetUnit buffTargetUnit = null;
-        int numberOfRandomTargets = Buff.MAX_GRID_SIZE;
         int duration, holy, effectHp, effectAp;
         boolean stun, disarm, dispellable;
 
         ShengdeBaoPrinter.addString("Buff: ");
-        {
-            ShengdeBaoPrinter.println("Enter type of target");
-            ArrayList<Buff.BuffTargetType>  buffTargetTypes = new ArrayList<>(EnumSet.allOf(Buff.BuffTargetType.class));
-            int i = 1;
-            for (Buff.BuffTargetType btt : buffTargetTypes) {
-                ShengdeBaoPrinter.println(i + ". " + btt);
-                i++;
-            }
-            int index = Integer.parseInt(getInput()) - 1;
-            buffTargetType = buffTargetTypes.get(index);
-
-            if (buffTargetType == Buff.BuffTargetType.UNIT) {
-                ShengdeBaoPrinter.println("Enter target unit type");
-                ArrayList<Buff.BuffTargetUnit> buffTargetUnits = new ArrayList<>(EnumSet.allOf(Buff.BuffTargetUnit.class));
-                i = 1;
-                for (Buff.BuffTargetUnit btu: buffTargetUnits) {
-                    ShengdeBaoPrinter.println(i + ". " + btu);
-                    i++;
-                }
-                index = Integer.parseInt(getInput()) - 1;
-                buffTargetUnit = buffTargetUnits.get(index);
-            }
-
-            ShengdeBaoPrinter.println("Enter target area type");
-            ArrayList<Buff.BuffTargetArea> buffTargetAreas = new ArrayList<>(EnumSet.allOf(Buff.BuffTargetArea.class));
-            i = 1;
-            for (Buff.BuffTargetArea bta : buffTargetAreas) {
-                ShengdeBaoPrinter.println(i + ". " + bta);
-                i++;
-            }
-            index = Integer.parseInt(getInput()) - 1;
-            buffTargetArea = buffTargetAreas.get(index);
-        }
-        {
-            String response = getMultipleChoice("Is it a random buff?", "yes", "no");
-            if (response.equals("yes")) {
-                ShengdeBaoPrinter.println("Enter number of random targets to hit!");
-                numberOfRandomTargets = Integer.parseInt(getInput());
-            }
-        }
         {
             ShengdeBaoPrinter.println("Enter duration of the buff");
             duration = Integer.parseInt(getInput());
@@ -135,19 +88,70 @@ class ManualFeatureAdder {
                 .setStun(stun)
                 .setDisarm(disarm)
                 .setDispellable(dispellable)
-                .setBuffTargetType(buffTargetType)
-                .setBuffTargetArea(buffTargetArea)
-                .setBuffTargetUnit(buffTargetUnit)
-                .setNumberOfRandomTargets(numberOfRandomTargets)
                 .build();
     }
 
     private static Spell addSpell() throws Exception {
         ShengdeBaoPrinter.println("***Enter Spell***");
+        Spell.TargetType targetType = null;
+        Spell.TargetArea targetArea = null;
+        Spell.TargetUnit targetUnit = null;
+        Spell.TargetUnitType targetUnitType = null;
+        int numberOfRandomTargets = Spell.MAX_GOALS;
         Buff[] buffs = null;
         boolean canDispel;
 
         ShengdeBaoPrinter.addString("Spell: ");
+        {
+            ShengdeBaoPrinter.println("Enter target type");
+            ArrayList<Spell.TargetType> targetTypes = new ArrayList<>(EnumSet.allOf(Spell.TargetType.class));
+            int i = 1;
+            for (Spell.TargetType tt : targetTypes) {
+                ShengdeBaoPrinter.println(i + ". " + tt);
+                i++;
+            }
+            int index = Integer.parseInt(getInput()) - 1;
+            targetType = targetTypes.get(index);
+
+            if (targetType == Spell.TargetType.UNIT) {
+                ShengdeBaoPrinter.println("Enter target unit");
+                ArrayList<Spell.TargetUnit> targetUnits = new ArrayList<>(EnumSet.allOf(Spell.TargetUnit.class));
+                i = 1;
+                for (Spell.TargetUnit tu : targetUnits) {
+                    ShengdeBaoPrinter.println(i + ". " + tu);
+                    i++;
+                }
+                index = Integer.parseInt(getInput()) - 1;
+                targetUnit = targetUnits.get(index);
+
+                ShengdeBaoPrinter.println("Enter target unit type");
+                ArrayList<Spell.TargetUnitType> targetUnitTypes = new ArrayList<>(EnumSet.allOf(Spell.TargetUnitType.class));
+                i = 1;
+                for (Spell.TargetUnitType tut : targetUnitTypes) {
+                    ShengdeBaoPrinter.println(i + ". " + tut);
+                    i++;
+                }
+                index = Integer.parseInt(getInput()) - 1;
+                targetUnitType = targetUnitTypes.get(index);
+            }
+
+            ShengdeBaoPrinter.println("Enter target Area");
+            ArrayList<Spell.TargetArea> targetAreas = new ArrayList<>(EnumSet.allOf(Spell.TargetArea.class));
+            i = 1;
+            for (Spell.TargetArea ta : targetAreas) {
+                ShengdeBaoPrinter.println(i + ". " + ta);
+                i++;
+            }
+            index = Integer.parseInt(getInput()) - 1;
+            targetArea = targetAreas.get(index);
+        }
+        {
+            String response = getMultipleChoice("Is it a random spell", "yes", "no");
+            if (response.equals("yes")) {
+                ShengdeBaoPrinter.println("Enter the number of random picks!");
+                numberOfRandomTargets = Integer.parseInt(getInput());
+            }
+        }
         {
             ShengdeBaoPrinter.println("Enter number of buffs");
             int n = Integer.parseInt(getInput()), i = 1;
@@ -169,6 +173,11 @@ class ManualFeatureAdder {
         Spell spell = new Spell.SpellBuilder()
                 .setBuffs(buffs)
                 .setCanDispel(canDispel)
+                .setNumberOfRandomTargets(numberOfRandomTargets)
+                .setTargetType(targetType)
+                .setTargetArea(targetArea)
+                .setTargetUnit(targetUnit)
+                .setTargetUnitType(targetUnitType)
                 .build();
 
         ShengdeBaoPrinter.println("Add extra features to spell \"none\" to end!");
@@ -511,7 +520,7 @@ class ManualFeatureAdder {
 
     private static void saveCollectionItem(CollectionItem collectionItem) {
         try {
-            YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
+            YaGson yaGson = new  YaGsonBuilder().setPrettyPrinting().create();
             FileWriter out;
             if (collectionItem instanceof Hero) {
                 out = new FileWriter("./gameData/Heros/" + collectionItem.getName() + ".json", false);
