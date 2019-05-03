@@ -18,7 +18,24 @@ public class SpellCard extends Card {
         this.spell = spellCard.spell;
     }
 
-    protected SpellCard() {}
+    protected SpellCard() {
+    }
+
+    public Spell getSpell() {
+        return spell;
+    }
+
+    @Override
+    public String toString() {
+        return "Type : Spell" + DASH +
+                "Name : " + getName() + DASH +
+                "MP : " + manaCost + DASH +
+                "Desc : " + getDescription();
+    }
+
+    private String getDescription() {
+        return "";
+    }
 
     // Builder
     public static class SpellCardBuilder {
@@ -29,6 +46,7 @@ public class SpellCard extends Card {
             this.spell = spell;
             return this;
         }
+
         public SpellCardBuilder setCard(Card card) {
             this.card = card;
             return this;
@@ -37,15 +55,5 @@ public class SpellCard extends Card {
         public SpellCard build() {
             return new SpellCard(card, spell);
         }
-    }
-
-    public Spell getSpell() {
-        return spell;
-    }
-
-    @Override
-    public String toString() {
-        String ans = "";
-        return ans;
     }
 }

@@ -31,4 +31,9 @@ public class Usable extends Item {
     public Spell getSpell() {
         return spell;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

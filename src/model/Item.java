@@ -61,6 +61,11 @@ public class Item extends CollectionItem {
     }
     @Override
     public String toString() {
-        return getName();
+        return "Name : " + getName() + DASH +
+                "Desc : " + getDescription();
+    }
+
+    private String getDescription() {
+        return "";
     }
 }

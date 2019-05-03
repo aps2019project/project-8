@@ -107,4 +107,6 @@ View {
     void showSecondPlayerHasNoMainDeckError();
 
     void showInvalidCoordinatesError();
+
+    void showShopCollection(HashMap<String, CollectionItem> collectionItems);
 }

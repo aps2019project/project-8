@@ -213,4 +213,8 @@ public class Unit extends Card{
     public void setCanAttack(boolean canAttack) {
         this.canAttack = canAttack;
     }
+
+    protected String getSpecialPowerDescription() {
+        return "";
+    }
 }

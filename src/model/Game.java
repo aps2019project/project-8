@@ -2,6 +2,8 @@ package model;
 
 import menus.InGameMenu;
 
+import java.util.Enumeration;
+
 public class Game extends InGameMenu {
     private static final int NUMBER_OF_PLAYERS = 2;
     private static final int[] HERO_INITIAL_ROW = {2, 2};

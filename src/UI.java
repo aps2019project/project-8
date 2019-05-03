@@ -216,7 +216,7 @@ public class UI {
         else if (command.matches(HELP))
             Shop.help();
         else if (command.matches(SHOW_COLLECTION))
-            CollectionMenu.show();
+            Shop.showCollection();
         else if (command.matches(SEARCH_COLLECTION))
             CollectionMenu.search(commandSplit[2]);
         else if (command.matches(SEARCH))
@@ -481,7 +481,7 @@ public class UI {
 
     public static void save() {
         try {
-            FileWriter out = new FileWriter("./save/" + Menu.getAccount().getName() + ".txt", false);
+            FileWriter out = new FileWriter("./save/" + Menu.getAccount().getName() + ".json", false);
             YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
             out.write(yaGson.toJson(Menu.getAccount(), Account.class));
             out.flush();
