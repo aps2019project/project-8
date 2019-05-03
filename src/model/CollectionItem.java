@@ -1,6 +1,7 @@
 package model;
 
 public class CollectionItem {
+    protected static final String DASH = " - ";
     protected int price;
     protected String collectionItemID;
     protected String name;

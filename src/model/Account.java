@@ -62,7 +62,7 @@ public class Account implements Comparable {
     }
 
     public boolean hasThreeItems() {
-        return false;
+        return collection.hasThreeItems();
     }
 
     public Collection getCollection() {

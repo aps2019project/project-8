@@ -7,6 +7,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class Shop extends Menu {
@@ -95,14 +98,30 @@ public class Shop extends Menu {
 
     public static void load() {
         try {
-            for (File file : new File("./gameData/usables").listFiles()) {
+            for (File file : new File("./gameData/heroes/").listFiles()) {
                 YaGson yaGson = new YaGson();
-                collectionItems.add(yaGson.fromJson(new BufferedReader(new FileReader(file)).readLine(), Usable.class));
+                collectionItems.add(yaGson.fromJson(new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())),
+                        StandardCharsets.UTF_8), Hero.class));
             }
-            for (File file : new File("./gameData/heroes").listFiles()) {
+            for (File file : new File("./gameData/Minions/").listFiles()) {
                 YaGson yaGson = new YaGson();
-                collectionItems.add(yaGson.fromJson(new BufferedReader(new FileReader(file)).readLine(), Hero.class));
+                collectionItems.add(yaGson.fromJson(new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())),
+                        StandardCharsets.UTF_8), Minion.class));
+            }
+            for (File file : new File("./gameData/SpellCards/").listFiles()) {
+                YaGson yaGson = new YaGson();
+                collectionItems.add(yaGson.fromJson(new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())),
+                        StandardCharsets.UTF_8), SpellCard.class));
+            }
+            for (File file : new File("./gameData/usables/").listFiles()) {
+                YaGson yaGson = new YaGson();
+                collectionItems.add(yaGson.fromJson(new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())),
+                        StandardCharsets.UTF_8), Usable.class));
             }
         } catch (Exception ignored) {}
+    }
+
+    public static void showCollection() {
+        view.showShopCollection(getAccount().getCollectionItems());
     }
 }

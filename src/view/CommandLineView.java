@@ -3,8 +3,11 @@ package view;
 import model.*;
 
 import java.util.*;
+import java.util.Collection;
 
 public class CommandLineView implements View {
+    private static final String DASH = " - ";
+
     @Override
     public void showAccountCreationError() {
         System.out.println("An account with this name already exists.");
@@ -67,9 +70,7 @@ public class CommandLineView implements View {
             System.out.println("Your collection is empty!");
             return;
         }
-        collectionItems.forEach((collectionItemID, collectionItem) -> {
-            System.out.println(collectionItemID + " -> " + collectionItem.getName());
-        });
+        showCollectionItemsWithPrice(new ArrayList<>(collectionItems.values()), "Sell");
     }
 
     @Override
@@ -198,7 +199,40 @@ public class CommandLineView implements View {
 
     @Override
     public void showShop(ArrayList<CollectionItem> collectionItems) {
-        collectionItems.forEach(System.out::println);
+        showCollectionItemsWithPrice(collectionItems, "Buy");
+    }
+
+    private static void appendTabs(StringBuilder stringBuilder, int d) {
+        for (int i = 0; i < d; i++) {
+            stringBuilder.append("\t");
+        }
+    }
+
+    private void showCollectionItemsWithPrice(ArrayList<CollectionItem> collectionItems, String tradeKind) {
+        System.out.println("Heroes :");
+        int index = 1;
+        for (CollectionItem collectionItem : collectionItems) {
+            if (collectionItem instanceof Hero) {
+                index = showIndexedCollectionItemWithPrice(index, collectionItem, tradeKind);
+            }
+        }
+        System.out.println("Items : ");
+        index = 1;
+        for (CollectionItem collectionItem : collectionItems) {
+            if (collectionItem instanceof Item)
+                index = showIndexedCollectionItemWithPrice(index, collectionItem, tradeKind);
+        }
+        System.out.println("Cards : ");
+        index = 1;
+        for (CollectionItem collectionItem : collectionItems) {
+            if (collectionItem instanceof Card && !(collectionItem instanceof Hero))
+                index = showIndexedCollectionItemWithPrice(index, collectionItem, tradeKind);
+        }
+    }
+
+    private int showIndexedCollectionItemWithPrice(int index, CollectionItem collectionItem, String tradeKind) {
+        System.out.println("\t" + index++ + " : " + collectionItem + DASH + tradeKind + " Cost : " + collectionItem.getPrice());
+        return index;
     }
 
     @Override
@@ -278,5 +312,10 @@ public class CommandLineView implements View {
     @Override
     public void showInvalidCoordinatesError() {
         System.out.println("Coordinates out of range");
+    }
+
+    @Override
+    public void showShopCollection(HashMap<String, CollectionItem> collectionItems) {
+        showCollectionItemsWithPrice(new ArrayList<>(collectionItems.values()), "Sell");
     }
 }

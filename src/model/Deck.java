@@ -130,10 +130,6 @@ public class Deck {
         }
 
         appendTabs(stringBuilder, numberOfTabsOnToString + 1);
-        /*if (deckHero != null) {
-            stringBuilder.append(deckHero.toString());
-            stringBuilder.append("\n");
-        }*/
 
         return stringBuilder.toString();
     }

@@ -20,4 +20,13 @@ public class Hero extends Unit {
     public void setCooldown(int cooldown) {
         this.cooldown = cooldown;
     }
+
+    @Override
+    public String toString() {
+        return "Name : " + name + DASH +
+                "AP : " + getAttackPoint() + DASH +
+                "HP : " + getHitPoint() + DASH +
+                "Class : " + getUnitType() + DASH +
+                "Special power : " + getSpecialPowerDescription() + DASH;
+    }
 }

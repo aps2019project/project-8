@@ -65,4 +65,12 @@ public class Collection {
         return collectionItems.containsKey(collectionItemID);
     }
 
+    public boolean hasThreeItems() {
+        int numberOfItems = 0;
+        for (CollectionItem collectionItem : new ArrayList<>(collectionItems.values())) {
+            if (collectionItem instanceof Item)
+                numberOfItems++;
+        }
+        return numberOfItems == 3;
+    }
 }
