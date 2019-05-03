@@ -1,0 +1,13 @@
+name
+id
+10000000
+Card
+00
+Unit
+11
+22
+1
+no
+no
+55
+Minion

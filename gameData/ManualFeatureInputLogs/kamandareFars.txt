@@ -1,0 +1,13 @@
+kamandareFars
+2001
+300
+Card
+2
+Unit
+6
+4
+2
+no
+no
+7
+Minion
