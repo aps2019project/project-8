@@ -1,0 +1,30 @@
+{
+  "spell": {
+    "spellTarget": "FRIENDLY_UNIT",
+    "buff": {
+      "duration": 0,
+      "holy": 0,
+      "powerHp": 0,
+      "powerAp": 0,
+      "poison": -6,
+      "weaknessAP": 0,
+      "weaknessHP": 0,
+      "stun": false,
+      "disarm": false,
+      "unholy": 0,
+      "dispellable": false
+    },
+    "global": false,
+    "attack": 0,
+    "heal": 0,
+    "dispel": false,
+    "adjacent": false,
+    "canDispel": false,
+    "addMana": 0,
+    "addRange": 0
+  },
+  "description": "this is an empty description!! viva shengdebao!! haha!!!",
+  "price": 0,
+  "collectionItemID": "4004",
+  "name": "nooshdaroo"
+}

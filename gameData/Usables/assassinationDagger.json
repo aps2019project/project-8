@@ -1,0 +1,30 @@
+{
+  "spell": {
+    "spellTarget": "ENEMY_HERO",
+    "buff": {
+      "duration": 1000,
+      "holy": 0,
+      "powerHp": 0,
+      "powerAp": 0,
+      "poison": 1,
+      "weaknessAP": 0,
+      "weaknessHP": 0,
+      "stun": false,
+      "disarm": false,
+      "unholy": 0,
+      "dispellable": false
+    },
+    "global": false,
+    "attack": 0,
+    "heal": 0,
+    "dispel": false,
+    "adjacent": false,
+    "canDispel": false,
+    "addMana": 0,
+    "addRange": 0
+  },
+  "description": "this is an empty description!! viva shengdebao!! haha!!!",
+  "price": 15000,
+  "collectionItemID": "4015",
+  "name": "assassinationDagger"
+}

@@ -1,0 +1,50 @@
+{
+  "hitPoint": 16,
+  "attackPoint": 9,
+  "buffs": [],
+  "flags": 0,
+  "canMove": false,
+  "canAttack": false,
+  "x": 0,
+  "y": 0,
+  "unitType": "MELEE",
+  "specialPower": [
+    {
+      "spellTarget": "RANDOM_ENEMY_UNIT",
+      "buff": {
+        "duration": 1,
+        "holy": 0,
+        "powerHp": 0,
+        "powerAp": 0,
+        "poison": 16,
+        "weaknessAP": 0,
+        "weaknessHP": 0,
+        "stun": false,
+        "disarm": false,
+        "unholy": 0,
+        "dispellable": false
+      },
+      "global": false,
+      "attack": 0,
+      "heal": 0,
+      "dispel": false,
+      "adjacent": false,
+      "canDispel": false,
+      "addMana": 0,
+      "addRange": 0
+    }
+  ],
+  "specialPowerType": [
+    "ON_SPAWN"
+  ],
+  "cardID": "",
+  "canFly": false,
+  "attackTimes": 0,
+  "defenceTimes": 0,
+  "hasAttacked": [],
+  "attackRange": 0,
+  "manaCost": 8,
+  "price": 450,
+  "collectionItemID": "2031",
+  "name": "bahman"
+}

@@ -1,0 +1,23 @@
+{
+  "hitPoint": 9,
+  "attackPoint": 5,
+  "buffs": [],
+  "flags": 0,
+  "canMove": false,
+  "canAttack": false,
+  "x": 0,
+  "y": 0,
+  "unitType": "RANGED",
+  "specialPower": [],
+  "specialPowerType": [],
+  "cardID": "",
+  "canFly": false,
+  "attackTimes": 0,
+  "defenceTimes": 0,
+  "hasAttacked": [],
+  "attackRange": 4,
+  "manaCost": 5,
+  "price": 250,
+  "collectionItemID": "2019",
+  "name": "ezhdehayeAtashandaz"
+}

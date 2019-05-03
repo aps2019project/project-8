@@ -1,0 +1,50 @@
+{
+  "hitPoint": 1,
+  "attackPoint": 1,
+  "buffs": [],
+  "flags": 0,
+  "canMove": false,
+  "canAttack": false,
+  "x": 0,
+  "y": 0,
+  "unitType": "MELEE",
+  "specialPower": [
+    {
+      "spellTarget": "SELF",
+      "buff": {
+        "duration": 1,
+        "holy": 12,
+        "powerHp": 0,
+        "powerAp": 0,
+        "poison": 0,
+        "weaknessAP": 0,
+        "weaknessHP": 0,
+        "stun": false,
+        "disarm": false,
+        "unholy": 0,
+        "dispellable": true
+      },
+      "global": false,
+      "attack": 0,
+      "heal": 0,
+      "dispel": false,
+      "adjacent": false,
+      "canDispel": false,
+      "addMana": 0,
+      "addRange": 0
+    }
+  ],
+  "specialPowerType": [
+    "PASSIVE"
+  ],
+  "cardID": "",
+  "canFly": false,
+  "attackTimes": 0,
+  "defenceTimes": 0,
+  "hasAttacked": [],
+  "attackRange": 5,
+  "manaCost": 3,
+  "price": 650,
+  "collectionItemID": "2037",
+  "name": "fooladZereh"
+}

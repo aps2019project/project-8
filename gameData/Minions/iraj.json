@@ -1,0 +1,23 @@
+{
+  "hitPoint": 6,
+  "attackPoint": 20,
+  "buffs": [],
+  "flags": 0,
+  "canMove": false,
+  "canAttack": false,
+  "x": 0,
+  "y": 0,
+  "unitType": "RANGED",
+  "specialPower": [],
+  "specialPowerType": [],
+  "cardID": "",
+  "canFly": false,
+  "attackTimes": 0,
+  "defenceTimes": 0,
+  "hasAttacked": [],
+  "attackRange": 3,
+  "manaCost": 4,
+  "price": 500,
+  "collectionItemID": "2033",
+  "name": "iraj"
+}

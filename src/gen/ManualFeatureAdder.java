@@ -247,9 +247,14 @@ class ManualFeatureAdder {
     private static Hero addHero(Unit unit) throws Exception {
         ShengdeBaoPrinter.println("***Enter Hero***");
         ShengdeBaoPrinter.addString("Hero: ");
+        int coolDown;
+        {
+            ShengdeBaoPrinter.print("Add cool down:");
+            coolDown = Integer.parseInt(getInput());
+        }
         ShengdeBaoPrinter.println("Hero created!");
         ShengdeBaoPrinter.undo();
-        return new Hero(unit);
+        return new Hero(unit, coolDown);
     }
 
     private static Minion addMinion(Unit unit) throws Exception {

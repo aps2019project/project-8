@@ -1,0 +1,30 @@
+{
+  "spell": {
+    "spellTarget": "ALL_FRIENDLY_UNITS",
+    "buff": {
+      "duration": 1000,
+      "holy": 0,
+      "powerHp": 0,
+      "powerAp": 2,
+      "poison": 0,
+      "weaknessAP": 0,
+      "weaknessHP": 0,
+      "stun": false,
+      "disarm": false,
+      "unholy": 0,
+      "dispellable": false
+    },
+    "global": false,
+    "attack": 0,
+    "heal": 0,
+    "dispel": false,
+    "adjacent": false,
+    "canDispel": false,
+    "addMana": 0,
+    "addRange": 0
+  },
+  "description": "this is an empty description!! viva shengdebao!! haha!!!",
+  "price": 0,
+  "collectionItemID": "4005",
+  "name": "tireDoshakh"
+}

@@ -1,0 +1,23 @@
+{
+  "hitPoint": 16,
+  "attackPoint": 8,
+  "buffs": [],
+  "flags": 0,
+  "canMove": false,
+  "canAttack": false,
+  "x": 0,
+  "y": 0,
+  "unitType": "MELEE",
+  "specialPower": [],
+  "specialPowerType": [],
+  "cardID": "",
+  "canFly": false,
+  "attackTimes": 0,
+  "defenceTimes": 0,
+  "hasAttacked": [],
+  "attackRange": 0,
+  "manaCost": 6,
+  "price": 300,
+  "collectionItemID": "2016",
+  "name": "diveGorazsavar"
+}

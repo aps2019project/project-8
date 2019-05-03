@@ -1,0 +1,50 @@
+{
+  "hitPoint": 14,
+  "attackPoint": 8,
+  "buffs": [],
+  "flags": 0,
+  "canMove": false,
+  "canAttack": false,
+  "x": 0,
+  "y": 0,
+  "unitType": "MELEE",
+  "specialPower": [
+    {
+      "spellTarget": "SELF",
+      "buff": {
+        "duration": 0,
+        "holy": 0,
+        "powerHp": 0,
+        "powerAp": 0,
+        "poison": 0,
+        "weaknessAP": 0,
+        "weaknessHP": 0,
+        "stun": false,
+        "disarm": false,
+        "unholy": 0,
+        "dispellable": false
+      },
+      "global": false,
+      "attack": 0,
+      "heal": 0,
+      "dispel": false,
+      "adjacent": false,
+      "canDispel": false,
+      "addMana": 0,
+      "addRange": 0
+    }
+  ],
+  "specialPowerType": [
+    "ON_DEFEND"
+  ],
+  "cardID": "",
+  "canFly": false,
+  "attackTimes": 0,
+  "defenceTimes": 0,
+  "hasAttacked": [],
+  "attackRange": 0,
+  "manaCost": 7,
+  "price": 400,
+  "collectionItemID": "2032",
+  "name": "ashkboos"
+}

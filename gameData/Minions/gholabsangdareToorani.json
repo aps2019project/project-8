@@ -1,0 +1,23 @@
+{
+  "hitPoint": 4,
+  "attackPoint": 2,
+  "buffs": [],
+  "flags": 0,
+  "canMove": false,
+  "canAttack": false,
+  "x": 0,
+  "y": 0,
+  "unitType": "RANGED",
+  "specialPower": [],
+  "specialPowerType": [],
+  "cardID": "",
+  "canFly": false,
+  "attackTimes": 0,
+  "defenceTimes": 0,
+  "hasAttacked": [],
+  "attackRange": 7,
+  "manaCost": 1,
+  "price": 600,
+  "collectionItemID": "2008",
+  "name": "gholabsangdareToorani"
+}
