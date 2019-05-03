@@ -3,15 +3,13 @@ package model;
 import java.util.Iterator;
 
 public class Item extends CollectionItem {
-    protected String description;
     protected Spell spell;
     protected int addMana;
     protected int addManaDuration;
 
     // Main constructor
-    public Item(CollectionItem collectionItem, String description, Spell spell, int addMana, int addManaDuration) {
+    public Item(CollectionItem collectionItem, Spell spell, int addMana, int addManaDuration) {
         super(collectionItem);
-        this.description = description;
         this.spell = spell;
         this.addMana = addMana;
         this.addManaDuration = addManaDuration;
@@ -36,7 +34,6 @@ public class Item extends CollectionItem {
         int addMana = 0;
         int addManaDuration = 0;
         CollectionItem collectionItem;
-        String description = "this is an empty description!! viva shengdebao!! haha!!!";
 
         public ItemBuilder setSpell(Spell spell) {
             this.spell = spell;
@@ -53,18 +50,13 @@ public class Item extends CollectionItem {
             return this;
         }
 
-        public ItemBuilder setDescription(String description) {
-            this.description = description;
-            return this;
-        }
-
         public ItemBuilder setCollectionItem(CollectionItem collectionItem) {
             this.collectionItem = collectionItem;
             return this;
         }
 
         public Item build() {
-            return new Item(collectionItem, description, spell, addMana, addManaDuration);
+            return new Item(collectionItem, spell, addMana, addManaDuration);
         }
     }
     @Override

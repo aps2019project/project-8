@@ -258,15 +258,10 @@ class ManualFeatureAdder {
 
     private static Item addItem(CollectionItem collectionItem) throws Exception {
         ShengdeBaoPrinter.println("***Enter Item***");
-        String description;
         Spell spell;
         int addMana, addManaDuration;
 
         ShengdeBaoPrinter.addString("Item: ");
-        {
-            ShengdeBaoPrinter.println("Enter item descriprion");
-            description = getInput();
-        }
         {
             ShengdeBaoPrinter.println("Enter Spell:");
             spell = addSpell();
@@ -281,7 +276,6 @@ class ManualFeatureAdder {
         }
         ShengdeBaoPrinter.undo();
         return new Item.ItemBuilder()
-                .setDescription(description)
                 .setSpell(spell)
                 .setAddMana(addMana)
                 .setAddManaDuration(addManaDuration)
@@ -309,11 +303,17 @@ class ManualFeatureAdder {
         ShengdeBaoPrinter.println("***Enter collection Item***");
         String name, collectionItemID;
         int price;
+        String description;
+
         ShengdeBaoPrinter.addString("Collection Item: ");
 
         {
             ShengdeBaoPrinter.println("Enter collection item name");
             name = getInput();
+        }
+        {
+            ShengdeBaoPrinter.println("Enter description (empty for none)");
+            description = getInput();
         }
         {
             ShengdeBaoPrinter.println("Enter collection item id");
@@ -325,7 +325,7 @@ class ManualFeatureAdder {
         }
         ShengdeBaoPrinter.println("Collection item created!");
         ShengdeBaoPrinter.undo();
-        return new CollectionItem(price, collectionItemID, name);
+        return new CollectionItem(price, collectionItemID, name, description);
     }
 
     private static Card addCard(CollectionItem collectionItem) throws Exception {
