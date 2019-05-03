@@ -1,0 +1,20 @@
+{
+  "unitType": "RANGED",
+  "hitPoint": 6,
+  "attackPoint": 4,
+  "canFly": false,
+  "attackRange": 7,
+  "buffs": [],
+  "flags": 0,
+  "canMove": false,
+  "canAttack": false,
+  "x": 0,
+  "y": 0,
+  "attackTimes": 0,
+  "defenceTimes": 0,
+  "hasAttacked": [],
+  "manaCost": 2,
+  "price": 300,
+  "collectionItemID": "2001",
+  "name": "kamandareFars"
+}

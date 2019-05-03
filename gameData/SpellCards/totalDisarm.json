@@ -1,0 +1,25 @@
+{
+  "spell": {
+    "targetType": "UNIT",
+    "targetArea": "SELECTED_1_1_GRID",
+    "targetUnit": "ENEMY_UNIT",
+    "targetUnitType": "ALL",
+    "numberOfRandomTargets": 100,
+    "buffs": [
+      {
+        "duration": 1000000,
+        "holy": 0,
+        "effectHp": 0,
+        "effectAp": 0,
+        "stun": false,
+        "disarm": true,
+        "dispellable": true
+      }
+    ],
+    "canDispel": false
+  },
+  "manaCost": 0,
+  "price": 1000,
+  "collectionItemID": "1001",
+  "name": "totalDisarm"
+}

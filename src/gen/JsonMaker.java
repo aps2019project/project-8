@@ -22,6 +22,13 @@ class JsonMaker {
     }
 
     public static void main(String[] args) {
+        File logFile = new File("./gameData/ManualFeatureInputLogs/tempLog.txt");
+        try {
+            logFile.delete();
+        }catch (Exception exception) {
+            System.out.println("tempLog.txt didn't exist to delete");
+        }
+
         deleteAll("./gameData/Usables/");
         deleteAll("./gameData/Heros/");
         deleteAll("./gameData/Minions/");

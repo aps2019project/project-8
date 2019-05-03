@@ -301,21 +301,25 @@ class ManualFeatureAdder {
 
     private static Item addItem(CollectionItem collectionItem) throws Exception {
         ShengdeBaoPrinter.println("***Enter Item***");
-        Spell spell;
-        int addMana, addManaDuration;
+        Spell spell = null;
+        int addMana = 0, addManaDuration = 0;
 
         ShengdeBaoPrinter.addString("Item: ");
         {
-            ShengdeBaoPrinter.println("Enter Spell:");
-            spell = addSpell();
-        }
-        {
-            ShengdeBaoPrinter.println("Enter add Mana:");
-            addMana = Integer.parseInt(getInput());
-        }
-        {
-            ShengdeBaoPrinter.println("Enter add Mana duration:");
-            addManaDuration = Integer.parseInt(getInput());
+            String response = getMultipleChoice("Does it cast a spell on something (unit o cell)?", "yes", "no");
+            if (response.equals("yes")) {
+                ShengdeBaoPrinter.println("Enter Spell:");
+                spell = addSpell();
+            } else {
+                {
+                    ShengdeBaoPrinter.println("Enter add Mana:");
+                    addMana = Integer.parseInt(getInput());
+                }
+                {
+                    ShengdeBaoPrinter.println("Enter add Mana duration:");
+                    addManaDuration = Integer.parseInt(getInput());
+                }
+            }
         }
         ShengdeBaoPrinter.undo();
         return new Item.ItemBuilder()
@@ -363,7 +367,7 @@ class ManualFeatureAdder {
             collectionItemID = getInput();
         }
         {
-            ShengdeBaoPrinter.println("Enter collection item price");
+            ShengdeBaoPrinter.println("Enter collection item price (0 if it is collectible)");
             price = Integer.parseInt(getInput());
         }
         ShengdeBaoPrinter.println("Collection item created!");

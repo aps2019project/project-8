@@ -1,0 +1,9 @@
+taajeDanayi
+adds mana for first 3 turns
+4001
+300
+Item
+no
+1
+3
+Usable

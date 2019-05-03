@@ -1,0 +1,27 @@
+{
+  "spell": {
+    "targetType": "UNIT",
+    "targetArea": "ALL_OF_THE_MAP",
+    "targetUnit": "UNIT",
+    "targetUnitType": "ALL",
+    "numberOfRandomTargets": 1,
+    "buffs": [
+      {
+        "duration": 1000000,
+        "holy": 0,
+        "effectHp": 6,
+        "effectAp": 0,
+        "stun": false,
+        "disarm": false,
+        "dispellable": false
+      }
+    ],
+    "canDispel": false
+  },
+  "addMana": 0,
+  "addManaDuration": 0,
+  "price": 0,
+  "collectionItemID": "5001",
+  "name": "nooshDaroo",
+  "description": "increase random unit hp by 6"
+}

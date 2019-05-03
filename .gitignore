@@ -3,6 +3,9 @@
 #directories
 save/
 
+# log files
+gameData/ManualFeatureInputLogs/temLog.txt
+
 ### Java template
 # Compiled class file
 *.class
@@ -83,7 +86,5 @@ fabric.properties
 
 .idea/
 project-8.iml
-/gameData/cards/
-gameData/cards/
 /src/UITest.java
 src/UITest.java
