@@ -3,20 +3,17 @@ package model;
 import java.util.ArrayList;
 
 public class Spell {
-    SpellTarget spellTarget;
     protected Buff[] buffs;
     private boolean canDispel;
 
     // Main Constructor
-    public Spell(SpellTarget spellTarget,Buff[] buffs,boolean canDispel) {
-        this.spellTarget = spellTarget;
+    public Spell(Buff[] buffs,boolean canDispel) {
         this.buffs = buffs;
         this.canDispel = canDispel;
     }
 
     // Copy constructor
     public Spell(Spell spell) {
-        this.spellTarget = spell.spellTarget;
         this.buffs = spell.buffs;
         this.canDispel = spell.canDispel;
     }
@@ -26,7 +23,6 @@ public class Spell {
 
 
     public static class SpellBuilder {
-        SpellTarget spellTarget = null;
         Buff[] buffs;
         boolean canDispel = false;
 
@@ -35,10 +31,6 @@ public class Spell {
             return this;
         }
 
-        public SpellBuilder setSpellTarget(SpellTarget spellTarget) {
-            this.spellTarget = spellTarget;
-            return this;
-        }
 
         public SpellBuilder setCanDispel(boolean canDispel) {
             this.canDispel = canDispel;
@@ -46,7 +38,7 @@ public class Spell {
         }
 
         public Spell build() {
-            return new Spell(spellTarget, buffs, canDispel);
+            return new Spell(buffs, canDispel);
         }
     }
 
