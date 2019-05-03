@@ -3,12 +3,10 @@ package model;
 import java.util.Iterator;
 
 public class Collectible extends Item {
-    Spell spell;
 
     // Main constructor
-    public Collectible(Item item, Spell spell) {
+    public Collectible(Item item) {
         super(item);
-        this.spell = spell;
     }
 
     // Copy constructor
@@ -25,20 +23,14 @@ public class Collectible extends Item {
     // Builder
     public static class CollectibleBuilder{
         private Item item;
-        private Spell spell;
 
         public CollectibleBuilder setItem(Item item) {
             this.item = item;
             return this;
         }
 
-        public CollectibleBuilder setSpell(Spell spell) {
-            this.spell = spell;
-            return this;
-        }
-
         public Collectible build() {
-            return new Collectible(item, spell);
+            return new Collectible(item);
         }
     }
 
