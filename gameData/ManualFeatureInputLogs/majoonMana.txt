@@ -1,0 +1,20 @@
+majoonMana
+4008
+0
+Item
+adds 3 to manas next turn
+Collectible
+22
+0
+0
+0
+0
+0
+0
+0
+0
+no
+no
+no
+none
+none

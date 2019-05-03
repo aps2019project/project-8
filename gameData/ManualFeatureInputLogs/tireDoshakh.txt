@@ -1,0 +1,20 @@
+tireDoshakh
+4005
+0
+Item
+increases attack power of a random ranged or hybrid unit
+Collectible
+12
+1000
+0
+0
+2
+0
+0
+0
+0
+no
+no
+no
+none
+none

@@ -1,0 +1,21 @@
+taajeDanayi
+4001
+300
+Item
+adds to mana in 3 first turns
+Usable
+22
+0
+0
+0
+0
+0
+0
+0
+0
+
+no
+no
+no
+none
+none

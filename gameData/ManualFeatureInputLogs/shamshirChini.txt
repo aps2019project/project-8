@@ -5,7 +5,7 @@ Item
 adds 5 to attack power of melee units
 Collectible
 3
-0
+1000
 0
 0
 5

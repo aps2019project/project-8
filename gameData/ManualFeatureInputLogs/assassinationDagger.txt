@@ -1,0 +1,20 @@
+assassinationDagger
+4015
+15000
+Item
+when inserting a friendly unit hits oponent's hero by 1 unit
+Usable
+4
+1000
+0
+0
+0
+1
+0
+0
+0
+no
+no
+no
+none
+none

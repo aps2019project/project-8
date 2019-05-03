@@ -1,0 +1,20 @@
+poisonousDagger
+4016
+7000
+Item
+activates a posion buff for one turn on a random enemy unit when a friendly unit is attacking
+Usable
+19
+1
+0
+0
+0
+1
+0
+0
+0
+no
+no
+yes
+none
+none

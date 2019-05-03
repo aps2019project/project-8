@@ -1,0 +1,20 @@
+nooshdaroo
+4004
+0
+Item
+adds 6 health points to a random unit
+Collectible
+3
+0
+0
+0
+0
+-6
+0
+0
+00
+no
+no
+no
+none
+none

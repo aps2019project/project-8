@@ -1,0 +1,20 @@
+terrorHood
+40012
+5000
+Item
+when attacking a weakness buff with power 2 is actived on an oponent
+Usable
+19
+1
+0
+0
+0
+0
+2
+0
+0
+no
+no
+no
+none
+none

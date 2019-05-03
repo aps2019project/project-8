@@ -1,0 +1,20 @@
+pareSimorgh
+4006
+3500
+Item
+if opoenent hero is ranged or hybrid decreases its attack power by 2
+Usable
+4
+1000
+0
+0
+0
+0
+2
+0
+0
+no
+no
+no
+none
+none
