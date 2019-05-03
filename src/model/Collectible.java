@@ -16,6 +16,8 @@ public class Collectible extends Item {
         this.name = collectible.name;
         this.description = collectible.description;
         this.spell = collectible.spell;
+        this.addMana = collectible.addMana;
+        this.addManaDuration = collectible.addManaDuration;
     }
 
     protected Collectible() {}

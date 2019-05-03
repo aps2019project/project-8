@@ -13,6 +13,8 @@ public class Usable extends Item {
         this.name = usable.name;
         this.description = usable.description;
         this.spell = usable.spell;
+        this.addMana = usable.addMana;
+        this.addManaDuration = usable.addManaDuration;
     }
 
     // Builder
