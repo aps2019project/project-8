@@ -1,0 +1,10 @@
+kingWisdom
+adds mana by 1 for all turns
+4014
+9000
+Item
+no
+yes
+1
+1000000
+Usable

@@ -1,0 +1,25 @@
+majooneRooyinTani
+adds 10 holy buffs to a random unit for 2 turns
+4009
+0
+Item
+yes
+2
+3
+1
+3
+yes
+1
+1
+2
+10
+0
+0
+0
+no
+no
+yes
+none
+no
+none
+Collectible
