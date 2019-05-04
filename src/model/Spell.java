@@ -3,48 +3,6 @@ package model;
 public class Spell {
 
     public static final int MAX_GOALS = 100;
-
-    public boolean isMultiplied() {
-        return multiplied;
-    }
-
-    public void setMultiplied(boolean multiplied) {
-        this.multiplied = multiplied;
-    }
-
-    public enum TargetType {
-        CELL,
-        UNIT
-    }
-    public static enum TargetArea {
-        SELECTED_CELL,
-        SELECTED_X_Y_GRID,
-        ALL_OF_THE_MAP,
-        ADJACENT_8,
-        ADJACENT_4,
-        SAME_ROW
-    }
-    public enum TargetUnit {
-        UNIT,
-        ENEMY_UNIT,
-        FRIENDLY_UNIT,
-        FRIENDLY_MINION,
-        FRIENDLY_HERO,
-        ENEMY_MINION,
-        ENEMY_HERO,
-        SELF
-    }
-
-    public enum TargetUnitType {
-        ALL,
-        MELEE,
-        RANGED,
-        HYBRID,
-        MELEE_RANGED,
-        MELEE_HYBRID,
-        RANGED_HYBRID
-    }
-
     private TargetType targetType;
     private TargetArea targetArea;
     private TargetUnit targetUnit;
@@ -55,10 +13,10 @@ public class Spell {
     private Buff[] buffs;
     private boolean canDispel;
     private boolean multiplied = false;
-
+    private boolean ignoreHoly = false;
     // Main Constructor
     public Spell(TargetType targetType, TargetArea targetArea, TargetUnit targetUnit, TargetUnitType targetUnitType,
-                 int numberOfRandomTargets, int gridX, int gridY, Buff[] buffs,boolean canDispel) {
+                 int numberOfRandomTargets, int gridX, int gridY, Buff[] buffs, boolean canDispel) {
         this.targetType = targetType;
         this.targetArea = targetArea;
         this.targetUnit = targetUnit;
@@ -69,7 +27,6 @@ public class Spell {
         this.buffs = buffs;
         this.canDispel = canDispel;
     }
-
     // Copy constructor
     public Spell(Spell spell) {
         this.targetType = spell.targetType;
@@ -82,10 +39,71 @@ public class Spell {
         this.buffs = spell.buffs;
         this.canDispel = spell.canDispel;
     }
-
     protected Spell() {
     }
 
+    public boolean isMultiplied() {
+        return multiplied;
+    }
+
+    public void setMultiplied(boolean multiplied) {
+        this.multiplied = multiplied;
+    }
+
+    public boolean isIgnoreHoly() {
+        return ignoreHoly;
+    }
+
+    public void setIgnoreHoly(boolean ignoreHoly) {
+        this.ignoreHoly = ignoreHoly;
+    }
+
+    public void cast(int x, int y, Map map, Player player) {
+
+    }
+
+    @Override
+    public String toString() {
+        String ans = new String("");
+        return ans;
+    }
+
+    public enum TargetType {
+        CELL,
+        UNIT
+    }
+
+    public static enum TargetArea {
+        SELECTED_CELL,
+        SELECTED_X_Y_GRID,
+        ALL_OF_THE_MAP,
+        ADJACENT_8,
+        ADJACENT_4,
+        SAME_ROW
+    }
+
+
+    public enum TargetUnit {
+        UNIT,
+        ENEMY_UNIT,
+        FRIENDLY_UNIT,
+        FRIENDLY_MINION,
+        FRIENDLY_HERO,
+        ENEMY_MINION,
+        ENEMY_HERO,
+        SELF
+    }
+
+
+    public enum TargetUnitType {
+        ALL,
+        MELEE,
+        RANGED,
+        HYBRID,
+        MELEE_RANGED,
+        MELEE_HYBRID,
+        RANGED_HYBRID
+    }
 
     public static class SpellBuilder {
         private TargetType targetType;
@@ -147,17 +165,6 @@ public class Spell {
         public Spell build() {
             return new Spell(targetType, targetArea, targetUnit, targetUnitType, numberOfRandomTargets, gridX, gridY, buffs, canDispel);
         }
-    }
-
-
-    public void cast(int x, int y, Map map, Player player) {
-
-    }
-
-    @Override
-    public String toString() {
-        String ans = new String("");
-        return ans;
     }
 }
 

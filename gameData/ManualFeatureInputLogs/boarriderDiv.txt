@@ -1,0 +1,14 @@
+boarriderDiv
+
+2016
+300
+Card
+6
+Unit
+16
+8
+1
+no
+no
+0
+Minion
