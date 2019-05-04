@@ -1,12 +1,12 @@
-arzhangDiv
-arzhang khube
-2040
+shahGhoul
+has combo and looks cool!
+2039
 600
 Card
-3
+5
 Unit
-6
-6
+10
+4
 1
 yes
 7
