@@ -4,6 +4,14 @@ public class Spell {
 
     public static final int MAX_GOALS = 100;
 
+    public boolean isMultiplied() {
+        return multiplied;
+    }
+
+    public void setMultiplied(boolean multiplied) {
+        this.multiplied = multiplied;
+    }
+
     public enum TargetType {
         CELL,
         UNIT
@@ -46,6 +54,7 @@ public class Spell {
     private int gridY;
     private Buff[] buffs;
     private boolean canDispel;
+    private boolean multiplied = false;
 
     // Main Constructor
     public Spell(TargetType targetType, TargetArea targetArea, TargetUnit targetUnit, TargetUnitType targetUnitType,

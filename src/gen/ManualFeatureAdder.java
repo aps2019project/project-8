@@ -201,6 +201,10 @@ class ManualFeatureAdder {
         String command = getInput();
         while (!command.matches("none")) {
             command = getInput();
+            if (command.matches("multiplied")) {
+                spell.setMultiplied(true);
+                ShengdeBaoPrinter.println("multiplied!");
+            }
         }
 
         ShengdeBaoPrinter.println("spell created!");
