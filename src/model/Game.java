@@ -151,6 +151,11 @@ public class Game extends InGameMenu {
         selectedUnit = unit;
     }
 
+    boolean inMap(int x, int y) {
+        return x >= 0 && x < map.getNumberOfRows() && y >= 0 && y < map.getNumberOfColumns();
+    }
+
+
     // inserts card with name [cardName] from player's hand and puts it in cell ([x], [y])
     void insertCard(String cardName, int x, int y) {
         Player player = getCurrentPlayer();
@@ -159,7 +164,7 @@ public class Game extends InGameMenu {
             view.showInvalidCardError();
             return;
         }
-        if (x < 0 || x >= Map.NUMBER_OF_COLUMNS || y < 0 || y >= Map.NUMBER_OF_ROWS) {
+        if (inMap(x, y)) {
             view.showInvalidCoordinatesError();
             return;
         }
@@ -172,6 +177,9 @@ public class Game extends InGameMenu {
             view.showNotEnoughManaError();
             return;
         }
+        player.decreaseMana(card.getManaCost());
+
+
         grid[x][y].setContent(card); // finally put the card on cell ([x], [y])
         view.logMessage(cardName + " with " + card.getID() + " inserted to " + "(" + x + "," + y + ")"); // log success message
     }
