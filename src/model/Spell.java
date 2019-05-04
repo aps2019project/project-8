@@ -22,7 +22,8 @@ public class Spell {
         ALL_OF_THE_MAP,
         ADJACENT_8,
         ADJACENT_4,
-        SAME_ROW
+        SAME_ROW,
+        ADJACENT_9
     }
     public enum TargetUnit {
         UNIT,
@@ -160,4 +161,3 @@ public class Spell {
         return ans;
     }
 }
-
