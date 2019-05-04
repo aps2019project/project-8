@@ -339,8 +339,8 @@ class ManualFeatureAdder {
                     ShengdeBaoPrinter.println("Enter number of special powers to be added:");
                     int numberOfSpecialPowers = Integer.parseInt(getInput());
                     for (int i = 0; i < numberOfSpecialPowers; i++) {
-                        getSpecialPowerType(specialPowerType);
                         getSpecialPowerTarget(specialPowerTarget);
+                        getSpecialPowerType(specialPowerType);
                         {
                             ShengdeBaoPrinter.println("Enter special power (spell)");
                             specialPower.add(addSpell());
