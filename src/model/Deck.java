@@ -69,9 +69,9 @@ public class Deck {
 
     public boolean hasCollectionItem(CollectionItem collectionItem) {
         if (collectionItem instanceof Hero) {
-            return deckHero != null && !collectionItem.getName().equals(deckHero.getName());
+            return deckHero != null && collectionItem.getName().equals(deckHero.getName());
         } else if (collectionItem instanceof Item) {
-            return deckItem != null && !collectionItem.getName().equals(deckItem.getName());
+            return deckItem != null && collectionItem.getName().equals(deckItem.getName());
         } else {
             for (Card card : cards) {
                 if (card.getName().equals(collectionItem.getName())) {

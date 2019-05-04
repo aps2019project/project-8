@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Iterator;
-
 public class Item extends CollectionItem {
     protected Spell spell;
     protected int addMana;
@@ -63,9 +61,5 @@ public class Item extends CollectionItem {
     public String toString() {
         return "Name : " + getName() + DASH +
                 "Desc : " + getDescription();
-    }
-
-    private String getDescription() {
-        return "";
     }
 }

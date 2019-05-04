@@ -1,12 +1,10 @@
 package model;
 
-import java.util.ArrayList;
-
 public class Spell {
 
     public static final int MAX_GOALS = 100;
 
-    public static enum TargetType {
+    public enum TargetType {
         CELL,
         UNIT
     }
@@ -17,7 +15,7 @@ public class Spell {
         ADJACENT_8,
         ADJACENT_4
     }
-    public static enum TargetUnit {
+    public enum TargetUnit {
         UNIT,
         ENEMY_UNIT,
         FRIENDLY_UNIT,
@@ -28,7 +26,7 @@ public class Spell {
         SELF
     }
 
-    public static enum TargetUnitType {
+    public enum TargetUnitType {
         ALL,
         MELEE,
         RANGED,

@@ -23,22 +23,23 @@ public class CollectionItem {
         this.description = collectionItem.description;
     }
 
-    protected CollectionItem() {}
+    protected CollectionItem() {
+    }
+
+    public String getDescription() {
+        return description;
+    }
 
     public void setCollectionItemID(String collectionItemID) {
         this.collectionItemID = collectionItemID;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getPrice() {
         return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public String getID() {
@@ -51,6 +52,10 @@ public class CollectionItem {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

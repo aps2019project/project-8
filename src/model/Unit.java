@@ -215,6 +215,6 @@ public class Unit extends Card{
     }
 
     protected String getSpecialPowerDescription() {
-        return "";
+        return getDescription();
     }
 }

@@ -33,10 +33,6 @@ public class SpellCard extends Card {
                 "Desc : " + getDescription();
     }
 
-    private String getDescription() {
-        return "";
-    }
-
     // Builder
     public static class SpellCardBuilder {
         private Spell spell = null;

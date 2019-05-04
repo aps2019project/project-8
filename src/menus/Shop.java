@@ -98,7 +98,7 @@ public class Shop extends Menu {
 
     public static void load() {
         try {
-            for (File file : new File("./gameData/heroes/").listFiles()) {
+            for (File file : new File("./gameData/Heroes/").listFiles()) {
                 YaGson yaGson = new YaGson();
                 collectionItems.add(yaGson.fromJson(new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())),
                         StandardCharsets.UTF_8), Hero.class));

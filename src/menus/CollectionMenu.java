@@ -105,7 +105,6 @@ public class CollectionMenu extends Menu {
         if (deck == null || collectionItem == null) {
             return;
         }
-
         if (!deck.hasCollectionItem(collectionItem)) {
             view.showDeckHasNoSuchCollectionItemError();
             return;
