@@ -1,7 +1,7 @@
 package model;
 
 import java.util.ArrayList;
-
+// SmsS is great
 public class AI {
     private static ArrayList<AI> listOfAIs = new ArrayList<>();
     private Deck deck = new Deck("");

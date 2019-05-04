@@ -203,6 +203,9 @@ class ManualFeatureAdder {
             if (command.matches("multiplied")) {
                 spell.setMultiplied(true);
                 ShengdeBaoPrinter.println("multiplied!");
+            } else if (command.matches("ignoreHoly")) {
+                spell.setIgnoreHoly(true);
+                ShengdeBaoPrinter.println("ignoreHoly");
             }
         }
 

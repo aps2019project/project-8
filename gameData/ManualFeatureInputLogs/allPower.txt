@@ -1,4 +1,4 @@
-alllPower
+allPower
 Gives all friendly units a permanent 2AP power buff
 1015
 2000
