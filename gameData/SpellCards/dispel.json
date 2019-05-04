@@ -12,5 +12,6 @@
   "manaCost": 0,
   "price": 2100,
   "collectionItemID": "1012",
-  "name": "dispel"
+  "name": "dispel",
+  "description": "Purges the selcted unit"
 }

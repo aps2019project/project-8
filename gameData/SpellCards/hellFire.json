@@ -22,5 +22,6 @@
   "manaCost": 3,
   "price": 600,
   "collectionItemID": "1006",
-  "name": "hellFire"
+  "name": "hellFire",
+  "description": "Imbues the selected cells with fire for 2 turns"
 }

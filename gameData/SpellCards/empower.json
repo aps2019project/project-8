@@ -24,5 +24,6 @@
   "manaCost": 1,
   "price": 250,
   "collectionItemID": "1003",
-  "name": "empower"
+  "name": "empower",
+  "description": "Adds 2 APs to a unit"
 }

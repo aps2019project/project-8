@@ -24,5 +24,6 @@
   "manaCost": 1,
   "price": 1000,
   "collectionItemID": "1017",
-  "name": "weakening"
+  "name": "weakening",
+  "description": "Casts a 4AP weakness on an enemy minion"
 }

@@ -15,6 +15,7 @@ public class Card extends CollectionItem {
         this.collectionItemID = card.collectionItemID;
         this.name = card.name;
         this.manaCost = card.manaCost;
+        this.description = card.description;
     }
 
     protected Card() {}

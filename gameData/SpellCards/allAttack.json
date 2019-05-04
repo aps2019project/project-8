@@ -24,5 +24,6 @@
   "manaCost": 4,
   "price": 1500,
   "collectionItemID": "1016",
-  "name": "allAttack"
+  "name": "allAttack",
+  "description": "Hits all enemy units in a column with 6 AP"
 }

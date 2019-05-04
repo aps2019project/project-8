@@ -24,5 +24,6 @@
   "manaCost": 1,
   "price": 1200,
   "collectionItemID": "1020",
-  "name": "shock"
+  "name": "shock",
+  "description": "Stuns an enemy for 2 turns"
 }

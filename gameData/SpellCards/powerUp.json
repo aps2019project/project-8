@@ -24,5 +24,6 @@
   "manaCost": 2,
   "price": 2500,
   "collectionItemID": "1014",
-  "name": "powerUp"
+  "name": "powerUp",
+  "description": "6 AP power buffs"
 }

@@ -3,6 +3,7 @@ package gen;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import model.*;
+import model.Collection;
 import view.ShengdeBaoPrinter;
 
 import java.io.*;
@@ -545,7 +546,8 @@ class ManualFeatureAdder {
         switch (response) {
             case "Card":
                 collectionItem = addCard(collectionItem);
-                return askCard((Card) collectionItem);
+                collectionItem = askCard((Card) collectionItem);
+                return collectionItem;
             case "Item":
                 collectionItem = addItem(collectionItem);
                 return askItem((Item) collectionItem);

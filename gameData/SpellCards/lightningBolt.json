@@ -24,5 +24,6 @@
   "manaCost": 2,
   "price": 1250,
   "collectionItemID": "1007",
-  "name": "lightningBolt"
+  "name": "lightningBolt",
+  "description": "Hits the enemy hero with 8 APs"
 }

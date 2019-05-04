@@ -24,5 +24,6 @@
   "manaCost": 0,
   "price": 650,
   "collectionItemID": "1009",
-  "name": "madness"
+  "name": "madness",
+  "description": "For 3 turns, adds 4 APs, but disarms"
 }

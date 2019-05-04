@@ -24,5 +24,6 @@
   "manaCost": 0,
   "price": 1000,
   "collectionItemID": "1001",
-  "name": "totalDisarm"
+  "name": "totalDisarm",
+  "description": "disarms till the end"
 }
