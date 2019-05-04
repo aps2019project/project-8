@@ -23,7 +23,8 @@ public class Spell {
         ADJACENT_8,
         ADJACENT_4,
         SAME_ROW,
-        ADJACENT_9
+        ADJACENT_9,
+        DISTANCE_2
     }
     public enum TargetUnit {
         UNIT,
