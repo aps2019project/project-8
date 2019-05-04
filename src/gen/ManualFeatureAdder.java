@@ -543,7 +543,7 @@ class ManualFeatureAdder {
             YaGson yaGson = new  YaGsonBuilder().setPrettyPrinting().create();
             FileWriter out;
             if (collectionItem instanceof Hero) {
-                out = new FileWriter("./gameData/Heros/" + collectionItem.getName() + ".json", false);
+                out = new FileWriter("./gameData/Heroes/" + collectionItem.getName() + ".json", false);
                 out.write(yaGson.toJson(collectionItem, Hero.class));
             } else if (collectionItem instanceof SpellCard) {
                 out = new FileWriter("./gameData/SpellCards/" + collectionItem.getName() + ".json", false);

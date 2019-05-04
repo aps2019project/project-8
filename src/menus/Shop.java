@@ -113,7 +113,7 @@ public class Shop extends Menu {
                 collectionItems.add(yaGson.fromJson(new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())),
                         StandardCharsets.UTF_8), SpellCard.class));
             }
-            for (File file : new File("./gameData/usables/").listFiles()) {
+            for (File file : new File("./gameData/Usables/").listFiles()) {
                 YaGson yaGson = new YaGson();
                 collectionItems.add(yaGson.fromJson(new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())),
                         StandardCharsets.UTF_8), Usable.class));

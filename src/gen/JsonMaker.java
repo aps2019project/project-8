@@ -1,8 +1,6 @@
 package gen;
 
-import javax.print.attribute.standard.NumberUp;
 import java.io.File;
-import java.util.Iterator;
 
 class JsonMaker {
 
@@ -30,14 +28,19 @@ class JsonMaker {
         }
 
         deleteAll("./gameData/Usables/");
-        deleteAll("./gameData/Heros/");
+        deleteAll("./gameData/Heroes/");
         deleteAll("./gameData/Minions/");
         deleteAll("./gameData/SpellCards/");
-        deleteAll("./gameData/Collectibles");
+        deleteAll("./gameData/Collectibles/");
         File dir = new File("./gameData/ManualFeatureInputLogs/");
         File[] directoryListing = dir.listFiles();
         if (directoryListing != null) {
             for (File child : directoryListing) {
+
+                //
+                System.err.println(child.getName());
+                //
+
                 ManualFeatureAdder.main(new String[]{"java", "ManualFeatureAdder", child.toString()});
             }
         }

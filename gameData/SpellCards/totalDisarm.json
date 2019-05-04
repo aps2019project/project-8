@@ -1,14 +1,17 @@
 {
   "spell": {
     "targetType": "UNIT",
-    "targetArea": "SELECTED_1_1_GRID",
+    "targetArea": "SELECTED_X_Y_GRID",
     "targetUnit": "ENEMY_UNIT",
     "targetUnitType": "ALL",
     "numberOfRandomTargets": 100,
+    "gridX": 1,
+    "gridY": 1,
     "buffs": [
       {
         "duration": 1000000,
         "holy": 0,
+        "poison": 0,
         "effectHp": 0,
         "effectAp": 0,
         "stun": false,
@@ -21,6 +24,5 @@
   "manaCost": 0,
   "price": 1000,
   "collectionItemID": "1001",
-  "name": "totalDisarm",
-  "description": "Disarms till the end."
+  "name": "totalDisarm"
 }

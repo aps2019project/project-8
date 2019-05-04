@@ -75,7 +75,7 @@ public class CollectionMenu extends Menu {
             return;
         }
 
-        if (deck.hasCollectionItem(collectionItem)) {
+        if (deck.hasCollectionItem(collectionItemID)) {
             view.showDeckAlreadyHasCollectionItemError();
             return;
         }
@@ -95,7 +95,7 @@ public class CollectionMenu extends Menu {
             return;
         }
 
-        deck.addCollectionItem(collectionItem);
+        deck.addCollectionItem(collectionItem, collectionItemID);
         view.alertCollectionItemAddedToDeck();
     }
 
@@ -105,12 +105,12 @@ public class CollectionMenu extends Menu {
         if (deck == null || collectionItem == null) {
             return;
         }
-        if (!deck.hasCollectionItem(collectionItem)) {
+        if (!deck.hasCollectionItem(collectionItemID)) {
             view.showDeckHasNoSuchCollectionItemError();
             return;
         }
 
-        deck.removeCollectionItem(collectionItem);
+        deck.removeCollectionItem(collectionItem, collectionItemID);
         view.alertCollectionItemRemovedFromDeck();
     }
 

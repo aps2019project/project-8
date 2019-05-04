@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Queue;
 
 public class Deck {
@@ -10,6 +11,7 @@ public class Deck {
     private Hero deckHero = null;
     private String deckName = null;
     private int numberOfTabsOnToString = 0;
+    private ArrayList<String> collectionItemsIDs = new ArrayList<>();
 
     Deck(String deckName) {
         this.deckName = deckName;
@@ -34,7 +36,7 @@ public class Deck {
         return cards.peek();
     }
 
-    public void addCollectionItem(CollectionItem collectionItem) {
+    public void addCollectionItem(CollectionItem collectionItem, String collectionItemID) {
         if (collectionItem instanceof Hero) {
             deckHero = (Hero) collectionItem;
         } else if (collectionItem instanceof Item) {
@@ -42,6 +44,7 @@ public class Deck {
         } else {
             cards.add((Card) collectionItem);
         }
+        collectionItemsIDs.add(collectionItemID);
     }
 
     public boolean hasHero() {
@@ -52,7 +55,7 @@ public class Deck {
         return deckItem != null;
     }
 
-    public void removeCollectionItem(CollectionItem collectionItem) {
+    public void removeCollectionItem(CollectionItem collectionItem, String collectionItemID) {
         if (collectionItem instanceof Hero) {
             deckHero = null;
         } else if (collectionItem instanceof Item) {
@@ -60,6 +63,7 @@ public class Deck {
         } else {
             cards.remove((Card) collectionItem);
         }
+        collectionItemsIDs.remove(collectionItemID);
     }
 
     public boolean isFull() {
@@ -67,19 +71,10 @@ public class Deck {
     }
 
 
-    public boolean hasCollectionItem(CollectionItem collectionItem) {
-        if (collectionItem instanceof Hero) {
-            return deckHero != null && collectionItem.getName().equals(deckHero.getName());
-        } else if (collectionItem instanceof Item) {
-            return deckItem != null && collectionItem.getName().equals(deckItem.getName());
-        } else {
-            for (Card card : cards) {
-                if (card.getName().equals(collectionItem.getName())) {
-                    return true;
-                }
-            }
-            return false;
-        }
+    public boolean hasCollectionItem(String collectionItemID) {
+        if (collectionItemsIDs == null)
+            System.err.println("FUCK");
+        return collectionItemsIDs.contains(collectionItemID);
     }
 
     public void incrementTabsOnToString() {
@@ -103,7 +98,6 @@ public class Deck {
         appendTabs(stringBuilder, numberOfTabsOnToString);
         stringBuilder.append("Hero :\n");
         if (hasHero()) {
-            stringBuilder.append("1 : ");
             appendTabs(stringBuilder, numberOfTabsOnToString + 1);
             stringBuilder.append(deckHero.toString());
             stringBuilder.append("\n");

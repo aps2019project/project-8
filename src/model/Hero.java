@@ -27,6 +27,6 @@ public class Hero extends Unit {
                 "AP : " + getAttackPoint() + DASH +
                 "HP : " + getHitPoint() + DASH +
                 "Class : " + getUnitType() + DASH +
-                "Special power : " + getSpecialPowerDescription() + DASH;
+                "Special power : " + getSpecialPowerDescription();
     }
 }
