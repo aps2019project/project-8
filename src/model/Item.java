@@ -1,16 +1,27 @@
 package model;
 
+import java.util.ArrayList;
+
 public class Item extends CollectionItem {
     protected Spell spell;
     protected int addMana;
     protected int addManaDuration;
+    private ItemType itemType;
+    private ArrayList<SpecialPowerType> specialPowerType;
+    private ArrayList<Spell> specialPower;
+    private ArrayList<Target> specialPowerTarget;
 
     // Main constructor
-    public Item(CollectionItem collectionItem, Spell spell, int addMana, int addManaDuration) {
+    public Item(CollectionItem collectionItem, Spell spell, int addMana, int addManaDuration, ItemType itemType,
+                ArrayList<SpecialPowerType> specialPowerType, ArrayList<Spell> specialPower, ArrayList<Target> specialPowerTarget) {
         super(collectionItem);
         this.spell = spell;
         this.addMana = addMana;
         this.addManaDuration = addManaDuration;
+        this.itemType = itemType;
+        this.specialPowerType = specialPowerType;
+        this.specialPower = specialPower;
+        this.specialPowerTarget = specialPowerTarget;
     }
 
     // Copy constructor
@@ -22,6 +33,8 @@ public class Item extends CollectionItem {
         this.spell = item.spell;
         this.addMana = item.addMana;
         this.addManaDuration = item.addManaDuration;
+        this.itemType = item.itemType;
+        this.specialPowerTarget = item.specialPowerTarget;
     }
 
     protected Item() {}
@@ -32,6 +45,10 @@ public class Item extends CollectionItem {
         int addMana = 0;
         int addManaDuration = 0;
         CollectionItem collectionItem;
+        ItemType itemType;
+        ArrayList<SpecialPowerType> specialPowerType;
+        ArrayList<Spell> specialPower;
+        ArrayList<Target> specialPowerTarget;
 
         public ItemBuilder setSpell(Spell spell) {
             this.spell = spell;
@@ -53,8 +70,28 @@ public class Item extends CollectionItem {
             return this;
         }
 
+        public ItemBuilder setItemType(ItemType itemType) {
+            this.itemType = itemType;
+            return this;
+        }
+
+        public ItemBuilder setSpecialPowerType(ArrayList<SpecialPowerType> specialPowerType) {
+            this.specialPowerType = specialPowerType;
+            return this;
+        }
+
+        public ItemBuilder setSpecialPower(ArrayList<Spell> specialPower) {
+            this.specialPower = specialPower;
+            return this;
+        }
+
+        public ItemBuilder setSpecialPowerTarget(ArrayList<Target> specialPowerTarget) {
+            this.specialPowerTarget = specialPowerTarget;
+            return this;
+        }
+
         public Item build() {
-            return new Item(collectionItem, spell, addMana, addManaDuration);
+            return new Item(collectionItem, spell, addMana, addManaDuration, itemType, specialPowerType, specialPower, specialPowerTarget);
         }
     }
     @Override

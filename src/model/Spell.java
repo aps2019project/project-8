@@ -13,7 +13,8 @@ public class Spell {
         SELECTED_X_Y_GRID,
         ALL_OF_THE_MAP,
         ADJACENT_8,
-        ADJACENT_4
+        ADJACENT_4,
+        SAME_ROW
     }
     public enum TargetUnit {
         UNIT,
@@ -31,7 +32,7 @@ public class Spell {
         MELEE,
         RANGED,
         HYBRID,
-        MELLE_RANGED,
+        MELEE_RANGED,
         MELEE_HYBRID,
         RANGED_HYBRID
     }

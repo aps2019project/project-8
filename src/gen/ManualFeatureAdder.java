@@ -226,8 +226,8 @@ class ManualFeatureAdder {
         ShengdeBaoPrinter.println("***Enter Unit***");
         int hitPoint, attackPoint;
         UnitType unitType;
-        SpecialPowerType specialPowerType = null;
-        Spell specialPower = null;
+        ArrayList<SpecialPowerType> specialPowerType = new ArrayList<>();
+        ArrayList<Spell> specialPower = new ArrayList<>();
         boolean canFly;
         int attackRange;
         ShengdeBaoPrinter.addString("Unit: ");
@@ -255,19 +255,11 @@ class ManualFeatureAdder {
             String response = getMultipleChoice("has special power", "yes", "no");
             if (response.equals("yes")) {
                 {
-                    ShengdeBaoPrinter.println("Enter special power type");
-                    ArrayList<SpecialPowerType> specialPowerTypes = new ArrayList<>(EnumSet.allOf(SpecialPowerType.class));
-                    int i = 1;
-                    for (SpecialPowerType spt : specialPowerTypes) {
-                        ShengdeBaoPrinter.println(i + ". " + spt);
-                        i++;
-                    }
-                    int index = Integer.parseInt(getInput()) - 1;
-                    specialPowerType = specialPowerTypes.get(index);
+                    getSpecialPowerType(specialPowerType);
                 }
                 {
                     ShengdeBaoPrinter.println("Enter special power (spell)");
-                    specialPower = addSpell();
+                    specialPower.add(addSpell());
                 }
             }
         }
@@ -319,21 +311,41 @@ class ManualFeatureAdder {
         ShengdeBaoPrinter.println("***Enter Item***");
         Spell spell = null;
         int addMana = 0, addManaDuration = 0;
+        ItemType itemType = null;
+        ArrayList<SpecialPowerType> specialPowerType = new ArrayList<>();
+        ArrayList<Spell> specialPower = new ArrayList<>();
+        ArrayList<Target> specialPowerTarget = new ArrayList<>();
 
         ShengdeBaoPrinter.addString("Item: ");
         {
-            String response = getMultipleChoice("Does it cast a spell on something (unit o cell)?", "yes", "no");
+            String response = getMultipleChoice("Does it cast a spell on something (unit or cell)?", "yes", "no");
             if (response.equals("yes")) {
+                itemType = ItemType.CAST_A_SPELL;
                 ShengdeBaoPrinter.println("Enter Spell:");
                 spell = addSpell();
             } else {
-                {
-                    ShengdeBaoPrinter.println("Enter add Mana:");
-                    addMana = Integer.parseInt(getInput());
-                }
-                {
-                    ShengdeBaoPrinter.println("Enter add Mana duration:");
-                    addManaDuration = Integer.parseInt(getInput());
+                response = getMultipleChoice("Does it add mana to the player?", "yes", "no");
+                if (response.equals("yes")) {
+                    {
+                        itemType = ItemType.ADD_MANA;
+                        ShengdeBaoPrinter.println("Enter add Mana:");
+                        addMana = Integer.parseInt(getInput());
+                    }
+                    {
+                        ShengdeBaoPrinter.println("Enter add Mana duration:");
+                        addManaDuration = Integer.parseInt(getInput());
+                    }
+                } else {
+                    ShengdeBaoPrinter.println("Enter number of special powers to be added:");
+                    int numberOfSpecialPowers = Integer.parseInt(getInput());
+                    for (int i = 0; i < numberOfSpecialPowers; i++) {
+                        getSpecialPowerType(specialPowerType);
+                        getSpecialPowerTarget(specialPowerTarget);
+                        {
+                            ShengdeBaoPrinter.println("Enter special power (spell)");
+                            specialPower.add(addSpell());
+                        }
+                    }
                 }
             }
         }
@@ -343,7 +355,49 @@ class ManualFeatureAdder {
                 .setAddMana(addMana)
                 .setAddManaDuration(addManaDuration)
                 .setCollectionItem(collectionItem)
+                .setItemType(itemType)
+                .setSpecialPowerType(specialPowerType)
+                .setSpecialPower(specialPower)
+                .setSpecialPowerTarget(specialPowerTarget)
                 .build();
+    }
+
+    private static void getSpecialPowerTarget(ArrayList<Target> specialPowerTarget) {
+        try {
+            ShengdeBaoPrinter.println("Enter target unit");
+            ArrayList<Target.TargetUnit> targetUnits = new ArrayList<>(EnumSet.allOf(Target.TargetUnit.class));
+            int i = 1;
+            for (Target.TargetUnit tu : targetUnits) {
+                ShengdeBaoPrinter.println(i + ". " + tu);
+                i++;
+            }
+            int index = Integer.parseInt(getInput()) - 1;
+            Target.TargetUnit targetUnit = targetUnits.get(index);
+
+            ShengdeBaoPrinter.println("Enter target unit type");
+            ArrayList<Target.TargetUnitType> targetUnitTypes = new ArrayList<>(EnumSet.allOf(Target.TargetUnitType.class));
+            i = 1;
+            for (Target.TargetUnitType tut : targetUnitTypes) {
+                ShengdeBaoPrinter.println(i + ". " + tut);
+                i++;
+            }
+            index = Integer.parseInt(getInput()) - 1;
+            Target.TargetUnitType targetUnitType = targetUnitTypes.get(index);
+
+            specialPowerTarget.add(new Target(targetUnit, targetUnitType));
+        } catch (Exception ignored) {}
+    }
+
+    private static void getSpecialPowerType(ArrayList<SpecialPowerType> specialPowerType) throws Exception {
+        ShengdeBaoPrinter.println("Enter special power type");
+        ArrayList<SpecialPowerType> specialPowerTypes = new ArrayList<>(EnumSet.allOf(SpecialPowerType.class));
+        int j = 1;
+        for (SpecialPowerType spt : specialPowerTypes) {
+            ShengdeBaoPrinter.println(j + ". " + spt);
+            j++;
+        }
+        int index = Integer.parseInt(getInput()) - 1;
+        specialPowerType.add(specialPowerTypes.get(index));
     }
 
     private static Usable addUsable(Item item) throws Exception {
