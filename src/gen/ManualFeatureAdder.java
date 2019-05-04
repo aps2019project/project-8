@@ -199,14 +199,27 @@ class ManualFeatureAdder {
         ShengdeBaoPrinter.println("Add extra features to spell \"none\" to end!");
         String command = getInput();
         while (!command.matches("none")) {
-            command = getInput();
+
             if (command.matches("multiplied")) {
                 spell.setMultiplied(true);
                 ShengdeBaoPrinter.println("multiplied!");
             } else if (command.matches("ignoreHoly")) {
                 spell.setIgnoreHoly(true);
                 ShengdeBaoPrinter.println("ignoreHoly");
+            } else if (command.matches("bully")) {
+                spell.setIsBully(true);
+                ShengdeBaoPrinter.println("isBully");
+            } else if (command.matches("disarmable")) {
+                spell.setDisarmable(false);
+                ShengdeBaoPrinter.println("disarmable is set to false");
+            } else if (command.matches("poison immune")) {
+                spell.setPoisonImmune(true);
+                ShengdeBaoPrinter.println("poison immuned");
+            } else if (command.matches("spell immune")) {
+                spell.setSpellImmune(true);
+                ShengdeBaoPrinter.println("spell immuned");
             }
+            command = getInput();
         }
 
         ShengdeBaoPrinter.println("spell created!");

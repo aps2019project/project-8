@@ -1,0 +1,22 @@
+piran
+can't get poisoned 
+2029
+400
+Card
+8
+Unit
+20
+12
+1
+yes
+4
+1
+1
+no
+0
+no
+poison immune
+none
+no
+0
+Minion

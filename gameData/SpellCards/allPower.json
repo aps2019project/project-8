@@ -19,11 +19,13 @@
         "dispellable": true
       }
     ],
-    "canDispel": false
+    "canDispel": false,
+    "multiplied": false,
+    "ignoreHoly": false
   },
   "manaCost": 4,
   "price": 2000,
   "collectionItemID": "1015",
-  "name": "alllPower",
+  "name": "allPower",
   "description": "Gives all friendly units a permanent 2AP power buff"
 }
