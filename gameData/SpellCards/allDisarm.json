@@ -1,0 +1,28 @@
+{
+  "spell": {
+    "targetType": "UNIT",
+    "targetArea": "ALL_OF_THE_MAP",
+    "targetUnit": "ENEMY_UNIT",
+    "targetUnitType": "ALL",
+    "numberOfRandomTargets": 100,
+    "gridX": 1,
+    "gridY": 1,
+    "buffs": [
+      {
+        "duration": 1,
+        "holy": 0,
+        "poison": 0,
+        "effectHp": 0,
+        "effectAp": 0,
+        "stun": false,
+        "disarm": true,
+        "dispellable": true
+      }
+    ],
+    "canDispel": false
+  },
+  "manaCost": 9,
+  "price": 2000,
+  "collectionItemID": "1010",
+  "name": "allDisarm"
+}

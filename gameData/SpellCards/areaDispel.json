@@ -1,0 +1,28 @@
+{
+  "spell": {
+    "targetType": "UNIT",
+    "targetArea": "SELECTED_X_Y_GRID",
+    "targetUnit": "UNIT",
+    "targetUnitType": "ALL",
+    "numberOfRandomTargets": 100,
+    "gridX": 2,
+    "gridY": 2,
+    "buffs": [
+      {
+        "duration": 1,
+        "holy": 0,
+        "poison": 0,
+        "effectHp": 0,
+        "effectAp": 0,
+        "stun": false,
+        "disarm": false,
+        "dispellable": false
+      }
+    ],
+    "canDispel": true
+  },
+  "manaCost": 2,
+  "price": 1500,
+  "collectionItemID": "1002",
+  "name": "areaDispel"
+}

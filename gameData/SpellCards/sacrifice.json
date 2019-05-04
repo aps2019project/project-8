@@ -1,0 +1,28 @@
+{
+  "spell": {
+    "targetType": "UNIT",
+    "targetArea": "SELECTED_CELL",
+    "targetUnit": "FRIENDLY_UNIT",
+    "targetUnitType": "ALL",
+    "numberOfRandomTargets": 100,
+    "gridX": 1,
+    "gridY": 1,
+    "buffs": [
+      {
+        "duration": 1,
+        "holy": 0,
+        "poison": 0,
+        "effectHp": -6,
+        "effectAp": 8,
+        "stun": false,
+        "disarm": false,
+        "dispellable": true
+      }
+    ],
+    "canDispel": false
+  },
+  "manaCost": 2,
+  "price": 1600,
+  "collectionItemID": "1018",
+  "name": "sacrifice"
+}

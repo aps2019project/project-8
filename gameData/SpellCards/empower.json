@@ -1,0 +1,28 @@
+{
+  "spell": {
+    "targetType": "UNIT",
+    "targetArea": "SELECTED_CELL",
+    "targetUnit": "FRIENDLY_UNIT",
+    "targetUnitType": "ALL",
+    "numberOfRandomTargets": 100,
+    "gridX": 1,
+    "gridY": 1,
+    "buffs": [
+      {
+        "duration": 1000000,
+        "holy": 0,
+        "poison": 0,
+        "effectHp": 0,
+        "effectAp": 2,
+        "stun": false,
+        "disarm": false,
+        "dispellable": false
+      }
+    ],
+    "canDispel": false
+  },
+  "manaCost": 1,
+  "price": 250,
+  "collectionItemID": "1003",
+  "name": "empower"
+}

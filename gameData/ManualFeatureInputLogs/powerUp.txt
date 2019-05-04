@@ -1,0 +1,24 @@
+powerUp
+6 AP power buffs
+1014
+2500
+Card
+2
+SpellCard
+2
+3
+1
+1
+no
+1
+1
+0
+0
+0
+6
+no
+no
+yes
+none
+no
+none

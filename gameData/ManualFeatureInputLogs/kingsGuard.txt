@@ -1,0 +1,25 @@
+kingsGuard
+Kills a random enemy minion in the hero's vicinity
+1019
+1750
+Card
+9
+SpellCard
+2
+6
+1
+4
+yes
+1
+1
+1
+0
+0
+-1000000
+0
+no
+no
+no
+none
+no
+none

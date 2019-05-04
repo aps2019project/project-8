@@ -1,0 +1,15 @@
+dispel
+Purges the selcted unit
+1012
+2100
+Card
+0
+SpellCard
+2
+1
+1
+1
+no
+0
+yes
+none

@@ -1,0 +1,26 @@
+{
+  "spell": {
+    "targetType": "CELL",
+    "targetArea": "SELECTED_X_Y_GRID",
+    "numberOfRandomTargets": 100,
+    "gridX": 2,
+    "gridY": 2,
+    "buffs": [
+      {
+        "duration": 2,
+        "holy": 0,
+        "poison": 0,
+        "effectHp": -2,
+        "effectAp": 0,
+        "stun": false,
+        "disarm": false,
+        "dispellable": false
+      }
+    ],
+    "canDispel": false
+  },
+  "manaCost": 3,
+  "price": 600,
+  "collectionItemID": "1006",
+  "name": "hellFire"
+}

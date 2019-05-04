@@ -1,0 +1,28 @@
+{
+  "spell": {
+    "targetType": "UNIT",
+    "targetArea": "SELECTED_CELL",
+    "targetUnit": "FRIENDLY_UNIT",
+    "targetUnitType": "ALL",
+    "numberOfRandomTargets": 100,
+    "gridX": 1,
+    "gridY": 1,
+    "buffs": [
+      {
+        "duration": 1,
+        "holy": 0,
+        "poison": 0,
+        "effectHp": 0,
+        "effectAp": 6,
+        "stun": false,
+        "disarm": false,
+        "dispellable": true
+      }
+    ],
+    "canDispel": false
+  },
+  "manaCost": 2,
+  "price": 2500,
+  "collectionItemID": "1014",
+  "name": "powerUp"
+}

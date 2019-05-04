@@ -1,0 +1,26 @@
+areaDispel
+Purges friendly and enemy units
+1002
+1500
+Card
+2
+SpellCard
+2
+1
+1
+2
+2
+2
+no
+1
+1
+0
+0
+0
+0
+no
+no
+no
+none
+yes
+none

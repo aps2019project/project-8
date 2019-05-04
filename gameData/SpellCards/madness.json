@@ -1,0 +1,28 @@
+{
+  "spell": {
+    "targetType": "UNIT",
+    "targetArea": "SELECTED_CELL",
+    "targetUnit": "FRIENDLY_UNIT",
+    "targetUnitType": "ALL",
+    "numberOfRandomTargets": 100,
+    "gridX": 1,
+    "gridY": 1,
+    "buffs": [
+      {
+        "duration": 3,
+        "holy": 0,
+        "poison": 0,
+        "effectHp": 0,
+        "effectAp": 4,
+        "stun": false,
+        "disarm": true,
+        "dispellable": false
+      }
+    ],
+    "canDispel": false
+  },
+  "manaCost": 0,
+  "price": 650,
+  "collectionItemID": "1009",
+  "name": "madness"
+}

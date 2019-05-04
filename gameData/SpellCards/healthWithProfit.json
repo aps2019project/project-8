@@ -1,0 +1,28 @@
+{
+  "spell": {
+    "targetType": "UNIT",
+    "targetArea": "SELECTED_CELL",
+    "targetUnit": "FRIENDLY_UNIT",
+    "targetUnitType": "ALL",
+    "numberOfRandomTargets": 100,
+    "gridX": 1,
+    "gridY": 1,
+    "buffs": [
+      {
+        "duration": 3,
+        "holy": 2,
+        "poison": 0,
+        "effectHp": -6,
+        "effectAp": 0,
+        "stun": false,
+        "disarm": false,
+        "dispellable": true
+      }
+    ],
+    "canDispel": false
+  },
+  "manaCost": 0,
+  "price": 2250,
+  "collectionItemID": "1013",
+  "name": "healthWithProfit"
+}
