@@ -1,0 +1,15 @@
+rostam
+none
+3010
+8000
+Card
+0
+Unit
+55
+7
+3
+no
+no
+4
+Hero
+0

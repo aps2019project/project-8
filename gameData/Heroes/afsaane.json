@@ -1,0 +1,49 @@
+{
+  "cooldown": 2,
+  "remainingCooldown": 0,
+  "unitType": "RANGED",
+  "hitPoint": 40,
+  "attackPoint": 3,
+  "specialPowerType": [
+    "ON_USE"
+  ],
+  "specialPower": [
+    {
+      "targetType": "UNIT",
+      "targetArea": "SELECTED_CELL",
+      "targetUnit": "ENEMY_UNIT",
+      "targetUnitType": "ALL",
+      "numberOfRandomTargets": 100,
+      "gridX": 1,
+      "gridY": 1,
+      "buffs": [
+        {
+          "duration": 1,
+          "holy": 0,
+          "poison": 0,
+          "effectHp": 0,
+          "effectAp": 0,
+          "stun": false,
+          "disarm": false,
+          "dispellable": false
+        }
+      ],
+      "canDispel": true
+    }
+  ],
+  "canFly": false,
+  "attackRange": 3,
+  "buffs": [],
+  "flags": 0,
+  "canMove": false,
+  "canAttack": false,
+  "x": 0,
+  "y": 0,
+  "attackTimes": 0,
+  "defenceTimes": 0,
+  "hasAttacked": [],
+  "manaCost": 1,
+  "price": 11000,
+  "collectionItemID": "3008",
+  "name": "afsaane"
+}

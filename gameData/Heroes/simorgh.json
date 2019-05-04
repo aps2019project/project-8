@@ -1,0 +1,49 @@
+{
+  "cooldown": 8,
+  "remainingCooldown": 0,
+  "unitType": "MELEE",
+  "hitPoint": 50,
+  "attackPoint": 4,
+  "specialPowerType": [
+    "ON_USE"
+  ],
+  "specialPower": [
+    {
+      "targetType": "UNIT",
+      "targetArea": "ALL_OF_THE_MAP",
+      "targetUnit": "ENEMY_UNIT",
+      "targetUnitType": "ALL",
+      "numberOfRandomTargets": 100,
+      "gridX": 1,
+      "gridY": 1,
+      "buffs": [
+        {
+          "duration": 1,
+          "holy": 0,
+          "poison": 0,
+          "effectHp": 0,
+          "effectAp": 0,
+          "stun": true,
+          "disarm": false,
+          "dispellable": true
+        }
+      ],
+      "canDispel": false
+    }
+  ],
+  "canFly": false,
+  "attackRange": 0,
+  "buffs": [],
+  "flags": 0,
+  "canMove": false,
+  "canAttack": false,
+  "x": 0,
+  "y": 0,
+  "attackTimes": 0,
+  "defenceTimes": 0,
+  "hasAttacked": [],
+  "manaCost": 5,
+  "price": 9000,
+  "collectionItemID": "3002",
+  "name": "simorgh"
+}
