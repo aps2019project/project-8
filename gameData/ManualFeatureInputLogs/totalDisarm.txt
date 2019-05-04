@@ -1,5 +1,5 @@
 totalDisarm
-disarms all till the end
+disarms till the end
 1001
 1000
 Card
@@ -8,10 +8,13 @@ SpellCard
 2
 2
 1
+2
+1
 1
 no
 1
 1000000
+0
 0
 0
 0

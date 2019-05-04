@@ -38,7 +38,7 @@ class ManualFeatureAdder {
 
     private static Buff addBuff() throws Exception {
         ShengdeBaoPrinter.println("***Enter Buff***");
-        int duration, holy, effectHp, effectAp;
+        int duration, holy, poison, effectHp, effectAp;
         boolean stun, disarm, dispellable;
 
         ShengdeBaoPrinter.addString("Buff: ");
@@ -49,6 +49,10 @@ class ManualFeatureAdder {
         {
             ShengdeBaoPrinter.println("Enter holy (negative for unholy)");
             holy = Integer.parseInt(getInput());
+        }
+        {
+            ShengdeBaoPrinter.println("Enter poison");
+            poison = Integer.parseInt(getInput());
         }
         {
             ShengdeBaoPrinter.println("Enter effectHp (negative for weaknessHp)");
@@ -63,7 +67,7 @@ class ManualFeatureAdder {
             stun = feedBack.equals("yes");
         }
         {
-            String feedBack = getMultipleChoice("Enter can dsarm", "yes", "no");
+            String feedBack = getMultipleChoice("Enter can disarm", "yes", "no");
             disarm = feedBack.equals("yes");
         }
         {
@@ -83,6 +87,7 @@ class ManualFeatureAdder {
         return new Buff.BuffBuilder()
                 .setDuration(duration)
                 .setHoly(holy)
+                .setPoison(poison)
                 .setEffectHp(effectHp)
                 .setEffectAp(effectAp)
                 .setStun(stun)
@@ -100,6 +105,8 @@ class ManualFeatureAdder {
         int numberOfRandomTargets = Spell.MAX_GOALS;
         Buff[] buffs = null;
         boolean canDispel;
+        int gridX = 1;
+        int gridY = 1;
 
         ShengdeBaoPrinter.addString("Spell: ");
         {
@@ -144,6 +151,13 @@ class ManualFeatureAdder {
             }
             index = Integer.parseInt(getInput()) - 1;
             targetArea = targetAreas.get(index);
+
+            if (targetArea == Spell.TargetArea.SELECTED_X_Y_GRID) {
+                ShengdeBaoPrinter.println("Enter number of grid rows (GridX):");
+                gridX = Integer.parseInt(getInput());
+                ShengdeBaoPrinter.println("Enter number of grid columns (GridY):");
+                gridY = Integer.parseInt(getInput());
+            }
         }
         {
             String response = getMultipleChoice("Is it a random spell", "yes", "no");
@@ -174,6 +188,8 @@ class ManualFeatureAdder {
                 .setBuffs(buffs)
                 .setCanDispel(canDispel)
                 .setNumberOfRandomTargets(numberOfRandomTargets)
+                .setGridX(gridX)
+                .setGridY(gridY)
                 .setTargetType(targetType)
                 .setTargetArea(targetArea)
                 .setTargetUnit(targetUnit)

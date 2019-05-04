@@ -11,9 +11,8 @@ public class Spell {
         UNIT
     }
     public static enum TargetArea {
-        SELECTED_1_1_GRID,
-        SELECTED_2_2_GRID,
-        SELECTED_3_3_GRID,
+        SELECTED_CELL,
+        SELECTED_X_Y_GRID,
         ALL_OF_THE_MAP,
         ADJACENT_8,
         ADJACENT_4
@@ -44,18 +43,21 @@ public class Spell {
     private TargetUnit targetUnit;
     private TargetUnitType targetUnitType;
     private int numberOfRandomTargets;
-
+    private int gridX;
+    private int gridY;
     private Buff[] buffs;
     private boolean canDispel;
 
     // Main Constructor
     public Spell(TargetType targetType, TargetArea targetArea, TargetUnit targetUnit, TargetUnitType targetUnitType,
-                 int numberOfRandomTargets, Buff[] buffs,boolean canDispel) {
+                 int numberOfRandomTargets, int gridX, int gridY, Buff[] buffs,boolean canDispel) {
         this.targetType = targetType;
         this.targetArea = targetArea;
         this.targetUnit = targetUnit;
         this.targetUnitType = targetUnitType;
         this.numberOfRandomTargets = numberOfRandomTargets;
+        this.gridX = gridX;
+        this.gridY = gridY;
         this.buffs = buffs;
         this.canDispel = canDispel;
     }
@@ -67,6 +69,8 @@ public class Spell {
         this.targetUnit = spell.targetUnit;
         this.targetUnitType = spell.targetUnitType;
         this.numberOfRandomTargets = spell.numberOfRandomTargets;
+        this.gridX = spell.gridX;
+        this.gridY = spell.gridY;
         this.buffs = spell.buffs;
         this.canDispel = spell.canDispel;
     }
@@ -81,6 +85,8 @@ public class Spell {
         private TargetUnit targetUnit;
         private TargetUnitType targetUnitType;
         private int numberOfRandomTargets = MAX_GOALS;
+        private int gridX = 1;
+        private int gridY = 1;
         private Buff[] buffs;
         private boolean canDispel = false;
 
@@ -109,6 +115,16 @@ public class Spell {
             return this;
         }
 
+        public SpellBuilder setGridX(int gridX) {
+            this.gridX = gridX;
+            return this;
+        }
+
+        public SpellBuilder setGridY(int gridY) {
+            this.gridY = gridY;
+            return this;
+        }
+
         public SpellBuilder setBuffs(Buff[] buffs) {
             this.buffs = buffs;
             return this;
@@ -121,7 +137,7 @@ public class Spell {
         }
 
         public Spell build() {
-            return new Spell(targetType, targetArea, targetUnit, targetUnitType, numberOfRandomTargets, buffs, canDispel);
+            return new Spell(targetType, targetArea, targetUnit, targetUnitType, numberOfRandomTargets, gridX, gridY, buffs, canDispel);
         }
     }
 
