@@ -1,0 +1,10 @@
+majooneMana
+adds mana by 3 for next turn
+4008
+0
+Item
+no
+yes
+3
+1
+Collectible
