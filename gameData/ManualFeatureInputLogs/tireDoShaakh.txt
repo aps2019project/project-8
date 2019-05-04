@@ -1,0 +1,25 @@
+tireDoShaakh
+adds attack point of a selected ranged or hybrid unit by 2
+4005
+0
+Item
+yes
+2
+3
+7
+3
+yes
+1
+1
+1000000
+0
+0
+2
+0
+no
+no
+no
+none
+no
+none
+Collectible

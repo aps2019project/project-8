@@ -3,7 +3,6 @@ package gen;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import model.*;
-import model.Collection;
 import view.ShengdeBaoPrinter;
 
 import java.io.*;
@@ -16,7 +15,7 @@ import java.util.*;
  *  this class gets the features from your input and stores
  *  your feedback in ManualFeatureInputLogs
  */
-
+/// SmsS is great
 class ManualFeatureAdder {
     private static Scanner scanner = new Scanner(System.in);
     private static BufferedWriter writer;
@@ -319,7 +318,7 @@ class ManualFeatureAdder {
         ItemType itemType = null;
         ArrayList<SpecialPowerType> specialPowerType = new ArrayList<>();
         ArrayList<Spell> specialPower = new ArrayList<>();
-        ArrayList<Target> specialPowerTarget = new ArrayList<>();
+        ArrayList<Item.Target> specialPowerTarget = new ArrayList<>();
 
         ShengdeBaoPrinter.addString("Item: ");
         {
@@ -367,29 +366,29 @@ class ManualFeatureAdder {
                 .build();
     }
 
-    private static void getSpecialPowerTarget(ArrayList<Target> specialPowerTarget) {
+    private static void getSpecialPowerTarget(ArrayList<Item.Target> specialPowerTarget) {
         try {
             ShengdeBaoPrinter.println("Enter target unit");
-            ArrayList<Target.TargetUnit> targetUnits = new ArrayList<>(EnumSet.allOf(Target.TargetUnit.class));
+            ArrayList<Item.Target.TargetUnit> targetUnits = new ArrayList<>(EnumSet.allOf(Item.Target.TargetUnit.class));
             int i = 1;
-            for (Target.TargetUnit tu : targetUnits) {
+            for (Item.Target.TargetUnit tu : targetUnits) {
                 ShengdeBaoPrinter.println(i + ". " + tu);
                 i++;
             }
             int index = Integer.parseInt(getInput()) - 1;
-            Target.TargetUnit targetUnit = targetUnits.get(index);
+            Item.Target.TargetUnit targetUnit = targetUnits.get(index);
 
             ShengdeBaoPrinter.println("Enter target unit type");
-            ArrayList<Target.TargetUnitType> targetUnitTypes = new ArrayList<>(EnumSet.allOf(Target.TargetUnitType.class));
+            ArrayList<Item.Target.TargetUnitType> targetUnitTypes = new ArrayList<>(EnumSet.allOf(Item.Target.TargetUnitType.class));
             i = 1;
-            for (Target.TargetUnitType tut : targetUnitTypes) {
+            for (Item.Target.TargetUnitType tut : targetUnitTypes) {
                 ShengdeBaoPrinter.println(i + ". " + tut);
                 i++;
             }
             index = Integer.parseInt(getInput()) - 1;
-            Target.TargetUnitType targetUnitType = targetUnitTypes.get(index);
+            Item.Target.TargetUnitType targetUnitType = targetUnitTypes.get(index);
 
-            specialPowerTarget.add(new Target(targetUnit, targetUnitType));
+            specialPowerTarget.add(new Item.Target(targetUnit, targetUnitType));
         } catch (Exception ignored) {}
     }
 
