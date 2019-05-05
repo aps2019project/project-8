@@ -23,6 +23,10 @@ public class Cell {
     void passTurn() {
     }
 
+    void setContent(Object content) {
+        this.content = content;
+    }
+
     Object getContent() {
         return this.content;
     }

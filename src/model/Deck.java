@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Queue;
 
 public class Deck {
@@ -27,6 +28,10 @@ public class Deck {
     }
 
     void shuffle() {
+        ArrayList<Card> shuffled = new ArrayList<>(cards);
+        Collections.shuffle(shuffled);
+        cards.clear();
+        cards.addAll(shuffled);
     }
 
     public String getDeckName() {

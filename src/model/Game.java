@@ -356,7 +356,7 @@ public class Game extends InGameMenu {
         }
     }
 
-    private void checkOnSpawn(Unit unit, int x, int y) { // when inserting a unit card
+    private void checkOnSpawn(Unit unit) { // when inserting a unit card
 
         ArrayList<SpecialPowerType> types = unit.getSpecialPowerTypes();
         ArrayList<Spell> spells = unit.getSpecialPowers();
@@ -364,7 +364,7 @@ public class Game extends InGameMenu {
         int i = 0;
         for (Spell spell : spells) {
             if (types.get(i) == SpecialPowerType.ON_SPAWN) {
-                castSpell(spell, x, y);
+                castSpell(spell, 0, 0);
             }
         }
     }
@@ -399,7 +399,7 @@ public class Game extends InGameMenu {
         grid[x][y].setContent(card, player); // finally put the card on cell ([x], [y])
 
         if (card instanceof Unit)
-            checkOnSpawn((Unit) card, x, y);
+            checkOnSpawn((Unit) card);
         if (card instanceof SpellCard)
         view.logMessage(cardName + " with " + card.getID() + " inserted to " + "(" + x + "," + y + ")"); // log success message
     }
@@ -410,8 +410,12 @@ public class Game extends InGameMenu {
 
     }
 
+    //
     void initiateGame() {
-
+        putCardOnMap(players[0].getHero(), 2, 0);
+        putCardOnMap(players[1].getHero(), 2, 8);
+        players[0].initiateHand();
+        players[1].initiateHand();
     }
 
     void showHand() {
@@ -419,7 +423,10 @@ public class Game extends InGameMenu {
     }
 
     void putCardOnMap(Card card, int row, int column) {
-
+        getMap().getCell(row, column).setContent(card);
+        if (card instanceof Unit) {
+            checkOnSpawn((Unit) card);
+        }
     }
 
     void endTurn() {

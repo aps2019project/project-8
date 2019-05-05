@@ -11,8 +11,17 @@ public class Player {
     private ArrayList<Card> graveYard;
     private ArrayList<Collectible> collectibles;
 
+    public Hero getHero() {
+        return hero;
+    }
     private void getCurrentDeck() {
 
+    }
+
+    public void initiateHand() {
+        deck.shuffle();
+
+        hand.addCard(deck.getNextCard());
     }
 
     private Hero initialize() {
