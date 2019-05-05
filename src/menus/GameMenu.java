@@ -1,25 +1,42 @@
 package menus;
 
-import model.AI;
-import model.Account;
-import model.GameType;
-import model.Player;
+import model.*;
 
 public class GameMenu extends InGameMenu {
     private static final String[] commands = {
-            "Exit",
+            "Game info",
+            "Show my minions",
+            "Show opponent minions",
+            "Show card info [card id]",
+            "Select [card id]",
+            "Move to ([x], [y])",
+            "Attack [opponent card id]",
+            "Attack combo [opponent card id] [my card id] [my card id] [...]",
+            "Use special power ([x], [y])",
+            "Show hand",
+            "Insert [card name] in ([x], [y])",
+            "End turn",
+            "Show collectibles",
+            "Select [collectible id]",
+            "Show info",
+            "Use ([x], [y])",
+            "Show next card",
+            "Enter graveyard",
             "Help",
-            "Enter graveyard"
+            "End game",
+            "Exit",
+            "Show menu"
     };
-
-    private static boolean hasAI;
     private static final int NUMBER_OF_PLAYERS = 2;
+    private static boolean hasAI;
     private static Player[] players = new Player[NUMBER_OF_PLAYERS];
     private static int numberOfFlags;
+    private static Game game;
 
-    /*    public static  void setGame(Game game) {
-                menus.GameMenu.game = game;
-            }*/
+    public static void setGame(Game game) {
+        GameMenu.game = game;
+    }
+
     public static void help() {
         view.showHelp(commands);
     }

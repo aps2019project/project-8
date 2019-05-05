@@ -76,7 +76,7 @@ public class CommandLineView implements View {
     @Override
     public void showID(ArrayList<String> collectionItemIDs) {
         if (!collectionItemIDs.isEmpty()) {
-            collectionItemIDs.forEach(System.out::println);
+            collectionItemIDs.stream().sorted().forEach(System.out::println);
             return;
         }
         System.out.println("No such item found.");
