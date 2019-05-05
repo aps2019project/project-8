@@ -8,6 +8,17 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 
 public class Game extends InGameMenu {
+
+    class Pair {
+        int x;
+        int y;
+        Pair (int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+    }
+
     private static final int NUMBER_OF_PLAYERS = 2;
     private static final int[] HERO_INITIAL_ROW = {2, 2};
     private static final int[] HERO_INITIAL_COLUMN = {0, 8};
@@ -158,9 +169,12 @@ public class Game extends InGameMenu {
         return x >= 0 && x < map.getNumberOfRows() && y >= 0 && y < map.getNumberOfColumns();
     }
 
-    //returns true if at least one target was attacked returns false otherwise
+    //returns true if target matches spell TargetType and spell TargetUnit (in case TargetType is Unit)
 
     private boolean isValidTarget(Spell spell, int x, int y) {
+        if (spell.getTargetType() == Spell.TargetType.CELL) {
+            return true;
+        }
         Cell cell = map.getGrid()[x][y];
         Unit unit = (Unit) cell.getContent();
         if (unit == null) {
@@ -216,18 +230,15 @@ public class Game extends InGameMenu {
         }
     }
 
-    private boolean castSpellOnCoordinate(Spell spell, int x, int y) {
-        boolean ret = false;
+    private void castSpellOnCoordinate(Spell spell, int x, int y) {
         switch (spell.getTargetType()) {
             case UNIT:
                 castSpellOnCellUnit(spell, x, y);
                 break;
             case CELL:
                 castSpellOnCell(spell, x, y);
-                ret = true;
                 break;
         }
-        return ret;
     }
 
     // if spell is from a spell card (x, y) should be target point of spell
@@ -241,23 +252,29 @@ public class Game extends InGameMenu {
         Spell.TargetArea area = spell.getTargetArea();
         boolean ret = false;
 
+        ArrayList<Pair> targets = new ArrayList<>(0);
+
         switch (spell.getTargetArea()) {
             case ALL_OF_THE_MAP:
                 for (int i = 0; i < map.getNumberOfRows(); i++) {
                     for (int j = 0; j < map.getNumberOfColumns(); j++) {
-                        ret |= castSpellOnCoordinate(spell, i, j);
+                        if (isValidTarget(spell, i, j)) {
+                            targets.add(new Pair(i, j));
+                        }
                     }
                 }
                 break;
 
             case ADJACENT_9:
-                ret |= castSpellOnCoordinate(spell, x, y);
+                if (isValidTarget(spell, x, y)) {
+                    targets.add(new Pair(x, y));
+                }
 
             case ADJACENT_8:
                 for (int i = x - 1; i <= x + 1; i++) {
                     for (int j = y - 1; j <= y + 1; j++) {
-                        if (inMap(i, j)) {
-                            ret |= castSpellOnCoordinate(spell, i, j);
+                        if (inMap(i, j) && isValidTarget(spell, i, j)) {
+                            targets.add(new Pair(i, j));
                         }
                     }
                 }
@@ -266,8 +283,8 @@ public class Game extends InGameMenu {
             case ADJACENT_4:
                 for (int i = x - 1; i <= x + 1; i++) {
                     for (int j = y - 1; j <= y + 1; j++) {
-                        if (inMap(i, j) && getDistance(i, j, x, y) == 1) {
-                            ret |= castSpellOnCoordinate(spell, i, j);
+                        if (inMap(i, j) && getDistance(i, j, x, y) == 1 && isValidTarget(spell, i, j)) {
+                            targets.add(new Pair(i, j));
                         }
                     }
                 }
@@ -275,8 +292,8 @@ public class Game extends InGameMenu {
             case SELECTED_X_Y_GRID:
                 for (int i = x; i < x + spell.getGridX(); i++) {
                     for (int j = y; i < y + spell.getGridY(); j++) {
-                        if (inMap(i, j)) {
-                            castSpellOnCoordinate(spell, i, j);
+                        if (inMap(i, j) && isValidTarget(spell, i, j)) {
+                            targets.add(new Pair(i, j));
                         }
                     }
                 }
@@ -284,27 +301,33 @@ public class Game extends InGameMenu {
 
             case SAME_ROW:
                 for (int i = 0; i < map.getNumberOfColumns(); i++) {
-                    ret |= castSpellOnCoordinate(spell, x, i);
+                    if (isValidTarget(spell, x, i)) {
+                        targets.add(new Pair(x, i));
+                    }
                 }
                 break;
 
             case SAME_COLUMN:
                 for (int i = 0; i < map.getNumberOfRows(); i++)
-                    ret |= castSpellOnCoordinate(spell, i, y);
+                    if (isValidTarget(spell, i, y)) {
+                        targets.add(new Pair(x, i));
+                    }
                 break;
 
             case DISTANCE_2:
                 for (int i = x - 1; i <= x + 1; i++) {
                     for (int j = y - 1; j <= y + 1; j++) {
-                        if (inMap(i, j) && getDistance(i, j, x, y) == 2) {
-                            ret |= castSpellOnCoordinate(spell, i, j);
+                        if (inMap(i, j) && getDistance(i, j, x, y) == 2 && isValidTarget(spell, i, j)) {
+                            targets.add(new Pair(i, j));
                         }
                     }
                 }
                 break;
 
             case SELECTED_CELL:
-                ret |= castSpellOnCoordinate(spell, x, y);
+                if (isValidTarget(spell, x, y)) {
+                    targets.add(new Pair(x, y));
+                }
                 break;
         }
         return ret;
