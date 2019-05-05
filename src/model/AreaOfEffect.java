@@ -1,5 +1,7 @@
 package model;
 
+
+/*
 public class AreaOfEffect extends Spell {
     private static int MAP_ROWS;
     private static int MAP_COLUMNS;
@@ -12,3 +14,5 @@ public class AreaOfEffect extends Spell {
     public void cast(int x, int y, Map map, Player player) {
     }
 }
+
+*/

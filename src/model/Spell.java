@@ -150,9 +150,32 @@ public class Spell {
         }
     }
 
-
     public void cast(int x, int y, Map map, Player player) {
 
+    }
+
+    TargetArea getTargetArea() {
+        return targetArea;
+    }
+
+    int getGridX() {
+        return gridX;
+    }
+
+    int getGridY() {
+        return gridY;
+    }
+
+    TargetUnit getTargetUnit() {
+        return targetUnit;
+    }
+
+    TargetType getTargetType() {
+        return targetType;
+    }
+
+    Buff[] getBuffs() {
+        return buffs;
     }
 
     @Override

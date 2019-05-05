@@ -3,12 +3,13 @@ package model;
 import java.util.ArrayList;
 
 public class Unit extends Card{
+
     // CollectionItem:
     private UnitType unitType;
     private int hitPoint;
     private int attackPoint;
-    private ArrayList<SpecialPowerType> specialPowerType;
-    private ArrayList<Spell> specialPower;
+    private ArrayList<SpecialPowerType> specialPowerTypes;
+    private ArrayList<Spell> specialPowers;
     private boolean canFly;
     private int attackRange;
 
@@ -32,8 +33,8 @@ public class Unit extends Card{
         this.hitPoint = hitPoint;
         this.attackPoint = attackPoint;
         this.unitType = unitType;
-        this.specialPowerType = specialPowerType;
-        this.specialPower = specialPower;
+        this.specialPowerTypes = specialPowerType;
+        this.specialPowers = specialPower;
         this.canFly = canFly;
         this.attackRange = attackRange;
     }
@@ -47,8 +48,8 @@ public class Unit extends Card{
         this.hitPoint = unit.hitPoint;
         this.attackPoint = unit.attackPoint;
         this.unitType = unit.unitType;
-        this.specialPowerType = unit.specialPowerType;
-        this.specialPower = unit.specialPower;
+        this.specialPowerTypes = unit.specialPowerTypes;
+        this.specialPowers = unit.specialPowers;
         this.canFly = unit.canFly;
         this.attackRange = unit.attackRange;
     }
@@ -113,6 +114,14 @@ public class Unit extends Card{
         }
     }
 
+    public ArrayList<SpecialPowerType> getSpecialPowerTypes() {
+        return specialPowerTypes;
+    }
+
+    public ArrayList<Spell> getSpecialPowers() {
+        return specialPowers;
+    }
+
     public int getAttackRange() {
         return attackRange;
     }
@@ -149,7 +158,7 @@ public class Unit extends Card{
     }
 
     public ArrayList<SpecialPowerType> getSpecialPowerType() {
-        return specialPowerType;
+        return specialPowerTypes;
     }
 
     public void passTurn() {

@@ -1,9 +1,10 @@
 package model;
 
 public class Map {
+
     private static final int MAX_DISPLACEMENT = 2;
-    public static final int NUMBER_OF_ROWS = 5;
-    public static final int NUMBER_OF_COLUMNS = 9;
+    private static final int NUMBER_OF_ROWS = 5;
+    private static final int NUMBER_OF_COLUMNS = 9;
     private Cell[][] grid;
 
     void passTurn() {
