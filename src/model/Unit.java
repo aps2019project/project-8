@@ -16,7 +16,6 @@ public class Unit extends Card{
     // In Game:
     private ArrayList<Buff> buffs = new ArrayList<>();
     private int flags = 0;
-    private Player player = null;
     private boolean canMove = false;
     private boolean canAttack = false;
     private int x = 0;

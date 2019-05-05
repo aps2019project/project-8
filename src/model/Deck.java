@@ -138,4 +138,12 @@ public class Deck {
         return stringBuilder.toString();
     }
 
+    public Card findCard(String cardName) {
+        for (Card card : cards) {
+            if (card.getName().equals(cardName)) {
+                return card;
+            }
+        }
+        return null;
+    }
 }

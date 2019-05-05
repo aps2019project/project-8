@@ -18,6 +18,10 @@ public class Player {
 
     }
 
+    public ArrayList<Card> getGraveYard() {
+        return graveYard;
+    }
+
     public void initiateHand() {
         deck.shuffle();
 
@@ -28,8 +32,29 @@ public class Player {
         return new Hero();
     }
 
-    Card findCard(String cardName) {
+    Card findCardInHand(String cardName) {
         return hand.findCard(cardName);
+    }
+
+    Card findCardInDeck(String cardName) {
+        return deck.findCard(cardName);
+    }
+
+    Card findCardInGraveyard(String cardName) {
+        for (Card card : graveYard) {
+            if (card.getName().equals(cardName)) {
+                return card;
+            }
+        }
+        return null;
+    }
+
+    public Deck getDeck() {
+        return deck;
+    }
+
+    public Hand getHand() {
+        return hand;
     }
 
     int getMana() {

@@ -1,9 +1,6 @@
 package view;
 
-import model.AI;
-import model.Account;
-import model.CollectionItem;
-import model.Deck;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -109,4 +106,12 @@ View {
     void showInvalidCoordinatesError();
 
     void showShopCollection(HashMap<String, CollectionItem> collectionItems);
+
+    void showCellHasContentError();
+
+    void showGraveyard(ArrayList<Card> graveYard);
+
+    void showCardInfo(Card card);
+
+    void showHand(Hand hand);
 }

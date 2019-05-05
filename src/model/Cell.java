@@ -31,6 +31,10 @@ public class Cell {
         return this.content;
     }
 
+    public boolean hasContent() {
+        return content != null;
+    }
+
     void modifyFlags(int number) {
 
     }

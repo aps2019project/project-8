@@ -443,9 +443,6 @@ public class Game extends InGameMenu {
         players[1].initiateHand();
     }
 
-    void showHand() {
-
-    }
 
     void putCardOnMap(Card card, int row, int column) {
 
@@ -464,15 +461,19 @@ public class Game extends InGameMenu {
     }
 
     void showNextCardInDeck() {
-
+        view.showCardInfo(getCurrentPlayer().getDeck().getNextCard());
     }
 
-    void showGraveYardInfo() {
+    void showHand() {
+        view.showHand(getCurrentPlayer().getHand());
+    }
 
+    void showGraveYardInfoOfACard(String cardName) {
+        view.showCardInfo(getCurrentPlayer().findCardInGraveyard(cardName));
     }
 
     void showGraveYardCards() {
-
+        view.showGraveyard(getCurrentPlayer().getGraveYard());
     }
 
     private enum GameState {WIN_FIRST_PLAYER, DRAW, WIN_SECOND_PLAYER}
