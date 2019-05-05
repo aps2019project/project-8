@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 public class Map {
 
     private static final int MAX_DISPLACEMENT = 2;
@@ -19,14 +21,39 @@ public class Map {
         }
     }
 
+    public static int getDistance(int x1, int y1, int x2, int y2) {
+        return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+    }
+
+    public static boolean isAdjacent(int x1, int y1, int x2, int y2) {
+        return getDistance(x1, y1, x2, y2) == 1;
+    }
+
     Cell[][] getGrid() {
         return this.grid;
     }
 
     Cell getCell(int r,int c) {return grid[r][c];}
 
-    boolean isPathEmpty(int sourceR, int sourceC, int destinationR, int destinationC) {
-        return true;
+    public boolean isPathEmpty(int srcX, int srcY, int desX, int desY) {
+        if (grid[desX][desY].getContent() != null)
+            return false;
+        int distance = getDistance(srcX, srcY, desX, desY);
+        if (distance == 1) {
+            return true;
+        }
+        int dx = desX - srcX;
+        int dy = desY - srcY;
+        if (dx * dy != 0) {
+            if (grid[srcX + dx][srcY].getContent() != null || grid[srcX][srcY + dy].getContent() != null)
+                return true;
+        } else {
+            dx /= 2;
+            dy /= 2;
+            if (grid[srcX + dx][srcY + dy].getContent() != null && grid[srcX + dx + dx][srcY + dy + dy].getContent() != null)
+                return true;
+        }
+        return false;
     }
 
     public int getMaxDisplacement() {

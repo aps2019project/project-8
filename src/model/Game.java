@@ -1,3 +1,5 @@
+// on defend moonnnnnndeeeeeeee
+
 package model;
 
 import menus.InGameMenu;
@@ -42,45 +44,63 @@ public class Game extends InGameMenu {
         return this.map;
     }
 
-    private int getDistance(int x1, int y1, int x2, int y2) {
-        return Math.abs(x1 - x2) + Math.abs(y1 - y2);
-    }
-
-    public void moveSelectedUnit(int destinationRow, int destinationColumn) {
-        /*
-        if (getDistance(selectedUnit.getX(), selectedUnit.getY(), destinationRow, destinationColumn) <= 2 || selectedUnit.canFly()) { // possibly we could add some moveRange to Unit class variables
-            if (map.isPathEmpty(selectedUnit.getX(), selectedUnit.getY(), destinationRow, destinationColumn)) {
+    void moveSelectedUnit(int x, int y) {
+        // can fly has got to do something in here
+        if (Map.getDistance(selectedUnit.getX(), selectedUnit.getY(), x, y) <= 2) { // possibly we could add some moveRange to Unit class variables
+            if (map.isPathEmpty(selectedUnit.getX(), selectedUnit.getY(), x, y)) {
                 map.getGrid()[selectedUnit.getX()][selectedUnit.getY()].setContent(null);
-                map.getGrid()[destinationRow][destinationColumn].setContent(selectedUnit);
-                selectedUnit.setX(destinationRow);
-                selectedUnit.setY(destinationColumn);
-                view.logMessage(selectedUnit.getID() + " moved to " + destinationRow + " " + destinationColumn);
+                map.getGrid()[x][y].setContent(selectedUnit);
+                selectedUnit.setX(x);
+                selectedUnit.setY(y);
+                view.logMessage(selectedUnit.getID() + " moved to " + x + " " + y);
                 return;
             }
         }
         view.showInvalidTargetError();
-        */
     }
 
-    private boolean isAdjacent(int x1, int y1, int x2, int y2) {
-        return Math.abs(x1 - x2) <= 1 && Math.abs(y1 - y2) <= 1 && (x1 != x2 || y1 != y2);
+    private void rawAttack(Unit attacker, Unit defender) {
+        int damage = Math.min(attacker.calculateAP() - defender.calculateHoly(), 0);
+        defender.receiveDamage(damage);
     }
 
-    // returns true if attack happens
-    private boolean attackUnitByUnit(Unit attacker, Unit defender) {
-        int distance = getDistance(attacker.getX(), attacker.getY(), defender.getX(), defender.getY());
-        boolean isAdjacent = isAdjacent(attacker.getX(), attacker.getY(), defender.getX(), defender.getY());
-        if ((attacker.getUnitType() == UnitType.MELEE || attacker.getUnitType() == UnitType.HYBRID) && isAdjacent) {
-            defender.receiveHit(attacker.getAttackPoint());
-            // attack point of attacker should be calculated considering buffs and items attacker has
-            return true;
+    private  boolean canAttack(Unit attacker, Unit defender) {
+        int distance = Map.getDistance(attacker.getX(), attacker.getY(), defender.getX(), defender.getY());
+        boolean isAdjacent = Map.isAdjacent(attacker.getX(), attacker.getY(), defender.getX(), defender.getY());
+        boolean can = false;
+        switch (attacker.getUnitType()) {
+            case MELEE:
+                can |= isAdjacent;
+                break;
+            case RANGED:
+                can |= !isAdjacent && attacker.getAttackRange() >= distance;
+                break;
+            case HYBRID:
+                can |= attacker.getAttackRange() >= distance;
+                break;
         }
-        if ((attacker.getUnitType() == UnitType.RANGED || attacker.getUnitType() == UnitType.HYBRID) && !isAdjacent && attacker.getAttackRange() >= distance) {
-            defender.receiveHit(attacker.getAttackPoint());
-            // attack point of attacker should be calculated considering buffs and items attacker has
-            return true;
+        return  can;
+    }
+
+    private void attackWithSpecialPowers(Unit attacker, Unit defender) {
+        int i = 0;
+        ArrayList<Spell> spells = attacker.getSpecialPowers();
+        ArrayList<SpecialPowerType> types = attacker.getSpecialPowerTypes();
+        for (Spell spell : spells) {
+            if (types.get(i) == SpecialPowerType.ON_ATTACK) {
+                castSpellOnCellUnit(spell, defender.getX(), defender.getY(), attacker.getPlayer());
+            }
+            i++;
         }
-        return false;
+        rawAttack(attacker, defender);
+    }
+
+    private void attackUnitByUnit(Unit attacker, Unit defender) {
+        attackWithSpecialPowers(attacker, defender);
+        if (!defender.isDisarmed()) {
+            rawAttack(defender, attacker);
+        }
+        attacker.setCanAttack(false);
     }
 
     public void attackTargetCardWithSelectedUnit(String targetCardID) {
@@ -89,17 +109,14 @@ public class Game extends InGameMenu {
             view.showInvalidCardIDError();
             return;
         }
-        if (!selectedUnit.getCanAttack()) { // has already attacked before
+        if (!selectedUnit.getCanAttack() || selectedUnit.isStunned()) { // has already attacked before or is stunned
             view.logMessage("Card with " + selectedUnit.getID() + " can't attack");
             return;
         }
-
-        boolean attacked = attackUnitByUnit(selectedUnit, targetUnit);
-        if (!attacked) { // no attack happens so ...
+        if (!canAttack(selectedUnit, targetUnit)) { // can't attack because
             view.logMessage("opponent minion is unavailable for attack");
             return;
         }
-        selectedUnit.setCanAttack(false);
         attackUnitByUnit(targetUnit, selectedUnit);
     }
 
@@ -107,15 +124,7 @@ public class Game extends InGameMenu {
 
     }
 
-    void castSelectedSpellCard(int destinationRow, int destinationColumn) {
-
-    }
-
-    void castSpellOnMap(Spell spell, int destinationRow, int destinationColumn) {
-
-    }
-
-    public void useUnitSpecialPower(int destinationRow, int destinationColumn) {
+    void useHeroSpecialPower(int destinationRow, int destinationColumn) {
 
     }
 
@@ -206,6 +215,8 @@ public class Game extends InGameMenu {
     }
 
     //returns true if target matches spell TargetType and spell TargetUnit (in case TargetType is Unit)
+
+
     private boolean isValidTarget(Spell spell, int x, int y) {
         if (spell.getTargetType() == Spell.TargetType.CELL) {
             return true;
@@ -259,7 +270,7 @@ public class Game extends InGameMenu {
             }
 
             for (Buff buff : spell.getBuffs()) {
-                unit.addBuff(buff);
+                unit.addBuff(new Buff(buff));
             }
         }
     }
@@ -267,7 +278,7 @@ public class Game extends InGameMenu {
     private void castSpellOnCell(Spell spell, int x, int y) {
         Cell cell = map.getGrid()[x][y];
         for (Buff buff : spell.getBuffs()) {
-            cell.addEffect(buff);
+            cell.addEffect(new Buff(buff));
         }
     }
 
@@ -335,7 +346,7 @@ public class Game extends InGameMenu {
             case ADJACENT_4:
                 for (int i = x - 1; i <= x + 1; i++) {
                     for (int j = y - 1; j <= y + 1; j++) {
-                        if (inMap(i, j) && getDistance(i, j, x, y) == 1 && isValidTarget(spell, i, j)) {
+                        if (inMap(i, j) && Map.getDistance(i, j, x, y) == 1 && isValidTarget(spell, i, j)) {
                             targets.add(new Pair(i, j));
                         }
                     }
@@ -369,7 +380,7 @@ public class Game extends InGameMenu {
             case DISTANCE_2:
                 for (int i = x - 1; i <= x + 1; i++) {
                     for (int j = y - 1; j <= y + 1; j++) {
-                        if (inMap(i, j) && getDistance(i, j, x, y) == 2 && isValidTarget(spell, i, j)) {
+                        if (inMap(i, j) && Map.getDistance(i, j, x, y) == 2 && isValidTarget(spell, i, j)) {
                             targets.add(new Pair(i, j));
                         }
                     }
@@ -414,6 +425,7 @@ public class Game extends InGameMenu {
             if (types.get(i) == SpecialPowerType.ON_SPAWN) {
                 castSpell(spell, x, y, unit.getPlayer());
             }
+            i++;
         }
     }
 
@@ -450,8 +462,11 @@ public class Game extends InGameMenu {
             return false;
         }
         Player player = getCurrentPlayer();
+        unit.setPlayer(player);
         grid[x][y].setContent(unit, player); // finally put the card on cell ([x], [y])
         checkOnSpawn(unit, x, y);
+        unit.setX(x);
+        unit.setY(y);
         return true;
     }
 
