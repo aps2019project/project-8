@@ -432,7 +432,7 @@ public class Game extends InGameMenu {
     // if card is a spell card (x, y) is the target of the spell
     void insertCard(String cardName, int x, int y) {
         Player player = getCurrentPlayer();
-        Card card = player.findCard(cardName);
+        Card card = player.findCardInHand(cardName);
         if (card == null) { // no such card is found in player's hand
             view.showInvalidCardError();
             return;
@@ -463,12 +463,12 @@ public class Game extends InGameMenu {
     }
 
     void initiateGame() {
-
+        putCardOnMap(players[0].getHero(), 2, 0);
+        putCardOnMap(players[1].getHero(), 2, 8);
+        players[0].initiateHand();
+        players[1].initiateHand();
     }
 
-    void showHand() {
-
-    }
 
     void putCardOnMap(Card card, int row, int column) {
 
@@ -487,15 +487,19 @@ public class Game extends InGameMenu {
     }
 
     void showNextCardInDeck() {
-
+        view.showCardInfo(getCurrentPlayer().getDeck().getNextCard());
     }
 
-    void showGraveYardInfo() {
+    void showHand() {
+        view.showHand(getCurrentPlayer().getHand());
+    }
 
+    void showGraveYardInfoOfACard(String cardName) {
+        view.showCardInfo(getCurrentPlayer().findCardInGraveyard(cardName));
     }
 
     void showGraveYardCards() {
-
+        view.showGraveyard(getCurrentPlayer().getGraveYard());
     }
 
     private enum GameState {WIN_FIRST_PLAYER, DRAW, WIN_SECOND_PLAYER}

@@ -19,6 +19,8 @@ public class Map {
         return this.grid;
     }
 
+    Cell getCell(int r,int c) {return grid[r][c];}
+
     boolean isPathEmpty(int sourceR, int sourceC, int destinationR, int destinationC) {
         return true;
     }

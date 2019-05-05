@@ -318,4 +318,26 @@ public class CommandLineView implements View {
     public void showShopCollection(HashMap<String, CollectionItem> collectionItems) {
         showCollectionItemsWithPrice(new ArrayList<>(collectionItems.values()), "Sell");
     }
+
+    @Override
+    public void showCellHasContentError() {
+        System.out.println("Cell is already full!");
+    }
+
+    @Override
+    public void showGraveyard(ArrayList<Card> graveYard) {
+        graveYard.forEach(System.out::println);
+    }
+
+    @Override
+    public void showCardInfo(Card card) {
+        System.out.println(card);
+    }
+
+    @Override
+    public void showHand(Hand hand) {
+        System.out.println(hand);
+    }
+
+
 }

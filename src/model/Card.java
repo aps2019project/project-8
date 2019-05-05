@@ -2,6 +2,7 @@ package model;
 
 public class Card extends CollectionItem {
     protected int manaCost;
+    private Player player = null;
 
     // Main constructor
     public Card(CollectionItem collectionItem, int manaCost) {
@@ -19,6 +20,10 @@ public class Card extends CollectionItem {
     }
 
     protected Card() {}
+
+    public Player getPlayer() {
+        return player;
+    }
 
     public int getManaCost() {
         return manaCost;
