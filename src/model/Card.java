@@ -19,7 +19,8 @@ public class Card extends CollectionItem {
         this.description = card.description;
     }
 
-    protected Card() {}
+    protected Card() {
+    }
 
     public Player getPlayer() {
         return player;

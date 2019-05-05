@@ -114,4 +114,8 @@ View {
     void showCardInfo(Card card);
 
     void showHand(Hand hand);
+
+    void showColletibleInfo(Collectible selectedCollectible);
+
+    void showCollectibles(ArrayList<Collectible> collectibles);
 }

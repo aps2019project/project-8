@@ -4,56 +4,33 @@ package model;
 
 import menus.InGameMenu;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
-import java.nio.channels.Pipe;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Random;
 
 public class Game extends InGameMenu {
-
-    class Pair {
-        int x;
-        int y;
-        Pair (int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        int getX() {
-            return x;
-        }
-
-        int getY() {
-            return y;
-        }
-    }
-
-    private enum GameState {
-        WIN_FIRST_PLAYER,
-        DRAW,
-        WIN_SECOND_PLAYER
-    }
 
     private static final int NUMBER_OF_PLAYERS = 2;
     private static final int[] HERO_INITIAL_ROW = {2, 2};
     private static final int[] HERO_INITIAL_COLUMN = {0, 8};
 
+    private ArrayList<Item> currentItems = new ArrayList<>();
+    private ArrayList<Integer> itemCastingTurns = new ArrayList<>();
     private int numberOfFlags;
     private int turn;
-    private Map map;
+    private Map map = new Map();
     private Player[] players;
     private boolean[] hasAI;
     private Account[] accounts;
-
     private Unit selectedUnit;
-
     private Card selectedCard; // probably has no use
-
-
     private Collectible selectedCollectible;
     private GameType gameType;
+
+    public Game(Account firstPlayer, Account secondPlayer) {
+        accounts = new Account[] {firstPlayer, secondPlayer};
+        players = new Player[] {firstPlayer.getPlayer(), secondPlayer.getPlayer()};
+        hasAI = new boolean[] {false, false};
+    }
 
     private Player getCurrentPlayer() {
         if (turn % 2 == 0) {
@@ -132,7 +109,7 @@ public class Game extends InGameMenu {
         rawAttack(attacker, defender);
     }
 
-    void attackTargetCardWithSelectedUnit(String targetCardID) {
+    public void attackTargetCardWithSelectedUnit(String targetCardID) {
         Unit targetUnit = findUnitInGridByID(targetCardID);
         if (targetUnit == null) { // invalid card id
             view.showInvalidCardIDError();
@@ -149,7 +126,7 @@ public class Game extends InGameMenu {
         attackUnitByUnit(targetUnit, selectedUnit);
     }
 
-    void attackCombo(Card targetCard, Card[] friendlyCards) {
+    public void attackCombo(String targetCardID, String[] friendlyCardsIDs) {
 
     }
 
@@ -187,7 +164,7 @@ public class Game extends InGameMenu {
         return null;
     }
 
-    void selectCard(String cardID) {
+    public void selectCard(String cardID) {
         Unit unit = findUnitInGridByID(cardID);
         // actually only minions and heroes can be found on grid so we just have units on grid
         if (unit == null) { // cardID is invalid and not found in the grid
@@ -199,6 +176,48 @@ public class Game extends InGameMenu {
 
     private boolean inMap(int x, int y) {
         return x >= 0 && x < map.getNumberOfRows() && y >= 0 && y < map.getNumberOfColumns();
+    }
+
+    public boolean checkUnitTypeInItemTarget(Unit unit, Item.Target.TargetUnitType targetUnitType) {
+        switch (targetUnitType) {
+            case ALL:
+                return true;
+            case MELEE:
+                return unit.getUnitType() == UnitType.MELEE;
+            case RANGED:
+                return unit.getUnitType() == UnitType.RANGED;
+            case HYBRID:
+                return unit.getUnitType() == UnitType.HYBRID;
+            case MELEE_HYBRID:
+                return unit.getUnitType() == UnitType.MELEE || unit.getUnitType() == UnitType.HYBRID;
+            case MELEE_RANGED:
+                return unit.getUnitType() == UnitType.MELEE || unit.getUnitType() == UnitType.RANGED;
+            case RANGED_HYBRID:
+                return unit.getUnitType() == UnitType.RANGED || unit.getUnitType() == UnitType.HYBRID;
+            default:
+                return false;
+        }
+    }
+
+    public boolean checkUnitTypeInSpellTarget(Unit unit, Spell.TargetUnitType targetUnitType) {
+        switch (targetUnitType) {
+            case ALL:
+                return true;
+            case MELEE:
+                return unit.getUnitType() == UnitType.MELEE;
+            case RANGED:
+                return unit.getUnitType() == UnitType.RANGED;
+            case HYBRID:
+                return unit.getUnitType() == UnitType.HYBRID;
+            case MELEE_HYBRID:
+                return unit.getUnitType() == UnitType.MELEE || unit.getUnitType() == UnitType.HYBRID;
+            case MELEE_RANGED:
+                return unit.getUnitType() == UnitType.MELEE || unit.getUnitType() == UnitType.RANGED;
+            case RANGED_HYBRID:
+                return unit.getUnitType() == UnitType.RANGED || unit.getUnitType() == UnitType.HYBRID;
+            default:
+                return false;
+        }
     }
 
     //returns true if target matches spell TargetType and spell TargetUnit (in case TargetType is Unit)
@@ -269,6 +288,15 @@ public class Game extends InGameMenu {
         }
     }
 
+    /*
+    private boolean isPositiveBuff(Buff buff) {
+        if (buff.canDisarm() || buff.canStun()) {
+            return false;
+        }
+        int sum = buff.getEffectAp() + buff.getEffectAp() + buff.getHoly() - buff.getPoison();
+        return sum > 0;
+    }*/
+
     private void castSpellOnCoordinate(Spell spell, int x, int y, Player player) {
         switch (spell.getTargetType()) {
             case UNIT:
@@ -279,14 +307,6 @@ public class Game extends InGameMenu {
                 break;
         }
     }
-
-    // if spell is from a spell card (x, y) should be target point of spell
-    // in this case for adjacent 8 and adjacent 9 the center cell must be given not the left most and upper most
-    // for selected X_Y grid the upper most left most must be given
-    // if spell is from a Unit special power (x, y) should be coordination of the unit itself
-
-    // returns true if spell had
-
 
     private void shuffle(ArrayList<Pair> targets) {
         final int swapCount = targets.size();
@@ -382,6 +402,13 @@ public class Game extends InGameMenu {
         return targets;
     }
 
+    // if spell is from a spell card (x, y) should be target point of spell
+    // in this case for adjacent 8 and adjacent 9 the center cell must be given not the left most and upper most
+    // for selected X_Y grid the upper most left most must be given
+    // if spell is from a Unit special power (x, y) should be coordination of the unit itself
+
+    // returns true if spell had
+
     private void castSpell(Spell spell, int x, int y, Player player) {
         ArrayList<Pair> targets = getTargets(spell, x, y);
         shuffle(targets); // here we handle random targets!
@@ -397,10 +424,14 @@ public class Game extends InGameMenu {
         ArrayList<Spell> spells = unit.getSpecialPowers();
 
         int i = 0;
+        if (spells == null) {
+            return;
+        }
         for (Spell spell : spells) {
             if (types.get(i) == SpecialPowerType.ON_SPAWN) {
                 castSpell(spell, x, y, unit.getPlayer());
             }
+            i++;
         }
     }
 
@@ -447,7 +478,7 @@ public class Game extends InGameMenu {
 
     // inserts card with name [cardName] from player's hand and puts it in cell ([x], [y])
     // if card is a spell card (x, y) is the target of the spell
-    void insertCard(String cardName, int x, int y) {
+    public void insertCard(String cardName, int x, int y) {
         Player player = getCurrentPlayer();
         Card card = player.findCardInHand(cardName);
         if (card == null) { // no such card is found in player's hand
@@ -479,30 +510,92 @@ public class Game extends InGameMenu {
 
     }
 
+    public void addSpecialPowerToUnit(Unit unit, Spell specialPower, SpecialPowerType specialPowerType, Item.Target.TargetUnitType targetUnitType) {
+        if (checkUnitTypeInItemTarget(unit, targetUnitType)) {
+            unit.getSpecialPowers().add(specialPower);
+            unit.getSpecialPowerTypes().add(specialPowerType);
+        }
+    }
+
+    public void castItem(Item item, Player player, int r, int c) {
+        switch (item.getItemType()) {
+            case ADD_MANA:
+                if (item.getAddManaDuration() > 0) {
+                    player.addMana(item.getAddMana());
+                }
+                break;
+            case ADD_A_SPECIAL_POWER:
+                for (int i = 0; i < item.getSpecialPower().size(); i++) {
+                    Spell specialPower = item.getSpecialPower().get(i);
+                    SpecialPowerType specialPowerType = item.getSpecialPowerType().get(i);
+                    Item.Target target = item.getSpecialPowerTarget().get(i);
+                    // Here I add special power to units in map:
+                    {
+                        for (int row = 0; row < getMap().getNumberOfRows(); row++)
+                            for (int column = 0; column < getMap().getNumberOfColumns(); column++) {
+                                Cell cell = getMap().getCell(row, column);
+                                // check has content and is friendly
+                                if (!cell.hasContent() || !(cell.getContent() instanceof Unit) || ((Unit) cell.getContent()).getPlayer() != player) {
+                                    continue;
+                                }
+                                Unit unit = (Unit) cell.getContent();
+                                addSpecialPowerToUnit(unit, specialPower, specialPowerType, target.getTargetUnitType());
+                            }
+                    }
+                    // Here I add special power to units in Hand:
+                    {
+                        for (Card card : player.getHand().getCards()) {
+                            if (card instanceof Unit) {
+                                addSpecialPowerToUnit((Unit) card, specialPower, specialPowerType, target.getTargetUnitType());
+                            }
+                        }
+                    }
+                    // Here I add special power to units in deck
+                    {
+                        for (Card card : player.getDeck().getCards()) {
+                            if (card instanceof Unit) {
+                                addSpecialPowerToUnit((Unit) card, specialPower, specialPowerType, target.getTargetUnitType());
+                            }
+                        }
+                    }
+                }
+                break;
+            case CAST_A_SPELL:
+                castSpell(item.getSpell(), r, c, player);
+                break;
+        }
+        currentItems.add(item);
+        itemCastingTurns.add(turn);
+    }
+
     void initiateGame() {
         putUnitCard(players[0].getHero(), 2, 0);
         putUnitCard(players[1].getHero(), 2, 8);
-        players[0].initiateHand();
-        players[1].initiateHand();
+        for (int i = 0; i < 2; i++ ) {
+            if (players[i].getUsable() != null) {
+                players[i].initiateHand();
+                Usable usable = new Usable(players[i].getUsable());
+                castItem(usable, players[i], 0, 0);
+            }
+        }
     }
 
-    void endTurn() {
-
-    }
-
-    void selectCollectibleItem(String collectibleName) {
-
-    }
-
-    void applyCollectible(int row, int column) {
+    public void endTurn() {
 
     }
 
-    void showNextCardInDeck() {
+    public void selectCollectibleItem(String collectibleName) {
+
+    }
+
+    public void applyCollectible(int row, int column) {
+    }
+
+    public void showNextCardInDeck() {
         view.showCardInfo(getCurrentPlayer().getDeck().getNextCard());
     }
 
-    void showHand() {
+    public void showHand() {
         view.showHand(getCurrentPlayer().getHand());
     }
 
@@ -512,5 +605,47 @@ public class Game extends InGameMenu {
 
     void showGraveYardCards() {
         view.showGraveyard(getCurrentPlayer().getGraveYard());
+    }
+
+    public void showGameInfo() {
+    }
+
+    public void showOpponentMinions() {
+    }
+
+    public void showMyMinions() {
+    }
+
+    public void showCardInfo(String cardID) {
+    }
+
+    public void showAllCollectibles() {
+    }
+
+    public void showCollectibleInfo() {
+    }
+
+    private enum GameState {
+        WIN_FIRST_PLAYER,
+        DRAW,
+        WIN_SECOND_PLAYER
+    }
+
+    class Pair {
+        int x;
+        int y;
+
+        Pair(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        int getX() {
+            return x;
+        }
+
+        int getY() {
+            return y;
+        }
     }
 }

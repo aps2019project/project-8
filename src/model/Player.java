@@ -5,17 +5,22 @@ import java.util.ArrayList;
 public class Player {
     private Hand hand;
     private Deck deck;
-    private Hero hero;
     private ArrayList<Unit> units;
     private int mana;
     private ArrayList<Card> graveYard;
     private ArrayList<Collectible> collectibles;
 
-    public Hero getHero() {
-        return hero;
+    public Player(Deck deck) {
+        this.deck = new Deck(deck);
+        hand = new Hand();
     }
-    private void getCurrentDeck() {
 
+    public Hero getHero() {
+        return getDeck().getHero();
+    }
+
+    public Usable getUsable() {
+        return getDeck().getDeckUsableItem();
     }
 
     public ArrayList<Card> getGraveYard() {
@@ -24,7 +29,6 @@ public class Player {
 
     public void initiateHand() {
         deck.shuffle();
-
         hand.addCard(deck.getNextCard());
     }
 
@@ -65,4 +69,7 @@ public class Player {
         this.mana -= mana;
     }
 
+    public void addMana(int addMana) {
+        this.mana += addMana;
+    }
 }

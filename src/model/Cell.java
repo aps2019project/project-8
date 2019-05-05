@@ -51,4 +51,9 @@ public class Cell {
     public Player getObjectOwner() {
         return objectOwner;
     }
+
+    @Override
+    public String toString() {
+        return (content == null ? "NONE" : "FULL");
+    }
 }

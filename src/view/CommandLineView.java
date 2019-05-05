@@ -76,7 +76,7 @@ public class CommandLineView implements View {
     @Override
     public void showID(ArrayList<String> collectionItemIDs) {
         if (!collectionItemIDs.isEmpty()) {
-            collectionItemIDs.forEach(System.out::println);
+            collectionItemIDs.stream().sorted().forEach(System.out::println);
             return;
         }
         System.out.println("No such item found.");
@@ -337,6 +337,16 @@ public class CommandLineView implements View {
     @Override
     public void showHand(Hand hand) {
         System.out.println(hand);
+    }
+
+    @Override
+    public void showColletibleInfo(Collectible selectedCollectible) {
+        System.out.println(selectedCollectible);
+    }
+
+    @Override
+    public void showCollectibles(ArrayList<Collectible> collectibles) {
+        collectibles.forEach(System.out::println);
     }
 
 

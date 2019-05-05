@@ -115,6 +115,11 @@ public class Spell {
         return this;
     }
 
+    public TargetUnitType getTargetUnitType() {
+        return targetUnitType;
+    }
+
+
     public boolean isIgnoreHoly() {
         return ignoreHoly;
     }

@@ -8,7 +8,7 @@ import java.util.Queue;
 public class Deck {
     private static final int DECK_CARD_CAPACITY = 20;
     private Queue<Card> cards = new ArrayDeque<>();
-    private Item deckItem = null;
+    private Usable deckUsableItem = null;
     private Hero deckHero = null;
     private String deckName = null;
     private int numberOfTabsOnToString = 0;
@@ -16,6 +16,31 @@ public class Deck {
 
     Deck(String deckName) {
         this.deckName = deckName;
+    }
+
+    public Deck(Deck deck) {
+        if (deck.deckUsableItem != null)
+            deckUsableItem = new Usable(deck.deckUsableItem);
+        new ArrayList<>(cards).forEach(o -> cards.add(getCopy(o)));
+        if (deck.deckHero != null)
+            deckHero = new Hero(deck.deckHero);
+        deckName = deck.deckName;
+        numberOfTabsOnToString = deck.numberOfTabsOnToString;
+        collectionItemsIDs.addAll(deck.collectionItemsIDs);
+    }
+
+    private static void appendTabs(StringBuilder stringBuilder, int d) {
+        for (int i = 0; i < d; i++) {
+            stringBuilder.append("\t");
+        }
+    }
+
+    private Card getCopy(Card card) {
+        if (card instanceof Minion)
+            return new Minion((Minion) card);
+        if (card instanceof SpellCard)
+            return new SpellCard((SpellCard) card);
+        return null;
     }
 
     public void removeCollectionItem(String collectionItemID, CollectionItem collectionItem) {
@@ -42,6 +67,10 @@ public class Deck {
         return deckHero;
     }
 
+    public Usable getDeckUsableItem() {
+        return deckUsableItem;
+    }
+
     Card getNextCard() {
         return cards.peek();
     }
@@ -50,7 +79,7 @@ public class Deck {
         if (collectionItem instanceof Hero) {
             deckHero = (Hero) collectionItem;
         } else if (collectionItem instanceof Item) {
-            deckItem = (Item) collectionItem;
+            deckUsableItem = (Usable) collectionItem;
         } else {
             cards.add((Card) collectionItem);
         }
@@ -62,14 +91,14 @@ public class Deck {
     }
 
     public boolean hasItem() {
-        return deckItem != null;
+        return deckUsableItem != null;
     }
 
     public void removeCollectionItem(CollectionItem collectionItem, String collectionItemID) {
         if (collectionItem instanceof Hero) {
             deckHero = null;
         } else if (collectionItem instanceof Item) {
-            deckItem = null;
+            deckUsableItem = null;
         } else {
             cards.remove(collectionItem);
         }
@@ -79,7 +108,6 @@ public class Deck {
     public boolean isFull() {
         return cards.size() == DECK_CARD_CAPACITY;
     }
-
 
     public boolean hasCollectionItem(String collectionItemID) {
         if (collectionItemsIDs == null)
@@ -93,12 +121,6 @@ public class Deck {
 
     public void decrementTabsOnToString() {
         numberOfTabsOnToString--;
-    }
-
-    private static void appendTabs(StringBuilder stringBuilder, int d) {
-        for (int i = 0; i < d; i++) {
-            stringBuilder.append("\t");
-        }
     }
 
     @Override
@@ -118,7 +140,7 @@ public class Deck {
         if (hasItem()) {
             appendTabs(stringBuilder, numberOfTabsOnToString + 1);
             stringBuilder.append("1 : ");
-            stringBuilder.append(deckItem.toString());
+            stringBuilder.append(deckUsableItem.toString());
             stringBuilder.append("\n");
         }
 
@@ -145,5 +167,9 @@ public class Deck {
             }
         }
         return null;
+    }
+
+    public Queue<Card> getCards() {
+        return cards;
     }
 }

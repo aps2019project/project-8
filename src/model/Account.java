@@ -90,7 +90,7 @@ public class Account implements Comparable {
     }
 
     public Player getPlayer() {
-        return null;
+        return new Player(getMainDeck());
     }
 
     public ArrayList<Deck> getDecks() {
