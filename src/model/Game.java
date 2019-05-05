@@ -53,7 +53,7 @@ public class Game extends InGameMenu {
     private Collectible selectedCollectible;
     private GameType gameType;
 
-    Player getCurrentPlayer() {
+    private Player getCurrentPlayer() {
         if (turn % 2 == 0) {
             return players[0];
         } else {
