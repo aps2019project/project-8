@@ -10,6 +10,9 @@ public class Game extends InGameMenu {
     private static final int NUMBER_OF_PLAYERS = 2;
     private static final int[] HERO_INITIAL_ROW = {2, 2};
     private static final int[] HERO_INITIAL_COLUMN = {0, 8};
+
+    private ArrayList<Item> currentItems = new ArrayList<>();
+    private ArrayList<Integer> itemCastingTurns = new ArrayList<>();
     private int numberOfFlags;
     private int turn;
     private Map map;
@@ -158,6 +161,34 @@ public class Game extends InGameMenu {
 
     private boolean inMap(int x, int y) {
         return x >= 0 && x < map.getNumberOfRows() && y >= 0 && y < map.getNumberOfColumns();
+    }
+
+    public boolean checkUnitTypeInSpellTarget(Unit unit, Spell.TargetUnitType targetUnitType) {
+        switch (targetUnitType) {
+            case ALL:
+                return true;
+                break;
+            case MELEE:
+                return unit.getUnitType() == UnitType.MELEE;
+                break;
+            case RANGED:
+                return unit.getUnitType() == UnitType.RANGED;
+                break;
+            case HYBRID:
+                return unit.getUnitType() == UnitType.HYBRID;
+                break;
+            case MELEE_HYBRID:
+                return unit.getUnitType() == UnitType.MELEE || unit.getUnitType() == UnitType.HYBRID;
+                break;
+            case MELEE_RANGED:
+                return unit.getUnitType() == UnitType.MELEE || unit.getUnitType() == UnitType.RANGED;
+                break;
+            case RANGED_HYBRID:
+                return unit.getUnitType() == UnitType.RANGED || unit.getUnitType() == UnitType.HYBRID;
+                break;
+            default:
+                return false;
+        }
     }
 
     //returns true if target matches spell TargetType and spell TargetUnit (in case TargetType is Unit)
@@ -441,8 +472,42 @@ public class Game extends InGameMenu {
 
     }
 
-    public void castItem(Item item) {
+    public void castItem(Item item, Player player, int r, int c) {
+        switch (item.getItemType()) {
+            case ADD_MANA:
+                if (item.getAddManaDuration() > 0) {
+                    player.addMana(item.getAddMana());
+                }
+                break;
+            case ADD_A_SPECIAL_POWER:
+                for (int i = 0; i < item.getSpecialPower().size(); i++) {
+                    Spell specialPower = item.getSpecialPower().get(i);
+                    SpecialPowerType specialPowerType = item.getSpecialPowerType().get(i);
+                    Item.Target target = item.getSpecialPowerTarget().get(i);
+                    // Here I add special power to units in map:
+                    for (int row = 0; row < getMap().getNumberOfRows(); row++)
+                        for (int column = 0; column < getMap().getNumberOfColumns(); column++) {
+                            Cell cell = getMap().getCell(row, column);
+                            // check has content and is friendly
+                            if (!cell.hasContent() || !(cell.getContent() instanceof Unit) || ((Unit) cell.getContent()).getPlayer() != player)) {
+                                continue;
+                            }
+                            Unit unit = (Unit) cell.getContent();
 
+                            if (target.getTargetUnit() == Item.Target.TargetUnit.FRIENDLY_HERO && cell.getContent() instanceof Hero) {
+
+                            }
+                            if (target.getTargetUnit() == Item.Target.TargetUnit.FRIENDLY_MINION && cell.getContent() instanceof Minion && ((Minion) cell.getContent()).getPlayer() == player[0]) {
+
+                            }
+                        }
+                }
+                break;
+            case CAST_A_SPELL:
+
+                break;
+        }
+        currentItems.add(item);
     }
 
     void initiateGame() {
@@ -452,7 +517,7 @@ public class Game extends InGameMenu {
             if (players[i].getUsable() != null) {
                 players[i].initiateHand();
                 Usable usable = new Usable(players[i].getUsable());
-                castItem(usable);
+                castItem(usable, players[i], 0, 0);
             }
         }
     }
