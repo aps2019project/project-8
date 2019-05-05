@@ -339,5 +339,15 @@ public class CommandLineView implements View {
         System.out.println(hand);
     }
 
+    @Override
+    public void showColletibleInfo(Collectible selectedCollectible) {
+        System.out.println(selectedCollectible);
+    }
+
+    @Override
+    public void showCollectibles(ArrayList<Collectible> collectibles) {
+        collectibles.forEach(System.out::println);
+    }
+
 
 }

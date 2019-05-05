@@ -5,17 +5,17 @@ import java.util.ArrayList;
 public class Player {
     private Hand hand;
     private Deck deck;
-    private Hero hero;
     private ArrayList<Unit> units;
     private int mana;
     private ArrayList<Card> graveYard;
     private ArrayList<Collectible> collectibles;
 
     public Hero getHero() {
-        return hero;
+        return getDeck().getHero();
     }
-    private void getCurrentDeck() {
 
+    public Usable getUsable() {
+        return getDeck().getDeckUsableItem();
     }
 
     public ArrayList<Card> getGraveYard() {
