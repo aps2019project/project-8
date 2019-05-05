@@ -1,0 +1,22 @@
+{
+  "unitType": "RANGED",
+  "hitPoint": 6,
+  "attackPoint": 20,
+  "specialPowerType": [],
+  "specialPower": [],
+  "canFly": false,
+  "attackRange": 3,
+  "buffs": [],
+  "flags": 0,
+  "canMove": false,
+  "canAttack": false,
+  "x": 0,
+  "y": 0,
+  "attackTimes": 0,
+  "defenceTimes": 0,
+  "hasAttacked": [],
+  "manaCost": 4,
+  "price": 500,
+  "collectionItemID": "2033",
+  "name": "iraj"
+}

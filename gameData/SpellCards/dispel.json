@@ -8,6 +8,10 @@
     "gridX": 1,
     "gridY": 1,
     "canDispel": true,
+    "disarmable": true,
+    "poisonImmune": false,
+    "spellImmune": false,
+    "isBully": false,
     "multiplied": false,
     "ignoreHoly": false
   },

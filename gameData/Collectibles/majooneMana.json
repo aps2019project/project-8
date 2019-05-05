@@ -1,0 +1,10 @@
+{
+  "addMana": 3,
+  "addManaDuration": 1,
+  "itemType": "ADD_MANA",
+  "specialPowerTarget": [],
+  "price": 0,
+  "collectionItemID": "4008",
+  "name": "majooneMana",
+  "description": "adds mana by 3 for next turn"
+}

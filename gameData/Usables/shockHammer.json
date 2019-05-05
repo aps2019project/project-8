@@ -1,0 +1,14 @@
+{
+  "addMana": 0,
+  "addManaDuration": 0,
+  "specialPowerTarget": [
+    {
+      "targetUnit": "FRIENDLY_HERO",
+      "targetUnitType": "ALL"
+    }
+  ],
+  "price": 15000,
+  "collectionItemID": "4017",
+  "name": "shockHammer",
+  "description": "friendly hero when attacking disarms enemy unit for one turn"
+}

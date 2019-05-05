@@ -1,0 +1,53 @@
+{
+  "unitType": "RANGED",
+  "hitPoint": 5,
+  "attackPoint": 4,
+  "specialPowerType": [
+    "PASSIVE"
+  ],
+  "specialPower": [
+    {
+      "targetType": "UNIT",
+      "targetArea": "ADJACENT_9",
+      "targetUnit": "FRIENDLY_MINION",
+      "targetUnitType": "ALL",
+      "numberOfRandomTargets": 100,
+      "gridX": 1,
+      "gridY": 1,
+      "buffs": [
+        {
+          "duration": 1,
+          "holy": 0,
+          "poison": 0,
+          "effectHp": -1,
+          "effectAp": 2,
+          "stun": false,
+          "disarm": false,
+          "dispellable": true
+        }
+      ],
+      "canDispel": false,
+      "disarmable": true,
+      "poisonImmune": false,
+      "spellImmune": false,
+      "isBully": false,
+      "multiplied": false,
+      "ignoreHoly": false
+    }
+  ],
+  "canFly": false,
+  "attackRange": 3,
+  "buffs": [],
+  "flags": 0,
+  "canMove": false,
+  "canAttack": false,
+  "x": 0,
+  "y": 0,
+  "attackTimes": 0,
+  "defenceTimes": 0,
+  "hasAttacked": [],
+  "manaCost": 4,
+  "price": 550,
+  "collectionItemID": "4025",
+  "name": "jadoogar"
+}

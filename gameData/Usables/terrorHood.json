@@ -1,0 +1,14 @@
+{
+  "addMana": 0,
+  "addManaDuration": 0,
+  "specialPowerTarget": [
+    {
+      "targetUnit": "FRIENDLY_UNIT",
+      "targetUnitType": "ALL"
+    }
+  ],
+  "price": 5000,
+  "collectionItemID": "4012",
+  "name": "terrorHood",
+  "description": "adds on attack weakness buff 2 for all units"
+}

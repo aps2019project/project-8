@@ -3,6 +3,7 @@ package menus;
 import com.gilecode.yagson.YaGson;
 import model.*;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -24,6 +25,7 @@ public class Shop extends Menu {
             "help"
     };
     private static ArrayList<CollectionItem> collectionItems = new ArrayList<>();
+    private static ArrayList<Collectible> collectibles = new ArrayList<>();
 
     private static CollectionItem getCollectionItemByName(String collectionItemName) {
         for (CollectionItem collectionItem : collectionItems) {
@@ -88,8 +90,20 @@ public class Shop extends Menu {
         }
         CollectionItem collectionItem = getCollectionItemByName(collectionItemName);
         account.payMoney(collectionItem.getPrice());
-        account.getCollection().addCollectionItem(collectionItem);
+        getAccount().getCollection().addCollectionItem(getCopy(collectionItem));
         view.alertBuy();
+    }
+
+    private static CollectionItem getCopy(CollectionItem collectionItem) {
+        if (collectionItem instanceof Hero)
+            return new Hero((Hero)collectionItem);
+        if (collectionItem instanceof Minion)
+            return new Minion((Minion) collectionItem);
+        if (collectionItem instanceof SpellCard)
+            return new SpellCard((SpellCard) collectionItem);
+        if (collectionItem instanceof Usable)
+            return new Usable((Usable) collectionItem);
+        return null;
     }
 
     public static void show() {
@@ -98,6 +112,11 @@ public class Shop extends Menu {
 
     public static void load() {
         try {
+            for (File file : new File("./gameData/Collectibles/").listFiles()) {
+                YaGson yaGson = new YaGson();
+                collectibles.add(yaGson.fromJson(new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())),
+                        StandardCharsets.UTF_8), Collectible.class));
+            }
             for (File file : new File("./gameData/Heroes/").listFiles()) {
                 YaGson yaGson = new YaGson();
                 collectionItems.add(yaGson.fromJson(new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())),

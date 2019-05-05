@@ -17,6 +17,11 @@ public class Deck {
         this.deckName = deckName;
     }
 
+    public void removeCollectionItem(String collectionItemID, CollectionItem collectionItem) {
+        cards.remove(collectionItem);
+        collectionItemsIDs.remove(collectionItemID);
+    }
+
     public boolean isValid() {
         return (deckHero != null) && (cards.size() == DECK_CARD_CAPACITY);
     }
@@ -61,7 +66,7 @@ public class Deck {
         } else if (collectionItem instanceof Item) {
             deckItem = null;
         } else {
-            cards.remove((Card) collectionItem);
+            cards.remove(collectionItem);
         }
         collectionItemsIDs.remove(collectionItemID);
     }

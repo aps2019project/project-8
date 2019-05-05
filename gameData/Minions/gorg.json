@@ -1,0 +1,63 @@
+{
+  "unitType": "MELEE",
+  "hitPoint": 6,
+  "attackPoint": 1,
+  "specialPowerType": [
+    "ON_ATTACK"
+  ],
+  "specialPower": [
+    {
+      "targetType": "UNIT",
+      "targetArea": "SELECTED_CELL",
+      "targetUnit": "ENEMY_MINION",
+      "targetUnitType": "ALL",
+      "numberOfRandomTargets": 100,
+      "gridX": 1,
+      "gridY": 1,
+      "buffs": [
+        {
+          "duration": 1,
+          "holy": 0,
+          "poison": 0,
+          "effectHp": 6,
+          "effectAp": 0,
+          "stun": false,
+          "disarm": false,
+          "dispellable": false
+        },
+        {
+          "duration": 2,
+          "holy": 0,
+          "poison": 0,
+          "effectHp": -6,
+          "effectAp": 0,
+          "stun": false,
+          "disarm": false,
+          "dispellable": false
+        }
+      ],
+      "canDispel": false,
+      "disarmable": true,
+      "poisonImmune": false,
+      "spellImmune": false,
+      "isBully": false,
+      "multiplied": false,
+      "ignoreHoly": false
+    }
+  ],
+  "canFly": false,
+  "attackRange": 0,
+  "buffs": [],
+  "flags": 0,
+  "canMove": false,
+  "canAttack": false,
+  "x": 0,
+  "y": 0,
+  "attackTimes": 0,
+  "defenceTimes": 0,
+  "hasAttacked": [],
+  "manaCost": 3,
+  "price": 400,
+  "collectionItemID": "2024",
+  "name": "gorg"
+}

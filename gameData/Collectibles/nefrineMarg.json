@@ -1,0 +1,10 @@
+{
+  "addMana": -10,
+  "addManaDuration": -10,
+  "itemType": "ADD_MANA",
+  "specialPowerTarget": [],
+  "price": 0,
+  "collectionItemID": "4010",
+  "name": "nefrineMarg",
+  "description": "give a random minion the ability to hit a random closest unit by 8 points"
+}

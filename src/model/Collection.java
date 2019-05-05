@@ -12,8 +12,8 @@ public class Collection {
         return collectionItems.get(collectionItemID);
     }
 
-    public void removeCollectionItem(String collectionItemID) {
-        collectionItems.remove(collectionItemID);
+    public CollectionItem getCollectionItem(String collectionItemID) {
+        return collectionItems.get(collectionItemID);
     }
 
     public void addCollectionItem(CollectionItem collectionItem) {
@@ -57,10 +57,6 @@ public class Collection {
         return new ArrayList<>(decks.values());
     }
 
-    public CollectionItem getCollectionItem(String collectionItemID) {
-        return collectionItems.get(collectionItemID);
-    }
-
     public boolean hasCollectionItem(String collectionItemID) {
         return collectionItems.containsKey(collectionItemID);
     }
@@ -72,5 +68,11 @@ public class Collection {
                 numberOfItems++;
         }
         return numberOfItems == 3;
+    }
+
+    public void removeCollectionItem(String collectionItemID) {
+        CollectionItem collectionItem = getCollectionItem(collectionItemID);
+        collectionItems.remove(collectionItemID);
+        decks.values().forEach(o -> o.removeCollectionItem(collectionItemID, collectionItem));
     }
 }
