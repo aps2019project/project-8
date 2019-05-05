@@ -331,7 +331,7 @@ public class UI {
             else if (command.matches(SHOW_CARD_INFO))
                 GameMenu.showCardInfo(command.split(" ")[3]);
             else if (command.matches(SELECT_COLLECTION_ITEM))
-                GameMenu.selectCollectible(command.split(" ")[1]);
+                GameMenu.select(command.split(" ")[1]);
             else if (command.matches(MOVE)) {
                 int[] coordinates = getCoordinates(command);
                 GameMenu.moveUnit(coordinates[0], coordinates[1]);
