@@ -4,8 +4,10 @@ import menus.InGameMenu;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Type;
+import java.nio.channels.Pipe;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Random;
 
 public class Game extends InGameMenu {
 
@@ -17,6 +19,13 @@ public class Game extends InGameMenu {
             this.y = y;
         }
 
+        int getX() {
+            return x;
+        }
+
+        int getY() {
+            return y;
+        }
     }
 
     private static final int NUMBER_OF_PLAYERS = 2;
@@ -170,7 +179,6 @@ public class Game extends InGameMenu {
     }
 
     //returns true if target matches spell TargetType and spell TargetUnit (in case TargetType is Unit)
-
     private boolean isValidTarget(Spell spell, int x, int y) {
         if (spell.getTargetType() == Spell.TargetType.CELL) {
             return true;
@@ -248,12 +256,22 @@ public class Game extends InGameMenu {
 
     // returns true if spell had
 
-    private boolean castSpell(Spell spell, int x, int y) {
+
+    private void shuffle(ArrayList<Pair> targets) {
+        final int swapCount = targets.size();
+        Random rand = new Random();
+        for (int count = 0; count < swapCount; count++) {
+            int i = rand.nextInt(targets.size());
+            int j = rand.nextInt(targets.size());
+            Pair temp = targets.get(i);
+            targets.set(i, targets.get(j));
+            targets.set(j, temp);
+        }
+    }
+
+    private void castSpell(Spell spell, int x, int y) {
         Spell.TargetArea area = spell.getTargetArea();
-        boolean ret = false;
-
         ArrayList<Pair> targets = new ArrayList<>(0);
-
         switch (spell.getTargetArea()) {
             case ALL_OF_THE_MAP:
                 for (int i = 0; i < map.getNumberOfRows(); i++) {
@@ -330,7 +348,12 @@ public class Game extends InGameMenu {
                 }
                 break;
         }
-        return ret;
+
+        shuffle(targets); // here we handle random targets!
+        for (int i = 0; i < Math.min(targets.size(), spell.getNumberOfRandomTargets()); i++) {
+            Pair p = targets.get(i);
+            castSpellOnCoordinate(spell, p.getX(), p.getY());
+        }
     }
 
     private void checkOnSpawn(Unit unit, int x, int y) { // when inserting a unit card

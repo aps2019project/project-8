@@ -213,6 +213,10 @@ public class Spell {
         return buffs;
     }
 
+    int getNumberOfRandomTargets() {
+        return numberOfRandomTargets;
+    }
+
     @Override
     public String toString() {
         String ans = new String("");
