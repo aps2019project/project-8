@@ -7,7 +7,9 @@
     "numberOfRandomTargets": 100,
     "gridX": 1,
     "gridY": 1,
-    "canDispel": true
+    "canDispel": true,
+    "multiplied": false,
+    "ignoreHoly": false
   },
   "manaCost": 0,
   "price": 2100,

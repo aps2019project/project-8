@@ -23,7 +23,8 @@ public class Spell {
         ADJACENT_8,
         ADJACENT_4,
         SAME_ROW,
-        ADJACENT_9
+        ADJACENT_9,
+        DISTANCE_2
     }
     public enum TargetUnit {
         UNIT,
@@ -55,11 +56,18 @@ public class Spell {
     private int gridY;
     private Buff[] buffs;
     private boolean canDispel;
-    private boolean multiplied = false;
 
+
+    private boolean disarmable = true;
+    private boolean poisonImmune = false;
+    private boolean spellImmune = false;
+    private boolean isBully = false;
+
+    private boolean multiplied = false;
+    private boolean ignoreHoly = false;
     // Main Constructor
     public Spell(TargetType targetType, TargetArea targetArea, TargetUnit targetUnit, TargetUnitType targetUnitType,
-                 int numberOfRandomTargets, int gridX, int gridY, Buff[] buffs,boolean canDispel) {
+                 int numberOfRandomTargets, int gridX, int gridY, Buff[] buffs, boolean canDispel) {
         this.targetType = targetType;
         this.targetArea = targetArea;
         this.targetUnit = targetUnit;
@@ -70,7 +78,6 @@ public class Spell {
         this.buffs = buffs;
         this.canDispel = canDispel;
     }
-
     // Copy constructor
     public Spell(Spell spell) {
         this.targetType = spell.targetType;
@@ -83,10 +90,37 @@ public class Spell {
         this.buffs = spell.buffs;
         this.canDispel = spell.canDispel;
     }
-
     protected Spell() {
     }
 
+
+    public Spell setDisarmable(boolean disarmable) {
+        this.disarmable = disarmable;
+        return this;
+    }
+
+    public Spell setPoisonImmune(boolean poisonImmune) {
+        this.poisonImmune = poisonImmune;
+        return this;
+    }
+
+    public Spell setSpellImmune(boolean spellImmune) {
+        this.spellImmune = spellImmune;
+        return this;
+    }
+
+    public Spell setIsBully(boolean isBully) {
+        this.isBully = isBully;
+        return this;
+    }
+
+    public boolean isIgnoreHoly() {
+        return ignoreHoly;
+    }
+
+    public void setIgnoreHoly(boolean ignoreHoly) {
+        this.ignoreHoly = ignoreHoly;
+    }
 
     public static class SpellBuilder {
         private TargetType targetType;
@@ -184,3 +218,4 @@ public class Spell {
         return ans;
     }
 }
+

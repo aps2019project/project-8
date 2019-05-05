@@ -28,7 +28,9 @@
           "dispellable": true
         }
       ],
-      "canDispel": false
+      "canDispel": false,
+      "multiplied": false,
+      "ignoreHoly": false
     }
   ],
   "canFly": false,

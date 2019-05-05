@@ -17,7 +17,9 @@
         "dispellable": false
       }
     ],
-    "canDispel": false
+    "canDispel": false,
+    "multiplied": false,
+    "ignoreHoly": false
   },
   "manaCost": 5,
   "price": 900,
