@@ -179,6 +179,24 @@ public class Unit extends Card{
         buffs.add(buff);
     }
 
+    private boolean isPositiveBuff(Buff buff) {
+        if (buff.canDisarm() || buff.canStun()) {
+            return false;
+        }
+        int sum = buff.getEffectHp() + buff.getEffectAp() + buff.getHoly() - buff.getPoison();
+        return sum > 0;
+    }
+
+    // true for positive and false for negative
+    public void removeBuffs(boolean type) {
+        for (int i = 0; i < buffs.size(); i++) {
+            if (isPositiveBuff(buffs.get(i)) == type) {
+                buffs.remove(i);
+                i--;
+            }
+        }
+    }
+
     public void dispel() {
         // ?
     }
@@ -221,6 +239,14 @@ public class Unit extends Card{
 
     public void setCanAttack(boolean canAttack) {
         this.canAttack = canAttack;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     protected String getSpecialPowerDescription() {

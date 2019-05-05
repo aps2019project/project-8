@@ -93,6 +93,36 @@ public class Buff {
         }
     }
 
+    int getHoly() {
+        return holy;
+    }
+
+    int getPoison() {
+        return poison;
+    }
+
+    int getEffectHp() {
+        return effectHp;
+    }
+
+    int getEffectAp() {
+        return effectAp;
+    }
+
+    public boolean canStun() {
+        return stun;
+    }
+
+    public boolean canDisarm() {
+        return disarm;
+    }
+
+    public boolean dispellable() {
+        return dispellable;
+    }
+
+
+    /*
     ArrayList<Integer> getBuff() {
         ArrayList<Integer> characteristics;
         characteristics = new ArrayList<Integer>(0);
@@ -100,5 +130,6 @@ public class Buff {
 //        characteristics.add()
         return characteristics;
     }
+    */
 
 }
