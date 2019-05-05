@@ -11,6 +11,18 @@ public class Item extends CollectionItem {
     private ArrayList<Spell> specialPower;
     private ArrayList<Target> specialPowerTarget;
 
+    public ArrayList<Spell> getSpecialPower() {
+        return specialPower;
+    }
+
+    public ArrayList<Target> getSpecialPowerTarget() {
+        return specialPowerTarget;
+    }
+
+    public ArrayList<SpecialPowerType> getSpecialPowerType() {
+        return specialPowerType;
+    }
+
     // Main constructor
     public Item(CollectionItem collectionItem, Spell spell, int addMana, int addManaDuration, ItemType itemType,
                 ArrayList<SpecialPowerType> specialPowerType, ArrayList<Spell> specialPower, ArrayList<Target> specialPowerTarget) {
@@ -37,7 +49,8 @@ public class Item extends CollectionItem {
         this.specialPowerTarget = item.specialPowerTarget;
     }
 
-    protected Item() {}
+    protected Item() {
+    }
 
 
     public static class ItemBuilder {
@@ -94,6 +107,19 @@ public class Item extends CollectionItem {
             return new Item(collectionItem, spell, addMana, addManaDuration, itemType, specialPowerType, specialPower, specialPowerTarget);
         }
     }
+
+    public ItemType getItemType() {
+        return itemType;
+    }
+
+    public int getAddMana() {
+        return addMana;
+    }
+
+    public int getAddManaDuration() {
+        return addManaDuration;
+    }
+
     @Override
     public String toString() {
         return "Name : " + getName() + DASH +
@@ -109,11 +135,20 @@ public class Item extends CollectionItem {
             this.targetUnitType = targetUnitType;
         }
 
+        public TargetUnit getTargetUnit() {
+            return targetUnit;
+        }
+
+        public TargetUnitType getTargetUnitType() {
+            return targetUnitType;
+        }
+
         public enum TargetUnit {
             FRIENDLY_UNIT,
             FRIENDLY_MINION,
             FRIENDLY_HERO,
         }
+
         public enum TargetUnitType {
             ALL,
             MELEE,
