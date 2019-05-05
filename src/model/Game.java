@@ -7,47 +7,25 @@ import java.util.Random;
 
 public class Game extends InGameMenu {
 
-    class Pair {
-        int x;
-        int y;
-        Pair (int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        int getX() {
-            return x;
-        }
-
-        int getY() {
-            return y;
-        }
-    }
-
-    private enum GameState {
-        WIN_FIRST_PLAYER,
-        DRAW,
-        WIN_SECOND_PLAYER
-    }
-
     private static final int NUMBER_OF_PLAYERS = 2;
     private static final int[] HERO_INITIAL_ROW = {2, 2};
     private static final int[] HERO_INITIAL_COLUMN = {0, 8};
-
     private int numberOfFlags;
     private int turn;
     private Map map;
     private Player[] players;
     private boolean[] hasAI;
     private Account[] accounts;
-
     private Unit selectedUnit;
-
     private Card selectedCard; // probably has no use
-
-
     private Collectible selectedCollectible;
     private GameType gameType;
+
+    public Game(Account firstPlayer, Account secondPlayer) {
+        accounts = new Account[] {firstPlayer, secondPlayer};
+        players = new Player[] {firstPlayer.getPlayer(), secondPlayer.getPlayer()};
+        hasAI = new boolean[] {false, false};
+    }
 
     private Player getCurrentPlayer() {
         if (turn % 2 == 0) {
@@ -65,7 +43,7 @@ public class Game extends InGameMenu {
         return Math.abs(x1 - x2) + Math.abs(y1 - y2);
     }
 
-    void moveSelectedUnit(int destinationRow, int destinationColumn) {
+    public void moveSelectedUnit(int destinationRow, int destinationColumn) {
         /*
         if (getDistance(selectedUnit.getX(), selectedUnit.getY(), destinationRow, destinationColumn) <= 2 || selectedUnit.canFly()) { // possibly we could add some moveRange to Unit class variables
             if (map.isPathEmpty(selectedUnit.getX(), selectedUnit.getY(), destinationRow, destinationColumn)) {
@@ -102,7 +80,7 @@ public class Game extends InGameMenu {
         return false;
     }
 
-    void attackTargetCardWithSelectedUnit(String targetCardID) {
+    public void attackTargetCardWithSelectedUnit(String targetCardID) {
         Unit targetUnit = findUnitInGridByID(targetCardID);
         if (targetUnit == null) { // invalid card id
             view.showInvalidCardIDError();
@@ -122,7 +100,7 @@ public class Game extends InGameMenu {
         attackUnitByUnit(targetUnit, selectedUnit);
     }
 
-    void attackCombo(Card targetCard, Card[] friendlyCards) {
+    public void attackCombo(String targetCardID, String[] friendlyCardsIDs) {
 
     }
 
@@ -168,7 +146,7 @@ public class Game extends InGameMenu {
         return null;
     }
 
-    void selectCard(String cardID) {
+    public void selectCard(String cardID) {
         Unit unit = findUnitInGridByID(cardID);
         // actually only minions and heroes can be found on grid so we just have units on grid
         if (unit == null) { // cardID is invalid and not found in the grid
@@ -225,15 +203,6 @@ public class Game extends InGameMenu {
         return valid;
     }
 
-    /*
-    private boolean isPositiveBuff(Buff buff) {
-        if (buff.canDisarm() || buff.canStun()) {
-            return false;
-        }
-        int sum = buff.getEffectAp() + buff.getEffectAp() + buff.getHoly() - buff.getPoison();
-        return sum > 0;
-    }*/
-
     private void castSpellOnCellUnit(Spell spell, int x, int y, Player player) {
         boolean valid = isValidTarget(spell, x, y);
         Unit unit = (Unit) map.getGrid()[x][y].getContent();
@@ -257,6 +226,15 @@ public class Game extends InGameMenu {
         }
     }
 
+    /*
+    private boolean isPositiveBuff(Buff buff) {
+        if (buff.canDisarm() || buff.canStun()) {
+            return false;
+        }
+        int sum = buff.getEffectAp() + buff.getEffectAp() + buff.getHoly() - buff.getPoison();
+        return sum > 0;
+    }*/
+
     private void castSpellOnCoordinate(Spell spell, int x, int y, Player player) {
         switch (spell.getTargetType()) {
             case UNIT:
@@ -267,14 +245,6 @@ public class Game extends InGameMenu {
                 break;
         }
     }
-
-    // if spell is from a spell card (x, y) should be target point of spell
-    // in this case for adjacent 8 and adjacent 9 the center cell must be given not the left most and upper most
-    // for selected X_Y grid the upper most left most must be given
-    // if spell is from a Unit special power (x, y) should be coordination of the unit itself
-
-    // returns true if spell had
-
 
     private void shuffle(ArrayList<Pair> targets) {
         final int swapCount = targets.size();
@@ -370,6 +340,13 @@ public class Game extends InGameMenu {
         return targets;
     }
 
+    // if spell is from a spell card (x, y) should be target point of spell
+    // in this case for adjacent 8 and adjacent 9 the center cell must be given not the left most and upper most
+    // for selected X_Y grid the upper most left most must be given
+    // if spell is from a Unit special power (x, y) should be coordination of the unit itself
+
+    // returns true if spell had
+
     private void castSpell(Spell spell, int x, int y, Player player) {
         ArrayList<Pair> targets = getTargets(spell, x, y);
         shuffle(targets); // here we handle random targets!
@@ -432,7 +409,7 @@ public class Game extends InGameMenu {
 
     // inserts card with name [cardName] from player's hand and puts it in cell ([x], [y])
     // if card is a spell card (x, y) is the target of the spell
-    void insertCard(String cardName, int x, int y) {
+    public void insertCard(String cardName, int x, int y) {
         Player player = getCurrentPlayer();
         Card card = player.findCardInHand(cardName);
         if (card == null) { // no such card is found in player's hand
@@ -464,30 +441,29 @@ public class Game extends InGameMenu {
 
     }
 
-    void initiateGame() {
+    public void initiateGame() {
         putUnitCard(players[0].getHero(), 2, 0);
         putUnitCard(players[1].getHero(), 2, 8);
         players[0].initiateHand();
         players[1].initiateHand();
     }
 
-    void endTurn() {
+    public void endTurn() {
 
     }
 
-    void selectCollectibleItem(String collectibleName) {
+    public void selectCollectibleItem(String collectibleName) {
 
     }
 
-    void applyCollectible(int row, int column) {
-
+    public void applyCollectible(int row, int column) {
     }
 
-    void showNextCardInDeck() {
+    public void showNextCardInDeck() {
         view.showCardInfo(getCurrentPlayer().getDeck().getNextCard());
     }
 
-    void showHand() {
+    public void showHand() {
         view.showHand(getCurrentPlayer().getHand());
     }
 
@@ -497,5 +473,29 @@ public class Game extends InGameMenu {
 
     void showGraveYardCards() {
         view.showGraveyard(getCurrentPlayer().getGraveYard());
+    }
+
+    private enum GameState {
+        WIN_FIRST_PLAYER,
+        DRAW,
+        WIN_SECOND_PLAYER
+    }
+
+    class Pair {
+        int x;
+        int y;
+
+        Pair(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        int getX() {
+            return x;
+        }
+
+        int getY() {
+            return y;
+        }
     }
 }
