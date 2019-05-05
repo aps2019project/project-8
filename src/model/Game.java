@@ -163,6 +163,27 @@ public class Game extends InGameMenu {
         return x >= 0 && x < map.getNumberOfRows() && y >= 0 && y < map.getNumberOfColumns();
     }
 
+    public boolean checkUnitTypeInItemTarget(Unit unit, Item.Target.TargetUnitType targetUnitType) {
+        switch (targetUnitType) {
+            case ALL:
+                return true;
+            case MELEE:
+                return unit.getUnitType() == UnitType.MELEE;
+            case RANGED:
+                return unit.getUnitType() == UnitType.RANGED;
+            case HYBRID:
+                return unit.getUnitType() == UnitType.HYBRID;
+            case MELEE_HYBRID:
+                return unit.getUnitType() == UnitType.MELEE || unit.getUnitType() == UnitType.HYBRID;
+            case MELEE_RANGED:
+                return unit.getUnitType() == UnitType.MELEE || unit.getUnitType() == UnitType.RANGED;
+            case RANGED_HYBRID:
+                return unit.getUnitType() == UnitType.RANGED || unit.getUnitType() == UnitType.HYBRID;
+            default:
+                return false;
+        }
+    }
+
     public boolean checkUnitTypeInSpellTarget(Unit unit, Spell.TargetUnitType targetUnitType) {
         switch (targetUnitType) {
             case ALL:
@@ -468,6 +489,13 @@ public class Game extends InGameMenu {
 
     }
 
+    public void addSpecialPowerToUnit(Unit unit, Spell specialPower, SpecialPowerType specialPowerType, Item.Target.TargetUnitType targetUnitType) {
+        if (checkUnitTypeInItemTarget(unit, targetUnitType)) {
+            unit.getSpecialPowers().add(specialPower);
+            unit.getSpecialPowerTypes().add(specialPowerType);
+        }
+    }
+
     public void castItem(Item item, Player player, int r, int c) {
         switch (item.getItemType()) {
             case ADD_MANA:
@@ -481,23 +509,42 @@ public class Game extends InGameMenu {
                     SpecialPowerType specialPowerType = item.getSpecialPowerType().get(i);
                     Item.Target target = item.getSpecialPowerTarget().get(i);
                     // Here I add special power to units in map:
-                    for (int row = 0; row < getMap().getNumberOfRows(); row++)
-                        for (int column = 0; column < getMap().getNumberOfColumns(); column++) {
-                            Cell cell = getMap().getCell(row, column);
-                            // check has content and is friendly
-                            if (!cell.hasContent() || !(cell.getContent() instanceof Unit) || ((Unit) cell.getContent()).getPlayer() != player) {
-                                continue;
+                    {
+                        for (int row = 0; row < getMap().getNumberOfRows(); row++)
+                            for (int column = 0; column < getMap().getNumberOfColumns(); column++) {
+                                Cell cell = getMap().getCell(row, column);
+                                // check has content and is friendly
+                                if (!cell.hasContent() || !(cell.getContent() instanceof Unit) || ((Unit) cell.getContent()).getPlayer() != player) {
+                                    continue;
+                                }
+                                Unit unit = (Unit) cell.getContent();
+                                addSpecialPowerToUnit(unit, specialPower, specialPowerType, target.getTargetUnitType());
                             }
-                            Unit unit = (Unit) cell.getContent();
-
+                    }
+                    // Here I add special power to units in Hand:
+                    {
+                        for (Card card : player.getHand().getCards()) {
+                            if (card instanceof Unit) {
+                                addSpecialPowerToUnit((Unit) card, specialPower, specialPowerType, target.getTargetUnitType());
+                            }
                         }
+                    }
+                    // Here I add special power to units in deck
+                    {
+                        for (Card card : player.getDeck().getCards()) {
+                            if (card instanceof Unit) {
+                                addSpecialPowerToUnit((Unit) card, specialPower, specialPowerType, target.getTargetUnitType());
+                            }
+                        }
+                    }
                 }
                 break;
             case CAST_A_SPELL:
-
+                castSpell(item.getSpell(), r, c, player);
                 break;
         }
         currentItems.add(item);
+        itemCastingTurns.add(turn);
     }
 
     void initiateGame() {
