@@ -44,30 +44,20 @@ public class Game extends InGameMenu {
         return this.map;
     }
 
-    private int getDistance(int x1, int y1, int x2, int y2) {
-        return Math.abs(x1 - x2) + Math.abs(y1 - y2);
-    }
-
-    void moveSelectedUnit(int destinationRow, int destinationColumn) {
-        /*
-        if (getDistance(selectedUnit.getX(), selectedUnit.getY(), destinationRow, destinationColumn) <= 2 || selectedUnit.canFly()) { // possibly we could add some moveRange to Unit class variables
-            if (map.isPathEmpty(selectedUnit.getX(), selectedUnit.getY(), destinationRow, destinationColumn)) {
+    void moveSelectedUnit(int x, int y) {
+        // can fly has got to do something in here
+        if (Map.getDistance(selectedUnit.getX(), selectedUnit.getY(), x, y) <= 2) { // possibly we could add some moveRange to Unit class variables
+            if (map.isPathEmpty(selectedUnit.getX(), selectedUnit.getY(), x, y)) {
                 map.getGrid()[selectedUnit.getX()][selectedUnit.getY()].setContent(null);
-                map.getGrid()[destinationRow][destinationColumn].setContent(selectedUnit);
-                selectedUnit.setX(destinationRow);
-                selectedUnit.setY(destinationColumn);
-                view.logMessage(selectedUnit.getID() + " moved to " + destinationRow + " " + destinationColumn);
+                map.getGrid()[x][y].setContent(selectedUnit);
+                selectedUnit.setX(x);
+                selectedUnit.setY(y);
+                view.logMessage(selectedUnit.getID() + " moved to " + x + " " + y);
                 return;
             }
         }
         view.showInvalidTargetError();
-        */
     }
-
-    private boolean isAdjacent(int x1, int y1, int x2, int y2) {
-        return getDistance(x1, y1, x2, y2) == 1;
-    }
-
 
     private void rawAttack(Unit attacker, Unit defender) {
         int damage = Math.min(attacker.calculateAP() - defender.calculateHoly(), 0);
@@ -75,8 +65,8 @@ public class Game extends InGameMenu {
     }
 
     private  boolean canAttack(Unit attacker, Unit defender) {
-        int distance = getDistance(attacker.getX(), attacker.getY(), defender.getX(), defender.getY());
-        boolean isAdjacent = isAdjacent(attacker.getX(), attacker.getY(), defender.getX(), defender.getY());
+        int distance = Map.getDistance(attacker.getX(), attacker.getY(), defender.getX(), defender.getY());
+        boolean isAdjacent = Map.isAdjacent(attacker.getX(), attacker.getY(), defender.getX(), defender.getY());
         boolean can = false;
         switch (attacker.getUnitType()) {
             case MELEE:
@@ -356,7 +346,7 @@ public class Game extends InGameMenu {
             case ADJACENT_4:
                 for (int i = x - 1; i <= x + 1; i++) {
                     for (int j = y - 1; j <= y + 1; j++) {
-                        if (inMap(i, j) && getDistance(i, j, x, y) == 1 && isValidTarget(spell, i, j)) {
+                        if (inMap(i, j) && Map.getDistance(i, j, x, y) == 1 && isValidTarget(spell, i, j)) {
                             targets.add(new Pair(i, j));
                         }
                     }
@@ -390,7 +380,7 @@ public class Game extends InGameMenu {
             case DISTANCE_2:
                 for (int i = x - 1; i <= x + 1; i++) {
                     for (int j = y - 1; j <= y + 1; j++) {
-                        if (inMap(i, j) && getDistance(i, j, x, y) == 2 && isValidTarget(spell, i, j)) {
+                        if (inMap(i, j) && Map.getDistance(i, j, x, y) == 2 && isValidTarget(spell, i, j)) {
                             targets.add(new Pair(i, j));
                         }
                     }
