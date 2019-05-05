@@ -240,14 +240,6 @@ public class Unit extends Card{
         this.canAttack = canAttack;
     }
 
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
     protected String getSpecialPowerDescription() {
         return getDescription();
     }

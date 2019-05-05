@@ -19,10 +19,15 @@ public class Card extends CollectionItem {
         this.description = card.description;
     }
 
-    protected Card() {}
+    protected Card() {
+    }
 
     public Player getPlayer() {
         return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     public int getManaCost() {
