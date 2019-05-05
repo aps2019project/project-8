@@ -24,7 +24,8 @@ public class Spell {
         ADJACENT_4,
         SAME_ROW,
         ADJACENT_9,
-        DISTANCE_2
+        DISTANCE_2,
+        SAME_COLUMN
     }
     public enum TargetUnit {
         UNIT,

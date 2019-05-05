@@ -35,8 +35,9 @@ public class Cell {
         return this.effects;
     }
 
-    void setContent(Object content) {
+    void setContent(Object content, Player player) {
         this.content = content;
+        objectOwner = player;
     }
 
     public Player getObjectOwner() {

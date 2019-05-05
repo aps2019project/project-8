@@ -3,6 +3,7 @@ package model;
 import menus.InGameMenu;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
@@ -157,44 +158,51 @@ public class Game extends InGameMenu {
         return x >= 0 && x < map.getNumberOfRows() && y >= 0 && y < map.getNumberOfColumns();
     }
 
-    private void castSpellOnCellUnit(Spell spell, int x, int y) {
+    //returns true if at least one target was attacked returns false otherwise
+
+    private boolean isValidTarget(Spell spell, int x, int y) {
         Cell cell = map.getGrid()[x][y];
         Unit unit = (Unit) cell.getContent();
         if (unit == null) {
-            return;
+            return false;
         }
         boolean isForCurrentPlayer = cell.getObjectOwner() == getCurrentPlayer();
         boolean isMinion = cell.getContent() instanceof Minion;
         boolean isHero = cell.getContent() instanceof Hero;
-
-        boolean add = false;
+        boolean valid = false;
         switch (spell.getTargetUnit()) {
             case FRIENDLY_UNIT:
-                add = isForCurrentPlayer;
+                valid = isForCurrentPlayer;
                 break;
             case FRIENDLY_HERO:
-                add = isForCurrentPlayer && isHero;
+                valid = isForCurrentPlayer && isHero;
                 break;
             case FRIENDLY_MINION:
-                add = isForCurrentPlayer && isMinion;
+                valid = isForCurrentPlayer && isMinion;
                 break;
             case ENEMY_UNIT:
-                add = !isForCurrentPlayer;
+                valid = !isForCurrentPlayer;
                 break;
             case ENEMY_HERO:
-                add = !isForCurrentPlayer && isHero;
+                valid = !isForCurrentPlayer && isHero;
                 break;
             case ENEMY_MINION:
-                add = !isForCurrentPlayer && isMinion;
+                valid = !isForCurrentPlayer && isMinion;
                 break;
             case SELF:
-                add = true;
+                valid = true;
                 break;
             case UNIT:
-                add = true;
+                valid = true;
                 break;
         }
-        if (add) {
+        return valid;
+    }
+
+    private void castSpellOnCellUnit(Spell spell, int x, int y) {
+        boolean valid = isValidTarget(spell, x, y);
+        Unit unit = (Unit) map.getGrid()[x][y].getContent();
+        if (valid) {
             for (Buff buff : spell.getBuffs()) {
                 unit.addBuff(buff);
             }
@@ -203,81 +211,124 @@ public class Game extends InGameMenu {
 
     private void castSpellOnCell(Spell spell, int x, int y) {
         Cell cell = map.getGrid()[x][y];
-        for (Buff buff : spell.getBuffs())
+        for (Buff buff : spell.getBuffs()) {
             cell.addEffect(buff);
+        }
     }
 
-    private void castSpellOnCoordinate(Spell spell, int x, int y) {
+    private boolean castSpellOnCoordinate(Spell spell, int x, int y) {
+        boolean ret = false;
         switch (spell.getTargetType()) {
             case UNIT:
                 castSpellOnCellUnit(spell, x, y);
                 break;
             case CELL:
                 castSpellOnCell(spell, x, y);
+                ret = true;
                 break;
         }
+        return ret;
     }
-
 
     // if spell is from a spell card (x, y) should be target point of spell
     // in this case for adjacent 8 and adjacent 9 the center cell must be given not the left most and upper most
+    // for selected X_Y grid the upper most left most must be given
     // if spell is from a Unit special power (x, y) should be coordination of the unit itself
 
-    private void castSpell(Spell spell, int x, int y) {
+    // returns true if spell had
+
+    private boolean castSpell(Spell spell, int x, int y) {
         Spell.TargetArea area = spell.getTargetArea();
+        boolean ret = false;
 
         switch (spell.getTargetArea()) {
             case ALL_OF_THE_MAP:
-                for (int i = 0; i < map.getNumberOfRows(); i++)
-                    for (int j = 0; j < map.getNumberOfColumns(); j++)
-                        castSpellOnCoordinate(spell, x, y);
+                for (int i = 0; i < map.getNumberOfRows(); i++) {
+                    for (int j = 0; j < map.getNumberOfColumns(); j++) {
+                        ret |= castSpellOnCoordinate(spell, i, j);
+                    }
+                }
                 break;
 
             case ADJACENT_9:
-                castSpellOnCoordinate(spell, x, y);
+                ret |= castSpellOnCoordinate(spell, x, y);
 
             case ADJACENT_8:
-                for (int i = x - 1; i <= x + 1; i++)
-                    for (int j = y - 1; j <= y + 1; j++)
-                        if (inMap(i, j))
-                            castSpellOnCoordinate(spell, x, y);
+                for (int i = x - 1; i <= x + 1; i++) {
+                    for (int j = y - 1; j <= y + 1; j++) {
+                        if (inMap(i, j)) {
+                            ret |= castSpellOnCoordinate(spell, i, j);
+                        }
+                    }
+                }
                 break;
 
             case ADJACENT_4:
-                for (int i = x - 1; i <= x + 1; i++)
-                    for (int j = y - 1; j <= y + 1; j++)
-                        if (getDistance(i, j, x, y) == 1)
-                            castSpellOnCoordinate(spell, i, j);
+                for (int i = x - 1; i <= x + 1; i++) {
+                    for (int j = y - 1; j <= y + 1; j++) {
+                        if (inMap(i, j) && getDistance(i, j, x, y) == 1) {
+                            ret |= castSpellOnCoordinate(spell, i, j);
+                        }
+                    }
+                }
 
             case SELECTED_X_Y_GRID:
-                // inja bayad ezafe she
+                for (int i = x; i < x + spell.getGridX(); i++) {
+                    for (int j = y; i < y + spell.getGridY(); j++) {
+                        if (inMap(i, j)) {
+                            castSpellOnCoordinate(spell, i, j);
+                        }
+                    }
+                }
                 break;
 
             case SAME_ROW:
-                for (int i = 0; i < map.getNumberOfColumns(); i++)
-                    castSpellOnCoordinate(spell, x, i);
+                for (int i = 0; i < map.getNumberOfColumns(); i++) {
+                    ret |= castSpellOnCoordinate(spell, x, i);
+                }
+                break;
+
+            case SAME_COLUMN:
+                for (int i = 0; i < map.getNumberOfRows(); i++)
+                    ret |= castSpellOnCoordinate(spell, i, y);
+                break;
+
+            case DISTANCE_2:
+                for (int i = x - 1; i <= x + 1; i++) {
+                    for (int j = y - 1; j <= y + 1; j++) {
+                        if (inMap(i, j) && getDistance(i, j, x, y) == 2) {
+                            ret |= castSpellOnCoordinate(spell, i, j);
+                        }
+                    }
+                }
                 break;
 
             case SELECTED_CELL:
-                // inja bayad ezafe she
+                ret |= castSpellOnCoordinate(spell, x, y);
                 break;
         }
+        return ret;
     }
 
-    void checkOnSpawn(Card card) { // when inserting a card
-        if (!(card instanceof Unit))
-            return;
-        Unit unit = (Unit) card;
+    private void checkOnSpawn(Unit unit, int x, int y) { // when inserting a unit card
+
         ArrayList<SpecialPowerType> types = unit.getSpecialPowerTypes();
         ArrayList<Spell> spells = unit.getSpecialPowers();
-        for (int i = 0; i < spells.size(); i++) {
+
+        int i = 0;
+        for (Spell spell : spells) {
             if (types.get(i) == SpecialPowerType.ON_SPAWN) {
-                Spell spell = spells.get(i);
+                castSpell(spell, x, y);
             }
         }
     }
 
+    private void castSpellCard(SpellCard spellCard, int x, int y) {
+
+    }
+
     // inserts card with name [cardName] from player's hand and puts it in cell ([x], [y])
+    // if card is a spell card (x, y) is the target of the spell
     void insertCard(String cardName, int x, int y) {
         Player player = getCurrentPlayer();
         Card card = player.findCard(cardName);
@@ -299,7 +350,11 @@ public class Game extends InGameMenu {
             return;
         }
         player.decreaseMana(card.getManaCost());
-        grid[x][y].setContent(card); // finally put the card on cell ([x], [y])
+        grid[x][y].setContent(card, player); // finally put the card on cell ([x], [y])
+
+        if (card instanceof Unit)
+            checkOnSpawn((Unit) card, x, y);
+        if (card instanceof SpellCard)
         view.logMessage(cardName + " with " + card.getID() + " inserted to " + "(" + x + "," + y + ")"); // log success message
     }
 
