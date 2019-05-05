@@ -12,7 +12,7 @@ public class Game extends InGameMenu {
     private static final int[] HERO_INITIAL_COLUMN = {0, 8};
     private int numberOfFlags;
     private int turn;
-    private Map map;
+    private Map map = new Map();
     private Player[] players;
     private boolean[] hasAI;
     private Account[] accounts;
@@ -362,6 +362,9 @@ public class Game extends InGameMenu {
         ArrayList<Spell> spells = unit.getSpecialPowers();
 
         int i = 0;
+        if (spells == null) {
+            return;
+        }
         for (Spell spell : spells) {
             if (types.get(i) == SpecialPowerType.ON_SPAWN) {
                 castSpell(spell, x, y, unit.getPlayer());

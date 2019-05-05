@@ -61,7 +61,7 @@ public class GameMenu extends InGameMenu {
     }
 
     public static void moveUnit(int x, int y) {
-        game.moveSelectedUnit(x, y);
+        game.moveSelectedUnit(x - 1, y - 1);
     }
 
     public static void attackUnit(String cardID) {
@@ -73,7 +73,7 @@ public class GameMenu extends InGameMenu {
     }
 
     public static void useSpecialPower(int x, int y) {
-        game.useUnitSpecialPower(x, y);
+        game.useUnitSpecialPower(x - 1, y - 1);
     }
 
     public static void showHand() {
@@ -81,7 +81,7 @@ public class GameMenu extends InGameMenu {
     }
 
     public static void insertCard(String name, int x, int y) {
-        game.insertCard(name, x, y);
+        game.insertCard(name, x - 1, y - 1);
     }
 
     public static void endTurn() {
@@ -101,7 +101,7 @@ public class GameMenu extends InGameMenu {
     }
 
     public static void useCollectible(int x, int y) {
-        game.applyCollectible(x, y);
+        game.applyCollectible(x - 1, y - 1);
     }
 
     public static void showNextCard() {

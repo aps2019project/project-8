@@ -18,6 +18,31 @@ public class Deck {
         this.deckName = deckName;
     }
 
+    public Deck(Deck deck) {
+        if (deck.deckUsableItem != null)
+            deckUsableItem = new Usable(deck.deckUsableItem);
+        new ArrayList<>(cards).forEach(o -> cards.add(getCopy(o)));
+        if (deck.deckHero != null)
+            deckHero = new Hero(deck.deckHero);
+        deckName = deck.deckName;
+        numberOfTabsOnToString = deck.numberOfTabsOnToString;
+        collectionItemsIDs.addAll(deck.collectionItemsIDs);
+    }
+
+    private static void appendTabs(StringBuilder stringBuilder, int d) {
+        for (int i = 0; i < d; i++) {
+            stringBuilder.append("\t");
+        }
+    }
+
+    private Card getCopy(Card card) {
+        if (card instanceof Minion)
+            return new Minion((Minion) card);
+        if (card instanceof SpellCard)
+            return new SpellCard((SpellCard) card);
+        return null;
+    }
+
     public void removeCollectionItem(String collectionItemID, CollectionItem collectionItem) {
         cards.remove(collectionItem);
         collectionItemsIDs.remove(collectionItemID);
@@ -42,8 +67,10 @@ public class Deck {
         return deckHero;
     }
 
-    public Usable getDeckUsableItem() {return deckUsableItem;}
-    
+    public Usable getDeckUsableItem() {
+        return deckUsableItem;
+    }
+
     Card getNextCard() {
         return cards.peek();
     }
@@ -82,7 +109,6 @@ public class Deck {
         return cards.size() == DECK_CARD_CAPACITY;
     }
 
-
     public boolean hasCollectionItem(String collectionItemID) {
         if (collectionItemsIDs == null)
             System.err.println("FUCK");
@@ -95,12 +121,6 @@ public class Deck {
 
     public void decrementTabsOnToString() {
         numberOfTabsOnToString--;
-    }
-
-    private static void appendTabs(StringBuilder stringBuilder, int d) {
-        for (int i = 0; i < d; i++) {
-            stringBuilder.append("\t");
-        }
     }
 
     @Override

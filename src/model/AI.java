@@ -29,6 +29,6 @@ public class AI {
     }
 
     public Player getPlayer() {
-        return new Player();
+        return new Player(deck);
     }
 }

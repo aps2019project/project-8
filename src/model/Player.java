@@ -11,7 +11,8 @@ public class Player {
     private ArrayList<Collectible> collectibles;
 
     public Player(Deck deck) {
-        this.deck = deck;
+        this.deck = new Deck(deck);
+        hand = new Hand();
     }
 
     public Hero getHero() {
@@ -28,7 +29,6 @@ public class Player {
 
     public void initiateHand() {
         deck.shuffle();
-
         hand.addCard(deck.getNextCard());
     }
 

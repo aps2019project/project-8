@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Hand{
     private static final int HAND_CARD_CAPACITY = 5;
-    private ArrayList<Card> cards;
+    private ArrayList<Card> cards = new ArrayList<>();
 
     boolean isFull() {
         return cards.size() == HAND_CARD_CAPACITY;
