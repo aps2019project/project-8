@@ -364,8 +364,10 @@ public class UI {
             else
                 view.showInvalidCommandError();
         } else {
-            if (command.matches(END_GAME))
+            if (command.matches(END_GAME)) {
                 switchTo(Menus.MAIN_MENU);
+                gameEnded = false;
+            }
             else
                 view.showInvalidCommandError();
         }

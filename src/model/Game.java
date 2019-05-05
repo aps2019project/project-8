@@ -2,11 +2,7 @@ package model;
 
 import menus.InGameMenu;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
-import java.nio.channels.Pipe;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Random;
 
 public class Game extends InGameMenu {
