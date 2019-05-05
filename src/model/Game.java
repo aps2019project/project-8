@@ -40,7 +40,7 @@ public class Game extends InGameMenu {
     private Player[] players;
     private boolean[] hasAI;
     private Account[] accounts;
-
+    private ArrayList<Item> currentItems = new ArrayList<>();
     private Unit selectedUnit;
 
     private Card selectedCard; // probably has no use
@@ -464,11 +464,20 @@ public class Game extends InGameMenu {
 
     }
 
+    public void castItem(Item item) {
+
+    }
+
     void initiateGame() {
         putUnitCard(players[0].getHero(), 2, 0);
         putUnitCard(players[1].getHero(), 2, 8);
-        players[0].initiateHand();
-        players[1].initiateHand();
+        for (int i = 0; i < 2; i++ ) {
+            if (players[i].getUsable() != null) {
+                players[i].initiateHand();
+                Usable usable = new Usable(players[i].getUsable());
+                castItem(usable);
+            }
+        }
     }
 
     void endTurn() {
