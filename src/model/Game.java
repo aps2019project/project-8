@@ -167,25 +167,18 @@ public class Game extends InGameMenu {
         switch (targetUnitType) {
             case ALL:
                 return true;
-                break;
             case MELEE:
                 return unit.getUnitType() == UnitType.MELEE;
-                break;
             case RANGED:
                 return unit.getUnitType() == UnitType.RANGED;
-                break;
             case HYBRID:
                 return unit.getUnitType() == UnitType.HYBRID;
-                break;
             case MELEE_HYBRID:
                 return unit.getUnitType() == UnitType.MELEE || unit.getUnitType() == UnitType.HYBRID;
-                break;
             case MELEE_RANGED:
                 return unit.getUnitType() == UnitType.MELEE || unit.getUnitType() == UnitType.RANGED;
-                break;
             case RANGED_HYBRID:
                 return unit.getUnitType() == UnitType.RANGED || unit.getUnitType() == UnitType.HYBRID;
-                break;
             default:
                 return false;
         }
@@ -489,17 +482,11 @@ public class Game extends InGameMenu {
                         for (int column = 0; column < getMap().getNumberOfColumns(); column++) {
                             Cell cell = getMap().getCell(row, column);
                             // check has content and is friendly
-                            if (!cell.hasContent() || !(cell.getContent() instanceof Unit) || ((Unit) cell.getContent()).getPlayer() != player)) {
+                            if (!cell.hasContent() || !(cell.getContent() instanceof Unit) || ((Unit) cell.getContent()).getPlayer() != player) {
                                 continue;
                             }
                             Unit unit = (Unit) cell.getContent();
 
-                            if (target.getTargetUnit() == Item.Target.TargetUnit.FRIENDLY_HERO && cell.getContent() instanceof Hero) {
-
-                            }
-                            if (target.getTargetUnit() == Item.Target.TargetUnit.FRIENDLY_MINION && cell.getContent() instanceof Minion && ((Minion) cell.getContent()).getPlayer() == player[0]) {
-
-                            }
                         }
                 }
                 break;
