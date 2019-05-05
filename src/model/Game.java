@@ -390,7 +390,8 @@ public class Game extends InGameMenu {
         }
     }
 
-    private void castSpellCard(SpellCard spellCard, int x, int y) {
+    // returns true in case of success returns false otherwise
+    private boolean castSpellCard(SpellCard spellCard, int x, int y) {
         if (spellCard.getName().equals("kingsGuard")) {
             for (int i = 0; i < map.getNumberOfRows(); i++)
                 for (int j = 0; j < map.getNumberOfColumns(); j++) {
@@ -399,34 +400,32 @@ public class Game extends InGameMenu {
                         if (hero.getPlayer() != getCurrentPlayer()) {
                             if (x != i || y != j) {
                                 view.showInvalidTargetError();
-                                return;
+                                return false;
                             }
                         }
                     }
                 }
         }
-        boolean exception = false;
         Spell.TargetArea targetArea = spellCard.getSpell().getTargetArea();
-        switch (targetArea) {
-            case ALL_OF_THE_MAP:
-                exception = true;
-                break;
-            case SAME_ROW:
-                exception = true;
-                break;
-            case SAME_COLUMN:
-                exception = true;
-                break;
-            case SELECTED_X_Y_GRID:
-                exception = true;
-                break;
-            case
-        }
-        if (exception || isValidTarget(spellCard.getSpell(), x, y)) {
+        if (targetArea != Spell.TargetArea.SELECTED_CELL || isValidTarget(spellCard.getSpell(), x, y)) {
             castSpell(spellCard.getSpell(), x, y, getCurrentPlayer());
         } else {
             view.showInvalidTargetError();
+            return false;
         }
+        return true;
+    }
+
+    private boolean putUnitCard(Unit unit, int x, int y) {
+        Cell[][] grid = map.getGrid();
+        if (grid[x][y].getContent() != null) { // the cell is already not empty
+            view.showInvalidTargetError();
+            return false;
+        }
+        Player player = getCurrentPlayer();
+        grid[x][y].setContent(unit, player); // finally put the card on cell ([x], [y])
+        checkOnSpawn(unit, x, y);
+        return true;
     }
 
     // inserts card with name [cardName] from player's hand and puts it in cell ([x], [y])
@@ -438,27 +437,25 @@ public class Game extends InGameMenu {
             view.showInvalidCardError();
             return;
         }
-        if (inMap(x, y)) {
+        if (!inMap(x, y)) {
             view.showInvalidCoordinatesError();
-            return;
-        }
-        Cell[][] grid = map.getGrid();
-        if (grid[x][y].getContent() != null) { // the cell is already not empty
-            view.showInvalidTargetError();
             return;
         }
         if (player.getMana() < card.getManaCost()) { // player doesn't have enough mana
             view.showNotEnoughManaError();
             return;
         }
-        player.decreaseMana(card.getManaCost());
-        grid[x][y].setContent(card, player); // finally put the card on cell ([x], [y])
-
-        if (card instanceof Unit)
-            checkOnSpawn((Unit) card, x, y);
-        if (card instanceof SpellCard)
-            castSpellCard((SpellCard) card, x, y);
-        view.logMessage(cardName + " with " + card.getID() + " inserted to " + "(" + x + "," + y + ")"); // log success message
+        boolean inserted = false;
+        if (card instanceof Unit) {
+            inserted = putUnitCard((Unit) card, x, y);
+        }
+        if (card instanceof SpellCard) {
+            inserted = castSpellCard((SpellCard) card, x, y);
+        }
+        if (inserted) {
+            view.logMessage(cardName + " with " + card.getID() + " inserted to " + "(" + x + "," + y + ")"); // log success message
+            player.decreaseMana(card.getManaCost());
+        }
     }
 
     void selectUnit(int row, int column) {
