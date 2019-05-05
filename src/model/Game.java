@@ -28,6 +28,12 @@ public class Game extends InGameMenu {
         }
     }
 
+    private enum GameState {
+        WIN_FIRST_PLAYER,
+        DRAW,
+        WIN_SECOND_PLAYER
+    }
+
     private static final int NUMBER_OF_PLAYERS = 2;
     private static final int[] HERO_INITIAL_ROW = {2, 2};
     private static final int[] HERO_INITIAL_COLUMN = {0, 8};
@@ -463,15 +469,10 @@ public class Game extends InGameMenu {
     }
 
     void initiateGame() {
-        putCardOnMap(players[0].getHero(), 2, 0);
-        putCardOnMap(players[1].getHero(), 2, 8);
+        putUnitCard(players[0].getHero(), 2, 0);
+        putUnitCard(players[1].getHero(), 2, 8);
         players[0].initiateHand();
         players[1].initiateHand();
-    }
-
-
-    void putCardOnMap(Card card, int row, int column) {
-
     }
 
     void endTurn() {
@@ -501,6 +502,4 @@ public class Game extends InGameMenu {
     void showGraveYardCards() {
         view.showGraveyard(getCurrentPlayer().getGraveYard());
     }
-
-    private enum GameState {WIN_FIRST_PLAYER, DRAW, WIN_SECOND_PLAYER}
 }
