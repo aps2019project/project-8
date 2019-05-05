@@ -42,12 +42,18 @@ public class GameMenu extends InGameMenu {
     }
 
     public static void showGameInfo() {
+        game.showGameInfo();
     }
 
     public static void showMinions(int who) {
+        if (who == 0)
+            game.showMyMinions();
+        else
+            game.showOpponentMinions();
     }
 
     public static void showCardInfo(String cardID) {
+        game.showCardInfo(cardID);
     }
 
     public static void selectCard(String cardID) {
@@ -67,6 +73,7 @@ public class GameMenu extends InGameMenu {
     }
 
     public static void useSpecialPower(int x, int y) {
+        game.useUnitSpecialPower(x, y);
     }
 
     public static void showHand() {
@@ -82,6 +89,7 @@ public class GameMenu extends InGameMenu {
     }
 
     public static void showAllCollectibles() {
+        game.showAllCollectibles();
     }
 
     public static void selectCollectible(String name) {
@@ -89,6 +97,7 @@ public class GameMenu extends InGameMenu {
     }
 
     public static void showCollectibleInfo() {
+        game.showCollectibleInfo();
     }
 
     public static void useCollectible(int x, int y) {
@@ -125,7 +134,7 @@ public class GameMenu extends InGameMenu {
             view.showInvalidDeckError();
             return false;
         }
-        if (checkGame(mode, numberOfFlags)) return false;
+        if (checkGameParameters(mode, numberOfFlags)) return false;
         hasAI = true;
         players[1] = (new AI(getAccount().getDeck(deckName), GameType.get(mode))).getPlayer();
         GameMenu.numberOfFlags = numberOfFlags;
@@ -135,7 +144,7 @@ public class GameMenu extends InGameMenu {
 
     //start a multiplayer game with a selected account
     public static boolean startGame(Account secondAccount, int mode, int numberOfFlags) {
-        if (checkGame(mode, numberOfFlags)) return false;
+        if (checkGameParameters(mode, numberOfFlags)) return false;
         hasAI = false;
         players[1] = secondAccount.getPlayer();
         players[0] = getAccount().getPlayer();
@@ -144,7 +153,7 @@ public class GameMenu extends InGameMenu {
         return true;
     }
 
-    private static boolean checkGame(int mode, int numberOfFlags) {
+    private static boolean checkGameParameters(int mode, int numberOfFlags) {
         if (mode < 1 || mode > 3) {
             view.showNoSuchGameModeError();
             return true;
