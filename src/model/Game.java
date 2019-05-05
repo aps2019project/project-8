@@ -115,7 +115,7 @@ public class Game extends InGameMenu {
 
     }
 
-    void useUnitSpecialPower(int destinationRow, int destinationColumn) {
+    public void useUnitSpecialPower(int destinationRow, int destinationColumn) {
 
     }
 
@@ -547,6 +547,24 @@ public class Game extends InGameMenu {
 
     void showGraveYardCards() {
         view.showGraveyard(getCurrentPlayer().getGraveYard());
+    }
+
+    public void showGameInfo() {
+    }
+
+    public void showOpponentMinions() {
+    }
+
+    public void showMyMinions() {
+    }
+
+    public void showCardInfo(String cardID) {
+    }
+
+    public void showAllCollectibles() {
+    }
+
+    public void showCollectibleInfo() {
     }
 
     private enum GameState {

@@ -10,6 +10,10 @@ public class Player {
     private ArrayList<Card> graveYard;
     private ArrayList<Collectible> collectibles;
 
+    public Player(Deck deck) {
+        this.deck = deck;
+    }
+
     public Hero getHero() {
         return getDeck().getHero();
     }
