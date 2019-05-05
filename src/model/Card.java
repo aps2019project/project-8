@@ -25,6 +25,10 @@ public class Card extends CollectionItem {
         return player;
     }
 
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
     public int getManaCost() {
         return manaCost;
     }

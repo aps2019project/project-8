@@ -1,3 +1,5 @@
+// on defend moonnnnnndeeeeeeee
+
 package model;
 
 import menus.InGameMenu;
@@ -86,24 +88,48 @@ public class Game extends InGameMenu {
     }
 
     private boolean isAdjacent(int x1, int y1, int x2, int y2) {
-        return Math.abs(x1 - x2) <= 1 && Math.abs(y1 - y2) <= 1 && (x1 != x2 || y1 != y2);
+        return getDistance(x1, y1, x2, y2) == 1;
     }
 
-    // returns true if attack happens
-    private boolean attackUnitByUnit(Unit attacker, Unit defender) {
+
+    private void rawAttack(Unit attacker, Unit defender) {
+        int damage = Math.min(attacker.calculateAP() - defender.calculateHoly(), 0);
+        defender.receiveDamage(damage);
+    }
+
+    private  boolean canAttack(Unit attacker, Unit defender) {
         int distance = getDistance(attacker.getX(), attacker.getY(), defender.getX(), defender.getY());
         boolean isAdjacent = isAdjacent(attacker.getX(), attacker.getY(), defender.getX(), defender.getY());
-        if ((attacker.getUnitType() == UnitType.MELEE || attacker.getUnitType() == UnitType.HYBRID) && isAdjacent) {
-            defender.receiveHit(attacker.getAttackPoint());
-            // attack point of attacker should be calculated considering buffs and items attacker has
-            return true;
+        boolean can = false;
+        switch (attacker.getUnitType()) {
+            case MELEE:
+                can |= isAdjacent;
+                break;
+            case RANGED:
+                can |= !isAdjacent && attacker.getAttackRange() >= distance;
+                break;
+            case HYBRID:
+                can |= attacker.getAttackRange() >= distance;
+                break;
         }
-        if ((attacker.getUnitType() == UnitType.RANGED || attacker.getUnitType() == UnitType.HYBRID) && !isAdjacent && attacker.getAttackRange() >= distance) {
-            defender.receiveHit(attacker.getAttackPoint());
-            // attack point of attacker should be calculated considering buffs and items attacker has
-            return true;
+        return  can;
+    }
+
+    private void attackUnitByUnitWithSpecialPowers() {
+
+    }
+
+    private void attackUnitByUnit(Unit attacker, Unit defender) {
+        int i = 0;
+        ArrayList<Spell> spells = attacker.getSpecialPowers();
+        ArrayList<SpecialPowerType> types = attacker.getSpecialPowerTypes();
+        for (Spell spell : spells) {
+            if (types.get(i) == SpecialPowerType.ON_ATTACK) {
+                castSpellOnCellUnit(spell, defender.getX(), defender.getY(), attacker.getPlayer());
+            }
+            i++;
         }
-        return false;
+        rawAttack(attacker, defender);
     }
 
     void attackTargetCardWithSelectedUnit(String targetCardID) {
@@ -116,13 +142,10 @@ public class Game extends InGameMenu {
             view.logMessage("Card with " + selectedUnit.getID() + " can't attack");
             return;
         }
-
-        boolean attacked = attackUnitByUnit(selectedUnit, targetUnit);
-        if (!attacked) { // no attack happens so ...
+        if (!canAttack(selectedUnit, targetUnit)) { // no attack happens so ...
             view.logMessage("opponent minion is unavailable for attack");
             return;
         }
-        selectedUnit.setCanAttack(false);
         attackUnitByUnit(targetUnit, selectedUnit);
     }
 
@@ -130,15 +153,7 @@ public class Game extends InGameMenu {
 
     }
 
-    void castSelectedSpellCard(int destinationRow, int destinationColumn) {
-
-    }
-
-    void castSpellOnMap(Spell spell, int destinationRow, int destinationColumn) {
-
-    }
-
-    void useUnitSpecialPower(int destinationRow, int destinationColumn) {
+    void useHeroSpecialPower(int destinationRow, int destinationColumn) {
 
     }
 
@@ -187,6 +202,8 @@ public class Game extends InGameMenu {
     }
 
     //returns true if target matches spell TargetType and spell TargetUnit (in case TargetType is Unit)
+
+
     private boolean isValidTarget(Spell spell, int x, int y) {
         if (spell.getTargetType() == Spell.TargetType.CELL) {
             return true;
@@ -229,15 +246,6 @@ public class Game extends InGameMenu {
         return valid;
     }
 
-    /*
-    private boolean isPositiveBuff(Buff buff) {
-        if (buff.canDisarm() || buff.canStun()) {
-            return false;
-        }
-        int sum = buff.getEffectAp() + buff.getEffectAp() + buff.getHoly() - buff.getPoison();
-        return sum > 0;
-    }*/
-
     private void castSpellOnCellUnit(Spell spell, int x, int y, Player player) {
         boolean valid = isValidTarget(spell, x, y);
         Unit unit = (Unit) map.getGrid()[x][y].getContent();
@@ -249,7 +257,7 @@ public class Game extends InGameMenu {
             }
 
             for (Buff buff : spell.getBuffs()) {
-                unit.addBuff(buff);
+                unit.addBuff(new Buff(buff));
             }
         }
     }
@@ -257,7 +265,7 @@ public class Game extends InGameMenu {
     private void castSpellOnCell(Spell spell, int x, int y) {
         Cell cell = map.getGrid()[x][y];
         for (Buff buff : spell.getBuffs()) {
-            cell.addEffect(buff);
+            cell.addEffect(new Buff(buff));
         }
     }
 
@@ -429,8 +437,11 @@ public class Game extends InGameMenu {
             return false;
         }
         Player player = getCurrentPlayer();
+        unit.setPlayer(player);
         grid[x][y].setContent(unit, player); // finally put the card on cell ([x], [y])
         checkOnSpawn(unit, x, y);
+        unit.setX(x);
+        unit.setY(y);
         return true;
     }
 
