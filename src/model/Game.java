@@ -392,11 +392,40 @@ public class Game extends InGameMenu {
 
     private void castSpellCard(SpellCard spellCard, int x, int y) {
         if (spellCard.getName().equals("kingsGuard")) {
-//            x =
+            for (int i = 0; i < map.getNumberOfRows(); i++)
+                for (int j = 0; j < map.getNumberOfColumns(); j++) {
+                    if (map.getGrid()[i][j].getContent() instanceof Hero) {
+                        Hero hero = (Hero) map.getGrid()[i][j].getContent();
+                        if (hero.getPlayer() != getCurrentPlayer()) {
+                            if (x != i || y != j) {
+                                view.showInvalidTargetError();
+                                return;
+                            }
+                        }
+                    }
+                }
         }
-
-        if (isValidTarget(spellCard.getSpell(), x, y)) {
+        boolean exception = false;
+        Spell.TargetArea targetArea = spellCard.getSpell().getTargetArea();
+        switch (targetArea) {
+            case ALL_OF_THE_MAP:
+                exception = true;
+                break;
+            case SAME_ROW:
+                exception = true;
+                break;
+            case SAME_COLUMN:
+                exception = true;
+                break;
+            case SELECTED_X_Y_GRID:
+                exception = true;
+                break;
+            case
+        }
+        if (exception || isValidTarget(spellCard.getSpell(), x, y)) {
             castSpell(spellCard.getSpell(), x, y, getCurrentPlayer());
+        } else {
+            view.showInvalidTargetError();
         }
     }
 
