@@ -213,6 +213,10 @@ public class Spell {
         return buffs;
     }
 
+    boolean canDispel() {
+        return canDispel;
+    }
+
     int getNumberOfRandomTargets() {
         return numberOfRandomTargets;
     }

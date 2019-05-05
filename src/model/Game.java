@@ -64,6 +64,7 @@ public class Game extends InGameMenu {
     }
 
     void moveSelectedUnit(int destinationRow, int destinationColumn) {
+        /*
         if (getDistance(selectedUnit.getX(), selectedUnit.getY(), destinationRow, destinationColumn) <= 2 || selectedUnit.canFly()) { // possibly we could add some moveRange to Unit class variables
             if (map.isPathEmpty(selectedUnit.getX(), selectedUnit.getY(), destinationRow, destinationColumn)) {
                 map.getGrid()[selectedUnit.getX()][selectedUnit.getY()].setContent(null);
@@ -75,6 +76,7 @@ public class Game extends InGameMenu {
             }
         }
         view.showInvalidTargetError();
+        */
     }
 
     private boolean isAdjacent(int x1, int y1, int x2, int y2) {
@@ -221,10 +223,25 @@ public class Game extends InGameMenu {
         return valid;
     }
 
-    private void castSpellOnCellUnit(Spell spell, int x, int y) {
+    /*
+    private boolean isPositiveBuff(Buff buff) {
+        if (buff.canDisarm() || buff.canStun()) {
+            return false;
+        }
+        int sum = buff.getEffectAp() + buff.getEffectAp() + buff.getHoly() - buff.getPoison();
+        return sum > 0;
+    }*/
+
+    private void castSpellOnCellUnit(Spell spell, int x, int y, Player player) {
         boolean valid = isValidTarget(spell, x, y);
         Unit unit = (Unit) map.getGrid()[x][y].getContent();
         if (valid) {
+
+            if (spell.canDispel()) {
+                unit.removeBuffs(player != unit.getPlayer());
+                // if the the player casting the spell is the same one owning this unit
+            }
+
             for (Buff buff : spell.getBuffs()) {
                 unit.addBuff(buff);
             }
@@ -238,10 +255,10 @@ public class Game extends InGameMenu {
         }
     }
 
-    private void castSpellOnCoordinate(Spell spell, int x, int y) {
+    private void castSpellOnCoordinate(Spell spell, int x, int y, Player player) {
         switch (spell.getTargetType()) {
             case UNIT:
-                castSpellOnCellUnit(spell, x, y);
+                castSpellOnCellUnit(spell, x, y, player);
                 break;
             case CELL:
                 castSpellOnCell(spell, x, y);
@@ -269,7 +286,7 @@ public class Game extends InGameMenu {
         }
     }
 
-    private void castSpell(Spell spell, int x, int y) {
+    private ArrayList<Pair> getTargets(Spell spell, int x, int y) {
         Spell.TargetArea area = spell.getTargetArea();
         ArrayList<Pair> targets = new ArrayList<>(0);
         switch (spell.getTargetArea()) {
@@ -348,11 +365,15 @@ public class Game extends InGameMenu {
                 }
                 break;
         }
+        return targets;
+    }
 
+    private void castSpell(Spell spell, int x, int y, Player player) {
+        ArrayList<Pair> targets = getTargets(spell, x, y);
         shuffle(targets); // here we handle random targets!
         for (int i = 0; i < Math.min(targets.size(), spell.getNumberOfRandomTargets()); i++) {
             Pair p = targets.get(i);
-            castSpellOnCoordinate(spell, p.getX(), p.getY());
+            castSpellOnCoordinate(spell, p.getX(), p.getY(), player);
         }
     }
 
@@ -364,20 +385,26 @@ public class Game extends InGameMenu {
         int i = 0;
         for (Spell spell : spells) {
             if (types.get(i) == SpecialPowerType.ON_SPAWN) {
-                castSpell(spell, 0, 0);
+                castSpell(spell, 0, 0, unit.getPlayer());
             }
         }
     }
 
     private void castSpellCard(SpellCard spellCard, int x, int y) {
+        if (spellCard.getName().equals("kingsGuard")) {
+//            x =
+        }
 
+        if (isValidTarget(spellCard.getSpell(), x, y)) {
+            castSpell(spellCard.getSpell(), x, y, getCurrentPlayer());
+        }
     }
 
     // inserts card with name [cardName] from player's hand and puts it in cell ([x], [y])
     // if card is a spell card (x, y) is the target of the spell
     void insertCard(String cardName, int x, int y) {
         Player player = getCurrentPlayer();
-        Card card = player.findCard(cardName);
+        Card card = player.findCardInHand(cardName);
         if (card == null) { // no such card is found in player's hand
             view.showInvalidCardError();
             return;
@@ -401,16 +428,14 @@ public class Game extends InGameMenu {
         if (card instanceof Unit)
             checkOnSpawn((Unit) card);
         if (card instanceof SpellCard)
+            castSpellCard((SpellCard) card, x, y);
         view.logMessage(cardName + " with " + card.getID() + " inserted to " + "(" + x + "," + y + ")"); // log success message
     }
-
-
 
     void selectUnit(int row, int column) {
 
     }
 
-    //
     void initiateGame() {
         putCardOnMap(players[0].getHero(), 2, 0);
         putCardOnMap(players[1].getHero(), 2, 8);
@@ -423,10 +448,7 @@ public class Game extends InGameMenu {
     }
 
     void putCardOnMap(Card card, int row, int column) {
-        getMap().getCell(row, column).setContent(card);
-        if (card instanceof Unit) {
-            checkOnSpawn((Unit) card);
-        }
+
     }
 
     void endTurn() {
