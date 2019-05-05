@@ -24,7 +24,8 @@ public class Spell {
         ADJACENT_4,
         SAME_ROW,
         ADJACENT_9,
-        DISTANCE_2
+        DISTANCE_2,
+        SAME_COLUMN
     }
     public enum TargetUnit {
         UNIT,
@@ -184,9 +185,36 @@ public class Spell {
         }
     }
 
-
     public void cast(int x, int y, Map map, Player player) {
 
+    }
+
+    TargetArea getTargetArea() {
+        return targetArea;
+    }
+
+    int getGridX() {
+        return gridX;
+    }
+
+    int getGridY() {
+        return gridY;
+    }
+
+    TargetUnit getTargetUnit() {
+        return targetUnit;
+    }
+
+    TargetType getTargetType() {
+        return targetType;
+    }
+
+    Buff[] getBuffs() {
+        return buffs;
+    }
+
+    int getNumberOfRandomTargets() {
+        return numberOfRandomTargets;
     }
 
     @Override

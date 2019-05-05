@@ -5,11 +5,13 @@ import java.util.ArrayList;
 public class Cell {
 
     private Object content;
+    private Player objectOwner;
     private ArrayList<Buff> effects;
     private int numberOfFlags;
 
     public Cell() {
         content = null;
+        objectOwner = null;
         effects = new ArrayList<>();
         numberOfFlags = 0;
     }
@@ -33,7 +35,12 @@ public class Cell {
         return this.effects;
     }
 
-    void setContent(Object content) {
+    void setContent(Object content, Player player) {
         this.content = content;
+        objectOwner = player;
+    }
+
+    public Player getObjectOwner() {
+        return objectOwner;
     }
 }
