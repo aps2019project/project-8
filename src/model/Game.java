@@ -496,12 +496,14 @@ public class Game extends InGameMenu {
         }
     }
 
-    public void castItem(Item item, Player player, int r, int c) {
+    public void castItem(Item item, Player player, int r, int c, int startTime) {
         switch (item.getItemType()) {
             case ADD_MANA:
-                if (item.getAddManaDuration() > 0) {
+                if (item.getAddManaDuration() > turn - startTime) {
                     player.addMana(item.getAddMana());
                 }
+                currentItems.add(item);
+                itemCastingTurns.add(turn);
                 break;
             case ADD_A_SPECIAL_POWER:
                 for (int i = 0; i < item.getSpecialPower().size(); i++) {
@@ -543,8 +545,6 @@ public class Game extends InGameMenu {
                 castSpell(item.getSpell(), r, c, player);
                 break;
         }
-        currentItems.add(item);
-        itemCastingTurns.add(turn);
     }
 
     void initiateGame() {
@@ -554,8 +554,19 @@ public class Game extends InGameMenu {
             if (players[i].getUsable() != null) {
                 players[i].initiateHand();
                 Usable usable = new Usable(players[i].getUsable());
-                castItem(usable, players[i], 0, 0);
+                castItem(usable, players[i], 0, 0, 0);
             }
+        }
+    }
+
+    public void initiateTurn() {
+        // mana processes
+        getCurrentPlayer().setMana((turn + 1) / 2 + 2);
+        // item processes
+        for (int i = 0; i < currentItems.size(); i++) {
+            Item item = currentItems.get(i);
+            int startTime = itemCastingTurns.get(i);
+            castItem(item, getCurrentPlayer(), 0, 0, startTime);
         }
     }
 
@@ -568,6 +579,7 @@ public class Game extends InGameMenu {
     }
 
     public void applyCollectible(int row, int column) {
+        castItem(selectedCollectible, getCurrentPlayer(), row, column, turn);
     }
 
     public void showNextCardInDeck() {
@@ -587,6 +599,7 @@ public class Game extends InGameMenu {
     }
 
     public void showGameInfo() {
+
     }
 
     public void showOpponentMinions() {
