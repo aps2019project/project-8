@@ -121,6 +121,10 @@ public class Unit extends Card{
         return specialPowers;
     }
 
+    public ArrayList<Buff> getBuffs() {
+        return buffs;
+    }
+
     public int getAttackRange() {
         return attackRange;
     }

@@ -586,7 +586,20 @@ public class Game extends InGameMenu {
     }
 
     public void endTurn() {
-
+        // lower the duration of buffs
+        for (int i = 0; i < getMap().getNumberOfRows(); i++)
+            for (int j = 0; j < getMap().getNumberOfColumns(); j++) {
+                Cell cell = getMap().getCell(i, j);
+                if (!cell.hasContent())
+                    continue;
+                Card card = (Card) cell.getContent();
+                if (card instanceof Unit) {
+                    Unit unit = (Unit) card;
+                    for (Buff buff : unit.getBuffs()) {
+                        buff.decrementDuration();
+                    }
+                }
+            }
     }
 
     public void selectCollectibleItem(String collectibleName) {
