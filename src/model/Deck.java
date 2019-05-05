@@ -8,7 +8,7 @@ import java.util.Queue;
 public class Deck {
     private static final int DECK_CARD_CAPACITY = 20;
     private Queue<Card> cards = new ArrayDeque<>();
-    private Item deckItem = null;
+    private Usable deckUsableItem = null;
     private Hero deckHero = null;
     private String deckName = null;
     private int numberOfTabsOnToString = 0;
@@ -42,6 +42,8 @@ public class Deck {
         return deckHero;
     }
 
+    public Usable getDeckUsableItem() {return deckUsableItem;}
+    
     Card getNextCard() {
         return cards.peek();
     }
@@ -50,7 +52,7 @@ public class Deck {
         if (collectionItem instanceof Hero) {
             deckHero = (Hero) collectionItem;
         } else if (collectionItem instanceof Item) {
-            deckItem = (Item) collectionItem;
+            deckUsableItem = (Usable) collectionItem;
         } else {
             cards.add((Card) collectionItem);
         }
@@ -62,14 +64,14 @@ public class Deck {
     }
 
     public boolean hasItem() {
-        return deckItem != null;
+        return deckUsableItem != null;
     }
 
     public void removeCollectionItem(CollectionItem collectionItem, String collectionItemID) {
         if (collectionItem instanceof Hero) {
             deckHero = null;
         } else if (collectionItem instanceof Item) {
-            deckItem = null;
+            deckUsableItem = null;
         } else {
             cards.remove(collectionItem);
         }
@@ -118,7 +120,7 @@ public class Deck {
         if (hasItem()) {
             appendTabs(stringBuilder, numberOfTabsOnToString + 1);
             stringBuilder.append("1 : ");
-            stringBuilder.append(deckItem.toString());
+            stringBuilder.append(deckUsableItem.toString());
             stringBuilder.append("\n");
         }
 
