@@ -23,8 +23,16 @@ public class Cell {
     void passTurn() {
     }
 
+    void setContent(Object content) {
+        this.content = content;
+    }
+
     Object getContent() {
         return this.content;
+    }
+
+    public boolean hasContent() {
+        return content != null;
     }
 
     void modifyFlags(int number) {

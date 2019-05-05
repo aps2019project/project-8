@@ -24,6 +24,12 @@ public class Game extends InGameMenu {
         }
     }
 
+    private enum GameState {
+        WIN_FIRST_PLAYER,
+        DRAW,
+        WIN_SECOND_PLAYER
+    }
+
     private static final int NUMBER_OF_PLAYERS = 2;
     private static final int[] HERO_INITIAL_ROW = {2, 2};
     private static final int[] HERO_INITIAL_COLUMN = {0, 8};
@@ -43,7 +49,7 @@ public class Game extends InGameMenu {
     private Collectible selectedCollectible;
     private GameType gameType;
 
-    Player getCurrentPlayer() {
+    private Player getCurrentPlayer() {
         if (turn % 2 == 0) {
             return players[0];
         } else {
@@ -386,46 +392,72 @@ public class Game extends InGameMenu {
         }
     }
 
-    private void castSpellCard(SpellCard spellCard, int x, int y) {
+    // returns true in case of success returns false otherwise
+    private boolean castSpellCard(SpellCard spellCard, int x, int y) {
         if (spellCard.getName().equals("kingsGuard")) {
-//            x =
+            for (int i = 0; i < map.getNumberOfRows(); i++)
+                for (int j = 0; j < map.getNumberOfColumns(); j++) {
+                    if (map.getGrid()[i][j].getContent() instanceof Hero) {
+                        Hero hero = (Hero) map.getGrid()[i][j].getContent();
+                        if (hero.getPlayer() != getCurrentPlayer()) {
+                            if (x != i || y != j) {
+                                view.showInvalidTargetError();
+                                return false;
+                            }
+                        }
+                    }
+                }
         }
-
-        if (isValidTarget(spellCard.getSpell(), x, y)) {
+        Spell.TargetArea targetArea = spellCard.getSpell().getTargetArea();
+        if (targetArea != Spell.TargetArea.SELECTED_CELL || isValidTarget(spellCard.getSpell(), x, y)) {
             castSpell(spellCard.getSpell(), x, y, getCurrentPlayer());
+        } else {
+            view.showInvalidTargetError();
+            return false;
         }
+        return true;
+    }
+
+    private boolean putUnitCard(Unit unit, int x, int y) {
+        Cell[][] grid = map.getGrid();
+        if (grid[x][y].getContent() != null) { // the cell is already not empty
+            view.showInvalidTargetError();
+            return false;
+        }
+        Player player = getCurrentPlayer();
+        grid[x][y].setContent(unit, player); // finally put the card on cell ([x], [y])
+        checkOnSpawn(unit, x, y);
+        return true;
     }
 
     // inserts card with name [cardName] from player's hand and puts it in cell ([x], [y])
     // if card is a spell card (x, y) is the target of the spell
     void insertCard(String cardName, int x, int y) {
         Player player = getCurrentPlayer();
-        Card card = player.findCard(cardName);
+        Card card = player.findCardInHand(cardName);
         if (card == null) { // no such card is found in player's hand
             view.showInvalidCardError();
             return;
         }
-        if (inMap(x, y)) {
+        if (!inMap(x, y)) {
             view.showInvalidCoordinatesError();
-            return;
-        }
-        Cell[][] grid = map.getGrid();
-        if (grid[x][y].getContent() != null) { // the cell is already not empty
-            view.showInvalidTargetError();
             return;
         }
         if (player.getMana() < card.getManaCost()) { // player doesn't have enough mana
             view.showNotEnoughManaError();
             return;
         }
-        player.decreaseMana(card.getManaCost());
-        grid[x][y].setContent(card, player); // finally put the card on cell ([x], [y])
-
-        if (card instanceof Unit)
-            checkOnSpawn((Unit) card, x, y);
-        if (card instanceof SpellCard)
-            castSpellCard((SpellCard) card, x, y);
-        view.logMessage(cardName + " with " + card.getID() + " inserted to " + "(" + x + "," + y + ")"); // log success message
+        boolean inserted = false;
+        if (card instanceof Unit) {
+            inserted = putUnitCard((Unit) card, x, y);
+        }
+        if (card instanceof SpellCard) {
+            inserted = castSpellCard((SpellCard) card, x, y);
+        }
+        if (inserted) {
+            view.logMessage(cardName + " with " + card.getID() + " inserted to " + "(" + x + "," + y + ")"); // log success message
+            player.decreaseMana(card.getManaCost());
+        }
     }
 
     void selectUnit(int row, int column) {
@@ -433,15 +465,10 @@ public class Game extends InGameMenu {
     }
 
     void initiateGame() {
-
-    }
-
-    void showHand() {
-
-    }
-
-    void putCardOnMap(Card card, int row, int column) {
-
+        putUnitCard(players[0].getHero(), 2, 0);
+        putUnitCard(players[1].getHero(), 2, 8);
+        players[0].initiateHand();
+        players[1].initiateHand();
     }
 
     void endTurn() {
@@ -457,16 +484,18 @@ public class Game extends InGameMenu {
     }
 
     void showNextCardInDeck() {
-
+        view.showCardInfo(getCurrentPlayer().getDeck().getNextCard());
     }
 
-    void showGraveYardInfo() {
+    void showHand() {
+        view.showHand(getCurrentPlayer().getHand());
+    }
 
+    void showGraveYardInfoOfACard(String cardName) {
+        view.showCardInfo(getCurrentPlayer().findCardInGraveyard(cardName));
     }
 
     void showGraveYardCards() {
-
+        view.showGraveyard(getCurrentPlayer().getGraveYard());
     }
-
-    private enum GameState {WIN_FIRST_PLAYER, DRAW, WIN_SECOND_PLAYER}
 }

@@ -28,6 +28,12 @@ public class Hand{
     }
 
     public String toString() {
-        return "blah blah";
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Hand info:\n");
+        for (Card card : cards) {
+            stringBuilder.append("\t");
+            stringBuilder.append(card.toString());
+        }
+        return stringBuilder.toString();
     }
 }
