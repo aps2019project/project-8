@@ -92,11 +92,7 @@ public class Game extends InGameMenu {
         return  can;
     }
 
-    private void attackUnitByUnitWithSpecialPowers() {
-
-    }
-
-    private void attackUnitByUnit(Unit attacker, Unit defender) {
+    private void attackWithSpecialPowers(Unit attacker, Unit defender) {
         int i = 0;
         ArrayList<Spell> spells = attacker.getSpecialPowers();
         ArrayList<SpecialPowerType> types = attacker.getSpecialPowerTypes();
@@ -109,17 +105,25 @@ public class Game extends InGameMenu {
         rawAttack(attacker, defender);
     }
 
+    private void attackUnitByUnit(Unit attacker, Unit defender) {
+        attackWithSpecialPowers(attacker, defender);
+        if (!defender.isDisarmed()) {
+            rawAttack(defender, attacker);
+        }
+        attacker.setCanAttack(false);
+    }
+
     public void attackTargetCardWithSelectedUnit(String targetCardID) {
         Unit targetUnit = findUnitInGridByID(targetCardID);
         if (targetUnit == null) { // invalid card id
             view.showInvalidCardIDError();
             return;
         }
-        if (!selectedUnit.getCanAttack()) { // has already attacked before
+        if (!selectedUnit.getCanAttack() || selectedUnit.isStunned()) { // has already attacked before or is stunned
             view.logMessage("Card with " + selectedUnit.getID() + " can't attack");
             return;
         }
-        if (!canAttack(selectedUnit, targetUnit)) { // no attack happens so ...
+        if (!canAttack(selectedUnit, targetUnit)) { // can't attack because
             view.logMessage("opponent minion is unavailable for attack");
             return;
         }

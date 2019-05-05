@@ -245,4 +245,21 @@ public class Unit extends Card{
         return ans;
     }
 
+    public boolean isDisarmed() {
+        for (Buff buff : buffs) {
+            if (buff.canDisarm()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isStunned() {
+        for (Buff buff : buffs) {
+            if (buff.canStun()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
