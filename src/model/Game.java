@@ -677,7 +677,7 @@ public class Game extends InGameMenu {
             inserted = castSpellCard((SpellCard) card, x, y, getCurrentPlayer());
         }
         if (inserted) {
-            view.logMessage(cardName + " with " + card.getID() + " inserted to " + "(" + x + "," + y + ")");
+            view.logMessage(cardName + " with " + card.getID() + " inserted to " + "(" + (x + 1) + "," + (y + 1) + ")");
             // log success message
             player.decreaseMana(card.getManaCost());
             player.getHand().getCards().remove(card);
@@ -760,8 +760,6 @@ public class Game extends InGameMenu {
     public void initiateGame() {
         numberOfPlayedCollectionItems.add(new HashMap<>());
         numberOfPlayedCollectionItems.add(new HashMap<>());
-        players[0].setMana(1000);
-        players[1].setMana(1000);
 
         turn = 0;
         putUnitCard(players[0].getHero(), 2, 0);
@@ -866,6 +864,11 @@ public class Game extends InGameMenu {
     }
 
     public void showHand() {
+
+        //
+        System.err.println(getCurrentPlayer().getMana());
+        //
+
         view.showHand(getCurrentPlayer().getHand());
     }
 

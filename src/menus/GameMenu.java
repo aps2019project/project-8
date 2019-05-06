@@ -72,7 +72,7 @@ public class GameMenu extends InGameMenu {
     }
 
     public static void useSpecialPower(int x, int y) {
-        game.useHeroSpecialPower(x, y);
+        game.useHeroSpecialPower(x - 1, y - 1);
     }
 
     public static void showHand() {
@@ -182,9 +182,6 @@ public class GameMenu extends InGameMenu {
             return true;
         }
         return false;
-    }
-
-    public static void showMenu() {
     }
 
     public static void select(String collectionItemID) {

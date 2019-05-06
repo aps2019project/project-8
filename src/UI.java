@@ -51,7 +51,8 @@ public class UI {
     private static final String GAME_INFO = "(?i:game info)";
     private static final String SHOW_MY_MINIONS = "(?i:show my minions)";
     private static final String SHOW_OPPONENT_MINIONS = "(?i:show opponent minions)";
-    private static final String SHOW_CARD_INFO = "(?i:show info) " + ID;
+    private static final String SHOW_CARD_INFO = "(?i:show card info) " + ID;
+    private static final String SHOW_INFO_CARD = "(?i:show info) " + ID;
     private static final String SELECT_COLLECTION_ITEM = "(?i:select) " + ID;
     private static final String COORDINATES = "\\(\\d+, \\d+\\)";
     private static final String MOVE = "(?i:move to) " + COORDINATES;
@@ -392,7 +393,7 @@ public class UI {
             switchTo(Menus.GAME_MENU);
         else if (command.matches(HELP))
             GraveyardMenu.help();
-        else if (command.matches(SHOW_CARD_INFO))
+        else if (command.matches(SHOW_INFO_CARD))
             GraveyardMenu.showInfo(command.split(" ")[2]);
         else if (command.matches(SHOW_CARDS))
             GraveyardMenu.showCards();
