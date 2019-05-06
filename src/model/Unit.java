@@ -23,6 +23,7 @@ public class Unit extends Card {
     private int attackTimes = 0;
     private int defenceTimes = 0;
     private ArrayList<Card> hasAttacked = new ArrayList<>();
+
     // Main constructor
     protected Unit(Card card,
                    int hitPoint, int attackPoint, UnitType unitType, ArrayList<SpecialPowerType> specialPowerType,

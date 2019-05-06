@@ -338,9 +338,9 @@ class ManualFeatureAdder {
         Spell spell = null;
         int addMana = 0, addManaDuration = 0;
         ItemType itemType = null;
-        ArrayList<SpecialPowerType> specialPowerType = new ArrayList<>();
-        ArrayList<Spell> specialPower = new ArrayList<>();
-        ArrayList<Item.Target> specialPowerTarget = new ArrayList<>();
+        ArrayList<SpecialPowerType> specialPowerTypes = new ArrayList<>();
+        ArrayList<Spell> specialPowers = new ArrayList<>();
+        ArrayList<Item.Target> specialPowerTargets = new ArrayList<>();
 
         ShengdeBaoPrinter.addString("Item: ");
         {
@@ -365,11 +365,11 @@ class ManualFeatureAdder {
                     ShengdeBaoPrinter.println("Enter number of special powers to be added:");
                     int numberOfSpecialPowers = Integer.parseInt(getInput());
                     for (int i = 0; i < numberOfSpecialPowers; i++) {
-                        getSpecialPowerTarget(specialPowerTarget);
-                        getSpecialPowerType(specialPowerType);
+                        getSpecialPowerTarget(specialPowerTargets);
+                        getSpecialPowerType(specialPowerTypes);
                         {
                             ShengdeBaoPrinter.println("Enter special power (spell)");
-                            specialPower.add(addSpell());
+                            specialPowers.add(addSpell());
                         }
                     }
                 }
@@ -382,9 +382,9 @@ class ManualFeatureAdder {
                 .setAddManaDuration(addManaDuration)
                 .setCollectionItem(collectionItem)
                 .setItemType(itemType)
-                .setSpecialPowerType(specialPowerType)
-                .setSpecialPower(specialPower)
-                .setSpecialPowerTarget(specialPowerTarget)
+                .setSpecialPowerType(specialPowerTypes)
+                .setSpecialPower(specialPowers)
+                .setSpecialPowerTarget(specialPowerTargets)
                 .build();
     }
 
