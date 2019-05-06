@@ -167,7 +167,7 @@ public class Game extends InGameMenu {
 
     }
 
-    void useHeroSpecialPower(int x, int y) {
+    public void useHeroSpecialPower(int x, int y) {
 
     }
 
