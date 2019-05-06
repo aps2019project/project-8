@@ -383,7 +383,7 @@ public class UI {
         command = command.split("\\(")[1];
         command = command.split("\\)")[0];
         String[] commandSplit = command.split(",");
-        return new int[] {Integer.parseInt(commandSplit[0]), Integer.parseInt(commandSplit[1])};
+        return new int[] {Integer.parseInt(commandSplit[0]), Integer.parseInt(commandSplit[1].trim())};
     }
 
     private static void actGraveyard(String command) {
