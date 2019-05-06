@@ -21,7 +21,7 @@ public class Deck {
     public Deck(Deck deck) {
         if (deck.deckUsableItem != null)
             deckUsableItem = new Usable(deck.deckUsableItem);
-        new ArrayList<>(cards).forEach(o -> cards.add(getCopy(o)));
+        new ArrayList<>(deck.cards).forEach(o -> cards.add(o));
         if (deck.deckHero != null)
             deckHero = new Hero(deck.deckHero);
         deckName = deck.deckName;
@@ -50,6 +50,10 @@ public class Deck {
             deckHero = null;
         cards.remove(collectionItem);
         collectionItemsIDs.remove(collectionItemID);
+    }
+
+    public void deleteNextCard() {
+        cards.remove();
     }
 
     public boolean isValid() {

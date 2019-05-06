@@ -8,7 +8,7 @@ public class Player {
     private ArrayList<Unit> units = new ArrayList<>();
     private int mana;
     private ArrayList<Card> graveYard;
-    private ArrayList<Collectible> collectibles;
+    private ArrayList<Collectible> collectibles = new ArrayList<>();
     private int numberOfFlagTurns = 0;
 
     String name = "";
@@ -45,9 +45,12 @@ public class Player {
 
     public void initiateHand() {
         deck.shuffle();
-        hand.addCard(deck.getNextCard());
-    }
 
+        for (int i = 0; i < 5; i++) {
+            hand.addCard(deck.getNextCard());
+            deck.deleteNextCard();
+        }
+    }
     private Hero initialize() {
         return new Hero();
     }
@@ -107,5 +110,13 @@ public class Player {
 
     public void addUnit(Unit unit) {
         units.add(unit);
+    }
+
+    public ArrayList<Collectible> getCollectibles() {
+        return collectibles;
+    }
+
+    public void addCollectible(Collectible collectible) {
+        collectibles.add(collectible);
     }
 }

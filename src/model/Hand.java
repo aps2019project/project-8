@@ -36,7 +36,12 @@ public class Hand{
         stringBuilder.append("Hand info:\n");
         for (Card card : cards) {
             stringBuilder.append("\t");
+            if (card == null) {
+                stringBuilder.append("is null");
+                continue;
+            }
             stringBuilder.append(card.toString());
+            stringBuilder.append("\n");
         }
         return stringBuilder.toString();
     }
