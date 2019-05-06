@@ -26,6 +26,10 @@ public class CollectionItem {
     protected CollectionItem() {
     }
 
+    public String getCollectionItemID() {
+        return collectionItemID;
+    }
+
     public String getDescription() {
         return description;
     }

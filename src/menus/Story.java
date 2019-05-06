@@ -4,6 +4,6 @@ import model.AI;
 
 public class Story extends Menu {
     public static void help() {
-        AI.getAIs().forEach(view::showAIDeckInformation);
+        view.showStoryModes(AI.getDecks(), AI.getGameMode());
     }
 }

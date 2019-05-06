@@ -17,17 +17,28 @@ public class Game extends InGameMenu {
     private int turn;
     private Map map = new Map();
     private Player[] players;
-    private boolean[] hasAI;
+    private boolean hasAI;
     private Account[] accounts;
     private Unit selectedUnit;
     private Card selectedCard; // probably has no use
     private Collectible selectedCollectible;
     private GameType gameType;
+    private int prize = 1000;
 
-    public Game(Account firstPlayer, Account secondPlayer) {
-        accounts = new Account[] {firstPlayer, secondPlayer};
-        players = new Player[] {firstPlayer.getPlayer(), secondPlayer.getPlayer()};
-        hasAI = new boolean[] {false, false};
+    public Game(Account firstPlayer, Account secondPlayer, GameType gameType, int numberOfFlags) {
+        accounts = new Account[]{firstPlayer, secondPlayer};
+        players = new Player[]{firstPlayer.getPlayer(), secondPlayer.getPlayer()};
+        hasAI = false;
+        this.gameType = gameType;
+        this.numberOfFlags = numberOfFlags;
+    }
+
+    public Game(Account account, AI ai, GameType gameType, int numberOfFlags) {
+        accounts = new Account[]{account, null};
+        players = new Player[]{account.getPlayer(), ai.getPlayer()};
+        hasAI = false;
+        this.gameType = gameType;
+        this.numberOfFlags = numberOfFlags;
     }
 
     private Player getCurrentPlayer() {
@@ -500,10 +511,10 @@ public class Game extends InGameMenu {
         currentItems.add(item);
     }
 
-    void initiateGame() {
+    public void initiateGame() {
         putUnitCard(players[0].getHero(), 2, 0);
         putUnitCard(players[1].getHero(), 2, 8);
-        for (int i = 0; i < 2; i++ ) {
+        for (int i = 0; i < 2; i++) {
             if (players[i].getUsable() != null) {
                 players[i].initiateHand();
                 Usable usable = new Usable(players[i].getUsable());
@@ -557,7 +568,18 @@ public class Game extends InGameMenu {
     public void showCollectibleInfo() {
     }
 
-    private enum GameState {
+    public void showAvailableOptions() {
+    }
+
+    public int getPrize() {
+        return prize;
+    }
+
+    public void setPrize(int prize) {
+        this.prize = prize;
+    }
+
+    public enum GameState {
         WIN_FIRST_PLAYER,
         DRAW,
         WIN_SECOND_PLAYER

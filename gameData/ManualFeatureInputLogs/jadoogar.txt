@@ -1,6 +1,6 @@
 jadoogar
 adds a power buff with two points increase to attack power and one point decrease to health points to the minions to 8 adjacent cells and the minion itself
-4025
+2025
 550
 Card
 4

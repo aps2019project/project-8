@@ -23,22 +23,21 @@ public class GameMenu extends InGameMenu {
             "Show next card",
             "Enter graveyard",
             "Help",
-            "End game",
             "Exit",
             "Show menu"
     };
     private static final int NUMBER_OF_PLAYERS = 2;
+    private static String[] endGame = {"End Game"};
     private static boolean hasAI;
     private static Player[] players = new Player[NUMBER_OF_PLAYERS];
     private static int numberOfFlags;
     private static Game game;
 
-    public static void setGame(Game game) {
-        GameMenu.game = game;
-    }
-
-    public static void help() {
-        view.showHelp(commands);
+    public static void help(boolean gameEnded) {
+        if (!gameEnded)
+            view.showHelp(commands);
+        else
+            view.showHelp(endGame);
     }
 
     public static void showGameInfo() {
@@ -113,14 +112,16 @@ public class GameMenu extends InGameMenu {
     }
 
     //start a single player game with a specified AI
-    public static boolean startGame(AI ai) {
+    public static boolean startGame(int aiID) {
+        AI ai = AI.get(aiID);
         if (ai == null) {
             view.showInvalidParametersError();
             return false;
         }
-        hasAI = true;
-        players[1] = ai.getPlayer();
-        players[0] = getAccount().getPlayer();
+        game = new Game(getAccount(), ai, AI.getGameType(aiID), AI.getNumberOfFlags(aiID));
+        ai.setGame(game);
+        game.setPrize(AI.getGamePrize(aiID));
+        game.initiateGame();
         return true;
     }
 
@@ -135,20 +136,17 @@ public class GameMenu extends InGameMenu {
             return false;
         }
         if (checkGameParameters(mode, numberOfFlags)) return false;
-        hasAI = true;
-        players[1] = (new AI(getAccount().getDeck(deckName), GameType.get(mode))).getPlayer();
-        GameMenu.numberOfFlags = numberOfFlags;
-        players[0] = getAccount().getPlayer();
+        AI ai = new AI(getAccount().getDeck(deckName));
+        game = new Game(getAccount(), ai, GameType.get(mode), numberOfFlags);
+        ai.setGame(game);
+        game.initiateGame();
         return true;
     }
 
     //start a multiplayer game with a selected account
     public static boolean startGame(Account secondAccount, int mode, int numberOfFlags) {
         if (checkGameParameters(mode, numberOfFlags)) return false;
-        hasAI = false;
-        players[1] = secondAccount.getPlayer();
-        players[0] = getAccount().getPlayer();
-        GameMenu.game = new Game(getAccount(), secondAccount);
+        GameMenu.game = new Game(getAccount(), secondAccount, GameType.get(mode), numberOfFlags);
         game.initiateGame();
         return true;
     }
@@ -177,5 +175,9 @@ public class GameMenu extends InGameMenu {
             selectCard(collectionItemDescriptor);
         else
             selectCollectible(collectionItemDescriptor);
+    }
+
+    public static void showOptions() {
+        game.showAvailableOptions();
     }
 }

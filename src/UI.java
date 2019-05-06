@@ -265,7 +265,7 @@ public class UI {
         else if (command.matches(HELP))
             Story.help();
         else if (command.matches(LEVEL)) {
-            if (GameMenu.startGame(AI.getAI(Integer.parseInt(command))))
+            if (GameMenu.startGame(Integer.parseInt(command)))
                 switchTo(Menus.GAME_MENU);
         }
         else
@@ -318,8 +318,10 @@ public class UI {
         if (!gameEnded) {
             if (command.matches(EXIT))
                 switchTo(Menus.MAIN_MENU);
+            else if (command.matches(SHOW_MENU))
+                GameMenu.help(false);
             else if (command.matches(HELP))
-                GameMenu.help();
+                GameMenu.showOptions();
             else if (command.matches(ENTER_GRAVEYARD))
                 switchTo(Menus.GRAVEYARD_MENU);
             else if (command.matches(GAME_INFO))
@@ -359,15 +361,14 @@ public class UI {
                 GameMenu.useCollectible(coordinates[0], coordinates[1]);
             } else if (command.matches(SHOW_NEXT_CARD))
                 GameMenu.showNextCard();
-            else if (command.matches(SHOW_MENU))
-                GameMenu.showMenu();
             else
                 view.showInvalidCommandError();
         } else {
             if (command.matches(END_GAME)) {
                 switchTo(Menus.MAIN_MENU);
                 gameEnded = false;
-            }
+            } else if (command.matches(HELP))
+                GameMenu.help(true);
             else
                 view.showInvalidCommandError();
         }
@@ -463,7 +464,7 @@ public class UI {
                 CustomGame.help();
                 break;
             case GAME_MENU:
-                GameMenu.help();
+                GameMenu.help(false);
                 break;
             case GRAVEYARD_MENU:
                 GraveyardMenu.help();
@@ -478,6 +479,7 @@ public class UI {
                 new Account(yaGson.fromJson(new BufferedReader(new FileReader(file)), Account.class));
             }
             Shop.load();
+            AI.load();
         } catch (IOException ignored) {}
     }
 

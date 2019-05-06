@@ -3,7 +3,6 @@ package view;
 import model.*;
 
 import java.util.*;
-import java.util.Collection;
 
 public class CommandLineView implements View {
     private static final String DASH = " - ";
@@ -271,7 +270,6 @@ public class CommandLineView implements View {
 
     @Override
     public void showAIDeckInformation(AI ai) {
-        System.out.println(ai.getDeck().getHero().getName() + " : " + ai.getMode());
     }
 
     @Override
@@ -347,6 +345,15 @@ public class CommandLineView implements View {
     @Override
     public void showCollectibles(ArrayList<Collectible> collectibles) {
         collectibles.forEach(System.out::println);
+    }
+
+    @Override
+    public void showStoryModes(HashMap<Integer, Deck> decks, HashMap<Integer, Integer> gameMode) {
+        decks.forEach((level, deck) -> {
+            System.out.println(level + ":");
+            System.out.println(deck.getHero().getName());
+            System.out.println(GameType.get(gameMode.get(level)));
+        });
     }
 
 

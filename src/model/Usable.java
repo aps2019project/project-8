@@ -8,6 +8,7 @@ public class Usable extends Item {
 
     // Copy constructor
     public Usable(Usable usable) {
+        super(usable);
         this.price = usable.price;
         this.collectionItemID = usable.collectionItemID;
         this.name = usable.name;

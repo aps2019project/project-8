@@ -118,4 +118,6 @@ View {
     void showColletibleInfo(Collectible selectedCollectible);
 
     void showCollectibles(ArrayList<Collectible> collectibles);
+
+    void showStoryModes(HashMap<Integer, Deck> decks, HashMap<Integer, Integer> gameMode);
 }
