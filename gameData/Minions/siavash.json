@@ -1,0 +1,54 @@
+{
+  "unitType": "MELEE",
+  "hitPoint": 8,
+  "attackPoint": 5,
+  "specialPowerTypes": [
+    "ON_DEATH"
+  ],
+  "specialPowers": [
+    {
+      "targetType": "UNIT",
+      "targetArea": "ALL_OF_THE_MAP",
+      "targetUnit": "ENEMY_HERO",
+      "targetUnitType": "ALL",
+      "numberOfRandomTargets": 100,
+      "gridX": 1,
+      "gridY": 1,
+      "buffs": [
+        {
+          "duration": 1000000,
+          "holy": 0,
+          "poison": 0,
+          "effectHp": -6,
+          "effectAp": 0,
+          "stun": false,
+          "disarm": false,
+          "dispellable": false
+        }
+      ],
+      "canDispel": false,
+      "disarmable": true,
+      "poisonImmune": false,
+      "spellImmune": false,
+      "isBully": false,
+      "multiplied": false,
+      "ignoreHoly": false
+    }
+  ],
+  "canFly": false,
+  "attackRange": 5,
+  "buffs": [],
+  "flags": 0,
+  "canMove": false,
+  "canAttack": false,
+  "x": 0,
+  "y": 0,
+  "attackTimes": 0,
+  "defenceTimes": 0,
+  "hasAttacked": [],
+  "manaCost": 4,
+  "price": 350,
+  "collectionItemID": "2039",
+  "name": "siavash",
+  "description": "attacks enemy hero by 6 points when dying"
+}
