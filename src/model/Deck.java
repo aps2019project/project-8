@@ -136,10 +136,9 @@ public class Deck {
         }
 
         appendTabs(stringBuilder, numberOfTabsOnToString);
-        stringBuilder.append("Items :\n");
+        stringBuilder.append("Item :\n");
         if (hasItem()) {
             appendTabs(stringBuilder, numberOfTabsOnToString + 1);
-            stringBuilder.append("1 : ");
             stringBuilder.append(deckUsableItem.toString());
             stringBuilder.append("\n");
         }
