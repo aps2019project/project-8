@@ -115,8 +115,20 @@ public class Game extends InGameMenu {
 
 
 
-    private void checkOnDeath(Unit defender) {
-
+    private void checkOnDeath(Unit unit) {
+        int i = 0;
+        for (Spell spell : unit.getSpecialPowers()) {
+            if (unit.getSpecialPowerTypes().get(i) == SpecialPowerType.ON_DEATH) {
+                int x = unit.getX();
+                int y = unit.getY();
+                if (unit.getName() == "siavash") {
+                    x = players[1 - turn % 2].getHero().getX();
+                    y = players[1 - turn % 2].getHero().getY();
+                }
+                castSpell(spell, x, y, unit.getPlayer());
+            }
+        }
+        i++;
     }
 
 
@@ -184,6 +196,9 @@ public class Game extends InGameMenu {
         if (state != 0) {
             return state;
         }
+        if (defender.isDead()) {
+            return 0;
+        }
         if (!oneSided) {
             twoSidedAttack(attacker, defender);
         } else {
@@ -192,7 +207,7 @@ public class Game extends InGameMenu {
         attacker.setCanAttack(false);
         attacker.setCanMove(false);
 
-        if (!defender.isDead() && defender.calculateHP() < 0 && defender.getX() != -1) {
+        if (defender.calculateHP() < 0) {
             Cell cell = map.getGrid()[defender.getX()][defender.getY()];
             cell.setObjectOwner(null);
             cell.setContent(null);
