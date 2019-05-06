@@ -804,8 +804,8 @@ public class Game extends InGameMenu {
         // item processes
         for (int i = 0; i < currentItems.size(); i++) {
 
-            System.err.println(i + 1);
-            System.err.println(currentItems.get(i));
+//            System.err.println(i + 1);
+//            System.err.println(currentItems.get(i));
 
             Item item = currentItems.get(i);
             int startTime = itemCastingTurns.get(i);
