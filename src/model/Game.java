@@ -131,9 +131,6 @@ public class Game extends InGameMenu {
         i++;
     }
 
-
-
-
     // no special powers included
     private void rawAttack(Unit attacker, Unit defender) {
         int damage = Math.min(attacker.calculateAP() - defender.calculateHoly(), 0);
