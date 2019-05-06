@@ -801,6 +801,12 @@ public class Game extends InGameMenu {
     }
 
     public void showCardInfo(String cardID) {
+        Unit unit = findUnitInGridByID(cardID);
+        if (unit == null) {
+            view.showNoSuchUnitFoundError();
+            return;
+        }
+        view.showUnitInfo(unit);
     }
 
     public void showAllCollectibles() {

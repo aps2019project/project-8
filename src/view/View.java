@@ -132,4 +132,8 @@ View {
     void showGameInfoKillOponentHero(Hero firstHero, Hero secondHero);
 
     void showGameInfoHoldTheFlag(int row, int column, Unit content);
+
+    void showNoSuchUnitFoundError();
+
+    void showUnitInfo(Unit unit);
 }
