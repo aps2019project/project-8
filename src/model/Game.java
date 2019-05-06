@@ -127,10 +127,13 @@ public class Game extends InGameMenu {
         switch (attacker.getUnitType()) {
             case MELEE:
                 can = isAdjacent;
+                break;
             case RANGED:
                 can = !isAdjacent && attacker.getAttackRange() >= distance;
+                break;
             case HYBRID:
                 can = attacker.getAttackRange() >= distance;
+                break;
         }
         return can ? 0 : -2;
     }
@@ -563,12 +566,13 @@ public class Game extends InGameMenu {
         }
     }
 
-    private boolean checkInvalidTarget(Spell spell, int x, int y) {
-        if (spell.getTargetType() == Spell.TargetType.CELL) {
-            return true;
-        }
-        return true;
-    }
+    // to be added :)
+//    private boolean checkInvalidTarget(Spell spell, int x, int y) {
+//        if (spell.getTargetType() == Spell.TargetType.CELL) {
+//            return true;
+//        }
+//        return true;
+//    }
 
     // returns true in case of success returns false otherwise
     private boolean castSpellCard(SpellCard spellCard, int x, int y, Player player) {
@@ -799,6 +803,7 @@ public class Game extends InGameMenu {
     }
 
     public void selectCollectibleItem(String collectibleName) {
+
     }
 
     public void applyCollectible(int row, int column) {
