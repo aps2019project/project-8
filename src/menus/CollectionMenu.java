@@ -85,7 +85,7 @@ public class CollectionMenu extends Menu {
             return;
         }
 
-        if (collectionItem instanceof Card && deck.isFull()) {
+        if (!(collectionItem instanceof Hero) && collectionItem instanceof Card && deck.isFull()) {
             view.showDeckIsFullError();
             return;
         }
