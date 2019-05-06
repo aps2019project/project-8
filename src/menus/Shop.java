@@ -46,6 +46,7 @@ public class Shop extends Menu {
             return;
         }
         view.showName(collectionItem.getName());
+        view.showInfoOfCollectionItem(collectionItem);
     }
 
     public static void sellCollectionItem(String collectionItemID) {

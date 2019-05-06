@@ -356,5 +356,13 @@ public class CommandLineView implements View {
         });
     }
 
+    @Override
+    public void showInfoOfCollectionItem(CollectionItem collectionItem) {
+        System.err.println(collectionItem.showInfo());
+    }
 
+    @Override
+    public void showNoMainDeckError() {
+        System.out.println("You have no main deck to play with.");
+    }
 }

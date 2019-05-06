@@ -66,4 +66,8 @@ public class CollectionItem {
     public String toString() {
         return name;
     }
+
+    public String showInfo() {
+        return "name: " + name + " price: " + price + " description: " + description;
+    }
 }
