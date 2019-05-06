@@ -365,4 +365,10 @@ public class CommandLineView implements View {
     public void showNoMainDeckError() {
         System.out.println("You have no main deck to play with.");
     }
+
+    @Override
+    public void showUnit(Unit unit) {
+        System.out.println(unit.getCollectionItemID() + ": " + unit.getName() + ", health: " + unit.calculateHP() +
+                ", location: (" + unit.getX() + ", " + unit.getY() + "power: " + unit.calculateAP());
+    }
 }

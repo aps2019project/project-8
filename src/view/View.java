@@ -124,4 +124,6 @@ View {
     void showInfoOfCollectionItem(CollectionItem collectionItem);
 
     void showNoMainDeckError();
+
+    void showUnit(Unit unit);
 }

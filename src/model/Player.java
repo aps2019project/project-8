@@ -16,6 +16,10 @@ public class Player {
         hand = new Hand();
     }
 
+    public ArrayList<Unit> getUnits() {
+        return units;
+    }
+
     public Hero getHero() {
         return getDeck().getHero();
     }

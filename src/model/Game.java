@@ -5,6 +5,7 @@ package model;
 import menus.InGameMenu;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 public class Game extends InGameMenu {
@@ -27,10 +28,12 @@ public class Game extends InGameMenu {
     private Collectible selectedCollectible;
     private GameType gameType;
     private int prize = 1000;
+    private HashMap<String, Integer> numberOfUnits = new HashMap<>();
 
     public Game(Account firstPlayer, Account secondPlayer, GameType gameType, int numberOfFlags) {
         accounts = new Account[]{firstPlayer, secondPlayer};
-        players = new Player[]{firstPlayer.getPlayer(), secondPlayer.getPlayer()};
+        players = new Player[]{firstPlayer.getPlayer().setName(firstPlayer.getName()), secondPlayer.getPlayer().
+                setName(secondPlayer.getName())};
         hasAI = false;
         this.gameType = gameType;
         this.numberOfFlags = numberOfFlags;
@@ -38,7 +41,7 @@ public class Game extends InGameMenu {
 
     public Game(Account account, AI ai, GameType gameType, int numberOfFlags) {
         accounts = new Account[]{account, null};
-        players = new Player[]{account.getPlayer(), ai.getPlayer()};
+        players = new Player[]{account.getPlayer().setName(account.getName()), ai.getPlayer().setName("COM")};
         hasAI = false;
         this.gameType = gameType;
         this.numberOfFlags = numberOfFlags;
@@ -100,11 +103,6 @@ public class Game extends InGameMenu {
         }
         view.showInvalidTargetError();
     }
-
-
-
-
-
 
 
     // no special powers included
@@ -329,7 +327,7 @@ public class Game extends InGameMenu {
         if (spell.getTargetType() == Spell.TargetType.CELL) {
             return true;
         }
-        if (!(cell.getContent() instanceof  Unit)) { // hamid
+        if (!(cell.getContent() instanceof Unit)) { // hamid
             return false;
         }
 
@@ -579,7 +577,18 @@ public class Game extends InGameMenu {
         checkOnSpawn(unit, x, y);
         unit.setX(x);
         unit.setY(y);
+        unit.setCollectionItemID(getNewID(unit));
         return true;
+    }
+
+    private String getNewID(Unit unit) {
+        if (numberOfUnits.containsKey(unit.getName())) {
+            int currentNumber = numberOfUnits.get(unit.getName());
+            numberOfUnits.replace(unit.getName(), currentNumber + 1);
+            return getCurrentPlayer().getName() + "_" + unit.getName() + (currentNumber + 1);
+        }
+        numberOfUnits.put(unit.getName(), 1);
+
     }
 
     // inserts card with name [cardName] from player's hand and puts it in cell ([x], [y])
@@ -751,6 +760,8 @@ public class Game extends InGameMenu {
     }
 
     public void showMyMinions() {
+        view.showUnit(getCurrentPlayer().getHero());
+        getCurrentPlayer().getUnits().forEach(view::showUnit);
     }
 
     public void showCardInfo(String cardID) {
