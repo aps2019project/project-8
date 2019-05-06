@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Player {
     private Hand hand;
     private Deck deck;
-    private ArrayList<Unit> units;
+    private ArrayList<Unit> units = new ArrayList<>();
     private int mana;
     private ArrayList<Card> graveYard;
     private ArrayList<Collectible> collectibles;
@@ -103,5 +103,9 @@ public class Player {
 
     public int getNumberOfFlagTurns() {
         return numberOfFlagTurns;
+    }
+
+    public void addUnit(Unit unit) {
+        units.add(unit);
     }
 }

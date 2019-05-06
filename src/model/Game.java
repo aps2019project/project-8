@@ -578,6 +578,7 @@ public class Game extends InGameMenu {
         unit.setX(x);
         unit.setY(y);
         unit.setCollectionItemID(getNewID(unit));
+        player.addUnit(unit);
         return true;
     }
 
@@ -802,7 +803,10 @@ public class Game extends InGameMenu {
 
     public void showMyMinions() {
         view.showUnit(getCurrentPlayer().getHero());
-        getCurrentPlayer().getUnits().forEach(view::showUnit);
+        for (Unit unit : getCurrentPlayer().getUnits()) {
+            view.showUnit(unit);
+            getCurrentPlayer().getUnits().forEach(view::showUnit);
+        }
     }
 
     public void showCardInfo(String cardID) {
