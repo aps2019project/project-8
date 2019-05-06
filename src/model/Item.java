@@ -6,21 +6,21 @@ public class Item extends CollectionItem {
     protected Spell spell;
     protected int addMana;
     protected int addManaDuration;
-    private ItemType itemType;
-    private ArrayList<SpecialPowerType> specialPowerType;
-    private ArrayList<Spell> specialPower;
-    private ArrayList<Target> specialPowerTarget;
+    protected ItemType itemType;
+    protected ArrayList<SpecialPowerType> specialPowerTypes;
+    protected ArrayList<Spell> specialPowers;
+    protected ArrayList<Target> specialPowerTargets;
 
-    public ArrayList<Spell> getSpecialPower() {
-        return specialPower;
+    public ArrayList<Spell> getSpecialPowers() {
+        return specialPowers;
     }
 
-    public ArrayList<Target> getSpecialPowerTarget() {
-        return specialPowerTarget;
+    public ArrayList<Target> getSpecialPowerTargets() {
+        return specialPowerTargets;
     }
 
-    public ArrayList<SpecialPowerType> getSpecialPowerType() {
-        return specialPowerType;
+    public ArrayList<SpecialPowerType> getSpecialPowerTypes() {
+        return specialPowerTypes;
     }
 
     // Main constructor
@@ -31,9 +31,9 @@ public class Item extends CollectionItem {
         this.addMana = addMana;
         this.addManaDuration = addManaDuration;
         this.itemType = itemType;
-        this.specialPowerType = specialPowerType;
-        this.specialPower = specialPower;
-        this.specialPowerTarget = specialPowerTarget;
+        this.specialPowerTypes = specialPowerType;
+        this.specialPowers = specialPower;
+        this.specialPowerTargets = specialPowerTarget;
     }
 
     // Copy constructor
@@ -46,7 +46,9 @@ public class Item extends CollectionItem {
         this.addMana = item.addMana;
         this.addManaDuration = item.addManaDuration;
         this.itemType = item.itemType;
-        this.specialPowerTarget = item.specialPowerTarget;
+        this.specialPowerTypes = item.specialPowerTypes;
+        this.specialPowers = item.specialPowers;
+        this.specialPowerTargets = item.specialPowerTargets;
     }
 
     protected Item() {

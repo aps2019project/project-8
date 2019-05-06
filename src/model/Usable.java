@@ -8,7 +8,7 @@ public class Usable extends Item {
 
     // Copy constructor
     public Usable(Usable usable) {
-        super(usable);
+      //  super(usable);
         this.price = usable.price;
         this.collectionItemID = usable.collectionItemID;
         this.name = usable.name;
@@ -16,6 +16,10 @@ public class Usable extends Item {
         this.spell = usable.spell;
         this.addMana = usable.addMana;
         this.addManaDuration = usable.addManaDuration;
+        this.itemType = usable.itemType;
+        this.specialPowerTypes = usable.specialPowerTypes;
+        this.specialPowers = usable.specialPowers;
+        this.specialPowerTargets = usable.specialPowerTargets;
     }
 
     // Builder
