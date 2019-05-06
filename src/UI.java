@@ -97,11 +97,11 @@ public class UI {
                     scanner.close();
                     return;
                 }
-                command = scanner.nextLine();
-                command = command.trim();
             } catch (Exception ignored) {
                 System.err.println(ignored);
             }
+                command = scanner.nextLine();
+                command = command.trim();
         }
     }
 
