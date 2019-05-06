@@ -744,11 +744,11 @@ public class Game extends InGameMenu {
         view.showHand(getCurrentPlayer().getHand());
     }
 
-    void showGraveYardInfoOfACard(String cardName) {
-        view.showCardInfo(getCurrentPlayer().findCardInGraveyard(cardName));
+    public void showGraveYardInfoOfACard(String cardID) {
+        view.showCardInfo(getCurrentPlayer().findCardInGraveyard(cardID));
     }
 
-    void showGraveYardCards() {
+    public void showGraveYardCards() {
         view.showGraveyard(getCurrentPlayer().getGraveYard());
     }
 

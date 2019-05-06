@@ -389,6 +389,6 @@ public class CommandLineView implements View {
     @Override
     public void showUnit(Unit unit) {
         System.out.println(unit.getCollectionItemID() + ": " + unit.getName() + ", health: " + unit.calculateHP() +
-                ", location: (" + unit.getX() + ", " + unit.getY() + "power: " + unit.calculateAP());
+                ", location: (" + unit.getX() + ", " + unit.getY() + "), power: " + unit.calculateAP());
     }
 }
