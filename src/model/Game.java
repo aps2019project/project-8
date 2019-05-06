@@ -699,7 +699,7 @@ public class Game extends InGameMenu {
                             }
                         }
                     }
-                    // Here I add special power to units in deck
+                    // Here      I add special power to units in deck
                     {
                         for (Card card : player.getDeck().getCards()) {
                             if (card instanceof Unit) {
