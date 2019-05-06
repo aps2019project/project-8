@@ -128,7 +128,7 @@ public class GameMenu extends InGameMenu {
 
     private static boolean checkAccount() {
         if (getAccount().getMainDeck() == null) {
-            view.showDeckDoesNotExistError();
+            view.showNoMainDeckError();
             return true;
         }
         if (!getAccount().getMainDeck().isValid()) {

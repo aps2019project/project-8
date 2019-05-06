@@ -122,4 +122,6 @@ View {
     void showStoryModes(HashMap<Integer, Deck> decks, HashMap<Integer, Integer> gameMode);
 
     void showInfoOfCollectionItem(CollectionItem collectionItem);
+
+    void showNoMainDeckError();
 }
