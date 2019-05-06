@@ -28,6 +28,7 @@ public class Hero extends Unit {
 
     public void decreaseRemainingCooldown() {
         remainingCooldown--;
+        remainingCooldown = Math.max(0, remainingCooldown);
     }
 
     public int getRemainingCooldown() {

@@ -226,7 +226,7 @@ public class Game extends InGameMenu {
 
     // x, y must be valid
     public void useHeroSpecialPower(int x, int y) {
-        Hero hero = getHero(getCurrentPlayer());
+        Hero hero = getCurrentPlayer().getHero();
         Player player = getCurrentPlayer();
         if (hero.getSpecialPowers() == null) {
             return;
@@ -240,12 +240,8 @@ public class Game extends InGameMenu {
             return;
         }
         hero.resetRemainingCooldown();
-        int i = 0;
         for (Spell spell : hero.getSpecialPowers()) {
-            switch (hero.getSpecialPowerTypes().get(i)) {
-            }
-
-            castSpellCard();
+            castSpell(spell, x, y, getCurrentPlayer());
         }
     }
 
@@ -574,21 +570,10 @@ public class Game extends InGameMenu {
         return true;
     }
 
-    private Hero getHero(Player player) {
-        for (Cell[] cellRows : map.getGrid()) {
-            for (Cell cell : cellRows) {
-                if (cell.getContent() instanceof Hero && ((Hero) cell.getContent()).getPlayer() == player) {
-                    return ((Hero)cell.getContent());
-                }
-            }
-        }
-        return null;
-    }
-
     // returns true in case of success returns false otherwise
-    private boolean castSpellCard(SpellCard spellCard, int x, int y) {
+    private boolean castSpellCard(SpellCard spellCard, int x, int y, Player player) {
         if (spellCard.getName().equals("kingsGuard")) {
-            Hero hero = getHero(getCurrentPlayer());
+            Hero hero = getCurrentPlayer().getHero();
 
 
             if (hero == null) { // redundant
@@ -603,7 +588,7 @@ public class Game extends InGameMenu {
         }
         Spell.TargetArea targetArea = spellCard.getSpell().getTargetArea();
         if (targetArea != Spell.TargetArea.SELECTED_CELL || isValidTarget(spellCard.getSpell(), map.getGrid()[x][y], getCurrentPlayer())) {
-            castSpell(spellCard.getSpell(), x, y, getCurrentPlayer());
+            castSpell(spellCard.getSpell(), x, y, player);
         } else {
             view.showInvalidTargetError();
             return false;
@@ -660,7 +645,7 @@ public class Game extends InGameMenu {
             inserted = putUnitCard((Unit) card, x, y);
         }
         if (card instanceof SpellCard) {
-            inserted = castSpellCard((SpellCard) card, x, y);
+            inserted = castSpellCard((SpellCard) card, x, y, getCurrentPlayer());
         }
         if (inserted) {
             view.logMessage(cardName + " with " + card.getID() + " inserted to " + "(" + x + "," + y + ")"); // log success message
