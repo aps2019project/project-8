@@ -72,7 +72,7 @@ public class GameMenu extends InGameMenu {
     }
 
     public static void useSpecialPower(int x, int y) {
-        game.useUnitSpecialPower(x - 1, y - 1);
+        game.useHeroSpecialPower(x - 1, y - 1);
     }
 
     public static void showHand() {

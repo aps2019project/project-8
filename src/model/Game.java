@@ -102,12 +102,19 @@ public class Game extends InGameMenu {
         view.showInvalidTargetError();
     }
 
+
+
+
+
+
+
+    // no special powers included
     private void rawAttack(Unit attacker, Unit defender) {
         int damage = Math.min(attacker.calculateAP() - defender.calculateHoly(), 0);
         defender.receiveDamage(damage);
     }
 
-    private  boolean canAttack(Unit attacker, Unit defender) {
+    private boolean canAttack(Unit attacker, Unit defender) {
         int distance = getDistance(attacker.getX(), attacker.getY(), defender.getX(), defender.getY());
         boolean isAdjacent = isAdjacent(attacker.getX(), attacker.getY(), defender.getX(), defender.getY());
         boolean can = false;
@@ -125,7 +132,9 @@ public class Game extends InGameMenu {
         return can;
     }
 
-    private void attackWithSpecialPowers(Unit attacker, Unit defender) {
+
+    // special powers are included but defender doesn't counter attack
+    private void oneSidedAttack(Unit attacker, Unit defender) {
         int i = 0;
         ArrayList<Spell> spells = attacker.getSpecialPowers();
         ArrayList<SpecialPowerType> types = attacker.getSpecialPowerTypes();
@@ -138,12 +147,35 @@ public class Game extends InGameMenu {
         rawAttack(attacker, defender);
     }
 
-    private void attackUnitByUnit(Unit attacker, Unit defender) {
-        attackWithSpecialPowers(attacker, defender);
-        if (!defender.isDisarmed()) {
+    // special powers are included
+    // it's assumed that attacker can attack defender (hasn't attacked before and defender is attack range)
+    private void twoSidedAttack(Unit attacker, Unit defender) {
+        oneSidedAttack(attacker, defender);
+        // no ON_DEFEND for now!
+        if (defender.isDisarmed())
             rawAttack(defender, attacker);
+    }
+
+
+    // returns -1 in case when attacker can't attack
+    // returns -2 if defender is not in attack range of attacker
+    // returns 0 for success
+    // if oneSided is true defender doesn't counter attack (for combo attacks)
+
+    private int attackUnitByUnit(Unit attacker, Unit defender, boolean oneSided) {
+        if (!attacker.getCanAttack() || attacker.isStunned()) {
+            return -1;
+        }
+        if (!canAttack(attacker, defender)) {
+            return -2;
+        }
+        if (!oneSided) {
+            twoSidedAttack(attacker, defender);
+        } else {
+            oneSidedAttack(attacker, defender);
         }
         attacker.setCanAttack(false);
+        return 0;
     }
 
     public void attackTargetCardWithSelectedUnit(String targetCardID) {
@@ -152,22 +184,27 @@ public class Game extends InGameMenu {
             view.showInvalidCardIDError();
             return;
         }
-        if (!selectedUnit.getCanAttack() || selectedUnit.isStunned()) { // has already attacked before or is stunned
+        int state = attackUnitByUnit(selectedUnit, targetUnit, false);
+        if (state == -1) { // has already attacked before or is stunned
             view.logMessage("Card with " + selectedUnit.getID() + " can't attack");
             return;
         }
-        if (!canAttack(selectedUnit, targetUnit)) { // can't attack because
+        if (state == -2) { // can't attack because
             view.logMessage("opponent minion is unavailable for attack");
             return;
         }
-        attackUnitByUnit(targetUnit, selectedUnit);
     }
 
     public void attackCombo(String targetCardID, String[] friendlyCardsIDs) {
 
     }
 
-    void useHeroSpecialPower(int x, int y) {
+
+
+
+
+
+    public void useHeroSpecialPower(int x, int y) {
 
     }
 
