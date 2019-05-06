@@ -668,7 +668,6 @@ public class Game extends InGameMenu {
         return getCurrentPlayer().getCollectible(unitID) != null;
     }
 
-    public void addSpecialPowerToUnit(Unit unit, Spell specialPower, SpecialPowerType specialPowerType, Item.Target.TargetUnitType targetUnitType) {
     private void addSpecialPowerToUnit(Unit unit, Spell specialPower, SpecialPowerType specialPowerType, Item.Target.TargetUnitType targetUnitType) {
         if (checkUnitTypeInItemTarget(unit, targetUnitType)) {
             unit.getSpecialPowers().add(specialPower);
