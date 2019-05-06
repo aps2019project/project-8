@@ -700,8 +700,8 @@ public class Game extends InGameMenu {
         putUnitCard(players[1].getHero(), 2, 8);
         turn = 0;
         for (int i = 0; i < 2; i++) {
+            players[i].initiateHand();
             if (players[i].getUsable() != null) {
-                players[i].initiateHand();
                 Usable usable = new Usable(players[i].getUsable());
                 castItem(usable, players[i], 0, 0, 0);
             }
