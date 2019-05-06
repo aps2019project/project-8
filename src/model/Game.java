@@ -633,10 +633,13 @@ public class Game extends InGameMenu {
                 itemCastingTurns.add(turn);
                 break;
             case ADD_A_SPECIAL_POWER:
-                for (int i = 0; i < item.getSpecialPower().size(); i++) {
-                    Spell specialPower = item.getSpecialPower().get(i);
-                    SpecialPowerType specialPowerType = item.getSpecialPowerType().get(i);
-                    Item.Target target = item.getSpecialPowerTarget().get(i);
+                for (int i = 0; i < item.getSpecialPowers().size(); i++) {
+                    Spell specialPower = item.getSpecialPowers().get(i);
+                    SpecialPowerType specialPowerType = item.getSpecialPowerTypes().get(i);
+
+                    System.out.println(item.getSpecialPowerTargets().size());
+
+                    Item.Target target = item.getSpecialPowerTargets().get(i);
                     // Here I add special power to units in map:
                     {
                         for (int row = 0; row < getMap().getNumberOfRows(); row++)

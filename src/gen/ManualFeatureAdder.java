@@ -362,6 +362,7 @@ class ManualFeatureAdder {
                         addManaDuration = Integer.parseInt(getInput());
                     }
                 } else {
+                    itemType = ItemType.ADD_A_SPECIAL_POWER;
                     ShengdeBaoPrinter.println("Enter number of special powers to be added:");
                     int numberOfSpecialPowers = Integer.parseInt(getInput());
                     for (int i = 0; i < numberOfSpecialPowers; i++) {
