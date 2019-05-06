@@ -51,19 +51,51 @@ public class Game extends InGameMenu {
         }
     }
 
-    Map getMap() {
+    private Map getMap() {
         return this.map;
     }
 
-    void moveSelectedUnit(int x, int y) {
+    private int getDistance(int x1, int y1, int x2, int y2) {
+        return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+    }
+
+    private boolean isAdjacent(int x1, int y1, int x2, int y2) {
+        return getDistance(x1, y1, x2, y2) == 1;
+    }
+
+    private boolean isPathEmpty(int srcX, int srcY, int desX, int desY, Player player) {
+        Cell[][] grid = map.getGrid();
+        if (grid[desX][desY].getContent() != null)
+            return false;
+        int distance = getDistance(srcX, srcY, desX, desY);
+        if (distance == 1) {
+            return true;
+        }
+        int dx = desX - srcX;
+        int dy = desY - srcY;
+        if (dx * dy != 0) {
+            if (grid[srcX + dx][srcY].getContent() == null || grid[srcX][srcY].getObjectOwner() == player)
+                return true;
+            if (grid[srcX][srcY + dy].getContent() == null || grid[srcX][srcY + dy].getObjectOwner() == player)
+                return true;
+            return false;
+        } else {
+            dx /= 2;
+            dy /= 2;
+            return grid[srcX + dx][srcY + dy].getContent() == null || grid[srcX][srcY].getObjectOwner() == player;
+        }
+    }
+
+    public void moveSelectedUnit(int x, int y) {
         // can fly has got to do something in here
-        if (Map.getDistance(selectedUnit.getX(), selectedUnit.getY(), x, y) <= 2) { // possibly we could add some moveRange to Unit class variables
-            if (map.isPathEmpty(selectedUnit.getX(), selectedUnit.getY(), x, y)) {
+        if (getDistance(selectedUnit.getX(), selectedUnit.getY(), x, y) <= 2 && selectedUnit.getCanMove()) { // possibly we could add some moveRange to Unit class variables
+            if (isPathEmpty(selectedUnit.getX(), selectedUnit.getY(), x, y, getCurrentPlayer())) {
                 map.getGrid()[selectedUnit.getX()][selectedUnit.getY()].setContent(null);
                 map.getGrid()[x][y].setContent(selectedUnit);
                 selectedUnit.setX(x);
                 selectedUnit.setY(y);
                 view.logMessage(selectedUnit.getID() + " moved to " + x + " " + y);
+                selectedUnit.setCanMove(false);
                 return;
             }
         }
@@ -76,21 +108,21 @@ public class Game extends InGameMenu {
     }
 
     private  boolean canAttack(Unit attacker, Unit defender) {
-        int distance = Map.getDistance(attacker.getX(), attacker.getY(), defender.getX(), defender.getY());
-        boolean isAdjacent = Map.isAdjacent(attacker.getX(), attacker.getY(), defender.getX(), defender.getY());
+        int distance = getDistance(attacker.getX(), attacker.getY(), defender.getX(), defender.getY());
+        boolean isAdjacent = isAdjacent(attacker.getX(), attacker.getY(), defender.getX(), defender.getY());
         boolean can = false;
         switch (attacker.getUnitType()) {
             case MELEE:
-                can |= isAdjacent;
+                can = isAdjacent;
                 break;
             case RANGED:
-                can |= !isAdjacent && attacker.getAttackRange() >= distance;
+                can = !isAdjacent && attacker.getAttackRange() >= distance;
                 break;
             case HYBRID:
-                can |= attacker.getAttackRange() >= distance;
+                can = attacker.getAttackRange() >= distance;
                 break;
         }
-        return  can;
+        return can;
     }
 
     private void attackWithSpecialPowers(Unit attacker, Unit defender) {
@@ -135,7 +167,7 @@ public class Game extends InGameMenu {
 
     }
 
-    void useHeroSpecialPower(int destinationRow, int destinationColumn) {
+    void useHeroSpecialPower(int x, int y) {
 
     }
 
@@ -171,8 +203,7 @@ public class Game extends InGameMenu {
 
     public void selectCard(String cardID) {
         Unit unit = findUnitInGridByID(cardID);
-        // actually only minions and heroes can be found on grid so we just have units on grid
-        if (unit == null) { // cardID is invalid and not found in the grid
+        if (unit == null) {
             view.showInvalidCardIDError();
             return;
         }
@@ -183,7 +214,7 @@ public class Game extends InGameMenu {
         return x >= 0 && x < map.getNumberOfRows() && y >= 0 && y < map.getNumberOfColumns();
     }
 
-    public boolean checkUnitTypeInItemTarget(Unit unit, Item.Target.TargetUnitType targetUnitType) {
+    private boolean checkUnitTypeInItemTarget(Unit unit, Item.Target.TargetUnitType targetUnitType) {
         switch (targetUnitType) {
             case ALL:
                 return true;
@@ -225,10 +256,7 @@ public class Game extends InGameMenu {
         }
     }
 
-    //returns true if target matches spell TargetType and spell TargetUnit (in case TargetType is Unit)
-
-
-    private boolean isValidTarget(Spell spell, int x, int y) {
+    private boolean isValidTarget(Spell spell, int x, int y, Player player) {
         if (spell.getTargetType() == Spell.TargetType.CELL) {
             return true;
         }
@@ -237,28 +265,31 @@ public class Game extends InGameMenu {
         if (unit == null) {
             return false;
         }
-        boolean isForCurrentPlayer = cell.getObjectOwner() == getCurrentPlayer();
+        if (!checkUnitTypeInSpellTarget(unit, spell.getTargetUnitType())) {
+            return false;
+        }
+        boolean isForCastingPlayer = cell.getObjectOwner() == player;
         boolean isMinion = cell.getContent() instanceof Minion;
         boolean isHero = cell.getContent() instanceof Hero;
         boolean valid = false;
         switch (spell.getTargetUnit()) {
             case FRIENDLY_UNIT:
-                valid = isForCurrentPlayer;
+                valid = isForCastingPlayer;
                 break;
             case FRIENDLY_HERO:
-                valid = isForCurrentPlayer && isHero;
+                valid = isForCastingPlayer && isHero;
                 break;
             case FRIENDLY_MINION:
-                valid = isForCurrentPlayer && isMinion;
+                valid = isForCastingPlayer && isMinion;
                 break;
             case ENEMY_UNIT:
-                valid = !isForCurrentPlayer;
+                valid = !isForCastingPlayer;
                 break;
             case ENEMY_HERO:
-                valid = !isForCurrentPlayer && isHero;
+                valid = !isForCastingPlayer && isHero;
                 break;
             case ENEMY_MINION:
-                valid = !isForCurrentPlayer && isMinion;
+                valid = !isForCastingPlayer && isMinion;
                 break;
             case SELF:
                 valid = true;
@@ -271,10 +302,9 @@ public class Game extends InGameMenu {
     }
 
     private void castSpellOnCellUnit(Spell spell, int x, int y, Player player) {
-        boolean valid = isValidTarget(spell, x, y);
+        boolean valid = isValidTarget(spell, x, y, player);
         Unit unit = (Unit) map.getGrid()[x][y].getContent();
         if (valid) {
-
             if (spell.canDispel()) {
                 unit.removeBuffs(player != unit.getPlayer());
                 // if the the player casting the spell is the same one owning this unit
@@ -292,15 +322,6 @@ public class Game extends InGameMenu {
             cell.addEffect(new Buff(buff));
         }
     }
-
-    /*
-    private boolean isPositiveBuff(Buff buff) {
-        if (buff.canDisarm() || buff.canStun()) {
-            return false;
-        }
-        int sum = buff.getEffectAp() + buff.getEffectAp() + buff.getHoly() - buff.getPoison();
-        return sum > 0;
-    }*/
 
     private void castSpellOnCoordinate(Spell spell, int x, int y, Player player) {
         switch (spell.getTargetType()) {
@@ -325,14 +346,13 @@ public class Game extends InGameMenu {
         }
     }
 
-    private ArrayList<Pair> getTargets(Spell spell, int x, int y) {
-        Spell.TargetArea area = spell.getTargetArea();
+    private ArrayList<Pair> getTargets(Spell spell, int x, int y, Player player) {
         ArrayList<Pair> targets = new ArrayList<>(0);
         switch (spell.getTargetArea()) {
             case ALL_OF_THE_MAP:
                 for (int i = 0; i < map.getNumberOfRows(); i++) {
                     for (int j = 0; j < map.getNumberOfColumns(); j++) {
-                        if (isValidTarget(spell, i, j)) {
+                        if (isValidTarget(spell, i, j, player)) {
                             targets.add(new Pair(i, j));
                         }
                     }
@@ -340,14 +360,14 @@ public class Game extends InGameMenu {
                 break;
 
             case ADJACENT_9:
-                if (isValidTarget(spell, x, y)) {
+                if (isValidTarget(spell, x, y, player)) {
                     targets.add(new Pair(x, y));
                 }
 
             case ADJACENT_8:
                 for (int i = x - 1; i <= x + 1; i++) {
                     for (int j = y - 1; j <= y + 1; j++) {
-                        if (inMap(i, j) && isValidTarget(spell, i, j)) {
+                        if (inMap(i, j) && isValidTarget(spell, i, j, player)) {
                             targets.add(new Pair(i, j));
                         }
                     }
@@ -357,7 +377,7 @@ public class Game extends InGameMenu {
             case ADJACENT_4:
                 for (int i = x - 1; i <= x + 1; i++) {
                     for (int j = y - 1; j <= y + 1; j++) {
-                        if (inMap(i, j) && Map.getDistance(i, j, x, y) == 1 && isValidTarget(spell, i, j)) {
+                        if (inMap(i, j) && getDistance(i, j, x, y) == 1 && isValidTarget(spell, i, j, player)) {
                             targets.add(new Pair(i, j));
                         }
                     }
@@ -366,7 +386,7 @@ public class Game extends InGameMenu {
             case SELECTED_X_Y_GRID:
                 for (int i = x; i < x + spell.getGridX(); i++) {
                     for (int j = y; i < y + spell.getGridY(); j++) {
-                        if (inMap(i, j) && isValidTarget(spell, i, j)) {
+                        if (inMap(i, j) && isValidTarget(spell, i, j, player)) {
                             targets.add(new Pair(i, j));
                         }
                     }
@@ -375,7 +395,7 @@ public class Game extends InGameMenu {
 
             case SAME_ROW:
                 for (int i = 0; i < map.getNumberOfColumns(); i++) {
-                    if (isValidTarget(spell, x, i)) {
+                    if (isValidTarget(spell, x, i, player)) {
                         targets.add(new Pair(x, i));
                     }
                 }
@@ -383,7 +403,7 @@ public class Game extends InGameMenu {
 
             case SAME_COLUMN:
                 for (int i = 0; i < map.getNumberOfRows(); i++)
-                    if (isValidTarget(spell, i, y)) {
+                    if (isValidTarget(spell, i, y, player)) {
                         targets.add(new Pair(x, i));
                     }
                 break;
@@ -391,7 +411,7 @@ public class Game extends InGameMenu {
             case DISTANCE_2:
                 for (int i = x - 1; i <= x + 1; i++) {
                     for (int j = y - 1; j <= y + 1; j++) {
-                        if (inMap(i, j) && Map.getDistance(i, j, x, y) == 2 && isValidTarget(spell, i, j)) {
+                        if (inMap(i, j) && getDistance(i, j, x, y) == 2 && isValidTarget(spell, i, j, player)) {
                             targets.add(new Pair(i, j));
                         }
                     }
@@ -399,7 +419,7 @@ public class Game extends InGameMenu {
                 break;
 
             case SELECTED_CELL:
-                if (isValidTarget(spell, x, y)) {
+                if (isValidTarget(spell, x, y, player)) {
                     targets.add(new Pair(x, y));
                 }
                 break;
@@ -415,7 +435,7 @@ public class Game extends InGameMenu {
     // returns true if spell had
 
     private void castSpell(Spell spell, int x, int y, Player player) {
-        ArrayList<Pair> targets = getTargets(spell, x, y);
+        ArrayList<Pair> targets = getTargets(spell, x, y, player);
         shuffle(targets); // here we handle random targets!
         for (int i = 0; i < Math.min(targets.size(), spell.getNumberOfRandomTargets()); i++) {
             Pair p = targets.get(i);
@@ -457,7 +477,7 @@ public class Game extends InGameMenu {
                 }
         }
         Spell.TargetArea targetArea = spellCard.getSpell().getTargetArea();
-        if (targetArea != Spell.TargetArea.SELECTED_CELL || isValidTarget(spellCard.getSpell(), x, y)) {
+        if (targetArea != Spell.TargetArea.SELECTED_CELL || isValidTarget(spellCard.getSpell(), x, y, getCurrentPlayer())) {
             castSpell(spellCard.getSpell(), x, y, getCurrentPlayer());
         } else {
             view.showInvalidTargetError();
@@ -594,6 +614,8 @@ public class Game extends InGameMenu {
             int startTime = itemCastingTurns.get(i);
             castItem(item, getCurrentPlayer(), 0, 0, startTime);
         }
+
+
     }
 
     public void endTurn() {
