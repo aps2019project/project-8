@@ -69,7 +69,7 @@ public class Game extends InGameMenu {
 
     private boolean isPathEmpty(int srcX, int srcY, int desX, int desY, Player player) {
         Cell[][] grid = map.getGrid();
-        if (grid[desX][desY].getContent() != null)
+        if (grid[desX][desY].getContent() != null && grid[desX][desY].getContent() instanceof Unit)
             return false;
         int distance = getDistance(srcX, srcY, desX, desY);
         if (distance == 1) {
@@ -78,13 +78,16 @@ public class Game extends InGameMenu {
         int dx = desX - srcX;
         int dy = desY - srcY;
         if (dx * dy != 0) {
-            if (grid[srcX + dx][srcY].getContent() == null || grid[srcX][srcY].getObjectOwner() == player)
+            if (grid[srcX + dx][srcY].getContent() == null || grid[srcX + dx][srcY].getContent() instanceof Collectible
+                    || grid[srcX][srcY].getObjectOwner() == player)
                 return true;
-            return grid[srcX][srcY + dy].getContent() == null || grid[srcX][srcY + dy].getObjectOwner() == player;
+            return grid[srcX][srcY + dy].getContent() == null || grid[srcX][srcY + dy].getObjectOwner() == player ||
+                    grid[srcX + dx][srcY].getContent() instanceof Collectible;
         } else {
             dx /= 2;
             dy /= 2;
-            return grid[srcX + dx][srcY + dy].getContent() == null || grid[srcX][srcY].getObjectOwner() == player;
+            return grid[srcX + dx][srcY + dy].getContent() == null || grid[srcX][srcY].getObjectOwner() == player ||
+                    grid[srcX + dx][srcY].getContent() instanceof Collectible;
         }
     }
 
@@ -92,7 +95,10 @@ public class Game extends InGameMenu {
         // can fly has got to do something in here
         if (getDistance(selectedUnit.getX(), selectedUnit.getY(), x, y) <= 2 && selectedUnit.getCanMove()) { // possibly we could add some moveRange to Unit class variables
             if (isPathEmpty(selectedUnit.getX(), selectedUnit.getY(), x, y, getCurrentPlayer())) {
-                map.getGrid()[selectedUnit.getX()][selectedUnit.getY()].setContent(null);
+                Cell currentCell = map.getGrid()[selectedUnit.getX()][selectedUnit.getY()];
+                if (currentCell.getContent() != null && currentCell.getContent() instanceof Collectible)
+                    getCurrentPlayer().addCollectible((Collectible) currentCell.getContent());
+                currentCell.setContent(null);
                 map.getGrid()[x][y].setContent(selectedUnit);
                 selectedUnit.setX(x);
                 selectedUnit.setY(y);
@@ -817,6 +823,7 @@ public class Game extends InGameMenu {
     }
 
     public void showAllCollectibles() {
+        view.showCollectibles(getCurrentPlayer().getCollectibles());
     }
 
     public void showCollectibleInfo() {
