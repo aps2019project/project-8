@@ -1,0 +1,24 @@
+madness
+For 3 turns, adds 4 APs, but disarms
+1009
+650
+Card
+0
+SpellCard
+2
+3
+1
+1
+no
+1
+3
+0
+0
+0
+4
+no
+yes
+no
+none
+no
+none

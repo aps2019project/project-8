@@ -1,0 +1,14 @@
+tooraniArcher
+
+2007
+500
+Card
+1
+Unit
+3
+4
+2
+no
+no
+5
+Minion

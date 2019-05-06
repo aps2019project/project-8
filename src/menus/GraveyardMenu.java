@@ -2,6 +2,7 @@ package menus;
 
 public class GraveyardMenu extends InGameMenu {
     private static String[] commands = {
+            "-------Graveyard-------",
             "Exit",
             "Help"
     };

@@ -1,0 +1,24 @@
+shock
+Stuns an enemy for 2 turns
+1020
+1200
+Card
+1
+SpellCard
+2
+2
+1
+1
+no
+1
+2
+0
+0
+0
+0
+yes
+no
+yes
+none
+no
+none

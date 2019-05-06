@@ -1,0 +1,10 @@
+nefrineMarg
+give a random minion the ability to hit a random closest unit by 8 points
+4010
+0
+Item
+no
+yes
+-10
+-10
+Collectible

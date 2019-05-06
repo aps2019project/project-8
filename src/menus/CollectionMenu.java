@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 public class CollectionMenu extends Menu {
     private static final String[] commands = {
+            "-------Collection Menu-------",
             "exit",
             "show",
             "search [card name | item name]",

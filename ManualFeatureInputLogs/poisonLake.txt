@@ -1,0 +1,24 @@
+poisonLake
+Imbues the selected cells with poison for 1 turn
+1008
+900
+Card
+5
+SpellCard
+1
+2
+3
+3
+no
+1
+1
+0
+1
+0
+0
+no
+no
+no
+none
+no
+none

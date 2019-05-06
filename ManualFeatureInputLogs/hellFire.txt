@@ -1,0 +1,24 @@
+hellFire
+Imbues the selected cells with fire for 2 turns
+1006
+600
+Card
+3
+SpellCard
+1
+2
+2
+2
+no
+1
+2
+0
+0
+-2
+0
+no
+no
+no
+none
+no
+none
