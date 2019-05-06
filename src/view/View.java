@@ -126,4 +126,10 @@ View {
     void showNoMainDeckError();
 
     void showUnit(Unit unit);
+
+    void infoShowNumberOfFlags(ArrayList<Unit> units);
+
+    void showGameInfoKillOponentHero(Hero firstHero, Hero secondHero);
+
+    void showGameInfoHoldTheFlag(int row, int column, Unit content);
 }
