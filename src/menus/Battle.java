@@ -18,6 +18,7 @@ public class Battle extends Menu {
     }*/
 
     private static final String[] commands = {
+            "-------Battle Menu-------",
             "Single player",
             "Multiplayer"
     };

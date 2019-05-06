@@ -4,6 +4,7 @@ import model.*;
 
 public class GameMenu extends InGameMenu {
     private static final String[] commands = {
+            "-------Game Menu-------",
             "Game info",
             "Show my minions",
             "Show opponent minions",

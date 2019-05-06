@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 public class Shop extends Menu {
     private static final String[] commands = {
+            "-------Shop Menu-------",
             "exit",
             "show collection",
             "search [item name | card name]",
