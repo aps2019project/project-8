@@ -758,14 +758,19 @@ public class Game extends InGameMenu {
                 view.showGameInfoKillOponentHero(players[0].getHero(), players[1].getHero());
                 break;
             case HOLD_THE_FLAG:
+                boolean successfull = false;
                 for (int row = 0; row < getMap().getNumberOfRows(); row++)
                     for (int column = 0; column < getMap().getNumberOfColumns(); column++) {
                         Cell cell = getMap().getCell(row, column);
                         if (cell.hasContent() && cell.getContent() instanceof Unit && ((Unit) cell.getContent()).getNumberOfFlags() > 0) {
                             view.showGameInfoHoldTheFlag(row, column, (Unit) cell.getContent());
+                            successfull = true;
                             break;
                         }
                     }
+                if (!successfull) {
+                    view.showGameInfoHoldTheFlag(-1, -1, null);
+                }
                 break;
             case COLLECT_THE_FLAGS:
                 ArrayList<Unit> units = new ArrayList<>();
@@ -810,6 +815,7 @@ public class Game extends InGameMenu {
     }
 
     public void showAvailableOptions() {
+
     }
 
     public int getPrize() {

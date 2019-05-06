@@ -369,6 +369,10 @@ public class CommandLineView implements View {
 
     @Override
     public void infoShowNumberOfFlags(ArrayList<Unit> units) {
+        if (units.isEmpty()) {
+            System.out.println("No one has a flag!");
+            return;
+        }
         for (Unit unit: units) {
             System.out.print(unit.getName() + " for " + unit.getPlayer().getName() + " has " + unit.getNumberOfFlags() + " flags!\n");
         }
@@ -382,6 +386,10 @@ public class CommandLineView implements View {
 
     @Override
     public void showGameInfoHoldTheFlag(int row, int column, Unit content) {
+        if (content == null) {
+            System.out.println("No one has a flag");
+            return;
+        }
         System.out.println("Unit " + content.getName() + " in row(" + row + ") and column(" + column + ") has the flag!");
     }
 
