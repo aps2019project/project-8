@@ -229,7 +229,7 @@ public class Game extends InGameMenu {
 
     // x, y must be valid
     public void useHeroSpecialPower(int x, int y) {
-        Hero hero = getHero(getCurrentPlayer());
+        Hero hero = getCurrentPlayer().getHero();
         Player player = getCurrentPlayer();
         if (hero.getSpecialPowers() == null) {
             return;
@@ -243,12 +243,8 @@ public class Game extends InGameMenu {
             return;
         }
         hero.resetRemainingCooldown();
-        int i = 0;
         for (Spell spell : hero.getSpecialPowers()) {
-            switch (hero.getSpecialPowerTypes().get(i)) {
-            }
-
-            castSpellCard();
+            castSpell(spell, x, y, getCurrentPlayer());
         }
     }
 
@@ -577,21 +573,10 @@ public class Game extends InGameMenu {
         return true;
     }
 
-    private Hero getHero(Player player) {
-        for (Cell[] cellRows : map.getGrid()) {
-            for (Cell cell : cellRows) {
-                if (cell.getContent() instanceof Hero && ((Hero) cell.getContent()).getPlayer() == player) {
-                    return ((Hero)cell.getContent());
-                }
-            }
-        }
-        return null;
-    }
-
     // returns true in case of success returns false otherwise
-    private boolean castSpellCard(SpellCard spellCard, int x, int y) {
+    private boolean castSpellCard(SpellCard spellCard, int x, int y, Player player) {
         if (spellCard.getName().equals("kingsGuard")) {
-            Hero hero = getHero(getCurrentPlayer());
+            Hero hero = getCurrentPlayer().getHero();
 
 
             if (hero == null) { // redundant
@@ -606,7 +591,7 @@ public class Game extends InGameMenu {
         }
         Spell.TargetArea targetArea = spellCard.getSpell().getTargetArea();
         if (targetArea != Spell.TargetArea.SELECTED_CELL || isValidTarget(spellCard.getSpell(), map.getGrid()[x][y], getCurrentPlayer())) {
-            castSpell(spellCard.getSpell(), x, y, getCurrentPlayer());
+            castSpell(spellCard.getSpell(), x, y, player);
         } else {
             view.showInvalidTargetError();
             return false;
@@ -666,7 +651,7 @@ public class Game extends InGameMenu {
             inserted = putUnitCard((Unit) card, x, y);
         }
         if (card instanceof SpellCard) {
-            inserted = castSpellCard((SpellCard) card, x, y);
+            inserted = castSpellCard((SpellCard) card, x, y, getCurrentPlayer());
         }
         if (inserted) {
             view.logMessage(cardName + " with " + card.getID() + " inserted to " + "(" + x + "," + y + ")"); // log success message
@@ -729,7 +714,7 @@ public class Game extends InGameMenu {
                             }
                         }
                     }
-                    // Here I add special power to units in deck
+                    // Here      I add special power to units in deck
                     {
                         for (Card card : player.getDeck().getCards()) {
                             if (card instanceof Unit) {
@@ -774,11 +759,22 @@ public class Game extends InGameMenu {
             castItem(item, getCurrentPlayer(), 0, 0, startTime);
         }
 
-
+        // passives
+        ArrayList<Unit> allUnits = players[0].getUnits();
+        allUnits.addAll(players[1].getUnits());
+        for (Unit unit: getCurrentPlayer().getUnits()) {
+            for (int i = 0; i < unit.getSpecialPowers().size(); i++) {
+                Spell spell = unit.getSpecialPowers().get(i);
+                SpecialPowerType specialPowerType = unit.getSpecialPowerTypes().get(i);
+                if (specialPowerType == SpecialPowerType.PASSIVE) {
+                    castSpell(spell, unit.getX(), unit.getY(), unit.getPlayer());
+                }
+            }
+        }
     }
 
     public void endTurn() {
-        // lower the duration of buffs
+        // lower the duration of buffs and remove buff
         for (int i = 0; i < getMap().getNumberOfRows(); i++)
             for (int j = 0; j < getMap().getNumberOfColumns(); j++) {
                 Cell cell = getMap().getCell(i, j);
@@ -787,11 +783,34 @@ public class Game extends InGameMenu {
                 Card card = (Card) cell.getContent();
                 if (card instanceof Unit) {
                     Unit unit = (Unit) card;
-                    for (Buff buff : unit.getBuffs()) {
+                    for (int t = unit.getBuffs().size() - 1; t >= 0; t--) {
+                        Buff buff = unit.getBuffs().get(t);
                         buff.decrementDuration();
+
+                        unit.receiveDamage(buff.getPoison());
+
+                        if (buff.getDuration() <= 0) {
+                            unit.getBuffs().remove(buff);
+                        }
                     }
                 }
             }
+        // can move and can attack for all units
+        for (int row = 0; row < getMap().getNumberOfRows(); row++)
+            for (int column = 0; column < getMap().getNumberOfColumns(); column++) {
+                Cell cell = getMap().getCell(row, column);
+                if (cell.getContent() != null && cell.getContent() instanceof  Unit) {
+                    Unit unit = (Unit) cell.getContent();
+                    unit.setCanAttack(true);
+                    unit.setCanMove(true);
+                }
+            }
+
+        // cool down here
+        getCurrentPlayer().getHero().decreaseRemainingCooldown();
+
+        // add turn
+        turn++;
     }
 
     public Collectible selectCollectible(String collectibleID) {
