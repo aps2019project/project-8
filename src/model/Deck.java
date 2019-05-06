@@ -52,6 +52,10 @@ public class Deck {
         collectionItemsIDs.remove(collectionItemID);
     }
 
+    public void deleteNextCard() {
+        cards.remove();
+    }
+
     public boolean isValid() {
         return (deckHero != null) && (cards.size() == DECK_CARD_CAPACITY);
     }

@@ -8,6 +8,7 @@ public class Hero extends Unit {
     public Hero(Unit unit, int cooldown) {
         super(unit);
         this.cooldown = cooldown;
+        remainingCooldown = 0;
     }
     
     // Copy constructor
@@ -21,6 +22,18 @@ public class Hero extends Unit {
         this.cooldown = cooldown;
     }
 
+    public void resetRemainingCooldown() {
+        remainingCooldown = cooldown;
+    }
+
+    public void decreaseRemainingCooldown() {
+        remainingCooldown--;
+    }
+
+    public int getRemainingCooldown() {
+        return remainingCooldown;
+    }
+
     @Override
     public String toString() {
         return "Name : " + name + DASH +
@@ -29,4 +42,5 @@ public class Hero extends Unit {
                 "Class : " + getUnitType() + DASH +
                 "Special power : " + getSpecialPowerDescription();
     }
+
 }

@@ -9,8 +9,8 @@ public class Unit extends Card {
     private UnitType unitType;
     private int hitPoint;
     private int attackPoint;
-    private ArrayList<SpecialPowerType> specialPowerTypes;
-    private ArrayList<Spell> specialPowers;
+    private ArrayList<SpecialPowerType> specialPowerTypes = null;
+    private ArrayList<Spell> specialPowers = null;
     private boolean canFly;
     private int attackRange;
     // In Game:

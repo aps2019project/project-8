@@ -125,15 +125,4 @@ public class Buff {
         }
     }
 
-
-    /*
-    ArrayList<Integer> getBuff() {
-        ArrayList<Integer> characteristics;
-        characteristics = new ArrayList<Integer>(0);
-//        characteristics.add(duration);
-//        characteristics.add()
-        return characteristics;
-    }
-    */
-
 }

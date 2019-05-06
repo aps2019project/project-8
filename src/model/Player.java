@@ -45,9 +45,12 @@ public class Player {
 
     public void initiateHand() {
         deck.shuffle();
-        hand.addCard(deck.getNextCard());
-    }
 
+        for (int i = 0; i < 5; i++) {
+            hand.addCard(deck.getNextCard());
+            deck.deleteNextCard();
+        }
+    }
     private Hero initialize() {
         return new Hero();
     }

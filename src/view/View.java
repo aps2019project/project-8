@@ -138,4 +138,6 @@ View {
     void showUnitInfo(Unit unit);
 
     void showCollectible(Collectible collectible);
+
+    void showCooldownError();
 }
