@@ -2,10 +2,10 @@
   "unitType": "RANGED",
   "hitPoint": 14,
   "attackPoint": 7,
-  "specialPowerType": [
+  "specialPowerTypes": [
     "ON_SPAWN"
   ],
-  "specialPower": [
+  "specialPowers": [
     {
       "targetType": "UNIT",
       "targetArea": "DISTANCE_2",
@@ -49,5 +49,6 @@
   "manaCost": 8,
   "price": 500,
   "collectionItemID": "2021",
-  "name": "giganticSerpent"
+  "name": "giganticSerpent",
+  "description": "Minions within distance 2, get 2 unholy buffs on spawn"
 }

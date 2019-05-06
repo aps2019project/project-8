@@ -2,8 +2,8 @@
   "unitType": "HYBRID",
   "hitPoint": 30,
   "attackPoint": 8,
-  "specialPowerType": [],
-  "specialPower": [],
+  "specialPowerTypes": [],
+  "specialPowers": [],
   "canFly": false,
   "attackRange": 2,
   "buffs": [],
@@ -18,5 +18,6 @@
   "manaCost": 9,
   "price": 600,
   "collectionItemID": "2034",
-  "name": "ghouleBozorg"
+  "name": "ghouleBozorg",
+  "description": "no special power but with a lot of hp"
 }

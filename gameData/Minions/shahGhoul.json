@@ -2,10 +2,10 @@
   "unitType": "MELEE",
   "hitPoint": 10,
   "attackPoint": 4,
-  "specialPowerType": [
+  "specialPowerTypes": [
     "COMBO"
   ],
-  "specialPower": [
+  "specialPowers": [
     {
       "targetType": "UNIT",
       "targetArea": "SELECTED_CELL",
@@ -37,5 +37,6 @@
   "manaCost": 5,
   "price": 600,
   "collectionItemID": "2039",
-  "name": "shahGhoul"
+  "name": "shahGhoul",
+  "description": "has combo and looks cool!"
 }

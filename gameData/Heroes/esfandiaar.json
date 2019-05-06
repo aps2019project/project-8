@@ -4,10 +4,10 @@
   "unitType": "HYBRID",
   "hitPoint": 35,
   "attackPoint": 3,
-  "specialPowerType": [
+  "specialPowerTypes": [
     "PASSIVE"
   ],
-  "specialPower": [
+  "specialPowers": [
     {
       "targetType": "UNIT",
       "targetArea": "ALL_OF_THE_MAP",
@@ -51,5 +51,6 @@
   "manaCost": 0,
   "price": 12000,
   "collectionItemID": "3009",
-  "name": "esfandiaar"
+  "name": "esfandiaar",
+  "description": "3 continuous holy buffs"
 }

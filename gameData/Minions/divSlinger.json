@@ -2,8 +2,8 @@
   "unitType": "RANGED",
   "hitPoint": 12,
   "attackPoint": 12,
-  "specialPowerType": [],
-  "specialPower": [],
+  "specialPowerTypes": [],
+  "specialPowers": [],
   "canFly": false,
   "attackRange": 7,
   "buffs": [],
@@ -18,5 +18,6 @@
   "manaCost": 9,
   "price": 300,
   "collectionItemID": "2014",
-  "name": "divSlinger"
+  "name": "divSlinger",
+  "description": ""
 }

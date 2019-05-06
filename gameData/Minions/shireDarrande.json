@@ -2,10 +2,10 @@
   "unitType": "MELEE",
   "hitPoint": 1,
   "attackPoint": 8,
-  "specialPowerType": [
+  "specialPowerTypes": [
     "ON_ATTACK"
   ],
-  "specialPower": [
+  "specialPowers": [
     {
       "targetType": "UNIT",
       "targetArea": "SELECTED_CELL",
@@ -37,5 +37,6 @@
   "manaCost": 2,
   "price": 600,
   "collectionItemID": "2020",
-  "name": "shireDarrande"
+  "name": "shireDarrande",
+  "description": "Ignores holy buff"
 }

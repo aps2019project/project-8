@@ -2,10 +2,10 @@
   "unitType": "RANGED",
   "hitPoint": 5,
   "attackPoint": 7,
-  "specialPowerType": [
+  "specialPowerTypes": [
     "ON_DEFEND"
   ],
-  "specialPower": [
+  "specialPowers": [
     {
       "targetType": "CELL",
       "targetArea": "SELECTED_CELL",
@@ -35,5 +35,6 @@
   "manaCost": 4,
   "price": 450,
   "collectionItemID": "2030",
-  "name": "giv"
+  "name": "giv",
+  "description": "immune to spell!"
 }

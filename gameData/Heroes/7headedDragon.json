@@ -4,10 +4,10 @@
   "unitType": "MELEE",
   "hitPoint": 50,
   "attackPoint": 4,
-  "specialPowerType": [
+  "specialPowerTypes": [
     "ON_USE"
   ],
-  "specialPower": [
+  "specialPowers": [
     {
       "targetType": "UNIT",
       "targetArea": "SELECTED_CELL",
@@ -51,5 +51,6 @@
   "manaCost": 0,
   "price": 8000,
   "collectionItemID": "3003",
-  "name": "7headedDragon"
+  "name": "7headedDragon",
+  "description": "Disarms an enemy"
 }

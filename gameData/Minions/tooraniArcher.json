@@ -2,8 +2,8 @@
   "unitType": "RANGED",
   "hitPoint": 3,
   "attackPoint": 4,
-  "specialPowerType": [],
-  "specialPower": [],
+  "specialPowerTypes": [],
+  "specialPowers": [],
   "canFly": false,
   "attackRange": 5,
   "buffs": [],
@@ -18,5 +18,6 @@
   "manaCost": 1,
   "price": 500,
   "collectionItemID": "2007",
-  "name": "tooraniArcher"
+  "name": "tooraniArcher",
+  "description": ""
 }

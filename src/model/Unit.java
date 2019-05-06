@@ -2,7 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
-public class Unit extends Card{
+public class Unit extends Card {
+
 
     // CollectionItem:
     private UnitType unitType;
@@ -12,7 +13,6 @@ public class Unit extends Card{
     private ArrayList<Spell> specialPowers;
     private boolean canFly;
     private int attackRange;
-
     // In Game:
     private ArrayList<Buff> buffs = new ArrayList<>();
     private int flags = 0;
@@ -23,7 +23,6 @@ public class Unit extends Card{
     private int attackTimes = 0;
     private int defenceTimes = 0;
     private ArrayList<Card> hasAttacked = new ArrayList<>();
-
     // Main constructor
     protected Unit(Card card,
                    int hitPoint, int attackPoint, UnitType unitType, ArrayList<SpecialPowerType> specialPowerType,
@@ -51,66 +50,14 @@ public class Unit extends Card{
         this.specialPowers = unit.specialPowers;
         this.canFly = unit.canFly;
         this.attackRange = unit.attackRange;
+        this.description = unit.description;
     }
 
     protected Unit() {
     }
 
-    // Builder
-    public static class UnitBuilder {
-        private int hitPoint = 0;
-        private int attackPoint = 0;
-
-        private UnitType unitType;
-        private ArrayList<Spell> specialPower;
-        private ArrayList<SpecialPowerType> specialPowerType;
-        private boolean canFly = false;
-        private int attackRange = 0;
-        private Card card;
-
-        public UnitBuilder setHitPoint(int hitPoint) {
-            this.hitPoint = hitPoint;
-            return this;
-        }
-
-        public UnitBuilder setAttackPoint(int attackPoint) {
-            this.attackPoint = attackPoint;
-            return this;
-        }
-
-        public UnitBuilder setUnitType(UnitType unitType) {
-            this.unitType = unitType;
-            return this;
-        }
-
-        public UnitBuilder setSpecialPowerType(ArrayList<SpecialPowerType> specialPowerType) {
-            this.specialPowerType = specialPowerType;
-            return this;
-        }
-
-        public UnitBuilder setSpecialPower(ArrayList<Spell> specialPower) {
-            this.specialPower = specialPower;
-            return this;
-        }
-
-        public UnitBuilder setCanFly(boolean canFly) {
-            this.canFly = canFly;
-            return this;
-        }
-
-        public UnitBuilder setAttackRange(int attackRange) {
-            this.attackRange = attackRange;
-            return this;
-        }
-
-        public UnitBuilder setCard(Card card) {
-            this.card = card;
-            return this;
-        }
-
-        public Unit build() {
-            return new Unit(card, hitPoint, attackPoint, unitType, specialPowerType, specialPower, canFly, attackRange);
-        }
+    public int getHitPoint() {
+        return hitPoint;
     }
 
     public ArrayList<SpecialPowerType> getSpecialPowerTypes() {
@@ -133,7 +80,9 @@ public class Unit extends Card{
         return flags > 0;
     }
 
-    public boolean canFly() { return canFly; }
+    public boolean canFly() {
+        return canFly;
+    }
 
     public void receiveDamage(int damage) {
         hitPoint -= damage;
@@ -143,8 +92,16 @@ public class Unit extends Card{
         return calculateHP() > 0;
     }
 
+    public int getAttackPoint() {
+        return attackPoint;
+    }
+
+    public void addBuff(Buff buff) {
+        buffs.add(buff);
+    }
+
 //    public void counterAttack(Unit unit) {
-        // ?
+    // ?
 //    }
 
 //    public void passTurn() {
@@ -160,10 +117,6 @@ public class Unit extends Card{
 //        return false;
 //         ?
 //    }
-
-    public void addBuff(Buff buff) {
-        buffs.add(buff);
-    }
 
     private boolean isPositiveBuff(Buff buff) {
         if (buff.canDisarm() || buff.canStun()) {
@@ -183,13 +136,13 @@ public class Unit extends Card{
         }
     }
 
-//    public void addRange(int amount) {
-//        attackRange += amount; // ?
-//    }
-
     public UnitType getUnitType() {
         return unitType;
     }
+
+//    public void addRange(int amount) {
+//        attackRange += amount; // ?
+//    }
 
     public int getX() {
         return x;
@@ -265,5 +218,62 @@ public class Unit extends Card{
             }
         }
         return false;
+    }
+
+    // Builder
+    public static class UnitBuilder {
+        private int hitPoint = 0;
+        private int attackPoint = 0;
+
+        private UnitType unitType;
+        private ArrayList<Spell> specialPower;
+        private ArrayList<SpecialPowerType> specialPowerType;
+        private boolean canFly = false;
+        private int attackRange = 0;
+        private Card card;
+
+        public UnitBuilder setHitPoint(int hitPoint) {
+            this.hitPoint = hitPoint;
+            return this;
+        }
+
+        public UnitBuilder setAttackPoint(int attackPoint) {
+            this.attackPoint = attackPoint;
+            return this;
+        }
+
+        public UnitBuilder setUnitType(UnitType unitType) {
+            this.unitType = unitType;
+            return this;
+        }
+
+        public UnitBuilder setSpecialPowerType(ArrayList<SpecialPowerType> specialPowerType) {
+            this.specialPowerType = specialPowerType;
+            return this;
+        }
+
+        public UnitBuilder setSpecialPower(ArrayList<Spell> specialPower) {
+            this.specialPower = specialPower;
+            return this;
+        }
+
+        public UnitBuilder setCanFly(boolean canFly) {
+            this.canFly = canFly;
+            return this;
+        }
+
+        public UnitBuilder setAttackRange(int attackRange) {
+            this.attackRange = attackRange;
+            return this;
+        }
+
+        public UnitBuilder setCard(Card card) {
+            this.card = card;
+            return this;
+        }
+
+        public Unit build() {
+            return new Unit(card, hitPoint, attackPoint, unitType, specialPowerType, specialPower, canFly, attackRange);
+        }
     }
 }

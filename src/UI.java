@@ -363,6 +363,7 @@ public class UI {
                 GameMenu.showNextCard();
             else
                 view.showInvalidCommandError();
+            GameMenu.checkGameCondition();
         } else {
             if (command.matches(END_GAME)) {
                 switchTo(Menus.MAIN_MENU);

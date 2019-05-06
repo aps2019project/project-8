@@ -4,10 +4,10 @@
   "unitType": "MELEE",
   "hitPoint": 50,
   "attackPoint": 2,
-  "specialPowerType": [
+  "specialPowerTypes": [
     "ON_ATTACK"
   ],
-  "specialPower": [
+  "specialPowers": [
     {
       "targetType": "UNIT",
       "targetArea": "SELECTED_CELL",
@@ -51,5 +51,6 @@
   "manaCost": 0,
   "price": 10000,
   "collectionItemID": "3005",
-  "name": "zahhaak"
+  "name": "zahhaak",
+  "description": "Poisons when attacking"
 }

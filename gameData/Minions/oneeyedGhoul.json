@@ -2,10 +2,10 @@
   "unitType": "HYBRID",
   "hitPoint": 12,
   "attackPoint": 11,
-  "specialPowerType": [
+  "specialPowerTypes": [
     "ON_DEFEND"
   ],
-  "specialPower": [
+  "specialPowers": [
     {
       "targetType": "UNIT",
       "targetArea": "ADJACENT_8",
@@ -49,5 +49,6 @@
   "manaCost": 7,
   "price": 500,
   "collectionItemID": "2017",
-  "name": "oneeyedGhoul"
+  "name": "oneeyedGhoul",
+  "description": "Hits adjacent minions with 2 APs when dying"
 }

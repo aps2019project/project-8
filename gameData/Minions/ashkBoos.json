@@ -2,10 +2,10 @@
   "unitType": "MELEE",
   "hitPoint": 14,
   "attackPoint": 8,
-  "specialPowerType": [
+  "specialPowerTypes": [
     "ON_DEFEND"
   ],
-  "specialPower": [
+  "specialPowers": [
     {
       "targetType": "CELL",
       "targetArea": "SELECTED_CELL",
@@ -35,5 +35,6 @@
   "manaCost": 7,
   "price": 400,
   "collectionItemID": "2032",
-  "name": "ashkBoos"
+  "name": "ashkBoos",
+  "description": "is a bully"
 }

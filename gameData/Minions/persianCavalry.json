@@ -2,8 +2,8 @@
   "unitType": "MELEE",
   "hitPoint": 10,
   "attackPoint": 6,
-  "specialPowerType": [],
-  "specialPower": [],
+  "specialPowerTypes": [],
+  "specialPowers": [],
   "canFly": false,
   "attackRange": 0,
   "buffs": [],
@@ -18,5 +18,6 @@
   "manaCost": 4,
   "price": 200,
   "collectionItemID": "2004",
-  "name": "persianCavalry"
+  "name": "persianCavalry",
+  "description": ""
 }

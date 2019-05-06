@@ -2,10 +2,10 @@
   "unitType": "RANGED",
   "hitPoint": 10,
   "attackPoint": 4,
-  "specialPowerType": [
+  "specialPowerTypes": [
     "PASSIVE"
   ],
-  "specialPower": [
+  "specialPowers": [
     {
       "targetType": "UNIT",
       "targetArea": "ALL_OF_THE_MAP",
@@ -49,5 +49,6 @@
   "manaCost": 5,
   "price": 500,
   "collectionItemID": "2027",
-  "name": "jen"
+  "name": "jen",
+  "description": "gives power buff 1 to all friendly minions (passive)"
 }

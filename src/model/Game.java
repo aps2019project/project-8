@@ -200,10 +200,6 @@ public class Game extends InGameMenu {
     }
 
 
-
-
-
-
     public void useHeroSpecialPower(int x, int y) {
 
     }

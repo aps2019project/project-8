@@ -2,8 +2,8 @@
   "unitType": "RANGED",
   "hitPoint": 6,
   "attackPoint": 20,
-  "specialPowerType": [],
-  "specialPower": [],
+  "specialPowerTypes": [],
+  "specialPowers": [],
   "canFly": false,
   "attackRange": 3,
   "buffs": [],
@@ -18,5 +18,6 @@
   "manaCost": 4,
   "price": 500,
   "collectionItemID": "2033",
-  "name": "iraj"
+  "name": "iraj",
+  "description": "no special powers "
 }

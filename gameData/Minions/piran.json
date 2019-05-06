@@ -2,10 +2,10 @@
   "unitType": "MELEE",
   "hitPoint": 20,
   "attackPoint": 12,
-  "specialPowerType": [
+  "specialPowerTypes": [
     "ON_DEFEND"
   ],
-  "specialPower": [
+  "specialPowers": [
     {
       "targetType": "CELL",
       "targetArea": "SELECTED_CELL",
@@ -35,5 +35,6 @@
   "manaCost": 8,
   "price": 400,
   "collectionItemID": "2029",
-  "name": "piran"
+  "name": "piran",
+  "description": "can't get poisoned "
 }

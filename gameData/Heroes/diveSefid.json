@@ -4,10 +4,10 @@
   "unitType": "MELEE",
   "hitPoint": 50,
   "attackPoint": 4,
-  "specialPowerType": [
+  "specialPowerTypes": [
     "ON_USE"
   ],
-  "specialPower": [
+  "specialPowers": [
     {
       "targetType": "UNIT",
       "targetArea": "ALL_OF_THE_MAP",
@@ -51,5 +51,6 @@
   "manaCost": 1,
   "price": 8000,
   "collectionItemID": "3001",
-  "name": "diveSefid"
+  "name": "diveSefid",
+  "description": "Activates a 4AP power buff on himself"
 }

@@ -2,10 +2,10 @@
   "unitType": "RANGED",
   "hitPoint": 5,
   "attackPoint": 6,
-  "specialPowerType": [
+  "specialPowerTypes": [
     "ON_ATTACK"
   ],
-  "specialPower": [
+  "specialPowers": [
     {
       "targetType": "UNIT",
       "targetArea": "SELECTED_CELL",
@@ -49,5 +49,6 @@
   "manaCost": 4,
   "price": 300,
   "collectionItemID": "2018",
-  "name": "venomousSerpent"
+  "name": "venomousSerpent",
+  "description": "Poisons enemy with hit for 3 turns"
 }

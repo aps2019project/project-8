@@ -2,10 +2,10 @@
   "unitType": "MELEE",
   "hitPoint": 16,
   "attackPoint": 9,
-  "specialPowerType": [
+  "specialPowerTypes": [
     "ON_SPAWN"
   ],
-  "specialPower": [
+  "specialPowers": [
     {
       "targetType": "UNIT",
       "targetArea": "ALL_OF_THE_MAP",
@@ -49,5 +49,6 @@
   "manaCost": 8,
   "price": 450,
   "collectionItemID": "2031",
-  "name": "bahman"
+  "name": "bahman",
+  "description": "reduces hp of random enemy minion by 16"
 }
