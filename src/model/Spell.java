@@ -51,6 +51,7 @@ public class Spell {
         this.multiplied = spell.multiplied;
         this.ignoreHoly = spell.ignoreHoly;
     }
+
     protected Spell() {
     }
 

@@ -139,4 +139,11 @@ public class Player {
         }
         return null;
     }
+
+    public void refillHand() {
+        if (hand.isFull())
+            return;
+        hand.addCard(deck.getNextCard());
+        deck.deleteNextCard();
+    }
 }

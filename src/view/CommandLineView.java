@@ -400,7 +400,7 @@ public class CommandLineView implements View {
     @Override
     public void showUnitInfo(Unit unit) {
         if (unit instanceof Hero) {
-            System.out.println("Hero");
+            System.out.println("Hero:");
             System.out.println("Name: " + unit.getName());
             System.out.println("Cost: " + unit.getPrice());
             System.out.println("Desc: " + unit.getDescription());
@@ -444,5 +444,10 @@ public class CommandLineView implements View {
     @Override
     public void alertCollectibleSelection(String collectibleID) {
         System.out.println("Selected collectible " + collectibleID);
+    }
+
+    @Override
+    public void showUnableToMoveError() {
+        System.out.println("Unable to move.");
     }
 }

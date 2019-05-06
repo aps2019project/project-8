@@ -99,7 +99,7 @@ public class UI {
                     return;
                 }
             } catch (Exception ignored) {
-                System.err.println(ignored);
+                ignored.printStackTrace();
             }
                 command = scanner.nextLine();
                 command = command.trim();

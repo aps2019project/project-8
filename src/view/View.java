@@ -144,4 +144,6 @@ View {
     void alertUnitSelection(String cardID);
 
     void alertCollectibleSelection(String collectibleID);
+
+    void showUnableToMoveError();
 }
