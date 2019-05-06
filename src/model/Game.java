@@ -76,9 +76,7 @@ public class Game extends InGameMenu {
         if (dx * dy != 0) {
             if (grid[srcX + dx][srcY].getContent() == null || grid[srcX][srcY].getObjectOwner() == player)
                 return true;
-            if (grid[srcX][srcY + dy].getContent() == null || grid[srcX][srcY + dy].getObjectOwner() == player)
-                return true;
-            return false;
+            return grid[srcX][srcY + dy].getContent() == null || grid[srcX][srcY + dy].getObjectOwner() == player;
         } else {
             dx /= 2;
             dy /= 2;
@@ -114,19 +112,22 @@ public class Game extends InGameMenu {
         defender.receiveDamage(damage);
     }
 
-    private boolean canAttack(Unit attacker, Unit defender) {
+    // returns -1 if attacker couldn't attack and -2 if defender wasn't in range and 0 otherwise
+    private int canAttack(Unit attacker, Unit defender) {
+        if (!attacker.getCanAttack() || attacker.isStunned())
+            return -1;
         int distance = getDistance(attacker.getX(), attacker.getY(), defender.getX(), defender.getY());
         boolean isAdjacent = isAdjacent(attacker.getX(), attacker.getY(), defender.getX(), defender.getY());
+        boolean can = false;
         switch (attacker.getUnitType()) {
             case MELEE:
-                return isAdjacent;
+                can = isAdjacent;
             case RANGED:
-                return !isAdjacent && attacker.getAttackRange() >= distance;
+                can = !isAdjacent && attacker.getAttackRange() >= distance;
             case HYBRID:
-                return attacker.getAttackRange() >= distance;
-            default:
-                return false;
+                can = attacker.getAttackRange() >= distance;
         }
+        return can ? 0 : -2;
     }
 
 
@@ -160,11 +161,9 @@ public class Game extends InGameMenu {
     // if oneSided is true defender doesn't counter attack (for combo attacks)
 
     private int attackUnitByUnit(Unit attacker, Unit defender, boolean oneSided) {
-        if (!attacker.getCanAttack() || attacker.isStunned()) {
-            return -1;
-        }
-        if (!canAttack(attacker, defender)) {
-            return -2;
+        int state = canAttack(attacker, defender);
+        if (state != 0) {
+            return state;
         }
         if (!oneSided) {
             twoSidedAttack(attacker, defender);
@@ -188,12 +187,34 @@ public class Game extends InGameMenu {
         }
         if (state == -2) { // can't attack because
             view.logMessage("opponent minion is unavailable for attack");
-            return;
         }
     }
 
     public void attackCombo(String targetCardID, String[] friendlyCardsIDs) {
+        Unit defender = findUnitInGridByID(targetCardID);
+        if (defender == null) {
+            view.showInvalidCardIDError();
+            return;
+        }
+        for (int i = 0; i < friendlyCardsIDs.length; i++) {
+            Unit attacker = findUnitInGridByID(friendlyCardsIDs[i]);
+            if (attacker == null) {
+                view.showInvalidCardIDError();
+                return;
+            }
+            int state = attackUnitByUnit(attacker, defender, i != 0);
+            if (state == -1) {
+                view.logMessage("Card with " + selectedUnit.getID() + " can't attack");
+                return;
+            } else if (state == -2) {
+                view.logMessage("opponent minion is unavailable for attack");
+                return;
+            }
+        }
 
+        for (int i = 0; i < friendlyCardsIDs.length; i++) {
+
+        }
     }
 
 
@@ -453,7 +474,7 @@ public class Game extends InGameMenu {
                 for (int i = x - 1; i <= x + 1; i++) {
                     for (int j = y - 1; j <= y + 1; j++) {
                         cell = map.getGrid()[i][j];
-                        if (inMap(i, j) && getDistance(i, j, x, y) == 2 && isValidTarget(spell, cell, player)) {
+                        if (inMap(i, j) && getDistance(i, j, x, y) <= 2 && isValidTarget(spell, cell, player)) {
                             targets.add(cell);
                         }
                     }
