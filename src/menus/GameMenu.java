@@ -129,6 +129,7 @@ public class GameMenu extends InGameMenu {
         game.setPrize(AI.getGamePrize(aiID));
         game.initiateGame();
         hasAI = true;
+        GraveyardMenu.setGame(game);
         return true;
     }
 
@@ -161,6 +162,7 @@ public class GameMenu extends InGameMenu {
         ai.setGame(game);
         game.initiateGame();
         hasAI = true;
+        GraveyardMenu.setGame(game);
         return true;
     }
 
@@ -171,6 +173,7 @@ public class GameMenu extends InGameMenu {
         GameMenu.game = new Game(getAccount(), secondAccount, GameType.get(mode), numberOfFlags);
         game.initiateGame();
         hasAI = false;
+        GraveyardMenu.setGame(game);
         return true;
     }
 

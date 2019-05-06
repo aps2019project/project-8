@@ -60,9 +60,9 @@ public class Player {
         return deck.findCard(cardName);
     }
 
-    Card findCardInGraveyard(String cardName) {
+    Card findCardInGraveyard(String cardID) {
         for (Card card : graveYard) {
-            if (card.getName().equals(cardName)) {
+            if (card.getCollectionItemID().equals(cardID)) {
                 return card;
             }
         }

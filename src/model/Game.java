@@ -744,11 +744,11 @@ public class Game extends InGameMenu {
         view.showHand(getCurrentPlayer().getHand());
     }
 
-    void showGraveYardInfoOfACard(String cardName) {
-        view.showCardInfo(getCurrentPlayer().findCardInGraveyard(cardName));
+    public void showGraveYardInfoOfACard(String cardID) {
+        view.showCardInfo(getCurrentPlayer().findCardInGraveyard(cardID));
     }
 
-    void showGraveYardCards() {
+    public void showGraveYardCards() {
         view.showGraveyard(getCurrentPlayer().getGraveYard());
     }
 
@@ -806,6 +806,12 @@ public class Game extends InGameMenu {
     }
 
     public void showCardInfo(String cardID) {
+        Unit unit = findUnitInGridByID(cardID);
+        if (unit == null) {
+            view.showNoSuchUnitFoundError();
+            return;
+        }
+        view.showUnitInfo(unit);
     }
 
     public void showAllCollectibles() {

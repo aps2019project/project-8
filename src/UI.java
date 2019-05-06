@@ -395,8 +395,6 @@ public class UI {
             GraveyardMenu.showInfo(command.split(" ")[2]);
         else if (command.matches(SHOW_CARDS))
             GraveyardMenu.showCards();
-        else if (command.matches(SHOW_MENU))
-            GraveyardMenu.showMenu();
         else
             view.showInvalidCommandError();
     }

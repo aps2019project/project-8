@@ -393,10 +393,33 @@ public class CommandLineView implements View {
         System.out.println("Unit " + content.getName() + " in row(" + row + ") and column(" + column + ") has the flag!");
     }
 
+    @Override
+    public void showNoSuchUnitFoundError() {
+        System.out.println("No such unit found.");
+    }
+
+    @Override
+    public void showUnitInfo(Unit unit) {
+        if (unit instanceof Hero) {
+            System.out.println("Hero");
+            System.out.println("Name: " + unit.getName());
+            System.out.println("Cost: " + unit.getPrice());
+            System.out.println("Desc: " + unit.getDescription());
+            return;
+        }
+        System.out.println("Minion:");
+        System.out.println("HP: " + unit.calculateHP() + " AP: " + unit.calculateAP() + " MP: " + unit.getManaCost());
+        System.out.println("Range: " + unit.getAttackRange());
+        System.out.println("Combo-ability: " + unit.getSpecialPowerTypes().contains(SpecialPowerType.COMBO));
+        System.out.println("Cost: " + unit.getPrice());
+        System.out.println("Desc: " + unit.getDescription());
+
+    }
+
 
     @Override
     public void showUnit(Unit unit) {
         System.out.println(unit.getCollectionItemID() + ": " + unit.getName() + ", health: " + unit.calculateHP() +
-                ", location: (" + unit.getX() + ", " + unit.getY() + "power: " + unit.calculateAP());
+                ", location: (" + unit.getX() + ", " + unit.getY() + "), power: " + unit.calculateAP());
     }
 }
