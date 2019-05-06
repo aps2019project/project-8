@@ -12,6 +12,7 @@ public class Game extends InGameMenu {
     private static final int NUMBER_OF_PLAYERS = 2;
     private static final int[] HERO_INITIAL_ROW = {2, 2};
     private static final int[] HERO_INITIAL_COLUMN = {0, 8};
+    private static final int NUMBER_OF_FLAG_TURNS = 6;
 
     private ArrayList<Item> currentItems = new ArrayList<>();
     private ArrayList<Integer> itemCastingTurns = new ArrayList<>();
@@ -227,6 +228,23 @@ public class Game extends InGameMenu {
     }
 
     public GameState getGameState() {
+        switch (gameType) {
+            case COLLECT_THE_FLAGS:
+                if (players[0].getNumberOfFlags() > numberOfFlags / 2)
+                    return GameState.WIN_FIRST_PLAYER;
+                if (players[1].getNumberOfFlags() > numberOfFlags / 2)
+                    return GameState.WIN_SECOND_PLAYER;
+            case HOLD_THE_FLAG:
+                if (players[0].getNumberOfFlagTurns() >= NUMBER_OF_FLAG_TURNS)
+                    return GameState.WIN_FIRST_PLAYER;
+                if (players[1].getNumberOfFlagTurns() >= NUMBER_OF_FLAG_TURNS)
+                    return GameState.WIN_SECOND_PLAYER;
+            default:
+                if (players[0].getHero().calculateHP() <= 0)
+                    return GameState.WIN_SECOND_PLAYER;
+                if (players[1].getHero().calculateHP() <= 0)
+                    return GameState.WIN_FIRST_PLAYER;
+        }
         return GameState.DRAW;
     }
 

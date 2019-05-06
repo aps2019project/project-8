@@ -9,6 +9,7 @@ public class Player {
     private int mana;
     private ArrayList<Card> graveYard;
     private ArrayList<Collectible> collectibles;
+    private int numberOfFlagTurns = 0;
 
     public Player(Deck deck) {
         this.deck = new Deck(deck);
@@ -75,5 +76,17 @@ public class Player {
 
     public void setMana(int mana) {
         this.mana = mana;
+    }
+
+    public int getNumberOfFlags() {
+        int numberOfFlags = 0;
+        for (Unit unit : units) {
+            numberOfFlags += unit.getNumberOfFlags();
+        }
+        return numberOfFlags;
+    }
+
+    public int getNumberOfFlagTurns() {
+        return numberOfFlagTurns;
     }
 }

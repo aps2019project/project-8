@@ -220,6 +220,10 @@ public class Unit extends Card {
         return false;
     }
 
+    public int getNumberOfFlags() {
+        return flags;
+    }
+
     // Builder
     public static class UnitBuilder {
         private int hitPoint = 0;
