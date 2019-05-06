@@ -2,7 +2,6 @@ package view;
 
 import model.*;
 
-import javax.rmi.ssl.SslRMIClientSocketFactory;
 import java.util.*;
 
 public class CommandLineView implements View {
@@ -414,6 +413,11 @@ public class CommandLineView implements View {
         System.out.println("Cost: " + unit.getPrice());
         System.out.println("Desc: " + unit.getDescription());
 
+    }
+
+    @Override
+    public void showCollectible(Collectible collectible) {
+        System.out.println(collectible);
     }
 
 

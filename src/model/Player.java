@@ -116,4 +116,24 @@ public class Player {
     public void addCollectible(Collectible collectible) {
         collectibles.add(collectible);
     }
+
+    public void addToGraveyard(SpellCard spellCard) {
+        graveYard.add(spellCard);
+    }
+
+    public Collectible getCollectible(String collectibleID) {
+        for (Collectible collectible : collectibles) {
+            if (collectible.getCollectionItemID().equals(collectibleID))
+                return collectible;
+        }
+        return null;
+    }
+
+    public Unit getUnit(String unitID) {
+        for (Unit unit : units) {
+            if (unit.getCollectionItemID().equals(unitID))
+                return unit;
+        }
+        return null;
+    }
 }
