@@ -688,8 +688,11 @@ public class Game extends InGameMenu {
     }
 
     public void initiateGame() {
+        turn = 0;
         putUnitCard(players[0].getHero(), 2, 0);
+        turn = 1;
         putUnitCard(players[1].getHero(), 2, 8);
+        turn = 0;
         for (int i = 0; i < 2; i++) {
             if (players[i].getUsable() != null) {
                 players[i].initiateHand();
