@@ -94,10 +94,6 @@ public class Spell {
         this.ignoreHoly = ignoreHoly;
     }
 
-    public void cast(int x, int y, Map map, Player player) {
-
-    }
-
     TargetArea getTargetArea() {
         return targetArea;
     }
@@ -141,7 +137,7 @@ public class Spell {
         UNIT
     }
 
-    public static enum TargetArea {
+    public enum TargetArea {
         SELECTED_CELL,
         SELECTED_X_Y_GRID,
         ALL_OF_THE_MAP,
@@ -224,7 +220,6 @@ public class Spell {
             this.buffs = buffs;
             return this;
         }
-
 
         public SpellBuilder setCanDispel(boolean canDispel) {
             this.canDispel = canDispel;

@@ -422,4 +422,9 @@ public class CommandLineView implements View {
         System.out.println(unit.getCollectionItemID() + ": " + unit.getName() + ", health: " + unit.calculateHP() +
                 ", location: (" + unit.getX() + ", " + unit.getY() + "), power: " + unit.calculateAP());
     }
+
+    @Override
+    public void showCooldownError() {
+        System.out.println("Hero is not yet cool to use special power !");
+    }
 }

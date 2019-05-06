@@ -170,6 +170,7 @@ public class Game extends InGameMenu {
             oneSidedAttack(attacker, defender);
         }
         attacker.setCanAttack(false);
+        attacker.setCanMove(false);
         return 0;
     }
 
@@ -195,13 +196,13 @@ public class Game extends InGameMenu {
             view.showInvalidCardIDError();
             return;
         }
-        for (int i = 0; i < friendlyCardsIDs.length; i++) {
-            Unit attacker = findUnitInGridByID(friendlyCardsIDs[i]);
+        for (String friendlyCardsID : friendlyCardsIDs) {
+            Unit attacker = findUnitInGridByID(friendlyCardsID);
             if (attacker == null) {
                 view.showInvalidCardIDError();
                 return;
             }
-            int state = attackUnitByUnit(attacker, defender, i != 0);
+            int state = canAttack(attacker, defender);
             if (state == -1) {
                 view.logMessage("Card with " + selectedUnit.getID() + " can't attack");
                 return;
@@ -212,13 +213,34 @@ public class Game extends InGameMenu {
         }
 
         for (int i = 0; i < friendlyCardsIDs.length; i++) {
-
+            Unit attacker = findUnitInGridByID(friendlyCardsIDs[i]);
+            attackUnitByUnit(attacker, defender, i != 0);
         }
     }
 
-
+    // x, y must be valid
     public void useHeroSpecialPower(int x, int y) {
+        Hero hero = getHero(getCurrentPlayer());
+        Player player = getCurrentPlayer();
+        if (hero.getSpecialPowers() == null) {
+            return;
+        }
+        if (player.getMana() < hero.getManaCost()) {
+            view.showNotEnoughManaError();
+            return;
+        }
+        if (hero.getRemainingCooldown() != 0) {
+            view.showCooldownError();
+            return;
+        }
+        hero.resetRemainingCooldown();
+        int i = 0;
+        for (Spell spell : hero.getSpecialPowers()) {
+            switch (hero.getSpecialPowerTypes().get(i)) {
+            }
 
+            castSpellCard();
+        }
     }
 
     private void endGame() {
@@ -539,21 +561,39 @@ public class Game extends InGameMenu {
         }
     }
 
+    private boolean checkInvalidTarget(Spell spell, int x, int y) {
+        if (spell.getTargetType() == Spell.TargetType.CELL) {
+            return true;
+        }
+        return true;
+    }
+
+    private Hero getHero(Player player) {
+        for (Cell[] cellRows : map.getGrid()) {
+            for (Cell cell : cellRows) {
+                if (cell.getContent() instanceof Hero && ((Hero) cell.getContent()).getPlayer() == player) {
+                    return ((Hero)cell.getContent());
+                }
+            }
+        }
+        return null;
+    }
+
     // returns true in case of success returns false otherwise
     private boolean castSpellCard(SpellCard spellCard, int x, int y) {
         if (spellCard.getName().equals("kingsGuard")) {
-            for (int i = 0; i < map.getNumberOfRows(); i++)
-                for (int j = 0; j < map.getNumberOfColumns(); j++) {
-                    if (map.getGrid()[i][j].getContent() instanceof Hero) {
-                        Hero hero = (Hero) map.getGrid()[i][j].getContent();
-                        if (hero.getPlayer() != getCurrentPlayer()) {
-                            if (x != i || y != j) {
-                                view.showInvalidTargetError();
-                                return false;
-                            }
-                        }
-                    }
-                }
+            Hero hero = getHero(getCurrentPlayer());
+
+
+            if (hero == null) { // redundant
+                // must throw an exception
+                return false;
+            }
+
+            if (x != hero.getX() || y != hero.getY()) {
+                view.showInvalidCardIDError();
+                return false;
+            }
         }
         Spell.TargetArea targetArea = spellCard.getSpell().getTargetArea();
         if (targetArea != Spell.TargetArea.SELECTED_CELL || isValidTarget(spellCard.getSpell(), map.getGrid()[x][y], getCurrentPlayer())) {
@@ -622,18 +662,14 @@ public class Game extends InGameMenu {
         }
     }
 
-    void selectUnit(int row, int column) {
-
-    }
-
-    public void addSpecialPowerToUnit(Unit unit, Spell specialPower, SpecialPowerType specialPowerType, Item.Target.TargetUnitType targetUnitType) {
+    private void addSpecialPowerToUnit(Unit unit, Spell specialPower, SpecialPowerType specialPowerType, Item.Target.TargetUnitType targetUnitType) {
         if (checkUnitTypeInItemTarget(unit, targetUnitType)) {
             unit.getSpecialPowers().add(specialPower);
             unit.getSpecialPowerTypes().add(specialPowerType);
         }
     }
 
-    public void castItem(Item item, Player player, int r, int c, int startTime) {
+    private void castItem(Item item, Player player, int r, int c, int startTime) {
         switch (item.getItemType()) {
             case ADD_MANA:
                 if (item.getAddManaDuration() > turn - startTime) {
@@ -730,7 +766,6 @@ public class Game extends InGameMenu {
     }
 
     public void selectCollectibleItem(String collectibleName) {
-
     }
 
     public void applyCollectible(int row, int column) {

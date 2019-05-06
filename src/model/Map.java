@@ -1,10 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-
 public class Map {
-
-//    private static final int MAX_DISPLACEMENT = 2;
     private static final int NUMBER_OF_ROWS = 6;
     private static final int NUMBER_OF_COLUMNS = 10;
     private Cell[][] grid;
@@ -18,17 +14,11 @@ public class Map {
         }
     }
 
-
     Cell[][] getGrid() {
         return this.grid;
     }
 
     Cell getCell(int r,int c) {return grid[r][c];}
-
-
-//    public int getMaxDisplacement() {
-//        return MAX_DISPLACEMENT;
-//    }
 
     public int getNumberOfRows() {
         return NUMBER_OF_ROWS;

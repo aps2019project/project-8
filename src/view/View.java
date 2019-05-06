@@ -136,4 +136,6 @@ View {
     void showNoSuchUnitFoundError();
 
     void showUnitInfo(Unit unit);
+
+    void showCooldownError();
 }
