@@ -42,6 +42,10 @@ public class Buff {
         }
     }
 
+    public int getDuration() {
+        return duration;
+    }
+
     int getHoly() {
         return holy;
     }

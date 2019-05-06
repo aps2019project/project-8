@@ -759,11 +759,22 @@ public class Game extends InGameMenu {
             castItem(item, getCurrentPlayer(), 0, 0, startTime);
         }
 
-
+        // passives
+        ArrayList<Unit> allUnits = players[0].getUnits();
+        allUnits.addAll(players[1].getUnits());
+        for (Unit unit: getCurrentPlayer().getUnits()) {
+            for (int i = 0; i < unit.getSpecialPowers().size(); i++) {
+                Spell spell = unit.getSpecialPowers().get(i);
+                SpecialPowerType specialPowerType = unit.getSpecialPowerTypes().get(i);
+                if (specialPowerType == SpecialPowerType.PASSIVE) {
+                    castSpell(spell, unit.getX(), unit.getY(), unit.getPlayer());
+                }
+            }
+        }
     }
 
     public void endTurn() {
-        // lower the duration of buffs
+        // lower the duration of buffs and remove buff
         for (int i = 0; i < getMap().getNumberOfRows(); i++)
             for (int j = 0; j < getMap().getNumberOfColumns(); j++) {
                 Cell cell = getMap().getCell(i, j);
@@ -772,11 +783,34 @@ public class Game extends InGameMenu {
                 Card card = (Card) cell.getContent();
                 if (card instanceof Unit) {
                     Unit unit = (Unit) card;
-                    for (Buff buff : unit.getBuffs()) {
+                    for (int t = unit.getBuffs().size() - 1; t >= 0; t--) {
+                        Buff buff = unit.getBuffs().get(t);
                         buff.decrementDuration();
+
+                        unit.receiveDamage(buff.getPoison());
+
+                        if (buff.getDuration() <= 0) {
+                            unit.getBuffs().remove(buff);
+                        }
                     }
                 }
             }
+        // can move and can attack for all units
+        for (int row = 0; row < getMap().getNumberOfRows(); row++)
+            for (int column = 0; column < getMap().getNumberOfColumns(); column++) {
+                Cell cell = getMap().getCell(row, column);
+                if (cell.getContent() != null && cell.getContent() instanceof  Unit) {
+                    Unit unit = (Unit) cell.getContent();
+                    unit.setCanAttack(true);
+                    unit.setCanMove(true);
+                }
+            }
+
+        // cool down here
+        getCurrentPlayer().getHero().decreaseRemainingCooldown();
+
+        // add turn
+        turn++;
     }
 
     public void selectCollectibleItem(String collectibleName) {
