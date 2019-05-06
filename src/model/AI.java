@@ -59,10 +59,10 @@ public class AI {
 
     private static CollectionItem getCollectionItem(String collectionItemID) {
         try {
+            YaGson yaGson = new YaGson();
             switch (Integer.parseInt(collectionItemID) / 1000) {
                 case 1:
                     for (File file : new File("./gameData/SpellCards/").listFiles()) {
-                        YaGson yaGson = new YaGson();
                         SpellCard spellCard = yaGson.fromJson(new String(Files.readAllBytes(Paths.
                                 get(file.getAbsolutePath())), StandardCharsets.UTF_8), SpellCard.class);
                         if (spellCard.getCollectionItemID().equals(collectionItemID))
@@ -71,7 +71,6 @@ public class AI {
                     return null;
                 case 2:
                     for (File file : new File("./gameData/Minions/").listFiles()) {
-                        YaGson yaGson = new YaGson();
                         Minion minion = yaGson.fromJson(new String(Files.readAllBytes(Paths.
                                 get(file.getAbsolutePath())), StandardCharsets.UTF_8), Minion.class);
                         if (minion.getCollectionItemID().equals(collectionItemID))
@@ -80,7 +79,6 @@ public class AI {
                     return null;
                 case 3:
                     for (File file : new File("./gameData/Heroes/").listFiles()) {
-                        YaGson yaGson = new YaGson();
                         Hero hero = yaGson.fromJson(new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())),
                                 StandardCharsets.UTF_8), Hero.class);
                         if (hero.getCollectionItemID().equals(collectionItemID))
@@ -89,7 +87,6 @@ public class AI {
                     return null;
                 default:
                     for (File file : new File("./gameData/Usables/").listFiles()) {
-                        YaGson yaGson = new YaGson();
                         Usable usable = yaGson.fromJson(new String(Files.readAllBytes(Paths.get(file.
                                 getAbsolutePath())), StandardCharsets.UTF_8), Usable.class);
                         if (usable.getCollectionItemID().equals(collectionItemID))
