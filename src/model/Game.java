@@ -788,6 +788,11 @@ public class Game extends InGameMenu {
     }
 
     public void showOpponentMinions() {
+        for (Player player : players)
+            if (player != getCurrentPlayer()) {
+                view.showUnit(player.getHero());
+                player.getUnits().forEach(view::showUnit);
+            }
     }
 
     public void showMyMinions() {
