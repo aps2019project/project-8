@@ -168,4 +168,8 @@ public class Deck {
         }
         return null;
     }
+
+    public Queue<Card> getCards() {
+        return cards;
+    }
 }

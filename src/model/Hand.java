@@ -18,6 +18,10 @@ public class Hand{
         cards.remove(card);
     }
 
+    public ArrayList<Card> getCards() {
+        return cards;
+    }
+
     Card findCard(String cardName) {
         for (Card card : cards) {
             if (card.getName().contentEquals(cardName)) {

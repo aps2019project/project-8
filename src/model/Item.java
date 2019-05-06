@@ -126,6 +126,10 @@ public class Item extends CollectionItem {
                 "Desc : " + getDescription();
     }
 
+    public Spell getSpell() {
+        return spell;
+    }
+
     public static class Target {
         private TargetUnit targetUnit;
         private TargetUnitType targetUnitType;

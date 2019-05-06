@@ -121,6 +121,10 @@ public class Unit extends Card{
         return specialPowers;
     }
 
+    public ArrayList<Buff> getBuffs() {
+        return buffs;
+    }
+
     public int getAttackRange() {
         return attackRange;
     }
@@ -129,50 +133,33 @@ public class Unit extends Card{
         return flags > 0;
     }
 
-    public int getHitPoint() {
-        return hitPoint;
-    }
-
-    public int getAttackPoint() {
-        return attackPoint;
-    }
-
     public boolean canFly() { return canFly; }
 
-    public void receiveHit(int attackPoint) {
-        hitPoint -= attackPoint;
-        if (hitPoint <= 0) { // ?
-
-        }
+    public void receiveDamage(int damage) {
+        hitPoint -= damage;
     }
-
-    public void decreaseHealth(int amount) {}
 
     public boolean isAlive() {
-        return hitPoint > 0;
+        return calculateHP() > 0;
     }
 
-    public void counterAttack(Unit unit) {
+//    public void counterAttack(Unit unit) {
         // ?
-    }
+//    }
 
-    public ArrayList<SpecialPowerType> getSpecialPowerType() {
-        return specialPowerTypes;
-    }
-
-    public void passTurn() {
-        // ?
-    }
+//    public void passTurn() {
+//         ?
+//    }
 
     // boolean or void ? what is it supposed to do
-    public boolean hasAttacked(Card card) {
-        return false; // ?
-    }
+//    public boolean hasAttacked(Card card) {
+//        return false; // ?
+//    }
 
-    public boolean equals() {
-        return false;
-        // ?
-    }
+//    public boolean equals() {
+//        return false;
+//         ?
+//    }
 
     public void addBuff(Buff buff) {
         buffs.add(buff);
@@ -196,13 +183,9 @@ public class Unit extends Card{
         }
     }
 
-    public void dispel() {
-        // ?
-    }
-
-    public void addRange(int amount) {
-        attackRange += amount; // ?
-    }
+//    public void addRange(int amount) {
+//        attackRange += amount; // ?
+//    }
 
     public UnitType getUnitType() {
         return unitType;
@@ -242,5 +225,45 @@ public class Unit extends Card{
 
     protected String getSpecialPowerDescription() {
         return getDescription();
+    }
+
+    public int calculateAP() {
+        int ans = attackPoint;
+        for (Buff buff : buffs)
+            ans += buff.getEffectAp();
+        ans = Math.max(0, ans);
+        return ans;
+    }
+
+    public int calculateHoly() {
+        int ans = 0;
+        for (Buff buff : buffs)
+            ans += buff.getHoly();
+        return ans;
+    }
+
+    public int calculateHP() {
+        int ans = hitPoint;
+        for (Buff buff : buffs)
+            ans += buff.getEffectAp();
+        return ans;
+    }
+
+    public boolean isDisarmed() {
+        for (Buff buff : buffs) {
+            if (buff.canDisarm()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isStunned() {
+        for (Buff buff : buffs) {
+            if (buff.canStun()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

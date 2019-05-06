@@ -69,7 +69,11 @@ public class Player {
         this.mana -= mana;
     }
 
-    public void addMana(int addMana) {
-        this.mana += addMana;
+    public void addMana(int mana) {
+        this.mana += mana;
+    }
+
+    public void setMana(int mana) {
+        this.mana = mana;
     }
 }
