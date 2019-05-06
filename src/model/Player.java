@@ -11,9 +11,20 @@ public class Player {
     private ArrayList<Collectible> collectibles;
     private int numberOfFlagTurns = 0;
 
+    String name = "";
+
     public Player(Deck deck) {
         this.deck = new Deck(deck);
         hand = new Hand();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Player setName(String name) {
+        this.name = name;
+        return this;
     }
 
     public Hero getHero() {

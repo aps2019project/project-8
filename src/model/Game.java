@@ -744,7 +744,38 @@ public class Game extends InGameMenu {
     }
 
     public void showGameInfo() {
-
+        switch (gameType) {
+            case KILL_OPPONENT_HERO:
+                view.showGameInfoKillOponentHero(players[0].getHero(), players[1].getHero());
+                break;
+            case HOLD_THE_FLAG:
+                for (int row = 0; row < getMap().getNumberOfRows(); row++)
+                    for (int column = 0; column < getMap().getNumberOfColumns(); column++) {
+                        Cell cell = getMap().getCell(row, column);
+                        if (cell.hasContent() && cell.getContent() instanceof Unit && ((Unit) cell.getContent()).getNumberOfFlags() > 0) {
+                            view.showGameInfoHoldTheFlag(row, column, (Unit) cell.getContent());
+                            break;
+                        }
+                    }
+                break;
+            case COLLECT_THE_FLAGS:
+                ArrayList<Unit> units = new ArrayList<>();
+                for (int row = 0; row < getMap().getNumberOfRows(); row++) {
+                    for (int column = 0; column < getMap().getNumberOfColumns(); column++) {
+                        Cell cell = getMap().getCell(row, column);
+                        if (cell.hasContent() && cell.getContent() instanceof Unit) {
+                            Unit unit = (Unit) cell.getContent();
+                            if (unit.getNumberOfFlags() > 0) {
+                                units.add(new Unit(unit));
+                            }
+                        }
+                    }
+                }
+                view.infoShowNumberOfFlags(units);
+                break;
+            default:
+                break;
+        }
     }
 
     public void showOpponentMinions() {

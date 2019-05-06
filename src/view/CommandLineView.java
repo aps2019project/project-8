@@ -2,6 +2,7 @@ package view;
 
 import model.*;
 
+import javax.rmi.ssl.SslRMIClientSocketFactory;
 import java.util.*;
 
 public class CommandLineView implements View {
@@ -365,4 +366,23 @@ public class CommandLineView implements View {
     public void showNoMainDeckError() {
         System.out.println("You have no main deck to play with.");
     }
+
+    @Override
+    public void infoShowNumberOfFlags(ArrayList<Unit> units) {
+        for (Unit unit: units) {
+            System.out.print(unit.getName() + " for " + unit.getPlayer().getName() + " has " + unit.getNumberOfFlags() + " flags!\n");
+        }
+    }
+
+    @Override
+    public void showGameInfoKillOponentHero(Hero firstHero, Hero secondHero) {
+        System.out.println("Player one hero name is: " + firstHero.getName() + " and has " + firstHero.getHitPoint() + "hp.");
+        System.out.println("Player two hero name is: " + secondHero.getName() + " and has " + secondHero.getHitPoint() + "hp.");
+    }
+
+    @Override
+    public void showGameInfoHoldTheFlag(int row, int column, Unit content) {
+        System.out.println("Unit " + content.getName() + " in row(" + row + ") and column(" + column + ") has the flag!");
+    }
+
 }
