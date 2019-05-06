@@ -1,0 +1,26 @@
+allAttack
+Hits all enemy units in a column with 6 AP
+1016
+1500
+Card
+4
+SpellCard
+2
+2
+1
+2
+-1
+1
+no
+1
+1000000
+0
+0
+-6
+0
+no
+no
+no
+none
+no
+none

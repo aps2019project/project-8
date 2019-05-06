@@ -1,0 +1,14 @@
+blackDiv
+
+2013
+300
+Card
+9
+Unit
+14
+10
+3
+no
+no
+7
+Minion

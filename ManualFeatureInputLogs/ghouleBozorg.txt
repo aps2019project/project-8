@@ -1,0 +1,14 @@
+ghouleBozorg
+no special power but with a lot of hp
+2034
+600
+Card
+9
+Unit
+30
+8
+3
+no
+no
+2
+Minion

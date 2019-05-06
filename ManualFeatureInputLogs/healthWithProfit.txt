@@ -1,0 +1,24 @@
+healthWithProfit
+6 HP weakness buffs and 2 holy buffs for 3 turns
+1013
+2250
+Card
+0
+SpellCard
+2
+3
+1
+1
+no
+1
+3
+2
+0
+-6
+0
+no
+no
+yes
+none
+no
+none

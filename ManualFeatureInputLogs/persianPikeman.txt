@@ -1,0 +1,14 @@
+persianPikeman
+none
+2003
+500
+Card
+1
+Unit
+5
+3
+3
+no
+no
+3
+Minion

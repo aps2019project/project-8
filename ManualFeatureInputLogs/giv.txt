@@ -1,0 +1,23 @@
+giv
+immune to spell!
+2030
+450
+Carad
+Card
+4
+Unit
+5
+7
+2
+yes
+4
+1
+1
+no
+0
+no
+spell immune
+none
+no
+5
+Minion

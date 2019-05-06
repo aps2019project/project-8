@@ -1,0 +1,24 @@
+namooseSepar
+adds 12 holy buffs to hero
+4002
+4000
+Item
+yes
+2
+5
+1
+3
+no
+1
+1000000
+12
+0
+0
+0
+no
+no
+yes
+none
+no
+none
+Usable
