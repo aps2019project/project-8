@@ -80,7 +80,12 @@ public class CollectionMenu extends Menu {
             return;
         }
 
-        if (collectionItem instanceof Card && deck.isFull()) {
+        if (collectionItem instanceof Hero && deck.hasHero()) {
+            view.showAddingASecondHeroToDeckError();
+            return;
+        }
+
+        if (!(collectionItem instanceof Hero) && collectionItem instanceof Card && deck.isFull()) {
             view.showDeckIsFullError();
             return;
         }
@@ -89,12 +94,6 @@ public class CollectionMenu extends Menu {
             view.showAddingASecondItemToDeckError();
             return;
         }
-
-        if (collectionItem instanceof Hero && deck.hasHero()) {
-            view.showAddingASecondHeroToDeckError();
-            return;
-        }
-
         deck.addCollectionItem(collectionItem, collectionItemID);
         view.alertCollectionItemAddedToDeck();
     }
