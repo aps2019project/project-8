@@ -356,5 +356,10 @@ public class CommandLineView implements View {
         });
     }
 
+    @Override
+    public void showInfoOfCollectionItem(CollectionItem collectionItem) {
+        System.err.println(collectionItem.showInfo());
+    }
+
 
 }
