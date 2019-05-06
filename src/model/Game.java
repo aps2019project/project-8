@@ -28,7 +28,7 @@ public class Game extends InGameMenu {
     private Collectible selectedCollectible;
     private GameType gameType;
     private int prize = 1000;
-    private HashMap<String, Integer> numberOfUnits = new HashMap<>();
+    private ArrayList<HashMap<String, Integer>> numberOfPlayedCollectionItems = new ArrayList<>(2);
 
     public Game(Account firstPlayer, Account secondPlayer, GameType gameType, int numberOfFlags) {
         accounts = new Account[]{firstPlayer, secondPlayer};
@@ -96,8 +96,11 @@ public class Game extends InGameMenu {
         if (getDistance(selectedUnit.getX(), selectedUnit.getY(), x, y) <= 2 && selectedUnit.getCanMove()) { // possibly we could add some moveRange to Unit class variables
             if (isPathEmpty(selectedUnit.getX(), selectedUnit.getY(), x, y, getCurrentPlayer())) {
                 Cell currentCell = map.getGrid()[selectedUnit.getX()][selectedUnit.getY()];
-                if (currentCell.getContent() != null && currentCell.getContent() instanceof Collectible)
-                    getCurrentPlayer().addCollectible((Collectible) currentCell.getContent());
+                if (currentCell.getContent() != null && currentCell.getContent() instanceof Collectible) {
+                    Collectible collectible = (Collectible) currentCell.getContent();
+                    collectible.setCollectionItemID(getNewID(collectible));
+                    getCurrentPlayer().addCollectible(collectible);
+                }
                 currentCell.setContent(null);
                 map.getGrid()[x][y].setContent(selectedUnit);
                 selectedUnit.setX(x);
@@ -593,6 +596,8 @@ public class Game extends InGameMenu {
             view.showInvalidTargetError();
             return false;
         }
+        spellCard.setCollectionItemID(getNewID(spellCard));
+        getCurrentPlayer().addToGraveyard(spellCard);
         return true;
     }
 
@@ -613,14 +618,15 @@ public class Game extends InGameMenu {
         return true;
     }
 
-    private String getNewID(Unit unit) {
-        if (numberOfUnits.containsKey(unit.getName())) {
-            int currentNumber = numberOfUnits.get(unit.getName());
-            numberOfUnits.replace(unit.getName(), currentNumber + 1);
-            return getCurrentPlayer().getName() + "_" + unit.getName() + "_" + (currentNumber + 1);
+    private String getNewID(CollectionItem collectionItem) {
+        int currentTurn = turn % 2;
+        if (numberOfPlayedCollectionItems.get(currentTurn).containsKey(collectionItem.getName())) {
+            int currentNumber = numberOfPlayedCollectionItems.get(currentTurn).get(collectionItem.getName());
+            numberOfPlayedCollectionItems.get(currentTurn).replace(collectionItem.getName(), currentNumber + 1);
+            return getCurrentPlayer().getName() + "_" + collectionItem.getName() + "_" + (currentNumber + 1);
         }
-        numberOfUnits.put(unit.getName(), 1);
-        return getCurrentPlayer().getName() + "_" + unit.getName() + "_" + 1;
+        numberOfPlayedCollectionItems.get(currentTurn).put(collectionItem.getName(), 1);
+        return getCurrentPlayer().getName() + "_" + collectionItem.getName() + "_" + 1;
     }
 
     // inserts card with name [cardName] from player's hand and puts it in cell ([x], [y])
@@ -654,6 +660,15 @@ public class Game extends InGameMenu {
         }
     }
 
+    public boolean hasUnit(String unitID) {
+        return getCurrentPlayer().getUnit(unitID) != null;
+    }
+
+    public boolean hasCollectible(String unitID) {
+        return getCurrentPlayer().getCollectible(unitID) != null;
+    }
+
+    public void addSpecialPowerToUnit(Unit unit, Spell specialPower, SpecialPowerType specialPowerType, Item.Target.TargetUnitType targetUnitType) {
     private void addSpecialPowerToUnit(Unit unit, Spell specialPower, SpecialPowerType specialPowerType, Item.Target.TargetUnitType targetUnitType) {
         if (checkUnitTypeInItemTarget(unit, targetUnitType)) {
             unit.getSpecialPowers().add(specialPower);
@@ -804,7 +819,8 @@ public class Game extends InGameMenu {
         initiateTurn();
     }
 
-    public void selectCollectibleItem(String collectibleName) {
+    public Collectible selectCollectible(String collectibleID) {
+        return getCurrentPlayer().getCollectible(collectibleID);
     }
 
     public void applyCollectible(int row, int column) {
@@ -892,6 +908,7 @@ public class Game extends InGameMenu {
     }
 
     public void showCollectibleInfo() {
+        view.showCollectible(selectedCollectible);
     }
 
     public void showAvailableOptions() {
