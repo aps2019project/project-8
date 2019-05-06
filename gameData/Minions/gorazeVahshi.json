@@ -2,10 +2,10 @@
   "unitType": "MELEE",
   "hitPoint": 10,
   "attackPoint": 14,
-  "specialPowerType": [
+  "specialPowerTypes": [
     "ON_DEFEND"
   ],
-  "specialPower": [
+  "specialPowers": [
     {
       "targetType": "CELL",
       "targetArea": "SELECTED_CELL",
@@ -35,5 +35,6 @@
   "manaCost": 6,
   "price": 500,
   "collectionItemID": "2028",
-  "name": "gorazeVahshi"
+  "name": "gorazeVahshi",
+  "description": "can't get disarmed"
 }

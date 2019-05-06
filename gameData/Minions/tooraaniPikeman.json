@@ -2,8 +2,8 @@
   "unitType": "HYBRID",
   "hitPoint": 4,
   "attackPoint": 4,
-  "specialPowerType": [],
-  "specialPower": [],
+  "specialPowerTypes": [],
+  "specialPowers": [],
   "canFly": false,
   "attackRange": 3,
   "buffs": [],
@@ -18,5 +18,6 @@
   "manaCost": 1,
   "price": 600,
   "collectionItemID": "2009",
-  "name": "tooraaniPikeman"
+  "name": "tooraaniPikeman",
+  "description": ""
 }

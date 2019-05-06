@@ -2,8 +2,8 @@
   "unitType": "RANGED",
   "hitPoint": 6,
   "attackPoint": 4,
-  "specialPowerType": [],
-  "specialPower": [],
+  "specialPowerTypes": [],
+  "specialPowers": [],
   "canFly": false,
   "attackRange": 7,
   "buffs": [],
@@ -18,5 +18,6 @@
   "manaCost": 2,
   "price": 300,
   "collectionItemID": "2001",
-  "name": "persianArcher"
+  "name": "persianArcher",
+  "description": "none"
 }

@@ -2,8 +2,8 @@
   "unitType": "MELEE",
   "hitPoint": 3,
   "attackPoint": 10,
-  "specialPowerType": [],
-  "specialPower": [],
+  "specialPowerTypes": [],
+  "specialPowers": [],
   "canFly": false,
   "attackRange": 0,
   "buffs": [],
@@ -18,5 +18,6 @@
   "manaCost": 2,
   "price": 450,
   "collectionItemID": "2011",
-  "name": "tooraaniMaceman"
+  "name": "tooraaniMaceman",
+  "description": ""
 }

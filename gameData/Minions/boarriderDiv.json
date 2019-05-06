@@ -2,8 +2,8 @@
   "unitType": "MELEE",
   "hitPoint": 16,
   "attackPoint": 8,
-  "specialPowerType": [],
-  "specialPower": [],
+  "specialPowerTypes": [],
+  "specialPowers": [],
   "canFly": false,
   "attackRange": 0,
   "buffs": [],
@@ -18,5 +18,6 @@
   "manaCost": 6,
   "price": 300,
   "collectionItemID": "2016",
-  "name": "boarriderDiv"
+  "name": "boarriderDiv",
+  "description": ""
 }

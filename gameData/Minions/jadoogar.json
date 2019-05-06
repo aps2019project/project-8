@@ -2,10 +2,10 @@
   "unitType": "RANGED",
   "hitPoint": 5,
   "attackPoint": 4,
-  "specialPowerType": [
+  "specialPowerTypes": [
     "PASSIVE"
   ],
-  "specialPower": [
+  "specialPowers": [
     {
       "targetType": "UNIT",
       "targetArea": "ADJACENT_9",
@@ -49,5 +49,6 @@
   "manaCost": 4,
   "price": 550,
   "collectionItemID": "2025",
-  "name": "jadoogar"
+  "name": "jadoogar",
+  "description": "adds a power buff with two points increase to attack power and one point decrease to health points to the minions to 8 adjacent cells and the minion itself"
 }

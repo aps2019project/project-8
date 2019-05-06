@@ -4,10 +4,10 @@
   "unitType": "MELEE",
   "hitPoint": 50,
   "attackPoint": 4,
-  "specialPowerType": [
+  "specialPowerTypes": [
     "ON_USE"
   ],
-  "specialPower": [
+  "specialPowers": [
     {
       "targetType": "UNIT",
       "targetArea": "SELECTED_CELL",
@@ -51,5 +51,6 @@
   "manaCost": 1,
   "price": 8000,
   "collectionItemID": "3004",
-  "name": "rakhsh"
+  "name": "rakhsh",
+  "description": "Stuns an enemy for 1 turn"
 }

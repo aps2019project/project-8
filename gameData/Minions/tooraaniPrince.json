@@ -2,10 +2,10 @@
   "unitType": "MELEE",
   "hitPoint": 6,
   "attackPoint": 10,
-  "specialPowerType": [
+  "specialPowerTypes": [
     "COMBO"
   ],
-  "specialPower": [
+  "specialPowers": [
     {
       "targetType": "UNIT",
       "targetArea": "SELECTED_CELL",
@@ -37,5 +37,6 @@
   "manaCost": 6,
   "price": 800,
   "collectionItemID": "2012",
-  "name": "tooraaniPrince"
+  "name": "tooraaniPrince",
+  "description": "Combo"
 }

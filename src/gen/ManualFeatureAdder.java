@@ -530,9 +530,11 @@ class ManualFeatureAdder {
         String response = getMultipleChoice("What type of unit?", "Hero", "Minion");
         switch (response) {
             case "Hero":
-                return addHero(unit);
+                Hero hero = addHero(unit);
+                return hero;
             case "Minion":
-                return addMinion(unit);
+                Minion minion = addMinion(unit);
+                return minion;
         }
         return null;
     }

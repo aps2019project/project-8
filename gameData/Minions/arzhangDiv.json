@@ -2,10 +2,10 @@
   "unitType": "MELEE",
   "hitPoint": 6,
   "attackPoint": 6,
-  "specialPowerType": [
+  "specialPowerTypes": [
     "COMBO"
   ],
-  "specialPower": [
+  "specialPowers": [
     {
       "targetType": "UNIT",
       "targetArea": "SELECTED_CELL",
@@ -37,5 +37,6 @@
   "manaCost": 3,
   "price": 600,
   "collectionItemID": "2040",
-  "name": "arzhangDiv"
+  "name": "arzhangDiv",
+  "description": "arzhang khube"
 }

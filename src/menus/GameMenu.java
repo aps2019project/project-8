@@ -180,4 +180,7 @@ public class GameMenu extends InGameMenu {
     public static void showOptions() {
         game.showAvailableOptions();
     }
+
+    public static void checkGameCondition() {
+    }
 }

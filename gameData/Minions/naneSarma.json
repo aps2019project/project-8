@@ -2,10 +2,10 @@
   "unitType": "RANGED",
   "hitPoint": 3,
   "attackPoint": 4,
-  "specialPowerType": [
+  "specialPowerTypes": [
     "ON_SPAWN"
   ],
-  "specialPower": [
+  "specialPowers": [
     {
       "targetType": "UNIT",
       "targetArea": "ADJACENT_8",
@@ -49,5 +49,6 @@
   "manaCost": 3,
   "price": 500,
   "collectionItemID": "2036",
-  "name": "naneSarma"
+  "name": "naneSarma",
+  "description": "stuns enemy minions in 8 adjacent cells"
 }

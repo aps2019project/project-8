@@ -2,10 +2,10 @@
   "unitType": "MELEE",
   "hitPoint": 10,
   "attackPoint": 4,
-  "specialPowerType": [
+  "specialPowerTypes": [
     "ON_ATTACK"
   ],
-  "specialPower": [
+  "specialPowers": [
     {
       "targetType": "UNIT",
       "targetArea": "SELECTED_CELL",
@@ -37,5 +37,6 @@
   "manaCost": 4,
   "price": 550,
   "collectionItemID": "2035",
-  "name": "ghoulDoSar"
+  "name": "ghoulDoSar",
+  "description": "dispels each unit it attacks"
 }

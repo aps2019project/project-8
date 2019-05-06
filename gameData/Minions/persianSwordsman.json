@@ -2,10 +2,10 @@
   "unitType": "MELEE",
   "hitPoint": 6,
   "attackPoint": 4,
-  "specialPowerType": [
+  "specialPowerTypes": [
     "ON_ATTACK"
   ],
-  "specialPower": [
+  "specialPowers": [
     {
       "targetType": "UNIT",
       "targetArea": "SELECTED_CELL",
@@ -49,5 +49,6 @@
   "manaCost": 2,
   "price": 400,
   "collectionItemID": "2002",
-  "name": "persianSwordsman"
+  "name": "persianSwordsman",
+  "description": "Stuns when attacking"
 }

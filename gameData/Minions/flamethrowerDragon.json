@@ -2,8 +2,8 @@
   "unitType": "RANGED",
   "hitPoint": 9,
   "attackPoint": 5,
-  "specialPowerType": [],
-  "specialPower": [],
+  "specialPowerTypes": [],
+  "specialPowers": [],
   "canFly": false,
   "attackRange": 4,
   "buffs": [],
@@ -18,5 +18,6 @@
   "manaCost": 5,
   "price": 250,
   "collectionItemID": "2019",
-  "name": "flamethrowerDragon"
+  "name": "flamethrowerDragon",
+  "description": ""
 }

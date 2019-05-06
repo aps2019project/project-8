@@ -50,6 +50,7 @@ public class Unit extends Card {
         this.specialPowers = unit.specialPowers;
         this.canFly = unit.canFly;
         this.attackRange = unit.attackRange;
+        this.description = unit.description;
     }
 
     protected Unit() {

@@ -2,10 +2,10 @@
   "unitType": "RANGED",
   "hitPoint": 0,
   "attackPoint": 2,
-  "specialPowerType": [
+  "specialPowerTypes": [
     "PASSIVE"
   ],
-  "specialPower": [
+  "specialPowers": [
     {
       "targetType": "UNIT",
       "targetArea": "ALL_OF_THE_MAP",
@@ -49,5 +49,6 @@
   "manaCost": 2,
   "price": 200,
   "collectionItemID": "2015",
-  "name": "eagle"
+  "name": "eagle",
+  "description": "Passive 10HP power buff"
 }

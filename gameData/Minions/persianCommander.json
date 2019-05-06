@@ -2,10 +2,10 @@
   "unitType": "MELEE",
   "hitPoint": 12,
   "attackPoint": 4,
-  "specialPowerType": [
+  "specialPowerTypes": [
     "COMBO"
   ],
-  "specialPower": [
+  "specialPowers": [
     {
       "targetType": "UNIT",
       "targetArea": "SELECTED_CELL",
@@ -37,5 +37,6 @@
   "manaCost": 7,
   "price": 800,
   "collectionItemID": "2006",
-  "name": "persianCommander"
+  "name": "persianCommander",
+  "description": "Combo"
 }

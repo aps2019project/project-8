@@ -2,8 +2,8 @@
   "unitType": "HYBRID",
   "hitPoint": 14,
   "attackPoint": 10,
-  "specialPowerType": [],
-  "specialPower": [],
+  "specialPowerTypes": [],
+  "specialPowers": [],
   "canFly": false,
   "attackRange": 7,
   "buffs": [],
@@ -18,5 +18,6 @@
   "manaCost": 9,
   "price": 300,
   "collectionItemID": "2013",
-  "name": "blackDiv"
+  "name": "blackDiv",
+  "description": ""
 }

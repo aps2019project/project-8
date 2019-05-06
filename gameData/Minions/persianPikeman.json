@@ -2,8 +2,8 @@
   "unitType": "HYBRID",
   "hitPoint": 5,
   "attackPoint": 3,
-  "specialPowerType": [],
-  "specialPower": [],
+  "specialPowerTypes": [],
+  "specialPowers": [],
   "canFly": false,
   "attackRange": 3,
   "buffs": [],
@@ -18,5 +18,6 @@
   "manaCost": 1,
   "price": 500,
   "collectionItemID": "2003",
-  "name": "persianPikeman"
+  "name": "persianPikeman",
+  "description": "none"
 }
