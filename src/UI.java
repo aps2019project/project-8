@@ -92,12 +92,16 @@ public class UI {
         command = scanner.nextLine();
         command = command.trim();
         while (true) {
-            if (decide(command)) {
-                scanner.close();
-                return;
+            try {
+                if (decide(command)) {
+                    scanner.close();
+                    return;
+                }
+                command = scanner.nextLine();
+                command = command.trim();
+            } catch (Exception ignored) {
+                System.err.println(ignored);
             }
-            command = scanner.nextLine();
-            command = command.trim();
         }
     }
 
