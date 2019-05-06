@@ -175,7 +175,7 @@ public class Game extends InGameMenu {
 
     }
 
-    private GameState getGameState() {
+    public GameState getGameState() {
         return GameState.DRAW;
     }
 

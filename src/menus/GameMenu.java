@@ -113,6 +113,7 @@ public class GameMenu extends InGameMenu {
 
     //start a single player game with a specified AI
     public static boolean startGame(int aiID) {
+        if (checkAccount()) return false;
         AI ai = AI.get(aiID);
         if (ai == null) {
             view.showInvalidParametersError();
@@ -125,8 +126,21 @@ public class GameMenu extends InGameMenu {
         return true;
     }
 
+    private static boolean checkAccount() {
+        if (getAccount().getMainDeck() == null) {
+            view.showDeckDoesNotExistError();
+            return true;
+        }
+        if (!getAccount().getMainDeck().isValid()) {
+            view.showInvalidDeckError();
+            return true;
+        }
+        return false;
+    }
+
     //start a single player game with with an AI with a specific deck
     public static boolean startGame(String deckName, int mode, int numberOfFlags) {
+        if (checkAccount()) return false;
         if (getAccount().getDeck(deckName) == null) {
             view.showDeckDoesNotExistError();
             return false;
@@ -145,6 +159,7 @@ public class GameMenu extends InGameMenu {
 
     //start a multiplayer game with a selected account
     public static boolean startGame(Account secondAccount, int mode, int numberOfFlags) {
+        if (checkAccount()) return false;
         if (checkGameParameters(mode, numberOfFlags)) return false;
         GameMenu.game = new Game(getAccount(), secondAccount, GameType.get(mode), numberOfFlags);
         game.initiateGame();
@@ -182,5 +197,13 @@ public class GameMenu extends InGameMenu {
     }
 
     public static void checkGameCondition() {
+        switch (game.getGameState()) {
+            case WIN_FIRST_PLAYER:
+                break;
+            case WIN_SECOND_PLAYER:
+                break;
+            default:
+                return;
+        }
     }
 }
