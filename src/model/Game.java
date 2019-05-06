@@ -731,6 +731,9 @@ public class Game extends InGameMenu {
                 castItem(usable, players[i], 0, 0, 0);
             }
         }
+
+        // initiate next turn
+        initiateTurn();
     }
 
     public void initiateTurn() {
@@ -796,6 +799,9 @@ public class Game extends InGameMenu {
 
         // add turn
         turn++;
+
+        // initiate next turn
+        initiateTurn();
     }
 
     public void selectCollectibleItem(String collectibleName) {
