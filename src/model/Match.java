@@ -1,13 +1,21 @@
 package model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Match {
     private Account opponent;
     boolean win;
-    Date date;
+    LocalDateTime date;
+    Result result;
+
+    public Match(Account account, Result result, LocalDateTime date) {
+        opponent = account;
+        this.result = result;
+        this.date = date;
+    }
 
     public String toString() {
-        return "blah blah!";
+        int minutes = LocalDateTime.now().getMinute() - date.getMinute();
+        return opponent.getName() + " : " + result + " at " + (minutes / 60 > 0 ? minutes / 60 : minutes);
     }
 }

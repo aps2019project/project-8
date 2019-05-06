@@ -44,6 +44,10 @@ public class Deck {
     }
 
     public void removeCollectionItem(String collectionItemID, CollectionItem collectionItem) {
+        if (collectionItem instanceof Usable)
+            deckUsableItem = null;
+        else if (collectionItem instanceof Hero)
+            deckHero = null;
         cards.remove(collectionItem);
         collectionItemsIDs.remove(collectionItemID);
     }

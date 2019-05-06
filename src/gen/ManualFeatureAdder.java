@@ -5,9 +5,14 @@ import com.gilecode.yagson.YaGsonBuilder;
 import model.*;
 import view.ShengdeBaoPrinter;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.Scanner;
 
 // Complete!
 
@@ -21,6 +26,7 @@ class ManualFeatureAdder {
     private static BufferedWriter writer;
     private static boolean hasArg = false;
     private static String arg3;
+
     private static String getInput() throws Exception {
         String string = scanner.nextLine();
         if (string.equals("exit"))
@@ -71,7 +77,7 @@ class ManualFeatureAdder {
             disarm = feedBack.equals("yes");
         }
         {
-            String feedBack = getMultipleChoice("Enter dipellable" , "yes", "no");
+            String feedBack = getMultipleChoice("Enter dipellable", "yes", "no");
             dispellable = feedBack.equals("yes");
         }
 
@@ -405,7 +411,8 @@ class ManualFeatureAdder {
             Item.Target.TargetUnitType targetUnitType = targetUnitTypes.get(index);
 
             specialPowerTarget.add(new Item.Target(targetUnit, targetUnitType));
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     private static void getSpecialPowerType(ArrayList<SpecialPowerType> specialPowerType) throws Exception {
@@ -617,7 +624,7 @@ class ManualFeatureAdder {
 
     private static void saveCollectionItem(CollectionItem collectionItem) {
         try {
-            YaGson yaGson = new  YaGsonBuilder().setPrettyPrinting().create();
+            YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
             FileWriter out;
             if (collectionItem instanceof Hero) {
                 out = new FileWriter("./gameData/Heroes/" + collectionItem.getName() + ".json", false);

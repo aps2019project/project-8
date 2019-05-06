@@ -11,6 +11,7 @@ public class Account implements Comparable {
     private int money = 0;
     private Collection collection = new Collection();
     private Deck mainDeck = null;
+    private ArrayList<Match> matchHistory = new ArrayList<>();
 
     public Account(Account account) {
         accounts.add(account);
@@ -95,5 +96,9 @@ public class Account implements Comparable {
 
     public ArrayList<Deck> getDecks() {
         return collection.getDecks();
+    }
+
+    public void addMatch(Match match) {
+        matchHistory.add(match);
     }
 }

@@ -2,6 +2,9 @@ package menus;
 
 import model.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class GameMenu extends InGameMenu {
     private static final String[] commands = {
             "Game info",
@@ -32,6 +35,7 @@ public class GameMenu extends InGameMenu {
     private static Player[] players = new Player[NUMBER_OF_PLAYERS];
     private static int numberOfFlags;
     private static Game game;
+    private static Account secondAccount = null;
 
     public static void help(boolean gameEnded) {
         if (!gameEnded)
@@ -123,6 +127,7 @@ public class GameMenu extends InGameMenu {
         ai.setGame(game);
         game.setPrize(AI.getGamePrize(aiID));
         game.initiateGame();
+        hasAI = true;
         return true;
     }
 
@@ -154,6 +159,7 @@ public class GameMenu extends InGameMenu {
         game = new Game(getAccount(), ai, GameType.get(mode), numberOfFlags);
         ai.setGame(game);
         game.initiateGame();
+        hasAI = true;
         return true;
     }
 
@@ -163,6 +169,7 @@ public class GameMenu extends InGameMenu {
         if (checkGameParameters(mode, numberOfFlags)) return false;
         GameMenu.game = new Game(getAccount(), secondAccount, GameType.get(mode), numberOfFlags);
         game.initiateGame();
+        hasAI = false;
         return true;
     }
 
@@ -199,8 +206,16 @@ public class GameMenu extends InGameMenu {
     public static void checkGameCondition() {
         switch (game.getGameState()) {
             case WIN_FIRST_PLAYER:
+                account.payMoney(game.getPrize());
+                account.addMatch(new Match((hasAI ? null : secondAccount), Result.WIN, LocalDateTime.now()));
+                if (!hasAI)
+                    secondAccount.addMatch(new Match(account, Result.WIN, LocalDateTime.now()));
+                secondAccount = null;
                 break;
             case WIN_SECOND_PLAYER:
+                account.addMatch(new Match((hasAI ? null : secondAccount), Result.WIN, LocalDateTime.now()));
+                secondAccount.addMatch(new Match(account, Result.WIN, LocalDateTime.now()));
+                secondAccount = null;
                 break;
             default:
                 return;
