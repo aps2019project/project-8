@@ -2,7 +2,6 @@ package menus;
 
 import model.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class GameMenu extends InGameMenu {
@@ -60,10 +59,6 @@ public class GameMenu extends InGameMenu {
         game.showCardInfo(cardID);
     }
 
-    public static void selectCard(String cardID) {
-        game.selectCard(cardID);
-    }
-
     public static void moveUnit(int x, int y) {
         game.moveSelectedUnit(x - 1, y - 1);
     }
@@ -94,10 +89,6 @@ public class GameMenu extends InGameMenu {
 
     public static void showAllCollectibles() {
         game.showAllCollectibles();
-    }
-
-    public static void selectCollectible(String name) {
-        game.selectCollectibleItem(name);
     }
 
     public static void showCollectibleInfo() {
@@ -196,11 +187,11 @@ public class GameMenu extends InGameMenu {
     public static void showMenu() {
     }
 
-    public static void select(String collectionItemDescriptor) {
-        if (collectionItemDescriptor.contains("_"))
-            selectCard(collectionItemDescriptor);
-        else
-            selectCollectible(collectionItemDescriptor);
+    public static void select(String collectionItemID) {
+        if (game.hasCollectible(collectionItemID))
+            game.selectCollectible(collectionItemID);
+        else if (game.hasUnit(collectionItemID))
+            game.selectCard(collectionItemID);
     }
 
     public static void showOptions() {
