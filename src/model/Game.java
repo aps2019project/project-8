@@ -317,10 +317,11 @@ public class Game extends InGameMenu {
 
     public void selectCard(String cardID) {
         Unit unit = findUnitInGridByID(cardID);
-        if (unit == null) {
+        if (unit == null || unit.getPlayer() != getCurrentPlayer()) {
             view.showInvalidCardIDError();
             return;
         }
+        view.alertUnitSelection(cardID);
         selectedUnit = unit;
     }
 
@@ -852,6 +853,7 @@ public class Game extends InGameMenu {
     }
 
     public Collectible selectCollectible(String collectibleID) {
+        view.alertCollectibleSelection(collectibleID);
         return getCurrentPlayer().getCollectible(collectibleID);
     }
 

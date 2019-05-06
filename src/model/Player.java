@@ -7,7 +7,7 @@ public class Player {
     private Deck deck;
     private ArrayList<Unit> units = new ArrayList<>();
     private int mana;
-    private ArrayList<Card> graveYard;
+    private ArrayList<Card> graveYard = new ArrayList<>();
     private ArrayList<Collectible> collectibles = new ArrayList<>();
     private int numberOfFlagTurns = 0;
 

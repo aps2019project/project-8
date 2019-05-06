@@ -51,7 +51,7 @@ public class UI {
     private static final String GAME_INFO = "(?i:game info)";
     private static final String SHOW_MY_MINIONS = "(?i:show my minions)";
     private static final String SHOW_OPPONENT_MINIONS = "(?i:show opponent minions)";
-    private static final String SHOW_CARD_INFO = "(?i:show card info) " + ID;
+    private static final String SHOW_CARD_INFO = "(?i:show info) " + ID;
     private static final String SELECT_COLLECTION_ITEM = "(?i:select) " + ID;
     private static final String COORDINATES = "\\(\\d+, \\d+\\)";
     private static final String MOVE = "(?i:move to) " + COORDINATES;
@@ -61,7 +61,7 @@ public class UI {
     private static final String SHOW_HAND = "(?i:show hand)";
     private static final String INSERT = "(?i:insert) " + COLLECTION_ITEM_NAME + " (?i:in) " + COORDINATES;
     private static final String END_TURN = "(?i:end turn)";
-    private static final String SHOW_COLLECTIBLES = "(?i:show collectables)";
+    private static final String SHOW_COLLECTIBLES = "(?i:show collectibles)";
     private static final String SHOW_INFO = "(?i:show info)";
     private static final String USE_COLLECTIBLE = "(?i:use) " + COORDINATES;
     private static final String SHOW_NEXT_CARD = "(?i:show next card)";

@@ -417,6 +417,10 @@ public class CommandLineView implements View {
 
     @Override
     public void showCollectible(Collectible collectible) {
+        if (collectible == null) {
+            System.err.println("No collectible selected.");
+            return;
+        }
         System.out.println(collectible);
     }
 
@@ -430,5 +434,15 @@ public class CommandLineView implements View {
     @Override
     public void showCooldownError() {
         System.out.println("Hero is not yet cool to use special power !");
+    }
+
+    @Override
+    public void alertUnitSelection(String cardID) {
+        System.out.println("Selected unit " + cardID);
+    }
+
+    @Override
+    public void alertCollectibleSelection(String collectibleID) {
+        System.out.println("Selected collectible " + collectibleID);
     }
 }

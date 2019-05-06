@@ -190,7 +190,7 @@ public class GameMenu extends InGameMenu {
     public static void select(String collectionItemID) {
         if (game.hasCollectible(collectionItemID))
             game.selectCollectible(collectionItemID);
-        else if (game.hasUnit(collectionItemID))
+        else
             game.selectCard(collectionItemID);
     }
 
