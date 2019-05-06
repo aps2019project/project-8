@@ -18,6 +18,7 @@ public class Unit extends Card {
     private int flags = 0;
     private boolean canMove = false;
     private boolean canAttack = false;
+    private boolean isDead = false;
     private int x = 0;
     private int y = 0;
     private int attackTimes = 0;
@@ -223,6 +224,14 @@ public class Unit extends Card {
 
     public int getNumberOfFlags() {
         return flags;
+    }
+
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
     }
 
     // Builder

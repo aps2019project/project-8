@@ -114,6 +114,14 @@ public class Game extends InGameMenu {
     }
 
 
+
+    private void checkOnDeath(Unit defender) {
+
+    }
+
+
+
+
     // no special powers included
     private void rawAttack(Unit attacker, Unit defender) {
         int damage = Math.min(attacker.calculateAP() - defender.calculateHoly(), 0);
@@ -183,6 +191,15 @@ public class Game extends InGameMenu {
         }
         attacker.setCanAttack(false);
         attacker.setCanMove(false);
+
+        if (!defender.isDead() && defender.calculateHP() < 0 && defender.getX() != -1) {
+            Cell cell = map.getGrid()[defender.getX()][defender.getY()];
+            cell.setObjectOwner(null);
+            cell.setContent(null);
+            defender.setDead(true);
+            checkOnDeath(defender);
+        }
+
         return 0;
     }
 

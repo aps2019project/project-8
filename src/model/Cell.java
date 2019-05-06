@@ -52,6 +52,13 @@ public class Cell {
         return objectOwner;
     }
 
+    public void setObjectOwner(Player player) {
+        objectOwner = player;
+    }
+
+
+
+
     @Override
     public String toString() {
         return (content == null ? "NONE" : "FULL");
