@@ -624,7 +624,8 @@ public class Game extends InGameMenu {
 
     private boolean putUnitCard(Unit unit, int x, int y) {
         Cell[][] grid = map.getGrid();
-        if (grid[x][y].getContent() != null) { // the cell is already not empty
+        if (grid[x][y].getContent() != null && grid[x][y].getContent() instanceof Unit) {
+            // the cell is already not empty
             view.showInvalidTargetError();
             return false;
         }
@@ -675,7 +676,8 @@ public class Game extends InGameMenu {
             inserted = castSpellCard((SpellCard) card, x, y, getCurrentPlayer());
         }
         if (inserted) {
-            view.logMessage(cardName + " with " + card.getID() + " inserted to " + "(" + x + "," + y + ")"); // log success message
+            view.logMessage(cardName + " with " + card.getID() + " inserted to " + "(" + x + "," + y + ")");
+            // log success message
             player.decreaseMana(card.getManaCost());
             player.getHand().getCards().remove(card);
         }
@@ -689,7 +691,8 @@ public class Game extends InGameMenu {
         return getCurrentPlayer().getCollectible(unitID) != null;
     }
 
-    private void addSpecialPowerToUnit(Unit unit, Spell specialPower, SpecialPowerType specialPowerType, Item.Target.TargetUnitType targetUnitType) {
+    private void addSpecialPowerToUnit(Unit unit, Spell specialPower, SpecialPowerType specialPowerType, Item.Target.
+            TargetUnitType targetUnitType) {
         if (checkUnitTypeInItemTarget(unit, targetUnitType)) {
             unit.getSpecialPowers().add(specialPower);
             unit.getSpecialPowerTypes().add(specialPowerType);
@@ -702,7 +705,7 @@ public class Game extends InGameMenu {
                 if (item.getAddManaDuration() > turn - startTime) {
                     player.addMana(item.getAddMana());
                 }
-                currentItems.add(item);
+//                currentItems.add(item);
                 itemCastingTurns.add(turn);
                 break;
             case ADD_A_SPECIAL_POWER:
@@ -710,7 +713,7 @@ public class Game extends InGameMenu {
                     Spell specialPower = item.getSpecialPowers().get(i);
                     SpecialPowerType specialPowerType = item.getSpecialPowerTypes().get(i);
 
-                    System.out.println(item.getSpecialPowerTargets().size());
+//                    System.err.println(item.getSpecialPowerTargets().size());
 
                     Item.Target target = item.getSpecialPowerTargets().get(i);
                     // Here I add special power to units in map:
@@ -719,7 +722,8 @@ public class Game extends InGameMenu {
                             for (int column = 0; column < getMap().getNumberOfColumns(); column++) {
                                 Cell cell = getMap().getCell(row, column);
                                 // check has content and is friendly
-                                if (!cell.hasContent() || !(cell.getContent() instanceof Unit) || ((Unit) cell.getContent()).getPlayer() != player) {
+                                if (!cell.hasContent() || !(cell.getContent() instanceof Unit) || ((Unit)
+                                        cell.getContent()).getPlayer() != player) {
                                     continue;
                                 }
                                 Unit unit = (Unit) cell.getContent();
@@ -730,7 +734,8 @@ public class Game extends InGameMenu {
                     {
                         for (Card card : player.getHand().getCards()) {
                             if (card instanceof Unit) {
-                                addSpecialPowerToUnit((Unit) card, specialPower, specialPowerType, target.getTargetUnitType());
+                                addSpecialPowerToUnit((Unit) card, specialPower, specialPowerType, target.
+                                        getTargetUnitType());
                             }
                         }
                     }
@@ -738,7 +743,8 @@ public class Game extends InGameMenu {
                     {
                         for (Card card : player.getDeck().getCards()) {
                             if (card instanceof Unit) {
-                                addSpecialPowerToUnit((Unit) card, specialPower, specialPowerType, target.getTargetUnitType());
+                                addSpecialPowerToUnit((Unit) card, specialPower, specialPowerType, target.
+                                        getTargetUnitType());
                             }
                         }
                     }
@@ -751,6 +757,8 @@ public class Game extends InGameMenu {
     }
 
     public void initiateGame() {
+        numberOfPlayedCollectionItems.add(new HashMap<>());
+        numberOfPlayedCollectionItems.add(new HashMap<>());
         players[0].setMana(1000);
         players[1].setMana(1000);
 
@@ -777,13 +785,17 @@ public class Game extends InGameMenu {
 
         // item processes
         for (int i = 0; i < currentItems.size(); i++) {
+
+            System.err.println(i + 1);
+            System.err.println(currentItems.get(i));
+
             Item item = currentItems.get(i);
             int startTime = itemCastingTurns.get(i);
             castItem(item, getCurrentPlayer(), 0, 0, startTime);
         }
 
         // passives
-        ArrayList<Unit> allUnits = players[0].getUnits();
+        ArrayList<Unit> allUnits = new ArrayList<>(players[0].getUnits());
         allUnits.addAll(players[1].getUnits());
         for (Unit unit: getCurrentPlayer().getUnits()) {
             for (int i = 0; i < unit.getSpecialPowers().size(); i++) {
@@ -873,7 +885,8 @@ public class Game extends InGameMenu {
                 for (int row = 0; row < getMap().getNumberOfRows(); row++)
                     for (int column = 0; column < getMap().getNumberOfColumns(); column++) {
                         Cell cell = getMap().getCell(row, column);
-                        if (cell.hasContent() && cell.getContent() instanceof Unit && ((Unit) cell.getContent()).getNumberOfFlags() > 0) {
+                        if (cell.hasContent() && cell.getContent() instanceof Unit && ((Unit) cell.getContent()).
+                                getNumberOfFlags() > 0) {
                             view.showGameInfoHoldTheFlag(row, column, (Unit) cell.getContent());
                             successfull = true;
                             break;

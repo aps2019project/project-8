@@ -269,8 +269,9 @@ public class UI {
         else if (command.matches(HELP))
             Story.help();
         else if (command.matches(LEVEL)) {
-            if (GameMenu.startGame(Integer.parseInt(command)))
+            if (GameMenu.startGame(Integer.parseInt(command))) {
                 switchTo(Menus.GAME_MENU);
+            }
         }
         else
             view.showInvalidCommandError();

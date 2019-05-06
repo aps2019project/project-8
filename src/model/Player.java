@@ -109,6 +109,11 @@ public class Player {
     }
 
     public void addUnit(Unit unit) {
+
+        //
+        System.err.println(name + " ADDING: " + unit);
+        //
+
         units.add(unit);
     }
 
