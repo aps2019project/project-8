@@ -526,7 +526,7 @@ public class Game extends InGameMenu {
         if (!checkUnitTypeInSpellTarget(unit, spell.getTargetUnitType())) {
             return false;
         }
-        boolean isForCastingPlayer = cell.getObjectOwner() == player;
+        boolean isForCastingPlayer = unit.getPlayer() == player;
         boolean isMinion = cell.getContent() instanceof Minion;
         boolean isHero = cell.getContent() instanceof Hero;
         boolean valid = false;
