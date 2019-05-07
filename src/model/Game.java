@@ -247,7 +247,7 @@ public class Game extends InGameMenu {
     private void twoSidedAttack(Unit attacker, Unit defender) {
         oneSidedAttack(attacker, defender);
         // no ON_DEFEND for now!
-        System.err.println("shit pel " + attacker.getName() + defender.getName() + defender.isDisarmed());
+//        System.err.println("shit pel " + attacker.getName() + defender.getName() + defender.isDisarmed());
         if (!defender.isDisarmed())
             rawAttack(defender, attacker);
     }
@@ -277,9 +277,9 @@ public class Game extends InGameMenu {
     public int attackUnitByUnit(Unit attacker, Unit defender, boolean oneSided) {
         int state = attackState(attacker, defender);
 
-        System.err.println(attacker.getName() + " is attacking " + defender.getName() + " on sided " + oneSided);
-        System.err.println("attack state : " + state);
-        forTesting(attacker, defender);
+//        System.err.println(attacker.getName() + " is attacking " + defender.getName() + " on sided " + oneSided);
+//        System.err.println("attack state : " + state);
+//        forTesting(attacker, defender);
 
         if (state != 0) {
             return state;
