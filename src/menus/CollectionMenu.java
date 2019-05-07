@@ -172,8 +172,4 @@ public class CollectionMenu extends Menu {
 
         return null;
     }
-
-    /*public static ArrayList<CollectionItem> getDeck(String s) {
-        return null;
-    }*/
 }
