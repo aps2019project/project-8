@@ -426,7 +426,6 @@ public class Game extends InGameMenu {
                     return GameState.WIN_FIRST_PLAYER;
                 return GameState.DRAW;
         }
-        return GameState.DRAW;
     }
 
     private void rewardPlayer(Player player) {
@@ -436,7 +435,7 @@ public class Game extends InGameMenu {
         card.getPlayer().addToGraveyard(card);
     }
 
-    Unit findUnitInGridByID(String cardID) {
+    private Unit findUnitInGridByID(String cardID) {
         for (Cell[] rowCells : map.getGrid()) {
             for (Cell cell : rowCells) {
                 if (cell.getContent() instanceof Unit) {
@@ -999,6 +998,7 @@ public class Game extends InGameMenu {
         // passives
         ArrayList<Unit> allUnits = new ArrayList<>(players[0].getUnits());
         allUnits.addAll(players[1].getUnits());
+        ArrayList<Unit> temp = new ArrayList<>();
         for (Unit unit : getCurrentPlayer().getUnits()) {
             prepareUnit(unit);
             for (int i = 0; i < unit.getSpecialPowers().size(); i++) {
@@ -1007,10 +1007,14 @@ public class Game extends InGameMenu {
                 if (specialPowerType == SpecialPowerType.PASSIVE) {
 //                    System.err.println(spell);
                     castSpell(unit, spell, unit.getX(), unit.getY(), unit.getPlayer());
-                    checkOnDeath(unit);
+                    if (unit.calculateHP() <= 0) {
+                        temp.add(unit);
+                    }
                 }
             }
         }
+        for (Unit unit : temp)
+            checkOnDeath(unit);
 
         if (hasAI[turn % 2]) {
             ai.makeMove();
