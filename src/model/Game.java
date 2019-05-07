@@ -122,8 +122,9 @@ public class Game extends InGameMenu {
         if (getDistance(selectedUnit.getX(), selectedUnit.getY(), x, y) <= 2) { // possibly we could add some moveRange to Unit class variables
             if (isPathEmpty(selectedUnit.getX(), selectedUnit.getY(), x, y, getCurrentPlayer())) {
                 Cell currentCell = map.getGrid()[selectedUnit.getX()][selectedUnit.getY()];
-                if (currentCell.getContent() != null && currentCell.getContent() instanceof Collectible) {
-                    Collectible collectible = (Collectible) currentCell.getContent();
+                Cell destinationCell = map.getGrid()[x][y];
+                if (destinationCell.getContent() != null && destinationCell.getContent() instanceof Collectible) {
+                    Collectible collectible = (Collectible) destinationCell.getContent();
                     collectible.setCollectionItemID(getNewID(collectible));
                     getCurrentPlayer().addCollectible(collectible);
                 }
@@ -774,8 +775,9 @@ public class Game extends InGameMenu {
         }
         switch (item.getItemType()) {
             case ADD_MANA:
-                if (item.getAddManaDuration() > (turn - startTime) / 2)
+                if (item.getAddManaDuration() > (turn - startTime) / 2) {
                     player.addMana(item.getAddMana());
+                }
                 if (!currentItems.get(player).contains(item)) {
                     currentItems.get(player).add(item);
                     itemCastingTurns.get(player).put(item, turn);
@@ -853,8 +855,10 @@ public class Game extends InGameMenu {
                         StandardCharsets.UTF_8), Collectible.class));
             }
             Random random = new Random();
-            map.getCell(random.nextInt(6), random.nextInt(10)).setContent(collectibles.get(random.nextInt(
-                    collectibles.size())));
+            Cell cell = map.getCell(random.nextInt(5), random.nextInt(9));
+            while (cell.hasContent())
+                cell = map.getCell(random.nextInt(5), random.nextInt(9));
+            cell.setContent(collectibles.get(random.nextInt(collectibles.size())));
         } catch (Exception ignored) {
             ignored.printStackTrace();
         }

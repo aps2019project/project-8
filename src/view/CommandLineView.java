@@ -344,7 +344,7 @@ public class CommandLineView implements View {
 
     @Override
     public void showCollectibles(ArrayList<Collectible> collectibles) {
-        collectibles.forEach(System.out::println);
+        collectibles.forEach(o -> System.out.println(o.getCollectionItemID() + ": " + o));
     }
 
     @Override
