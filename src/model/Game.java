@@ -133,6 +133,7 @@ public class Game extends InGameMenu {
                         itemCastingTurns.get(getCurrentPlayer()).put(collectible, turn);
                     }
                 }
+                selectedUnit.addFlags(destinationCell.getNumberOfFlags());
                 currentCell.setContent(null);
                 map.getGrid()[x][y].setContent(selectedUnit);
                 selectedUnit.setX(x);
@@ -164,6 +165,7 @@ public class Game extends InGameMenu {
             i++;
         }
         moveCardToGraveYard(unit);
+        map.getCell(unit.getX(), unit.getY()).addFlag(unit.getNumberOfFlags());
     }
 
     public void handlePoison(Unit unit) {
@@ -891,8 +893,15 @@ public class Game extends InGameMenu {
         turn = 0;
         putUnitCard(players[0].getHero(), 2, 0);
         turn = 1;
-        putUnitCard(players[1].getHero(), 2, 8);
+        putUnitCard(players[1].getHero(), 2, 1);
         turn = 0;
+        if (gameType == GameType.COLLECT_THE_FLAGS) {
+            for (int i = 0; i < numberOfFlags; i++) {
+                putARandomFlag();
+            }
+        } else if (gameType == GameType.HOLD_THE_FLAG) {
+            putARandomFlag();
+        }
         for (int i = 0; i < 2; i++) {
             players[i].initiateHand();
             if (players[i].getUsable() != null) {
@@ -918,6 +927,15 @@ public class Game extends InGameMenu {
 
         // initiate next turn
         initiateTurn();
+    }
+
+    private void putARandomFlag() {
+        Random random = new Random();
+        Cell cell = map.getCell(random.nextInt(5), random.nextInt(9));
+        while (cell.hasContent() || cell.getNumberOfFlags() != 0) {
+            cell = map.getCell(random.nextInt(5), random.nextInt(9));
+        }
+        cell.addFlag(1);
     }
 
     public void initiateTurn() {

@@ -251,6 +251,10 @@ public class Unit extends Card {
         isDead = dead;
     }
 
+    public void addFlags(int numberOfFlags) {
+        flags += numberOfFlags;
+    }
+
     // Builder
     public static class UnitBuilder {
         private int hitPoint = 0;
