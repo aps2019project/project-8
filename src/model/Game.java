@@ -226,6 +226,7 @@ public class Game extends InGameMenu {
         int i = 0;
         ArrayList<Spell> spells = attacker.getSpecialPowers();
         ArrayList<SpecialPowerType> types = attacker.getSpecialPowerTypes();
+        System.err.println(spells.size());
         for (Spell spell : spells) {
             if (types.get(i) == SpecialPowerType.ON_ATTACK || types.get(i) == SpecialPowerType.ON_USE) {
                 castSpellOnCellUnit(spell, map.getGrid()[defender.getX()][defender.getY()], attacker.getPlayer());
@@ -722,7 +723,8 @@ public class Game extends InGameMenu {
         if (targetArea != Spell.TargetArea.SELECTED_CELL || isValidTarget(spellCard.getSpell(), map.getGrid()[x][y], getCurrentPlayer())) {
             castSpell(spellCard.getSpell(), x, y, player);
         } else {
-            view.showTargetOutOfRangeError();
+            if (!hasAI[turn % 2])
+                view.showTargetOutOfRangeError();
             return false;
         }
         spellCard.setCollectionItemID(getNewID(spellCard));
@@ -734,7 +736,8 @@ public class Game extends InGameMenu {
         Cell[][] grid = map.getGrid();
         if (grid[x][y].getContent() != null && grid[x][y].getContent() instanceof Unit) {
             // the cell is already not empty
-            view.showTargetOutOfRangeError();
+            if (!hasAI[turn % 2])
+                view.showTargetOutOfRangeError();
             return false;
         }
         Player player = getCurrentPlayer();
@@ -1123,7 +1126,13 @@ public class Game extends InGameMenu {
             System.err.format("%-20s", card.getName());
         }
         System.err.println();
-        System.err.println("Player one usable item is: " + players[0].getDeck().getDeckUsableItem().getName());
+        System.err.print("Player one usable item is: ");
+        if (players[0].getDeck().getDeckUsableItem() == null) {
+            System.err.println("No Items selected");
+        } else {
+            System.err.println(players[0].getDeck().getDeckUsableItem().getName());
+        }
+
         for (int row = 0; row < getMap().getNumberOfRows(); row++) {
             for (int column = 0; column < getMap().getNumberOfColumns(); column++) {
                 Cell cell = getMap().getCell(row, column);
@@ -1140,7 +1149,13 @@ public class Game extends InGameMenu {
             System.err.format("%-20s", card.getName());
         }
         System.err.println();
-        System.err.println("Player 2 usable Item is: " + players[1].getDeck().getDeckUsableItem().getName());
+        System.err.println("Player 2 usable Item is: ");
+        if (players[1].getDeck().getDeckUsableItem() == null) {
+            System.err.println("No Items selected");
+        } else {
+            System.err.println(players[1].getDeck().getDeckUsableItem().getName());
+        }
+
     }
 
     public int getPrize() {
