@@ -36,7 +36,7 @@ public class Game extends InGameMenu {
     private int prize = 1000;
     private ArrayList<HashMap<String, Integer>> numberOfPlayedCollectionItems = new ArrayList<>(2);
     private AI ai;
-    private ArrayList<Collectible> collectibles;
+    private ArrayList<Collectible> collectibles = new ArrayList<>();
 
     public Game(Account firstPlayer, Account secondPlayer, GameType gameType, int numberOfFlags) {
         accounts = new Account[]{firstPlayer, secondPlayer};
@@ -855,7 +855,9 @@ public class Game extends InGameMenu {
             Random random = new Random();
             map.getCell(random.nextInt(6), random.nextInt(10)).setContent(collectibles.get(random.nextInt(
                     collectibles.size())));
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+            ignored.printStackTrace();
+        }
 
         // initiate next turn
         initiateTurn();
@@ -905,17 +907,19 @@ public class Game extends InGameMenu {
                 Cell cell = getMap().getCell(i, j);
                 if (!cell.hasContent())
                     continue;
-                Card card = (Card) cell.getContent();
-                if (card instanceof Unit) {
-                    Unit unit = (Unit) card;
-                    for (int t = unit.getBuffs().size() - 1; t >= 0; t--) {
-                        Buff buff = unit.getBuffs().get(t);
-                        buff.decrementDuration();
+                if (cell.getContent() instanceof Card) {
+                    Card card = (Card) cell.getContent();
+                    if (card instanceof Unit) {
+                        Unit unit = (Unit) card;
+                        for (int t = unit.getBuffs().size() - 1; t >= 0; t--) {
+                            Buff buff = unit.getBuffs().get(t);
+                            buff.decrementDuration();
 
-                        unit.receiveDamage(buff.getPoison());
+                            unit.receiveDamage(buff.getPoison());
 
-                        if (buff.getDuration() <= 0) {
-                            unit.getBuffs().remove(buff);
+                            if (buff.getDuration() <= 0) {
+                                unit.getBuffs().remove(buff);
+                            }
                         }
                     }
                 }
