@@ -1154,7 +1154,7 @@ public class Game extends InGameMenu {
                 player.getUnits().forEach(view::showUnit);
 
                 for(Unit unit: player.getUnits()) {
-                    printSpells(unit);
+                    unit.getBuffs().forEach(System.out::println);
                 }
 
             }
