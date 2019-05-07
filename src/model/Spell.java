@@ -12,13 +12,37 @@ public class Spell {
     private int gridY;
     private Buff[] buffs;
     private boolean canDispel;
+
     private boolean disarmable = true;
     private boolean poisonImmune = false;
     private boolean spellImmune = false;
-    private boolean isBully = false;
-    private boolean multiplied = false;
-    private boolean ignoreHoly = false;
+    private boolean isBully = false; //  ashkboos
+    private boolean multiplied = false; // pahlevane fars
+    private boolean ignoreHoly = false; // shire darande
 
+    public boolean isDisarmable() {
+        return disarmable;
+    }
+
+    public boolean isPoisonImmune() {
+        return poisonImmune;
+    }
+
+    public boolean isSpellImmune() {
+        return spellImmune;
+    }
+
+    public boolean isBully() {
+        return isBully;
+    }
+
+    public boolean isMultiplied() {
+        return multiplied;
+    }
+
+    public boolean isIgnoreHoly() {
+        return ignoreHoly;
+    }
 
     // Main Constructor
     public Spell(TargetType targetType, TargetArea targetArea, TargetUnit targetUnit, TargetUnitType targetUnitType,
@@ -55,10 +79,6 @@ public class Spell {
     protected Spell() {
     }
 
-    public boolean isMultiplied() {
-        return multiplied;
-    }
-
     public void setMultiplied(boolean multiplied) {
         this.multiplied = multiplied;
     }
@@ -85,10 +105,6 @@ public class Spell {
 
     public TargetUnitType getTargetUnitType() {
         return targetUnitType;
-    }
-
-    public boolean isIgnoreHoly() {
-        return ignoreHoly;
     }
 
     public void setIgnoreHoly(boolean ignoreHoly) {
@@ -232,4 +248,3 @@ public class Spell {
         }
     }
 }
-

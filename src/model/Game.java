@@ -473,6 +473,7 @@ public class Game extends InGameMenu {
                 unit.removeBuffs(player != unit.getPlayer());
                 // if the the player casting the spell is the same one owning this unit
             }
+            if (spell.)
 
             if (spell.getBuffs() != null) {
                 for (Buff buff : spell.getBuffs()) {
