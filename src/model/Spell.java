@@ -145,8 +145,9 @@ public class Spell {
 
     @Override
     public String toString() {
-        String ans = new String("");
-        return ans;
+        System.err.println();
+
+
     }
 
     public enum TargetType {
@@ -247,4 +248,5 @@ public class Spell {
             return new Spell(targetType, targetArea, targetUnit, targetUnitType, numberOfRandomTargets, gridX, gridY, buffs, canDispel);
         }
     }
+
 }

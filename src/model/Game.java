@@ -155,6 +155,11 @@ public class Game extends InGameMenu {
 
 
     private void checkOnDeath(Unit unit) {
+        Cell cell = map.getGrid()[unit.getX()][unit.getY()];
+        cell.setObjectOwner(null);
+        cell.setContent(null);
+        unit.setDead(true);
+
         int i = 0;
         for (Spell spell : unit.getSpecialPowers()) {
             if (unit.getSpecialPowerTypes().get(i) == SpecialPowerType.ON_DEATH) {
@@ -289,10 +294,6 @@ public class Game extends InGameMenu {
         attacker.setCanMove(false);
 
         if (defender.calculateHP() <= 0) {
-            Cell cell = map.getGrid()[defender.getX()][defender.getY()];
-            cell.setObjectOwner(null);
-            cell.setContent(null);
-            defender.setDead(true);
             checkOnDeath(defender);
         }
 
