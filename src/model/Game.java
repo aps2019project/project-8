@@ -251,8 +251,27 @@ public class Game extends InGameMenu {
     // returns 0 for success
     // if oneSided is true defender doesn't counter attack (for combo attacks)
 
+    public  void printSpells(Unit unit) {
+        System.err.println(unit.getName());
+        for (Spell spell : unit.getSpecialPowers()) {
+            for (Buff buff : spell.getBuffs())
+                System.err.println(buff);
+        }
+    }
+
+    public void forTesting(Unit attacker, Unit defender) {
+        printSpells(attacker);
+        printSpells(defender);
+    }
+
+
     public int attackUnitByUnit(Unit attacker, Unit defender, boolean oneSided) {
         int state = attackState(attacker, defender);
+
+        System.err.println(attacker.getName() + " is attacking " + defender.getName() + " on sided " + oneSided);
+        System.err.println("attack state : " + state);
+        forTesting(attacker, defender);
+
         if (state != 0) {
             return state;
         }
