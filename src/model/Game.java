@@ -28,7 +28,6 @@ public class Game extends InGameMenu {
     private boolean[] hasAI = new boolean[2];
     private Account[] accounts;
     private Unit selectedUnit;
-    private Card selectedCard; // probably has no use
     private Collectible selectedCollectible;
     private GameType gameType;
     private int prize = 1000;
