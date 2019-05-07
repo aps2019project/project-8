@@ -215,7 +215,7 @@ public class Game extends InGameMenu {
     // returns 0 for success
     // if oneSided is true defender doesn't counter attack (for combo attacks)
 
-    private int attackUnitByUnit(Unit attacker, Unit defender, boolean oneSided) {
+    public int attackUnitByUnit(Unit attacker, Unit defender, boolean oneSided) {
         int state = attackState(attacker, defender);
         if (state != 0) {
             return state;
@@ -531,9 +531,11 @@ public class Game extends InGameMenu {
             case ADJACENT_8:
                 for (int i = x - 1; i <= x + 1; i++) {
                     for (int j = y - 1; j <= y + 1; j++) {
-                        cell = map.getGrid()[i][j];
-                        if (inMap(i, j) && isValidTarget(spell, cell, player)) {
-                            targets.add(cell);
+                        if (inMap(i, j)) {
+                            cell = map.getGrid()[i][j];
+                            if (isValidTarget(spell, cell, player)) {
+                                targets.add(cell);
+                            }
                         }
                     }
                 }
@@ -542,20 +544,24 @@ public class Game extends InGameMenu {
             case ADJACENT_4:
                 for (int i = x - 1; i <= x + 1; i++) {
                     for (int j = y - 1; j <= y + 1; j++) {
-                        cell = map.getGrid()[i][j];
-                        if (inMap(i, j) && getDistance(i, j, x, y) == 1 && isValidTarget(spell, cell, player)) {
-                            targets.add(cell);
+                        if (inMap(i, j)) {
+                            cell = map.getGrid()[i][j];
+                            if (getDistance(i, j, x, y) == 1 && isValidTarget(spell, cell, player)) {
+                                targets.add(cell);
+                            }
                         }
                     }
                 }
                 break;
 
             case SELECTED_X_Y_GRID:
-                for (int i = x; i < Integer.min(x + spell.getGridX(), Map.NUMBER_OF_ROWS); i++) {
-                    for (int j = y; i < Integer.min(y + spell.getGridY(), Map.NUMBER_OF_COLUMNS); j++) {
-                        cell = map.getGrid()[i][j];
-                        if (inMap(i, j) && isValidTarget(spell, cell, player)) {
-                            targets.add(cell);
+                for (int i = x; i < x + spell.getGridX(); i++) {
+                    for (int j = y; i < y + spell.getGridY(); j++) {
+                        if (inMap(i, j)) {
+                            cell = map.getGrid()[i][j];
+                            if (isValidTarget(spell, cell, player)) {
+                                targets.add(cell);
+                            }
                         }
                     }
                 }
@@ -582,9 +588,11 @@ public class Game extends InGameMenu {
             case DISTANCE_2:
                 for (int i = x - 1; i <= x + 1; i++) {
                     for (int j = y - 1; j <= y + 1; j++) {
-                        cell = map.getGrid()[i][j];
-                        if (inMap(i, j) && getDistance(i, j, x, y) <= 2 && isValidTarget(spell, cell, player)) {
-                            targets.add(cell);
+                        if (inMap(i, j)) {
+                            cell = map.getGrid()[i][j];
+                            if (getDistance(i, j, x, y) <= 2 && isValidTarget(spell, cell, player)) {
+                                targets.add(cell);
+                            }
                         }
                     }
                 }
