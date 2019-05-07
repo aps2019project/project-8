@@ -58,7 +58,7 @@ public class UI {
     private static final String COORDINATES = "\\(\\d+, \\d+\\)";
     private static final String MOVE = "(?i:move to) " + COORDINATES;
     private static final String ATTACK = "(?i:attack) " + ID;
-    private static final String ATTACK_COMBO = "(?i:attack combo) " + ID + " (" + ID + ")+";
+    private static final String ATTACK_COMBO = "(?i:attack combo) " + ID + "( " + ID +")+";
     private static final String SPECIAL_POWER = "(?i:use special power) " + COORDINATES;
     private static final String SHOW_HAND = "(?i:show hand)";
     private static final String INSERT = "(?i:insert) " + COLLECTION_ITEM_NAME + " (?i:in) " + COORDINATES;
