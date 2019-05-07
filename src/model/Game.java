@@ -1008,6 +1008,8 @@ public class Game extends InGameMenu {
                     Card card = (Card) cell.getContent();
                     if (card instanceof Unit) {
                         Unit unit = (Unit) card;
+                        if (unit.getNumberOfFlags() > 0)
+                            unit.getPlayer().addNumberOfFlagTurns();
                         for (int t = unit.getBuffs().size() - 1; t >= 0; t--) {
                             Buff buff = unit.getBuffs().get(t);
                             handlePoison(unit);

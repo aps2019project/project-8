@@ -108,6 +108,10 @@ public class Player {
         return numberOfFlagTurns;
     }
 
+    public void addNumberOfFlagTurns() {
+        numberOfFlagTurns++;
+    }
+
     public void addUnit(Unit unit) {
         units.add(unit);
     }
