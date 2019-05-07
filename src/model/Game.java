@@ -182,7 +182,7 @@ public class Game extends InGameMenu {
 
     // no special powers included
     private void rawAttack(Unit attacker, Unit defender) {
-        int damage = Math.min(attacker.calculateAP() - defender.calculateHoly(), 0);
+        int damage = Math.max(attacker.calculateAP() - defender.calculateHoly(), 0);
         defender.receiveDamage(damage);
     }
 
@@ -224,6 +224,7 @@ public class Game extends InGameMenu {
         ArrayList<SpecialPowerType> types = attacker.getSpecialPowerTypes();
         for (Spell spell : spells) {
             if (types.get(i) == SpecialPowerType.ON_ATTACK || types.get(i) == SpecialPowerType.ON_USE) {
+                System.err.println("rostam ke special power nadare!!!!! bug");
                 castSpellOnCellUnit(spell, map.getGrid()[defender.getX()][defender.getY()], attacker.getPlayer());
             }
             i++;
@@ -236,6 +237,7 @@ public class Game extends InGameMenu {
     private void twoSidedAttack(Unit attacker, Unit defender) {
         oneSidedAttack(attacker, defender);
         // no ON_DEFEND for now!
+        System.err.println("one sided done");
         if (defender.isDisarmed())
             rawAttack(defender, attacker);
     }
@@ -280,12 +282,15 @@ public class Game extends InGameMenu {
                 view.showInvalidCardIDError();
             return false;
         }
+
+
         int state = attackUnitByUnit(selectedUnit, targetUnit, false);
         if (state == -1) { // has already attacked before or is stunned
             if (!hasAI[turn % 2])
                 view.logMessage("Card with " + selectedUnit.getID() + " can't attack");
             return false;
         }
+
         if (state == -2) { // can't attack because
             if (!hasAI[turn % 2])
                 view.logMessage("opponent minion is unavailable for attack");
@@ -294,7 +299,7 @@ public class Game extends InGameMenu {
         if (state == 1) {
             return false;
         }
-        return false;
+        return true;
     }
 
     public void attackCombo(String targetCardID, String[] friendlyCardsIDs) {
@@ -555,7 +560,7 @@ public class Game extends InGameMenu {
     }
 
     private ArrayList<Cell> getTargets(Spell spell, int x, int y, Player player) {
-        ArrayList<Cell> targets = new ArrayList<>(0);
+        ArrayList<Cell> targets = new ArrayList<>();
         switch (spell.getTargetArea()) {
             case ALL_OF_THE_MAP:
                 for (int i = 0; i < map.getNumberOfRows(); i++) {
@@ -851,7 +856,7 @@ public class Game extends InGameMenu {
                             }
                         }
                     }
-                    // Here      I add special power to units in deck
+                    // Here I add special power to units in deck
                     {
                         for (Card card : player.getDeck().getCards()) {
                             if (card instanceof Unit) {
@@ -880,7 +885,7 @@ public class Game extends InGameMenu {
         turn = 0;
         putUnitCard(players[0].getHero(), 2, 0);
         turn = 1;
-        putUnitCard(players[1].getHero(), 2, 8);
+        putUnitCard(players[1].getHero(), 2, 1);
         turn = 0;
         for (int i = 0; i < 2; i++) {
             players[i].initiateHand();
@@ -1147,23 +1152,5 @@ public class Game extends InGameMenu {
         WIN_FIRST_PLAYER,
         DRAW,
         WIN_SECOND_PLAYER
-    }
-
-    class Pair {
-        int x;
-        int y;
-
-        Pair(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        int getX() {
-            return x;
-        }
-
-        int getY() {
-            return y;
-        }
     }
 }
