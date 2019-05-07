@@ -142,14 +142,10 @@ public class Game extends InGameMenu {
             if (unit.getSpecialPowerTypes().get(i) == SpecialPowerType.ON_DEATH) {
                 int x = unit.getX();
                 int y = unit.getY();
-                if (unit.getName() == "siavash") {
-                    x = players[1 - turn % 2].getHero().getX();
-                    y = players[1 - turn % 2].getHero().getY();
-                }
                 castSpell(spell, x, y, unit.getPlayer());
             }
+            i++;
         }
-        i++;
     }
 
 
@@ -161,7 +157,7 @@ public class Game extends InGameMenu {
 
     // returns -1 if attacker couldn't attack and -2 if defender wasn't in range and 0 otherwise
     // returns 1 if the attacker/defender don't exist
-    private int canAttack(Unit attacker, Unit defender) {
+    private int attackState(Unit attacker, Unit defender) {
         if (attacker == null) {
             view.showNoUnitSelectedError();
             return 1;
@@ -219,8 +215,8 @@ public class Game extends InGameMenu {
     // returns 0 for success
     // if oneSided is true defender doesn't counter attack (for combo attacks)
 
-    int attackUnitByUnit(Unit attacker, Unit defender, boolean oneSided) {
-        int state = canAttack(attacker, defender);
+    private int attackUnitByUnit(Unit attacker, Unit defender, boolean oneSided) {
+        int state = attackState(attacker, defender);
         if (state != 0) {
             return state;
         }
@@ -277,7 +273,7 @@ public class Game extends InGameMenu {
             if (attacker.getPlayer() != getCurrentPlayer()) {
                 continue;
             }
-            int state = canAttack(attacker, defender);
+            int state = attackState(attacker, defender);
             if (state == -1) {
                 view.logMessage("Card with " + attacker.getID() + " can't attack");
                 return;
@@ -1002,8 +998,21 @@ public class Game extends InGameMenu {
         view.showCollectible(selectedCollectible);
     }
 
-    public void showAvailableOptions() {
-
+    public ArrayList<Card> showAvailableOptions() {
+        Player player = getCurrentPlayer();
+        ArrayList<Card> cards = new ArrayList<Card>();
+        for (Card card : player.getHand().getCards())
+            if (card.getManaCost() <= player.getMana())
+                cards.add(card);
+        for (Unit attacker : player.getUnits()) {
+            boolean canAttackOne = false;
+            for (Unit defender : players[1 - turn % 2].getUnits())
+                if (attackState(attacker, defender) == 0)
+                    canAttackOne = true;
+            if (canAttackOne || attacker.getCanMove())
+                cards.add(attacker);
+        }
+        return cards;
     }
 
     public int getPrize() {
