@@ -93,7 +93,11 @@ public class Game extends InGameMenu {
 
     public void moveSelectedUnit(int x, int y) {
         // can fly has got to do something in here
-        if (getDistance(selectedUnit.getX(), selectedUnit.getY(), x, y) <= 2 && selectedUnit.getCanMove()) { // possibly we could add some moveRange to Unit class variables
+        if (!selectedUnit.getCanMove()) {
+            view.showUnableToMoveError();
+            return;
+        }
+        if (getDistance(selectedUnit.getX(), selectedUnit.getY(), x, y) <= 2) { // possibly we could add some moveRange to Unit class variables
             if (isPathEmpty(selectedUnit.getX(), selectedUnit.getY(), x, y, getCurrentPlayer())) {
                 Cell currentCell = map.getGrid()[selectedUnit.getX()][selectedUnit.getY()];
                 if (currentCell.getContent() != null && currentCell.getContent() instanceof Collectible) {
@@ -105,14 +109,13 @@ public class Game extends InGameMenu {
                 map.getGrid()[x][y].setContent(selectedUnit);
                 selectedUnit.setX(x);
                 selectedUnit.setY(y);
-                view.logMessage(selectedUnit.getID() + " moved to " + x + " " + y);
+                view.logMessage(selectedUnit.getID() + " moved to " + (x + 1) + " " + (y + 1));
                 selectedUnit.setCanMove(false);
                 return;
             }
         }
         view.showInvalidTargetError();
     }
-
 
 
     private void checkOnDeath(Unit unit) {
@@ -130,6 +133,7 @@ public class Game extends InGameMenu {
         }
         i++;
     }
+
 
     // no special powers included
     private void rawAttack(Unit attacker, Unit defender) {
@@ -329,10 +333,11 @@ public class Game extends InGameMenu {
 
     public void selectCard(String cardID) {
         Unit unit = findUnitInGridByID(cardID);
-        if (unit == null) {
+        if (unit == null || unit.getPlayer() != getCurrentPlayer()) {
             view.showInvalidCardIDError();
             return;
         }
+        view.alertUnitSelection(cardID);
         selectedUnit = unit;
     }
 
@@ -439,8 +444,10 @@ public class Game extends InGameMenu {
                 // if the the player casting the spell is the same one owning this unit
             }
 
-            for (Buff buff : spell.getBuffs()) {
-                unit.addBuff(new Buff(buff));
+            if (spell.getBuffs() != null) {
+                for (Buff buff : spell.getBuffs()) {
+                    unit.addBuff(new Buff(buff));
+                }
             }
         }
     }
@@ -688,7 +695,7 @@ public class Game extends InGameMenu {
             inserted = castSpellCard((SpellCard) card, x, y, getCurrentPlayer());
         }
         if (inserted) {
-            view.logMessage(cardName + " with " + card.getID() + " inserted to " + "(" + x + "," + y + ")");
+            view.logMessage(cardName + " with " + card.getID() + " inserted to " + "(" + (x + 1) + "," + (y + 1) + ")");
             // log success message
             player.decreaseMana(card.getManaCost());
             player.getHand().getCards().remove(card);
@@ -771,8 +778,6 @@ public class Game extends InGameMenu {
     public void initiateGame() {
         numberOfPlayedCollectionItems.add(new HashMap<>());
         numberOfPlayedCollectionItems.add(new HashMap<>());
-        players[0].setMana(1000);
-        players[1].setMana(1000);
 
         turn = 0;
         putUnitCard(players[0].getHero(), 2, 0);
@@ -794,12 +799,13 @@ public class Game extends InGameMenu {
     public void initiateTurn() {
         // mana processes
         getCurrentPlayer().setMana((turn + 1) / 2 + 2);
+        getCurrentPlayer().refillHand();
 
         // item processes
         for (int i = 0; i < currentItems.size(); i++) {
 
-            System.err.println(i + 1);
-            System.err.println(currentItems.get(i));
+//            System.err.println(i + 1);
+//            System.err.println(currentItems.get(i));
 
             Item item = currentItems.get(i);
             int startTime = itemCastingTurns.get(i);
@@ -809,15 +815,21 @@ public class Game extends InGameMenu {
         // passives
         ArrayList<Unit> allUnits = new ArrayList<>(players[0].getUnits());
         allUnits.addAll(players[1].getUnits());
-        for (Unit unit: getCurrentPlayer().getUnits()) {
+        for (Unit unit : getCurrentPlayer().getUnits()) {
             for (int i = 0; i < unit.getSpecialPowers().size(); i++) {
                 Spell spell = unit.getSpecialPowers().get(i);
+                prepareUnit(unit);
                 SpecialPowerType specialPowerType = unit.getSpecialPowerTypes().get(i);
                 if (specialPowerType == SpecialPowerType.PASSIVE) {
                     castSpell(spell, unit.getX(), unit.getY(), unit.getPlayer());
                 }
             }
         }
+    }
+
+    private void prepareUnit(Unit unit) {
+        unit.setCanMove(true);
+        unit.setCanAttack(true);
     }
 
     public void endTurn() {
@@ -846,7 +858,7 @@ public class Game extends InGameMenu {
         for (int row = 0; row < getMap().getNumberOfRows(); row++)
             for (int column = 0; column < getMap().getNumberOfColumns(); column++) {
                 Cell cell = getMap().getCell(row, column);
-                if (cell.getContent() != null && cell.getContent() instanceof  Unit) {
+                if (cell.getContent() != null && cell.getContent() instanceof Unit) {
                     Unit unit = (Unit) cell.getContent();
                     unit.setCanAttack(true);
                     unit.setCanMove(true);
@@ -864,6 +876,7 @@ public class Game extends InGameMenu {
     }
 
     public Collectible selectCollectible(String collectibleID) {
+        view.alertCollectibleSelection(collectibleID);
         return getCurrentPlayer().getCollectible(collectibleID);
     }
 
@@ -876,6 +889,11 @@ public class Game extends InGameMenu {
     }
 
     public void showHand() {
+
+        //
+        System.err.println(getCurrentPlayer().getMana());
+        //
+
         view.showHand(getCurrentPlayer().getHand());
     }
 

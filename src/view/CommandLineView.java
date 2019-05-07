@@ -400,7 +400,7 @@ public class CommandLineView implements View {
     @Override
     public void showUnitInfo(Unit unit) {
         if (unit instanceof Hero) {
-            System.out.println("Hero");
+            System.out.println("Hero:");
             System.out.println("Name: " + unit.getName());
             System.out.println("Cost: " + unit.getPrice());
             System.out.println("Desc: " + unit.getDescription());
@@ -417,6 +417,10 @@ public class CommandLineView implements View {
 
     @Override
     public void showCollectible(Collectible collectible) {
+        if (collectible == null) {
+            System.err.println("No collectible selected.");
+            return;
+        }
         System.out.println(collectible);
     }
 
@@ -424,11 +428,26 @@ public class CommandLineView implements View {
     @Override
     public void showUnit(Unit unit) {
         System.out.println(unit.getCollectionItemID() + ": " + unit.getName() + ", health: " + unit.calculateHP() +
-                ", location: (" + unit.getX() + ", " + unit.getY() + "), power: " + unit.calculateAP());
+                ", location: (" + (unit.getX() + 1) + ", " + (unit.getY() + 1) + "), power: " + unit.calculateAP());
     }
 
     @Override
     public void showCooldownError() {
         System.out.println("Hero is not yet cool to use special power !");
+    }
+
+    @Override
+    public void alertUnitSelection(String cardID) {
+        System.out.println("Selected unit " + cardID);
+    }
+
+    @Override
+    public void alertCollectibleSelection(String collectibleID) {
+        System.out.println("Selected collectible " + collectibleID);
+    }
+
+    @Override
+    public void showUnableToMoveError() {
+        System.out.println("Unable to move.");
     }
 }

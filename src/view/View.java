@@ -140,4 +140,10 @@ View {
     void showCollectible(Collectible collectible);
 
     void showCooldownError();
+
+    void alertUnitSelection(String cardID);
+
+    void alertCollectibleSelection(String collectibleID);
+
+    void showUnableToMoveError();
 }

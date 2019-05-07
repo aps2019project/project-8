@@ -7,7 +7,7 @@ public class Player {
     private Deck deck;
     private ArrayList<Unit> units = new ArrayList<>();
     private int mana;
-    private ArrayList<Card> graveYard;
+    private ArrayList<Card> graveYard = new ArrayList<>();
     private ArrayList<Collectible> collectibles = new ArrayList<>();
     private int numberOfFlagTurns = 0;
 
@@ -138,5 +138,12 @@ public class Player {
                 return unit;
         }
         return null;
+    }
+
+    public void refillHand() {
+        if (hand.isFull())
+            return;
+        hand.addCard(deck.getNextCard());
+        deck.deleteNextCard();
     }
 }

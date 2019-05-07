@@ -52,6 +52,7 @@ public class UI {
     private static final String SHOW_MY_MINIONS = "(?i:show my minions)";
     private static final String SHOW_OPPONENT_MINIONS = "(?i:show opponent minions)";
     private static final String SHOW_CARD_INFO = "(?i:show card info) " + ID;
+    private static final String SHOW_INFO_CARD = "(?i:show info) " + ID;
     private static final String SELECT_COLLECTION_ITEM = "(?i:select) " + ID;
     private static final String COORDINATES = "\\(\\d+, \\d+\\)";
     private static final String MOVE = "(?i:move to) " + COORDINATES;
@@ -61,7 +62,7 @@ public class UI {
     private static final String SHOW_HAND = "(?i:show hand)";
     private static final String INSERT = "(?i:insert) " + COLLECTION_ITEM_NAME + " (?i:in) " + COORDINATES;
     private static final String END_TURN = "(?i:end turn)";
-    private static final String SHOW_COLLECTIBLES = "(?i:show collectables)";
+    private static final String SHOW_COLLECTIBLES = "(?i:show collectibles)";
     private static final String SHOW_INFO = "(?i:show info)";
     private static final String USE_COLLECTIBLE = "(?i:use) " + COORDINATES;
     private static final String SHOW_NEXT_CARD = "(?i:show next card)";
@@ -98,7 +99,7 @@ public class UI {
                     return;
                 }
             } catch (Exception ignored) {
-                System.err.println(ignored);
+                ignored.printStackTrace();
             }
                 command = scanner.nextLine();
                 command = command.trim();
@@ -392,7 +393,7 @@ public class UI {
             switchTo(Menus.GAME_MENU);
         else if (command.matches(HELP))
             GraveyardMenu.help();
-        else if (command.matches(SHOW_CARD_INFO))
+        else if (command.matches(SHOW_INFO_CARD))
             GraveyardMenu.showInfo(command.split(" ")[2]);
         else if (command.matches(SHOW_CARDS))
             GraveyardMenu.showCards();
