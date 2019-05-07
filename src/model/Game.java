@@ -161,9 +161,7 @@ public class Game extends InGameMenu {
         int i = 0;
         for (Spell spell : unit.getSpecialPowers()) {
             if (unit.getSpecialPowerTypes().get(i) == SpecialPowerType.ON_DEATH) {
-                int x = unit.getX();
-                int y = unit.getY();
-                castSpell(spell, x, y, unit.getPlayer());
+                castSpell(spell, unit.getX(), unit.getY(), unit.getPlayer());
             }
             i++;
         }
@@ -751,6 +749,7 @@ public class Game extends InGameMenu {
             return false;
         }
         spellCard.setCollectionItemID(getNewID(spellCard));
+        spellCard.setPlayer(player);
         moveCardToGraveYard(spellCard);
         return true;
     }
