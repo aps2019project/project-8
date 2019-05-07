@@ -5,7 +5,7 @@ package model;
 import com.gilecode.yagson.YaGson;
 import menus.InGameMenu;
 
-import javax.naming.CompositeName;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -163,10 +163,7 @@ public class Game extends InGameMenu {
     }
 
     public void handlePoison(Unit unit) {
-        boolean isPoisonImmune = false;
-        for (Spell spell : unit.getSpecialPowers())
-            isPoisonImmune |= spell.isPoisonImmune();
-        if (isPoisonImmune) {
+        if (unit.isPoisonImmune()) {
             return;
         }
         for (Buff buff : unit.getBuffs()) {
@@ -179,7 +176,13 @@ public class Game extends InGameMenu {
 
     // no special powers included
     private void rawAttack(Unit attacker, Unit defender) {
-        int damage = Math.min(attacker.calculateAP() - defender.calculateHoly(), 0);
+        int damage = attacker.calculateAP();
+        if (!attacker.isHolyIgnoring())
+            damage -= defender.calculateHoly();
+        damage = Math.max(0, damage);
+        if (defender.isBully() && defender.calculateAP() < attacker.calculateAP()) {
+            damage = 0;
+        }
         defender.receiveDamage(damage);
     }
 
@@ -259,7 +262,7 @@ public class Game extends InGameMenu {
         attacker.setCanAttack(false);
         attacker.setCanMove(false);
 
-        if (defender.calculateHP() < 0) {
+        if (defender.calculateHP() <= 0) {
             Cell cell = map.getGrid()[defender.getX()][defender.getY()];
             cell.setObjectOwner(null);
             cell.setContent(null);
@@ -512,10 +515,12 @@ public class Game extends InGameMenu {
                 unit.removeBuffs(player != unit.getPlayer());
                 // if the the player casting the spell is the same one owning this unit
             }
-//            if (spell.is)
 
+            boolean isSpellImmune = unit.isSpellImmune();
             if (spell.getBuffs() != null) {
                 for (Buff buff : spell.getBuffs()) {
+                    if (!buff.isPositiveBuff() && isSpellImmune)
+                        continue;
                     unit.addBuff(new Buff(buff));
                 }
             }

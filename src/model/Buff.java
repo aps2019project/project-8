@@ -126,4 +126,11 @@ public class Buff {
         }
     }
 
+    public boolean isPositiveBuff() {
+        if (canDisarm() || canStun()) {
+            return false;
+        }
+        int sum = effectHp + effectHp + holy - poison;
+        return sum > 0;
+    }
 }

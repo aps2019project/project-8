@@ -90,10 +90,6 @@ public class Unit extends Card {
         hitPoint -= damage;
     }
 
-    public boolean isAlive() {
-        return calculateHP() > 0;
-    }
-
     public int getAttackPoint() {
         return attackPoint;
     }
@@ -102,36 +98,10 @@ public class Unit extends Card {
         buffs.add(buff);
     }
 
-//    public void counterAttack(Unit unit) {
-    // ?
-//    }
-
-//    public void passTurn() {
-//         ?
-//    }
-
-    // boolean or void ? what is it supposed to do
-//    public boolean hasAttacked(Card card) {
-//        return false; // ?
-//    }
-
-//    public boolean equals() {
-//        return false;
-//         ?
-//    }
-
-    private boolean isPositiveBuff(Buff buff) {
-        if (buff.canDisarm() || buff.canStun()) {
-            return false;
-        }
-        int sum = buff.getEffectHp() + buff.getEffectAp() + buff.getHoly() - buff.getPoison();
-        return sum > 0;
-    }
-
     // true for positive and false for negative
     public void removeBuffs(boolean type) {
         for (int i = 0; i < buffs.size(); i++) {
-            if (isPositiveBuff(buffs.get(i)) == type) {
+            if (buffs.get(i).isPositiveBuff() == type) {
                 buffs.remove(i);
                 i--;
             }
@@ -205,11 +175,8 @@ public class Unit extends Card {
     }
 
     public boolean isDisarmed() {
-        for (Spell spell : specialPowers) {
-            if (spell.isDisarmable()) {
-                return false;
-            }
-        }
+        if (!isDisarmable())
+            return false;
         for (Buff buff : buffs) {
             if (buff.canDisarm()) {
                 return true;
@@ -225,6 +192,51 @@ public class Unit extends Card {
             }
         }
         return false;
+    }
+
+    // fields
+    // disarmable posionImmune and ... must be in Unit not spell
+
+    public boolean isDisarmable() {
+        boolean disarmable = true;
+        for (Spell spell : specialPowers)
+            disarmable &= spell.isDisarmable();
+        return disarmable;
+    }
+
+    public boolean isPoisonImmune() {
+        boolean poisonImmune = false;
+        for (Spell spell : specialPowers)
+            poisonImmune |= spell.isPoisonImmune();
+        return poisonImmune;
+    }
+
+    public boolean isSpellImmune() {
+        boolean isSpellImmune = false;
+        for (Spell spell : specialPowers)
+            isSpellImmune |= spell.isSpellImmune();
+        return isSpellImmune;
+    }
+
+    public boolean isBully() {
+        boolean isBully = false;
+        for (Spell spell  : specialPowers)
+            isBully |= spell.isBully();
+        return isBully;
+    }
+
+    public boolean isMultiplied() {
+        boolean isMultiplied = false;
+        for (Spell spell : specialPowers)
+            isMultiplied |= spell.isMultiplied();
+        return isMultiplied;
+    }
+
+    public boolean isHolyIgnoring() {
+        boolean isHolyIgnoring = false;
+        for (Spell spell : specialPowers)
+            isHolyIgnoring |= spell.isIgnoreHoly();
+        return isHolyIgnoring;
     }
 
     public int getNumberOfFlags() {
