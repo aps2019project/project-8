@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -937,11 +938,12 @@ public class Game extends InGameMenu {
                 collectibles.add(yaGson.fromJson(new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())),
                         StandardCharsets.UTF_8), Collectible.class));
             }
-            Random random = new Random();
-            Cell cell = map.getCell(random.nextInt(5), random.nextInt(9));
-            while (cell.hasContent())
-                cell = map.getCell(random.nextInt(5), random.nextInt(9));
-            cell.setContent(collectibles.get(random.nextInt(collectibles.size())));
+            Collections.shuffle(collectibles);
+            for (int i = 0; i < 4; i++) {
+                Random random = new Random();
+                Cell cell = getRandomEmptyCell();
+                cell.setContent(collectibles.get(Integer.min(i, collectibles.size())));
+            }
         } catch (Exception ignored) {
             ignored.printStackTrace();
         }
@@ -950,12 +952,17 @@ public class Game extends InGameMenu {
         initiateTurn();
     }
 
-    private void putARandomFlag() {
+    private Cell getRandomEmptyCell() {
         Random random = new Random();
         Cell cell = map.getCell(random.nextInt(5), random.nextInt(9));
-        while (cell.hasContent() || cell.getNumberOfFlags() != 0) {
+        while (cell.hasContent())
             cell = map.getCell(random.nextInt(5), random.nextInt(9));
-        }
+        return cell;
+    }
+
+    private void putARandomFlag() {
+        Random random = new Random();
+        Cell cell = getRandomEmptyCell();
         cell.addFlag(1);
     }
 
