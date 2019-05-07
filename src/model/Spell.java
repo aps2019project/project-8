@@ -15,10 +15,10 @@ public class Spell {
 
     private boolean disarmable = true; // goraze vahshi // ok!
     private boolean poisonImmune = false; // piran // ok!
-    private boolean spellImmune = false; // giv
-    private boolean isBully = false; //  ashkboos
+    private boolean spellImmune = false; // giv // ok!
+    private boolean isBully = false; //  ashkboos // ok!
     private boolean multiplied = false; // pahlevane fars
-    private boolean ignoreHoly = false; // shire darande
+    private boolean ignoreHoly = false; // shire darande // ok!
 
     public boolean isDisarmable() {
         return disarmable;

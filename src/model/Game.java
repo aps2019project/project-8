@@ -163,13 +163,11 @@ public class Game extends InGameMenu {
             }
             i++;
         }
+        moveCardToGraveYard(unit);
     }
 
     public void handlePoison(Unit unit) {
-        boolean isPoisonImmune = false;
-        for (Spell spell : unit.getSpecialPowers())
-            isPoisonImmune |= spell.isPoisonImmune();
-        if (isPoisonImmune) {
+        if (unit.isPoisonImmune()) {
             return;
         }
         for (Buff buff : unit.getBuffs()) {
@@ -182,7 +180,13 @@ public class Game extends InGameMenu {
 
     // no special powers included
     private void rawAttack(Unit attacker, Unit defender) {
-        int damage = Math.max(attacker.calculateAP() - defender.calculateHoly(), 0);
+        int damage = attacker.calculateAP();
+        if (!attacker.isHolyIgnoring())
+            damage -= defender.calculateHoly();
+        damage = Math.max(0, damage);
+        if (defender.isBully() && defender.calculateAP() < attacker.calculateAP()) {
+            damage = 0;
+        }
         defender.receiveDamage(damage);
     }
 
@@ -222,9 +226,9 @@ public class Game extends InGameMenu {
         int i = 0;
         ArrayList<Spell> spells = attacker.getSpecialPowers();
         ArrayList<SpecialPowerType> types = attacker.getSpecialPowerTypes();
+        System.err.println(spells.size());
         for (Spell spell : spells) {
             if (types.get(i) == SpecialPowerType.ON_ATTACK || types.get(i) == SpecialPowerType.ON_USE) {
-                System.err.println("rostam ke special power nadare!!!!! bug");
                 castSpellOnCellUnit(spell, map.getGrid()[defender.getX()][defender.getY()], attacker.getPlayer());
             }
             i++;
@@ -237,7 +241,6 @@ public class Game extends InGameMenu {
     private void twoSidedAttack(Unit attacker, Unit defender) {
         oneSidedAttack(attacker, defender);
         // no ON_DEFEND for now!
-        System.err.println("one sided done");
         if (defender.isDisarmed())
             rawAttack(defender, attacker);
     }
@@ -264,7 +267,7 @@ public class Game extends InGameMenu {
         attacker.setCanAttack(false);
         attacker.setCanMove(false);
 
-        if (defender.calculateHP() < 0) {
+        if (defender.calculateHP() <= 0) {
             Cell cell = map.getGrid()[defender.getX()][defender.getY()];
             cell.setObjectOwner(null);
             cell.setContent(null);
@@ -389,7 +392,7 @@ public class Game extends InGameMenu {
     }
 
     void moveCardToGraveYard(Card card) { // How to access the card
-
+        card.getPlayer().addToGraveyard(card);
     }
 
     Unit findUnitInGridByID(String cardID) {
@@ -520,10 +523,12 @@ public class Game extends InGameMenu {
                 unit.removeBuffs(player != unit.getPlayer());
                 // if the the player casting the spell is the same one owning this unit
             }
-//            if (spell.is)
 
+            boolean isSpellImmune = unit.isSpellImmune();
             if (spell.getBuffs() != null) {
                 for (Buff buff : spell.getBuffs()) {
+                    if (!buff.isPositiveBuff() && isSpellImmune)
+                        continue;
                     unit.addBuff(new Buff(buff));
                 }
             }
@@ -704,7 +709,6 @@ public class Game extends InGameMenu {
         if (spellCard.getName().equals("kingsGuard")) {
             Hero hero = getCurrentPlayer().getHero();
 
-
             if (hero == null) { // redundant
                 // must throw an exception
                 return false;
@@ -719,11 +723,12 @@ public class Game extends InGameMenu {
         if (targetArea != Spell.TargetArea.SELECTED_CELL || isValidTarget(spellCard.getSpell(), map.getGrid()[x][y], getCurrentPlayer())) {
             castSpell(spellCard.getSpell(), x, y, player);
         } else {
-            view.showTargetOutOfRangeError();
+            if (!hasAI[turn % 2])
+                view.showTargetOutOfRangeError();
             return false;
         }
         spellCard.setCollectionItemID(getNewID(spellCard));
-        getCurrentPlayer().addToGraveyard(spellCard);
+        moveCardToGraveYard(spellCard);
         return true;
     }
 
@@ -731,7 +736,8 @@ public class Game extends InGameMenu {
         Cell[][] grid = map.getGrid();
         if (grid[x][y].getContent() != null && grid[x][y].getContent() instanceof Unit) {
             // the cell is already not empty
-            view.showTargetOutOfRangeError();
+            if (!hasAI[turn % 2])
+                view.showTargetOutOfRangeError();
             return false;
         }
         Player player = getCurrentPlayer();
@@ -1121,7 +1127,13 @@ public class Game extends InGameMenu {
             System.err.format("%-20s", card.getName());
         }
         System.err.println();
-        System.err.println("Player one usable item is: " + players[0].getDeck().getDeckUsableItem().getName());
+        System.err.print("Player one usable item is: ");
+        if (players[0].getDeck().getDeckUsableItem() == null) {
+            System.err.println("No Items selected");
+        } else {
+            System.err.println(players[0].getDeck().getDeckUsableItem().getName());
+        }
+
         for (int row = 0; row < getMap().getNumberOfRows(); row++) {
             for (int column = 0; column < getMap().getNumberOfColumns(); column++) {
                 Cell cell = getMap().getCell(row, column);
@@ -1138,7 +1150,13 @@ public class Game extends InGameMenu {
             System.err.format("%-20s", card.getName());
         }
         System.err.println();
-        System.err.println("Player 2 usable Item is: " + players[1].getDeck().getDeckUsableItem().getName());
+        System.err.println("Player 2 usable Item is: ");
+        if (players[1].getDeck().getDeckUsableItem() == null) {
+            System.err.println("No Items selected");
+        } else {
+            System.err.println(players[1].getDeck().getDeckUsableItem().getName());
+        }
+
     }
 
     public int getPrize() {

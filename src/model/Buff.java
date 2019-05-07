@@ -71,6 +71,12 @@ public class Buff {
         return dispellable;
     }
 
+    public boolean isPositiveBuff() {
+        if (stun || disarm)
+            return false;
+        return holy + effectHp + effectAp - poison > 0;
+    }
+
     public static class BuffBuilder {
         private int duration = 0;
         private int holy = 0;
@@ -143,6 +149,12 @@ public class Buff {
         stringBuilder.append("\n");
         stringBuilder.append("\tbuff poison: ");
         stringBuilder.append(poison);
+        stringBuilder.append("\n");
+        stringBuilder.append("\tbuff disarm: ");
+        stringBuilder.append(disarm);
+        stringBuilder.append("\n");
+        stringBuilder.append("\tbuff stun: ");
+        stringBuilder.append(stun);
         stringBuilder.append("\n");
         return stringBuilder.toString();
     }
