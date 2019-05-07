@@ -72,7 +72,9 @@ public class UI {
     private static final String SHOW_CARDS = "(?i:show cards)";
     private static final String END_GAME = "(?i:end game)";
     private static final String SHOW_MENU = "(?i:show menu)";
+
     private static final String SHENGDEBAO = "(?i:shengdebao)";
+    private static final String KILL = "(?i:kill)" + ID;
 
     private static final String[] commands = {
             "create account [user name]",
@@ -371,6 +373,8 @@ public class UI {
                 GameMenu.showNextCard();
             else if (command.matches(SHENGDEBAO))
                 GameMenu.shengdeShow();
+            else if (command.matches(KILL))
+                GameMenu.kill(command.split(" ")[1]);
             else
                 view.showInvalidCommandError();
             GameMenu.checkGameCondition();

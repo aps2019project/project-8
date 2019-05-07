@@ -225,4 +225,8 @@ public class GameMenu extends InGameMenu {
     public static void shengdeShow() {
         game.shengdeShow();
     }
+
+    public static void kill(String targetID) {
+        game.killInstantly(targetID);
+    }
 }
