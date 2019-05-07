@@ -4,6 +4,7 @@ package model;
 
 import menus.InGameMenu;
 
+import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -124,14 +125,10 @@ public class Game extends InGameMenu {
             if (unit.getSpecialPowerTypes().get(i) == SpecialPowerType.ON_DEATH) {
                 int x = unit.getX();
                 int y = unit.getY();
-                if (unit.getName() == "siavash") {
-                    x = players[1 - turn % 2].getHero().getX();
-                    y = players[1 - turn % 2].getHero().getY();
-                }
                 castSpell(spell, x, y, unit.getPlayer());
             }
+            i++;
         }
-        i++;
     }
 
 
@@ -142,7 +139,7 @@ public class Game extends InGameMenu {
     }
 
     // returns -1 if attacker couldn't attack and -2 if defender wasn't in range and 0 otherwise
-    private int canAttack(Unit attacker, Unit defender) {
+    private int attackState(Unit attacker, Unit defender) {
         if (!attacker.getCanAttack() || attacker.isStunned())
             return -1;
         int distance = getDistance(attacker.getX(), attacker.getY(), defender.getX(), defender.getY());
@@ -193,7 +190,7 @@ public class Game extends InGameMenu {
     // if oneSided is true defender doesn't counter attack (for combo attacks)
 
     private int attackUnitByUnit(Unit attacker, Unit defender, boolean oneSided) {
-        int state = canAttack(attacker, defender);
+        int state = attackState(attacker, defender);
         if (state != 0) {
             return state;
         }
@@ -247,7 +244,7 @@ public class Game extends InGameMenu {
                 view.showInvalidCardIDError();
                 return;
             }
-            int state = canAttack(attacker, defender);
+            int state = attackState(attacker, defender);
             if (state == -1) {
                 view.logMessage("Card with " + selectedUnit.getID() + " can't attack");
                 return;
@@ -974,8 +971,21 @@ public class Game extends InGameMenu {
         view.showCollectible(selectedCollectible);
     }
 
-    public void showAvailableOptions() {
-
+    public ArrayList<Card> showAvailableOptions() {
+        Player player = getCurrentPlayer();
+        ArrayList<Card> cards = new ArrayList<Card>();
+        for (Card card : player.getHand().getCards())
+            if (card.getManaCost() <= player.getMana())
+                cards.add(card);
+        for (Unit attacker : player.getUnits()) {
+            boolean canAttackOne = false;
+            for (Unit defender : players[1 - turn % 2].getUnits())
+                if (attackState(attacker, defender) == 0)
+                    canAttackOne = true;
+            if (canAttackOne || attacker.getCanMove())
+                cards.add(attacker);
+        }
+        return cards;
     }
 
     public int getPrize() {
