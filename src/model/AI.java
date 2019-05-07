@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Random;
 
 // SmsS is great
 public class AI {
@@ -18,6 +19,7 @@ public class AI {
     private static int newID = 0;
     private Deck deck;
     private Game game;
+    Random rand = new Random();
 
     public AI(Deck deck) {
         this.deck = new Deck(deck);
@@ -54,7 +56,8 @@ public class AI {
                 gameMode.put(id, Integer.parseInt(bufferedReader.readLine()));
                 gamePrize.put(id, Integer.parseInt(bufferedReader.readLine()));
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     private static CollectionItem getCollectionItem(String collectionItemID) {
@@ -94,7 +97,8 @@ public class AI {
                     }
                     return null;
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return null;
     }
 
@@ -118,11 +122,76 @@ public class AI {
         return new Player(deck);
     }
 
+    public void selectRandomUnit() {
+        Player player = game.getCurrentPlayer();
+        int index = rand.nextInt(player.getUnits().size());
+        game.selectCard(player.getUnits().get(index).getID());
+    }
+
     public void makeMove() {
-        //rand 0 -> n
-        //e.g. : rand = 0 -> move : game.moveSelectedUnit(rand, rand)
-        //e.g. : rand = 1 -> insert : game.insertCard(randCardName, rand, rand)
-        //..
+        // select random unit and move with it
+        {
+            selectRandomUnit();
+            int r, c;
+            do {
+                r = rand.nextInt(game.getMap().getNumberOfRows());
+                c = rand.nextInt(game.getMap().getNumberOfColumns());
+            } while (!game.moveSelectedUnit(r, c));
+        }
+        // put a random card in map
+        {
+            Player player = game.getCurrentPlayer();
+            int index, r, c;
+            do {
+                index = rand.nextInt(player.getHand().getCards().size());
+                r = rand.nextInt(game.getMap().getNumberOfRows());
+                c = rand.nextInt(game.getMap().getNumberOfColumns());
+            } while (!game.insertCard(player.getHand().getCards().get(index).getName(), r, c));
+        }
+        // select random unit and attack with it
+        {
+            // -2 defender is not in range of attacker
+            // -1 attacker can't attack
+            // 0 everything works
+
+            Player attacker;
+            Player defender;
+            if (game.getCurrentPlayer() == game.getFirstPlayer()) {
+                attacker = game.getFirstPlayer();
+                defender = game.getSecondPlayer();
+            } else {
+                attacker = game.getSecondPlayer();
+                defender = game.getFirstPlayer();
+            }
+
+            int indexAttacker, indexDefender;
+            do {
+                indexAttacker = rand.nextInt(attacker.getUnits().size());
+                indexDefender = rand.nextInt(defender.getUnits().size());
+            } while (game.attackUnitByUnit(attacker.getUnits().get(indexAttacker), attacker.getUnits().get(indexDefender),false) != 0);
+        }
+        // cast special power with a random unit if any unit has
+        {
+            int r, c;
+            do {
+                r = rand.nextInt(game.getMap().getNumberOfRows());
+                c = rand.nextInt(game.getMap().getNumberOfColumns());
+            } while (!game.useHeroSpecialPower(r, c));
+        }
+        // cast collectible if it has any
+        {
+            Player player = game.getCurrentPlayer();
+            if (!player.getCollectibles().isEmpty()) {
+                int index = rand.nextInt(player.getCollectibles().size());
+                String collectibleID = player.getCollectibles().get(index).getID();
+                if (game.selectCollectible(collectibleID)) {
+                    int r, c;
+                    r = rand.nextInt(game.getMap().getNumberOfRows());
+                    c = rand.nextInt(game.getMap().getNumberOfColumns());
+                    game.applyCollectible(r, c);
+                }
+            }
+        }
     }
 
     public void setGame(Game game) {
