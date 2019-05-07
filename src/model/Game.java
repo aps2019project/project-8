@@ -378,8 +378,14 @@ public class Game extends InGameMenu {
             return false;
         }
         hero.resetRemainingCooldown();
+        int i = 0;
         for (Spell spell : hero.getSpecialPowers()) {
+            if (spell.getTargetUnit() == Spell.TargetUnit.SELF) {
+                x = hero.getX();
+                y = hero.getY();
+            }
             castSpell(spell, x, y, getCurrentPlayer());
+            i++;
         }
         return true;
     }
