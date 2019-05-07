@@ -74,7 +74,7 @@ public class UI {
     private static final String SHOW_MENU = "(?i:show menu)";
 
     private static final String SHENGDEBAO = "(?i:shengdebao)";
-    private static final String KILL = "(?i:kill)" + ID;
+    private static final String KILL = "(?i:kill) " + ID;
 
     private static final String[] commands = {
             "create account [user name]",
