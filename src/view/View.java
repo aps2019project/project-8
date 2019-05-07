@@ -152,4 +152,12 @@ View {
     void showNoUnitSelectedError();
 
     void showUncastableItemError();
+
+    void showUnitsReadyToMove(ArrayList<Card> availableOptions);
+
+    void showUnitsAvailableForAttack(ArrayList<Card> availableOptions);
+
+    void showCardsReadyToBePlayed(ArrayList<Card> availableOptions);
+
+    void showWinner(Account account, int prize);
 }

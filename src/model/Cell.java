@@ -63,4 +63,12 @@ public class Cell {
     public String toString() {
         return (content == null ? "NONE" : "FULL");
     }
+
+    public int getNumberOfFlags() {
+        return numberOfFlags;
+    }
+
+    public void addFlag(int i) {
+        numberOfFlags += i;
+    }
 }

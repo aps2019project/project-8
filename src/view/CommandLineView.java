@@ -2,10 +2,18 @@ package view;
 
 import model.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
 public class CommandLineView implements View {
     private static final String DASH = " - ";
+
+    private static void appendTabs(StringBuilder stringBuilder, int d) {
+        for (int i = 0; i < d; i++) {
+            stringBuilder.append("\t");
+        }
+    }
 
     @Override
     public void showAccountCreationError() {
@@ -201,12 +209,6 @@ public class CommandLineView implements View {
         showCollectionItemsWithPrice(collectionItems, "Buy");
     }
 
-    private static void appendTabs(StringBuilder stringBuilder, int d) {
-        for (int i = 0; i < d; i++) {
-            stringBuilder.append("\t");
-        }
-    }
-
     private void showCollectionItemsWithPrice(ArrayList<CollectionItem> collectionItems, String tradeKind) {
         System.out.println("Heroes :");
         int index = 1;
@@ -358,7 +360,7 @@ public class CommandLineView implements View {
 
     @Override
     public void showInfoOfCollectionItem(CollectionItem collectionItem) {
-        System.err.println(collectionItem.showInfo());
+        System.out.println(collectionItem.showInfo());
     }
 
     @Override
@@ -372,7 +374,7 @@ public class CommandLineView implements View {
             System.out.println("No one has a flag!");
             return;
         }
-        for (Unit unit: units) {
+        for (Unit unit : units) {
             System.out.print(unit.getName() + " for " + unit.getPlayer().getName() + " has " + unit.getNumberOfFlags() + " flags!\n");
         }
     }
@@ -418,7 +420,7 @@ public class CommandLineView implements View {
     @Override
     public void showCollectible(Collectible collectible) {
         if (collectible == null) {
-            System.err.println("No collectible selected.");
+            System.out.println("No collectible selected.");
             return;
         }
         System.out.println(collectible);
@@ -464,5 +466,29 @@ public class CommandLineView implements View {
     @Override
     public void showUncastableItemError() {
         System.out.println("This item is not castable.");
+    }
+
+    @Override
+    public void showUnitsReadyToMove(ArrayList<Card> availableOptions) {
+        System.out.println("Units ready to move:");
+        availableOptions.forEach(System.out::println);
+    }
+
+    @Override
+    public void showUnitsAvailableForAttack(ArrayList<Card> availableOptions) {
+        System.out.println("Units available for attack:");
+        availableOptions.forEach(System.out::println);
+    }
+
+    @Override
+    public void showCardsReadyToBePlayed(ArrayList<Card> availableOptions) {
+        System.out.println("Cards ready to be played:");
+        availableOptions.forEach(System.out::println);
+    }
+
+    @Override
+    public void showWinner(Account account, int prize) {
+        System.out.println("The winner is: " + account.getName());
+        System.out.println(prize + "$$$");
     }
 }

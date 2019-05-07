@@ -145,7 +145,9 @@ public class Spell {
 
     @Override
     public String toString() {
-        String ans = new String("");
+        String ans = "buffs : \n";
+        for (Buff buff : buffs)
+            ans.concat(buff.toString());
         return ans;
     }
 
@@ -247,4 +249,5 @@ public class Spell {
             return new Spell(targetType, targetArea, targetUnit, targetUnitType, numberOfRandomTargets, gridX, gridY, buffs, canDispel);
         }
     }
+
 }
