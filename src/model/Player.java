@@ -120,8 +120,8 @@ public class Player {
         collectibles.add(collectible);
     }
 
-    public void addToGraveyard(SpellCard spellCard) {
-        graveYard.add(spellCard);
+    public void addToGraveyard(Card card) {
+        graveYard.add(card);
     }
 
     public Collectible getCollectible(String collectibleID) {
