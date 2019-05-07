@@ -1005,7 +1005,7 @@ public class Game extends InGameMenu {
                 Spell spell = unit.getSpecialPowers().get(i);
                 SpecialPowerType specialPowerType = unit.getSpecialPowerTypes().get(i);
                 if (specialPowerType == SpecialPowerType.PASSIVE) {
-                    System.err.println(spell);
+//                    System.err.println(spell);
                     castSpell(unit, spell, unit.getX(), unit.getY(), unit.getPlayer());
                     if (unit.calculateHP() <= 0) {
                         temp.add(unit);
@@ -1152,11 +1152,10 @@ public class Game extends InGameMenu {
         for (Player player : players)
             if (player != getCurrentPlayer()) {
                 player.getUnits().forEach(view::showUnit);
-
-                for(Unit unit: player.getUnits()) {
-                    unit.getBuffs().forEach(System.out::println);
-                }
-
+//                System.err.println("SDFSD");
+//                for(Unit unit: player.getUnits()) {
+//                    System.err.println(unit);
+//                }
             }
     }
 
