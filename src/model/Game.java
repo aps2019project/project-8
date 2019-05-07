@@ -867,6 +867,7 @@ public class Game extends InGameMenu {
 
         if (hasAI[turn % 2]) {
             ai.makeMove();
+            endTurn();
         }
     }
 
@@ -913,6 +914,9 @@ public class Game extends InGameMenu {
 
         // add turn
         turn++;
+
+        selectedUnit = null;
+        selectedCollectible = null;
 
         // initiate next turn
         initiateTurn();
