@@ -2,9 +2,14 @@
 
 package model;
 
+import com.gilecode.yagson.YaGson;
 import menus.InGameMenu;
 
+import javax.naming.CompositeName;
+import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -31,6 +36,7 @@ public class Game extends InGameMenu {
     private int prize = 1000;
     private ArrayList<HashMap<String, Integer>> numberOfPlayedCollectionItems = new ArrayList<>(2);
     private AI ai;
+    private ArrayList<Collectible> collectibles;
 
     public Game(Account firstPlayer, Account secondPlayer, GameType gameType, int numberOfFlags) {
         accounts = new Account[]{firstPlayer, secondPlayer};
@@ -834,6 +840,17 @@ public class Game extends InGameMenu {
                 castItem(usable, players[i], 0, 0, 0);
             }
         }
+
+        try {
+            for (File file : new File("./gameData/Collectibles/").listFiles()) {
+                YaGson yaGson = new YaGson();
+                collectibles.add(yaGson.fromJson(new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())),
+                        StandardCharsets.UTF_8), Collectible.class));
+            }
+            Random random = new Random();
+            map.getCell(random.nextInt(6), random.nextInt(10)).setContent(collectibles.get(random.nextInt(
+                    collectibles.size())));
+        } catch (Exception ignored) {}
 
         // initiate next turn
         initiateTurn();
