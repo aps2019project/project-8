@@ -153,6 +153,9 @@ public class Game extends InGameMenu {
 
 
     private void checkOnDeath(Unit unit) {
+        if (unit.isDead()) {
+            return;
+        }
         Cell cell = map.getGrid()[unit.getX()][unit.getY()];
         cell.setObjectOwner(null);
         cell.setContent(null);
@@ -169,12 +172,22 @@ public class Game extends InGameMenu {
         unit.getPlayer().removeFromUnits(unit);
     }
 
-    public void handlePoison(Unit unit) {
+    private void handlePoison(Unit unit) {
         if (unit.isPoisonImmune()) {
             return;
         }
         for (Buff buff : unit.getBuffs()) {
             unit.receiveDamage(buff.getPoison());
+        }
+        if (unit.calculateHP() <= 0) {
+            checkOnDeath(unit);
+        }
+    }
+
+    private void handleFireCell(Unit unit) {
+        Cell cell = map.getCell(unit.getX(), unit.getY());
+        for (Buff buff : cell.getEffects()) {
+            unit.addBuff(buff);
         }
         if (unit.calculateHP() <= 0) {
             checkOnDeath(unit);
@@ -187,7 +200,7 @@ public class Game extends InGameMenu {
         if (!attacker.isHolyIgnoring())
             damage -= defender.calculateHoly();
         damage = Math.max(0, damage);
-        if (defender.isBully() && defender.calculateAP() < attacker.calculateAP()) {
+        if (defender.isBully() && defender.calculateAP() > attacker.calculateAP()) {
             damage = 0;
         }
         defender.receiveDamage(damage);
@@ -993,6 +1006,7 @@ public class Game extends InGameMenu {
                 SpecialPowerType specialPowerType = unit.getSpecialPowerTypes().get(i);
                 if (specialPowerType == SpecialPowerType.PASSIVE) {
                     castSpell(unit, spell, unit.getX(), unit.getY(), unit.getPlayer());
+                    checkOnDeath(unit);
                 }
             }
         }
@@ -1024,6 +1038,7 @@ public class Game extends InGameMenu {
                         for (int t = unit.getBuffs().size() - 1; t >= 0; t--) {
                             Buff buff = unit.getBuffs().get(t);
                             handlePoison(unit);
+                            handleFireCell(unit);
                             buff.decrementDuration();
                             if (buff.getDuration() <= 0) {
                                 unit.getBuffs().remove(t);
