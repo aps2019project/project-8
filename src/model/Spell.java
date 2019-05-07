@@ -145,6 +145,9 @@ public class Spell {
 
     @Override
     public String toString() {
+        if (buffs == null) {
+            return "null buff";
+        }
         String ans = "buffs : \n";
         for (Buff buff : buffs)
             ans = ans.concat(buff.toString());

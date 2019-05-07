@@ -1020,7 +1020,7 @@ public class Game extends InGameMenu {
                             handlePoison(unit);
                             buff.decrementDuration();
                             if (buff.getDuration() <= 0) {
-                                unit.getBuffs().remove(buff);
+                                unit.getBuffs().remove(t);
                             }
                         }
                     }
@@ -1126,11 +1126,19 @@ public class Game extends InGameMenu {
         for (Player player : players)
             if (player != getCurrentPlayer()) {
                 player.getUnits().forEach(view::showUnit);
+
+                for(Unit unit: player.getUnits()) {
+                    printSpells(unit);
+                }
+
             }
     }
 
     public void showMyMinions() {
         getCurrentPlayer().getUnits().forEach(view::showUnit);
+        for(Unit unit: getCurrentPlayer().getUnits()) {
+            printSpells(unit);
+        }
     }
 
     public void showCardInfo(String cardID) {
