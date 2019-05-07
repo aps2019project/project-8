@@ -150,25 +150,17 @@ public class AI {
         }
         // select random unit and attack with it
         {
-            // -2 defender is not in range of attacker
-            // -1 attacker can't attack
-            // 0 everything works
-
-            Player attacker;
             Player defender;
             if (game.getCurrentPlayer() == game.getFirstPlayer()) {
-                attacker = game.getFirstPlayer();
                 defender = game.getSecondPlayer();
             } else {
-                attacker = game.getSecondPlayer();
                 defender = game.getFirstPlayer();
             }
 
-            int indexAttacker, indexDefender;
-//            do {
-//                indexAttacker = rand.nextInt(attacker.getUnits().size());
-//                indexDefender = rand.nextInt(defender.getUnits().size());
-//            } while (game.attackUnitByUnit(attacker.getUnits().get(indexAttacker), attacker.getUnits().get(indexDefender),false) != 0);
+            int index;
+            do {
+                index = rand.nextInt(defender.getUnits().size());
+            } while (!game.attackTargetCardWithSelectedUnit(defender.getUnits().get(index).getID()));
         }
         // cast special power with a random unit if any unit has
         {
