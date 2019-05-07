@@ -460,4 +460,9 @@ public class CommandLineView implements View {
     public void showNoUnitSelectedError() {
         System.out.println("No unit selected.");
     }
+
+    @Override
+    public void showUncastableItemError() {
+        System.out.println("This item is not castable.");
+    }
 }

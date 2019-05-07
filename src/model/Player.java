@@ -146,4 +146,8 @@ public class Player {
         hand.addCard(deck.getNextCard());
         deck.deleteNextCard();
     }
+
+    public void removeCollectible(Item item) {
+        collectibles.remove(item);
+    }
 }

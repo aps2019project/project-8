@@ -5,7 +5,6 @@ package model;
 import com.gilecode.yagson.YaGson;
 import menus.InGameMenu;
 
-import javax.naming.CompositeName;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -777,6 +776,11 @@ public class Game extends InGameMenu {
             case ADD_MANA:
                 if (item.getAddManaDuration() > (turn - startTime) / 2) {
                     player.addMana(item.getAddMana());
+                    if (item instanceof Collectible) {
+                        getCurrentPlayer().removeCollectible(item);
+                        currentItems.get(getCurrentPlayer()).remove(item);
+                        itemCastingTurns.get(getCurrentPlayer()).remove(item);
+                    }
                 }
                 if (!currentItems.get(player).contains(item)) {
                     currentItems.get(player).add(item);
@@ -826,6 +830,8 @@ public class Game extends InGameMenu {
                 castSpell(item.getSpell(), r, c, player);
                 break;
         }
+        if (item instanceof Collectible)
+            getCurrentPlayer().removeCollectible(item);
     }
 
     public void initiateGame() {
@@ -855,9 +861,9 @@ public class Game extends InGameMenu {
                         StandardCharsets.UTF_8), Collectible.class));
             }
             Random random = new Random();
-            Cell cell = map.getCell(random.nextInt(5), random.nextInt(9));
+            Cell cell = map.getCell(random.nextInt(3), random.nextInt(5));
             while (cell.hasContent())
-                cell = map.getCell(random.nextInt(5), random.nextInt(9));
+                cell = map.getCell(random.nextInt(3), random.nextInt(5));
             cell.setContent(collectibles.get(random.nextInt(collectibles.size())));
         } catch (Exception ignored) {
             ignored.printStackTrace();
@@ -959,6 +965,10 @@ public class Game extends InGameMenu {
     }
 
     public void applyCollectible(int row, int column) {
+        if (selectedCollectible.getItemType() == ItemType.ADD_MANA) {
+            view.showUncastableItemError();
+            return;
+        }
         castItem(selectedCollectible, getCurrentPlayer(), row, column, turn);
     }
 
