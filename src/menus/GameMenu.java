@@ -22,7 +22,7 @@ public class GameMenu extends InGameMenu {
             "Show collectibles",
             "Select [collectible id]",
             "Show info",
-            "Use ([x], [y   ])",
+            "Use ([x], [y])",
             "Show next card",
             "Enter graveyard",
             "Help",
