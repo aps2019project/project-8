@@ -170,6 +170,7 @@ public class Game extends InGameMenu {
         }
         moveCardToGraveYard(unit);
         map.getCell(unit.getX(), unit.getY()).addFlag(unit.getNumberOfFlags());
+        unit.getPlayer().removeFromUnits(unit);
     }
 
     public void handlePoison(Unit unit) {
@@ -232,7 +233,6 @@ public class Game extends InGameMenu {
         int i = 0;
         ArrayList<Spell> spells = attacker.getSpecialPowers();
         ArrayList<SpecialPowerType> types = attacker.getSpecialPowerTypes();
-        System.err.println(spells.size());
         for (Spell spell : spells) {
             if (types.get(i) == SpecialPowerType.ON_ATTACK || types.get(i) == SpecialPowerType.ON_USE) {
                 castSpellOnCellUnit(spell, map.getGrid()[defender.getX()][defender.getY()], attacker.getPlayer());
@@ -1180,7 +1180,21 @@ public class Game extends InGameMenu {
                 if (!cell.hasContent() && !(cell.getContent() instanceof CollectionItem)) {
                     System.err.format("%-20s", ".");
                 } else {
-                    System.err.format("%-20s", ((CollectionItem) cell.getContent()).getName());
+                    CollectionItem collectionItem = (CollectionItem) cell.getContent();
+                    String output = collectionItem.getName();
+                    if (collectionItem instanceof Unit) {
+                        if (((Unit) collectionItem).getPlayer() == players[0]) {
+                            output = "+" + output + "+";
+                            if (((Unit) collectionItem) == selectedUnit) {
+                                output = "[" + output + "]";
+                            }
+                        } else {
+                            output = "-" + output + "-";
+                        }
+                    } else {
+                        output = "(" + output + ")";
+                    }
+                    System.err.format("%-20s", output);
                 }
             }
             System.err.print("\n");
