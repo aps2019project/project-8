@@ -988,6 +988,7 @@ public class Game extends InGameMenu {
                 Spell spell = unit.getSpecialPowers().get(i);
                 SpecialPowerType specialPowerType = unit.getSpecialPowerTypes().get(i);
                 if (specialPowerType == SpecialPowerType.PASSIVE) {
+                    System.err.println(spell);
                     castSpell(spell, unit.getX(), unit.getY(), unit.getPlayer());
                 }
             }
@@ -1250,5 +1251,6 @@ public class Game extends InGameMenu {
             return;
         }
         unit.receiveDamage(1000000);
+        checkOnDeath(unit);
     }
 }
