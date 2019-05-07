@@ -414,7 +414,6 @@ public class Game extends InGameMenu {
     }
 
     private void rewardPlayer(Player player) {
-
     }
 
     void moveCardToGraveYard(Card card) { // How to access the card
@@ -638,7 +637,7 @@ public class Game extends InGameMenu {
 
             case SELECTED_X_Y_GRID:
                 for (int i = x; i < x + spell.getGridX(); i++) {
-                    for (int j = y; i < y + spell.getGridY(); j++) {
+                    for (int j = y; j < y + spell.getGridY(); j++) {
                         if (inMap(i, j)) {
                             cell = map.getGrid()[i][j];
                             if (isValidTarget(castingUnit, spell, cell, player)) {

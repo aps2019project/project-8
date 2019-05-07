@@ -160,4 +160,6 @@ View {
     void showCardsReadyToBePlayed(ArrayList<Card> availableOptions);
 
     void showWinner(Account account, int prize);
+
+    void alertCPUWin();
 }

@@ -972,7 +972,7 @@ View
       <w>232</w>
       <h>616</h>
     </coordinates>
-    <panel_attributes>UI
+    <panel_attributes>menus.UI
 --
 _-ACCOUNT_NAME: String_
 _-CREATE_ACCOUNT: String_

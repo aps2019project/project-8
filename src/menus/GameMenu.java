@@ -209,13 +209,18 @@ public class GameMenu extends InGameMenu {
                 }
                 secondAccount = null;
                 view.showWinner(account, game.getPrize());
+                UI.endGame();
                 break;
             case WIN_SECOND_PLAYER:
                 account.addMatch(new Match((hasAI ? null : secondAccount), Result.WIN, LocalDateTime.now()));
-                secondAccount.addMatch(new Match(account, Result.WIN, LocalDateTime.now()));
-                secondAccount.payMoney(game.getPrize());
+                if (!(secondAccount == null)) {
+                    secondAccount.addMatch(new Match(account, Result.WIN, LocalDateTime.now()));
+                    secondAccount.payMoney(game.getPrize());
+                    view.showWinner(secondAccount, game.getPrize());
+                } else
+                    view.alertCPUWin();
                 secondAccount = null;
-                view.showWinner(secondAccount, game.getPrize());
+                UI.endGame();
                 break;
             default:
                 return;

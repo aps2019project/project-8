@@ -491,4 +491,9 @@ public class CommandLineView implements View {
         System.out.println("The winner is: " + account.getName());
         System.out.println(prize + "$$$");
     }
+
+    @Override
+    public void alertCPUWin() {
+        System.out.println("HAHA! You lost to this stupid shit!");
+    }
 }
