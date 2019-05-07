@@ -3,6 +3,7 @@ import com.gilecode.yagson.YaGsonBuilder;
 import menus.*;
 import model.AI;
 import model.Account;
+import model.Game;
 import view.CommandLineView;
 import view.View;
 
