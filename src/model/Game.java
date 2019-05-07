@@ -1042,25 +1042,24 @@ public class Game extends InGameMenu {
     public void shengdeShow() {
         System.err.println("Player 1 Mana(" + players[0].getMana() + ") hand:");
         for (Card card : players[0].getHand().getCards()) {
-            System.err.print(card.getName() + "\t");
+            System.err.format("%-20s", card.getName());
         }
         System.err.println();
         System.err.println("Player one usable item is: " + players[0].getDeck().getDeckUsableItem().getName());
         for (int row = 0; row < getMap().getNumberOfRows(); row++) {
             for (int column = 0; column < getMap().getNumberOfColumns(); column++) {
                 Cell cell = getMap().getCell(row, column);
-                if (!cell.hasContent() || !(cell.getContent() instanceof Unit)) {
-                    System.err.format("%-15s", ".");
+                if (!cell.hasContent() && !(cell.getContent() instanceof CollectionItem)) {
+                    System.err.format("%-20s", ".");
                 } else {
-                    Unit unit = (Unit) cell.getContent();
-                    System.err.format("%-15s",unit.getName());
+                    System.err.format("%-20s", ((CollectionItem) cell.getContent()).getName());
                 }
             }
             System.err.print("\n");
         }
         System.err.println("Player 2 Mana(" + players[1].getMana() + ") hand:");
         for (Card card : players[1].getHand().getCards()) {
-            System.err.print(card.getName() + "\t");
+            System.err.format("%-20s", card.getName());
         }
         System.err.println();
         System.err.println("Player 2 usable Item is: " + players[1].getDeck().getDeckUsableItem().getName());
