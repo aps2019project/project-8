@@ -2,7 +2,7 @@ package gen;
 
 import java.io.File;
 
-class JsonMaker {
+public class JsonMaker {
 
     private static void deleteAll(String dir) {
         File myDir = new File(dir);
