@@ -336,6 +336,7 @@ public class Game extends InGameMenu {
         if (state == 1) {
             return false;
         }
+        checkForDeath();
         return true;
     }
 
@@ -370,6 +371,7 @@ public class Game extends InGameMenu {
             Unit attacker = findUnitInGridByID(friendlyCardsIDs[i]);
             attackUnitByUnit(attacker, defender, i != 0);
         }
+        checkForDeath();
     }
 
     // x, y must be valid
@@ -399,6 +401,7 @@ public class Game extends InGameMenu {
             castSpell(hero, spell, x, y, getCurrentPlayer());
             i++;
         }
+        checkForDeath();
         return true;
     }
 
@@ -721,7 +724,6 @@ public class Game extends InGameMenu {
     }
 
     private void checkOnSpawn(Unit unit, int x, int y) { // when inserting a unit card
-
         ArrayList<SpecialPowerType> types = unit.getSpecialPowerTypes();
         ArrayList<Spell> spells = unit.getSpecialPowers();
 
@@ -790,6 +792,13 @@ public class Game extends InGameMenu {
         unit.setY(y);
         unit.setCollectionItemID(getNewID(unit));
         player.addUnit(unit);
+        for (int i = 0; i < unit.getSpecialPowers().size(); i++) {
+            Spell spell = unit.getSpecialPowers().get(i);
+            SpecialPowerType specialPowerType = unit.getSpecialPowerTypes().get(i);
+            if (specialPowerType == SpecialPowerType.PASSIVE) {
+                castSpell(unit, spell, unit.getX(), unit.getY(), unit.getPlayer());
+            }
+        }
         return true;
     }
 
@@ -830,6 +839,7 @@ public class Game extends InGameMenu {
         }
         if (card instanceof SpellCard) {
             inserted = castSpellCard((SpellCard) card, x, y, getCurrentPlayer());
+            checkForDeath();
         }
         if (inserted) {
             if (!hasAI[turn % 2])
@@ -838,6 +848,7 @@ public class Game extends InGameMenu {
             player.decreaseMana(card.getManaCost());
             player.getHand().getCards().remove(card);
         }
+        checkForDeath();
         return true;
     }
 
@@ -1000,13 +1011,12 @@ public class Game extends InGameMenu {
         ArrayList<Unit> allUnits = new ArrayList<>(players[0].getUnits());
         allUnits.addAll(players[1].getUnits());
         ArrayList<Unit> temp = new ArrayList<>();
-        for (Unit unit : getCurrentPlayer().getUnits()) {
+        for (Unit unit : allUnits) {
             prepareUnit(unit);
             for (int i = 0; i < unit.getSpecialPowers().size(); i++) {
                 Spell spell = unit.getSpecialPowers().get(i);
                 SpecialPowerType specialPowerType = unit.getSpecialPowerTypes().get(i);
                 if (specialPowerType == SpecialPowerType.PASSIVE) {
-//                    System.err.println(spell);
                     castSpell(unit, spell, unit.getX(), unit.getY(), unit.getPlayer());
                     if (unit.calculateHP() <= 0) {
                         temp.add(unit);
@@ -1021,6 +1031,18 @@ public class Game extends InGameMenu {
             ai.makeMove();
             endTurn();
         }
+    }
+
+    private void checkForDeath() {
+        ArrayList<Unit> allUnits = new ArrayList<>(players[0].getUnits());
+        allUnits.addAll(players[1].getUnits());
+        ArrayList<Unit> temp = new ArrayList<>();
+        for (Unit unit : allUnits)
+            if (unit.calculateHP() <= 0) {
+                temp.add(unit);
+            }
+        for (Unit unit : temp)
+            checkOnDeath(unit);
     }
 
     private void prepareUnit(Unit unit) {
@@ -1091,6 +1113,7 @@ public class Game extends InGameMenu {
             return;
         }
         castItem(selectedCollectible, getCurrentPlayer(), row, column, turn);
+        checkForDeath();
     }
 
     public void showNextCardInDeck() {
@@ -1155,9 +1178,10 @@ public class Game extends InGameMenu {
             if (player != getCurrentPlayer()) {
                 player.getUnits().forEach(view::showUnit);
 //                System.err.println("SDFSD");
-//                for(Unit unit: player.getUnits()) {
+                for (Unit unit : player.getUnits()) {
+//                    System.err.println(unit.getBuffs());
 //                    System.err.println(unit);
-//                }
+                }
             }
     }
 

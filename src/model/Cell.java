@@ -23,12 +23,12 @@ public class Cell {
     void passTurn() {
     }
 
-    void setContent(Object content) {
-        this.content = content;
-    }
-
     Object getContent() {
         return this.content;
+    }
+
+    void setContent(Object content) {
+        this.content = content;
     }
 
     public boolean hasContent() {
@@ -55,8 +55,6 @@ public class Cell {
     public void setObjectOwner(Player player) {
         objectOwner = player;
     }
-
-
 
 
     @Override

@@ -195,7 +195,7 @@ public class Unit extends Card {
     }
 
     // fields
-    // disarmable posionImmune and ... must be in Unit not spell
+    // disarmable poisonImmune and ... must be in Unit not spell
 
     public boolean isDisarmable() {
         boolean disarmable = true;

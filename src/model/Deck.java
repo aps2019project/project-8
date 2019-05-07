@@ -21,7 +21,7 @@ public class Deck {
     public Deck(Deck deck) {
         if (deck.deckUsableItem != null)
             deckUsableItem = new Usable(deck.deckUsableItem);
-        new ArrayList<>(deck.cards).forEach(o -> cards.add(o));
+        new ArrayList<>(deck.cards).forEach(o -> cards.add(getCopy(o)));
         if (deck.deckHero != null)
             deckHero = new Hero(deck.deckHero);
         deckName = deck.deckName;
@@ -118,8 +118,8 @@ public class Deck {
     }
 
     public boolean hasCollectionItem(String collectionItemID) {
-        if (collectionItemsIDs == null)
-            System.err.println("FUCK");
+//        if (collectionItemsIDs == null)
+//            System.err.println("FUCK");
         return collectionItemsIDs.contains(collectionItemID);
     }
 

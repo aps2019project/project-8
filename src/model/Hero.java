@@ -1,5 +1,6 @@
 package model;
 
+
 public class Hero extends Unit {
     private int cooldown;
     private int remainingCooldown;
@@ -10,11 +11,16 @@ public class Hero extends Unit {
         this.cooldown = cooldown;
         remainingCooldown = 0;
     }
+
+    public Hero(Hero hero) {
+        super(hero);
+        this.cooldown = hero.cooldown;
+    }
     
     // Copy constructor
-    public Hero(Unit unit) {
-        super(unit);
-    }
+//    public Hero(Unit unit) {
+//        super(unit);
+//    }
 
     public Hero() {}
 
@@ -41,7 +47,11 @@ public class Hero extends Unit {
                 "AP : " + getAttackPoint() + DASH +
                 "HP : " + getHitPoint() + DASH +
                 "Class : " + getUnitType() + DASH +
-                "Special power : " + getSpecialPowerDescription();
+                "Special power : " + getSpecialPowerDescription() + DASH +
+                "Cooldown : " + getOriginalCooldown();
     }
 
+    public int getOriginalCooldown() {
+        return cooldown;
+    }
 }
