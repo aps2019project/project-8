@@ -1228,4 +1228,12 @@ public class Game extends InGameMenu {
         DRAW,
         WIN_SECOND_PLAYER
     }
+
+    public void killInstantly(String unitID) {
+        Unit unit = findUnitInGridByID(unitID);
+        if (unit == null) {
+            return;
+        }
+        unit.receiveDamage(1000000);
+    }
 }
