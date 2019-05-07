@@ -989,7 +989,7 @@ public class Game extends InGameMenu {
                 Spell spell = unit.getSpecialPowers().get(i);
                 SpecialPowerType specialPowerType = unit.getSpecialPowerTypes().get(i);
                 if (specialPowerType == SpecialPowerType.PASSIVE) {
-                    System.err.println(spell);
+//                    System.err.println(spell);
                     castSpell(unit, spell, unit.getX(), unit.getY(), unit.getPlayer());
                 }
             }
@@ -1132,7 +1132,7 @@ public class Game extends InGameMenu {
                 player.getUnits().forEach(view::showUnit);
 
                 for(Unit unit: player.getUnits()) {
-                    printSpells(unit);
+//                    printSpells(unit);
                 }
 
             }
@@ -1141,7 +1141,7 @@ public class Game extends InGameMenu {
     public void showMyMinions() {
         getCurrentPlayer().getUnits().forEach(view::showUnit);
         for(Unit unit: getCurrentPlayer().getUnits()) {
-            printSpells(unit);
+//            printSpells(unit);
         }
     }
 
