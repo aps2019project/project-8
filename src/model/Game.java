@@ -858,7 +858,7 @@ public class Game extends InGameMenu {
         }
 
         if (hasAI[turn % 2]) {
-            ai.move();
+            ai.makeMove();
         }
     }
 

@@ -213,4 +213,8 @@ public class GameMenu extends InGameMenu {
                 return;
         }
     }
+
+    public static void shengdeShow() {
+        game.shengdeShow();
+    }
 }
