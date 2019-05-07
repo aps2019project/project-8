@@ -4,6 +4,7 @@ package model;
 
 import menus.InGameMenu;
 
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -21,7 +22,7 @@ public class Game extends InGameMenu {
     private int turn;
     private Map map = new Map();
     private Player[] players;
-    private boolean[] hasAI;
+    private boolean[] hasAI = new boolean[2];
     private Account[] accounts;
     private Unit selectedUnit;
     private Card selectedCard; // probably has no use
@@ -29,6 +30,7 @@ public class Game extends InGameMenu {
     private GameType gameType;
     private int prize = 1000;
     private ArrayList<HashMap<String, Integer>> numberOfPlayedCollectionItems = new ArrayList<>(2);
+    private AI ai;
 
     public Game(Account firstPlayer, Account secondPlayer, GameType gameType, int numberOfFlags) {
         accounts = new Account[]{firstPlayer, secondPlayer};
@@ -40,6 +42,7 @@ public class Game extends InGameMenu {
     }
 
     public Game(Account account, AI ai, GameType gameType, int numberOfFlags) {
+        this.ai = ai;
         accounts = new Account[]{account, null};
         players = new Player[]{account.getPlayer().setName(account.getName()), ai.getPlayer().setName("COM")};
         hasAI[0] = false;
@@ -852,6 +855,10 @@ public class Game extends InGameMenu {
                     castSpell(spell, unit.getX(), unit.getY(), unit.getPlayer());
                 }
             }
+        }
+
+        if (hasAI[turn % 2]) {
+            ai.move();
         }
     }
 
