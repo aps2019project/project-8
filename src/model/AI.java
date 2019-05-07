@@ -130,23 +130,26 @@ public class AI {
 
     public void makeMove() {
         // select random unit and move with it
+        int limitOnWhile = 20;
         {
             selectRandomUnit();
-            int r, c;
+            int r, c, counter = 0;
             do {
                 r = rand.nextInt(game.getMap().getNumberOfRows());
                 c = rand.nextInt(game.getMap().getNumberOfColumns());
-            } while (!game.moveSelectedUnit(r, c));
+                counter++;
+            } while (!game.moveSelectedUnit(r, c) && counter < limitOnWhile);
         }
         // put a random card in map
         {
             Player player = game.getCurrentPlayer();
-            int index, r, c;
+            int index, r, c, counter = 0;
             do {
                 index = rand.nextInt(player.getHand().getCards().size());
                 r = rand.nextInt(game.getMap().getNumberOfRows());
                 c = rand.nextInt(game.getMap().getNumberOfColumns());
-            } while (!game.insertCard(player.getHand().getCards().get(index).getName(), r, c));
+                counter++;
+            } while (!game.insertCard(player.getHand().getCards().get(index).getName(), r, c) && counter < limitOnWhile);
         }
         // select random unit and attack with it
         {
@@ -157,18 +160,20 @@ public class AI {
                 defender = game.getFirstPlayer();
             }
 
-            int index;
+            int index, counter = 0;
             do {
                 index = rand.nextInt(defender.getUnits().size());
-            } while (!game.attackTargetCardWithSelectedUnit(defender.getUnits().get(index).getID()));
+                counter++;
+            } while (!game.attackTargetCardWithSelectedUnit(defender.getUnits().get(index).getID()) && counter < limitOnWhile);
         }
         // cast special power with a random unit if any unit has
         {
-            int r, c;
+            int r, c, counter = 0;
             do {
                 r = rand.nextInt(game.getMap().getNumberOfRows());
                 c = rand.nextInt(game.getMap().getNumberOfColumns());
-            } while (!game.useHeroSpecialPower(r, c));
+                counter++;
+            } while (!game.useHeroSpecialPower(r, c) && counter < limitOnWhile);
         }
         // cast collectible if it has any
         {

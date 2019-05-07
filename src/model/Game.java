@@ -36,7 +36,7 @@ public class Game extends InGameMenu {
     private int prize = 1000;
     private ArrayList<HashMap<String, Integer>> numberOfPlayedCollectionItems = new ArrayList<>(2);
     private AI ai;
-    private ArrayList<Collectible> collectibles;
+    private ArrayList<Collectible> collectibles = new ArrayList<>();
 
     public Game(Account firstPlayer, Account secondPlayer, GameType gameType, int numberOfFlags) {
         accounts = new Account[]{firstPlayer, secondPlayer};
@@ -112,11 +112,13 @@ public class Game extends InGameMenu {
     public boolean moveSelectedUnit(int x, int y) { // returns true if successful
         // can fly has got to do something in here
         if (selectedUnit == null) {
-            view.showNoUnitSelectedError();
+            if(!hasAI[turn%2])
+                view.showNoUnitSelectedError();
             return false;
         }
         if (!selectedUnit.getCanMove()) {
-            view.showUnableToMoveError();
+            if(!hasAI[turn%2])
+                view.showUnableToMoveError();
             return false;
         }
         if (getDistance(selectedUnit.getX(), selectedUnit.getY(), x, y) <= 2) { // possibly we could add some moveRange to Unit class variables
@@ -131,16 +133,19 @@ public class Game extends InGameMenu {
                 map.getGrid()[x][y].setContent(selectedUnit);
                 selectedUnit.setX(x);
                 selectedUnit.setY(y);
-                view.logMessage(selectedUnit.getID() + " moved to " + (x + 1) + " " + (y + 1));
+                if (!hasAI[turn%2])
+                    view.logMessage(selectedUnit.getID() + " moved to " + (x + 1) + " " + (y + 1));
                 selectedUnit.setCanMove(false);
                 return true;
             }
             else {
-                view.showPathBlockedError();
+                if (!hasAI[turn%2])
+                    view.showPathBlockedError();
                 return true;
             }
         }
-        view.showTargetOutOfRangeError();
+        if(!hasAI[turn%2])
+            view.showTargetOutOfRangeError();
         return false;
     }
 
@@ -268,16 +273,19 @@ public class Game extends InGameMenu {
     public boolean attackTargetCardWithSelectedUnit(String targetCardID) {
         Unit targetUnit = findUnitInGridByID(targetCardID);
         if (targetUnit == null || targetUnit.getPlayer() == getCurrentPlayer()) { // invalid card id
-            view.showInvalidCardIDError();
+            if (!hasAI[turn%2])
+                view.showInvalidCardIDError();
             return false;
         }
         int state = attackUnitByUnit(selectedUnit, targetUnit, false);
         if (state == -1) { // has already attacked before or is stunned
-            view.logMessage("Card with " + selectedUnit.getID() + " can't attack");
+            if (!hasAI[turn%2])
+                view.logMessage("Card with " + selectedUnit.getID() + " can't attack");
             return false;
         }
         if (state == -2) { // can't attack because
-            view.logMessage("opponent minion is unavailable for attack");
+            if (!hasAI[turn%2])
+                view.logMessage("opponent minion is unavailable for attack");
             return false;
         }
         if (state == 1) {
@@ -303,10 +311,12 @@ public class Game extends InGameMenu {
             }
             int state = attackState(attacker, defender);
             if (state == -1) {
-                view.logMessage("Card with " + attacker.getID() + " can't attack");
+                if (!hasAI[turn%2])
+                    view.logMessage("Card with " + attacker.getID() + " can't attack");
                 return;
             } else if (state == -2) {
-                view.logMessage("opponent minion is unavailable for attack");
+                if (!hasAI[turn%2])
+                    view.logMessage("opponent minion is unavailable for attack");
                 return;
             }
         }
@@ -325,11 +335,13 @@ public class Game extends InGameMenu {
             return false;
         }
         if (player.getMana() < hero.getManaCost()) {
-            view.showNotEnoughManaError();
+            if (!hasAI[turn%2])
+                view.showNotEnoughManaError();
             return false;
         }
         if (hero.getRemainingCooldown() != 0) {
-            view.showCooldownError();
+            if (!hasAI[turn%2])
+                view.showCooldownError();
             return false;
         }
         hero.resetRemainingCooldown();
@@ -389,10 +401,12 @@ public class Game extends InGameMenu {
     public void selectCard(String cardID) {
         Unit unit = findUnitInGridByID(cardID);
         if (unit == null || unit.getPlayer() != getCurrentPlayer()) {
-            view.showInvalidCardIDError();
+            if (!hasAI[turn%2])
+                view.showInvalidCardIDError();
             return;
         }
-        view.alertUnitSelection(cardID);
+        if (!hasAI[turn%2])
+            view.alertUnitSelection(cardID);
         selectedUnit = unit;
     }
 
@@ -740,15 +754,18 @@ public class Game extends InGameMenu {
         Player player = getCurrentPlayer();
         Card card = player.findCardInHand(cardName);
         if (card == null) { // no such card is found in player's hand
-            view.showInvalidCardError();
+            if (!hasAI[turn%2])
+                view.showInvalidCardError();
             return false;
         }
         if (!inMap(x, y)) {
-            view.showInvalidCoordinatesError();
+            if (!hasAI[turn%2])
+                view.showInvalidCoordinatesError();
             return false;
         }
         if (player.getMana() < card.getManaCost()) { // player doesn't have enough mana
-            view.showNotEnoughManaError();
+            if (!hasAI[turn%2])
+                view.showNotEnoughManaError();
             return false;
         }
         boolean inserted = false;
@@ -759,7 +776,8 @@ public class Game extends InGameMenu {
             inserted = castSpellCard((SpellCard) card, x, y, getCurrentPlayer());
         }
         if (inserted) {
-            view.logMessage(cardName + " with " + card.getID() + " inserted to " + "(" + (x + 1) + "," + (y + 1) + ")");
+            if (!hasAI[turn%2])
+                view.logMessage(cardName + " with " + card.getID() + " inserted to " + "(" + (x + 1) + "," + (y + 1) + ")");
             // log success message
             player.decreaseMana(card.getManaCost());
             player.getHand().getCards().remove(card);
@@ -870,7 +888,9 @@ public class Game extends InGameMenu {
             Random random = new Random();
             map.getCell(random.nextInt(6), random.nextInt(10)).setContent(collectibles.get(random.nextInt(
                     collectibles.size())));
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+            ignored.printStackTrace();
+        }
 
         // initiate next turn
         initiateTurn();
@@ -920,17 +940,19 @@ public class Game extends InGameMenu {
                 Cell cell = getMap().getCell(i, j);
                 if (!cell.hasContent())
                     continue;
-                Card card = (Card) cell.getContent();
-                if (card instanceof Unit) {
-                    Unit unit = (Unit) card;
-                    for (int t = unit.getBuffs().size() - 1; t >= 0; t--) {
-                        Buff buff = unit.getBuffs().get(t);
-                        buff.decrementDuration();
+                if (cell.getContent() instanceof Card) {
+                    Card card = (Card) cell.getContent();
+                    if (card instanceof Unit) {
+                        Unit unit = (Unit) card;
+                        for (int t = unit.getBuffs().size() - 1; t >= 0; t--) {
+                            Buff buff = unit.getBuffs().get(t);
+                            buff.decrementDuration();
 
-                        unit.receiveDamage(buff.getPoison());
+                            unit.receiveDamage(buff.getPoison());
 
-                        if (buff.getDuration() <= 0) {
-                            unit.getBuffs().remove(buff);
+                            if (buff.getDuration() <= 0) {
+                                unit.getBuffs().remove(buff);
+                            }
                         }
                     }
                 }
@@ -960,7 +982,8 @@ public class Game extends InGameMenu {
     }
 
     public boolean selectCollectible(String collectibleID) {
-        view.alertCollectibleSelection(collectibleID);
+        if (!hasAI[turn%2])
+            view.alertCollectibleSelection(collectibleID);
         selectedCollectible = getCurrentPlayer().getCollectible(collectibleID);
         return selectedCollectible != null;
     }
