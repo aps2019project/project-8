@@ -79,7 +79,7 @@ View {
 
     void showInvalidCardError();
 
-    void showInvalidTargetError();
+    void showTargetOutOfRangeError();
 
     void showNotEnoughManaError();
 
@@ -146,4 +146,8 @@ View {
     void alertCollectibleSelection(String collectibleID);
 
     void showUnableToMoveError();
+
+    void showPathBlockedError();
+
+    void showNoUnitSelectedError();
 }

@@ -91,11 +91,15 @@ public class Game extends InGameMenu {
         }
     }
 
-    public void moveSelectedUnit(int x, int y) {
+    public boolean moveSelectedUnit(int x, int y) {
         // can fly has got to do something in here
+        if (selectedUnit == null) {
+            view.showNoUnitSelectedError();
+            return false;
+        }
         if (!selectedUnit.getCanMove()) {
             view.showUnableToMoveError();
-            return;
+            return false;
         }
         if (getDistance(selectedUnit.getX(), selectedUnit.getY(), x, y) <= 2) { // possibly we could add some moveRange to Unit class variables
             if (isPathEmpty(selectedUnit.getX(), selectedUnit.getY(), x, y, getCurrentPlayer())) {
@@ -111,10 +115,15 @@ public class Game extends InGameMenu {
                 selectedUnit.setY(y);
                 view.logMessage(selectedUnit.getID() + " moved to " + (x + 1) + " " + (y + 1));
                 selectedUnit.setCanMove(false);
-                return;
+                return true;
+            }
+            else {
+                view.showPathBlockedError();
+                return true;
             }
         }
-        view.showInvalidTargetError();
+        view.showTargetOutOfRangeError();
+        return true;
     }
 
 
@@ -142,7 +151,16 @@ public class Game extends InGameMenu {
     }
 
     // returns -1 if attacker couldn't attack and -2 if defender wasn't in range and 0 otherwise
+    // returns 1 if the attacker/defender don't exist
     private int canAttack(Unit attacker, Unit defender) {
+        if (attacker == null) {
+            view.showNoUnitSelectedError();
+            return 1;
+        }
+        if (defender == null) {
+            view.showNoSuchUnitFoundError();
+            return 1;
+        }
         if (!attacker.getCanAttack() || attacker.isStunned())
             return -1;
         int distance = getDistance(attacker.getX(), attacker.getY(), defender.getX(), defender.getY());
@@ -221,7 +239,7 @@ public class Game extends InGameMenu {
 
     public void attackTargetCardWithSelectedUnit(String targetCardID) {
         Unit targetUnit = findUnitInGridByID(targetCardID);
-        if (targetUnit == null) { // invalid card id
+        if (targetUnit == null || targetUnit.getPlayer() == getCurrentPlayer()) { // invalid card id
             view.showInvalidCardIDError();
             return;
         }
@@ -237,7 +255,7 @@ public class Game extends InGameMenu {
 
     public void attackCombo(String targetCardID, String[] friendlyCardsIDs) {
         Unit defender = findUnitInGridByID(targetCardID);
-        if (defender == null) {
+        if (defender == null || defender.getPlayer() == getCurrentPlayer()) {
             view.showInvalidCardIDError();
             return;
         }
@@ -247,9 +265,12 @@ public class Game extends InGameMenu {
                 view.showInvalidCardIDError();
                 return;
             }
+            if (attacker.getPlayer() != getCurrentPlayer()) {
+                continue;
+            }
             int state = canAttack(attacker, defender);
             if (state == -1) {
-                view.logMessage("Card with " + selectedUnit.getID() + " can't attack");
+                view.logMessage("Card with " + attacker.getID() + " can't attack");
                 return;
             } else if (state == -2) {
                 view.logMessage("opponent minion is unavailable for attack");
@@ -633,7 +654,7 @@ public class Game extends InGameMenu {
         if (targetArea != Spell.TargetArea.SELECTED_CELL || isValidTarget(spellCard.getSpell(), map.getGrid()[x][y], getCurrentPlayer())) {
             castSpell(spellCard.getSpell(), x, y, player);
         } else {
-            view.showInvalidTargetError();
+            view.showTargetOutOfRangeError();
             return false;
         }
         spellCard.setCollectionItemID(getNewID(spellCard));
@@ -645,7 +666,7 @@ public class Game extends InGameMenu {
         Cell[][] grid = map.getGrid();
         if (grid[x][y].getContent() != null && grid[x][y].getContent() instanceof Unit) {
             // the cell is already not empty
-            view.showInvalidTargetError();
+            view.showTargetOutOfRangeError();
             return false;
         }
         Player player = getCurrentPlayer();
@@ -719,6 +740,9 @@ public class Game extends InGameMenu {
     }
 
     private void castItem(Item item, Player player, int r, int c, int startTime) {
+        if (item == null) {
+            return;
+        }
         switch (item.getItemType()) {
             case ADD_MANA:
                 if (item.getAddManaDuration() > (turn - startTime) / 2)
@@ -732,9 +756,6 @@ public class Game extends InGameMenu {
                 for (int i = 0; i < item.getSpecialPowers().size(); i++) {
                     Spell specialPower = item.getSpecialPowers().get(i);
                     SpecialPowerType specialPowerType = item.getSpecialPowerTypes().get(i);
-
-//                    System.err.println(item.getSpecialPowerTargets().size());
-
                     Item.Target target = item.getSpecialPowerTargets().get(i);
                     // Here I add special power to units in map:
                     {
@@ -816,9 +837,9 @@ public class Game extends InGameMenu {
         ArrayList<Unit> allUnits = new ArrayList<>(players[0].getUnits());
         allUnits.addAll(players[1].getUnits());
         for (Unit unit : getCurrentPlayer().getUnits()) {
+            prepareUnit(unit);
             for (int i = 0; i < unit.getSpecialPowers().size(); i++) {
                 Spell spell = unit.getSpecialPowers().get(i);
-                prepareUnit(unit);
                 SpecialPowerType specialPowerType = unit.getSpecialPowerTypes().get(i);
                 if (specialPowerType == SpecialPowerType.PASSIVE) {
                     castSpell(spell, unit.getX(), unit.getY(), unit.getPlayer());
@@ -889,11 +910,6 @@ public class Game extends InGameMenu {
     }
 
     public void showHand() {
-
-        //
-        System.err.println(getCurrentPlayer().getMana());
-        //
-
         view.showHand(getCurrentPlayer().getHand());
     }
 

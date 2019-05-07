@@ -249,8 +249,8 @@ public class CommandLineView implements View {
     }
 
     @Override
-    public void showInvalidTargetError() {
-        System.out.println("Invalid target");
+    public void showTargetOutOfRangeError() {
+        System.out.println("Target out of range");
     }
 
     @Override
@@ -449,5 +449,15 @@ public class CommandLineView implements View {
     @Override
     public void showUnableToMoveError() {
         System.out.println("Unable to move.");
+    }
+
+    @Override
+    public void showPathBlockedError() {
+        System.out.println("No path found.");
+    }
+
+    @Override
+    public void showNoUnitSelectedError() {
+        System.out.println("No unit selected.");
     }
 }
