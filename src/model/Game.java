@@ -269,10 +269,10 @@ public class Game extends InGameMenu {
 
     public  void printSpells(Unit unit) {
         System.err.println(unit.getName());
-        System.err.println("SPECIAL POWERS: ");
-        for (Spell spell : unit.getSpecialPowers()) {
-            System.err.println(spell);
-        }
+//        System.err.println("SPECIAL POWERS: ");
+//        for (Spell spell : unit.getSpecialPowers()) {
+//            System.err.println(spell);
+//        }
         System.err.println("BUFFS: ");
         unit.getBuffs().forEach(System.out::println);
     }
@@ -1152,11 +1152,10 @@ public class Game extends InGameMenu {
         for (Player player : players)
             if (player != getCurrentPlayer()) {
                 player.getUnits().forEach(view::showUnit);
-
-                for(Unit unit: player.getUnits()) {
-//                    printSpells(unit);
-                }
-
+//                System.err.println("SDFSD");
+//                for(Unit unit: player.getUnits()) {
+//                    System.err.println(unit);
+//                }
             }
     }
 

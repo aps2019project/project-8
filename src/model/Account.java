@@ -50,7 +50,7 @@ public class Account implements Comparable {
     @Override
     public int compareTo(Object o) {
         if (o instanceof Account)
-            return wins - ((Account) o).wins;
+            return -(wins - ((Account) o).wins);
         return 0;
     }
 
