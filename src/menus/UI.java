@@ -326,8 +326,10 @@ public class UI {
 
     private static void actInGame(String command) {
         if (!gameEnded) {
-            if (command.matches(EXIT))
+            if (command.matches(EXIT)) {
+                GameMenu.exit();
                 switchTo(Menus.MAIN_MENU);
+            }
             else if (command.matches(SHOW_MENU))
                 GameMenu.help(false);
             else if (command.matches(HELP))

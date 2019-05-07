@@ -234,4 +234,11 @@ public class GameMenu extends InGameMenu {
     public static void kill(String targetID) {
         game.killInstantly(targetID);
     }
+
+    public static void exit() {
+        Account account = game.getOtherAccount();
+        if (account != null) {
+            account.receiveMoney(game.getPrize());
+        }
+    }
 }
