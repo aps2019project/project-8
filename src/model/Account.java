@@ -101,4 +101,8 @@ public class Account implements Comparable {
     public void addMatch(Match match) {
         matchHistory.add(match);
     }
+
+    public void addWin() {
+        wins++;
+    }
 }

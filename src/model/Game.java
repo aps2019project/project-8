@@ -412,16 +412,19 @@ public class Game extends InGameMenu {
                     return GameState.WIN_FIRST_PLAYER;
                 if (players[1].getNumberOfFlags() > numberOfFlags / 2)
                     return GameState.WIN_SECOND_PLAYER;
+                return GameState.DRAW;
             case HOLD_THE_FLAG:
                 if (players[0].getNumberOfFlagTurns() >= NUMBER_OF_FLAG_TURNS)
                     return GameState.WIN_FIRST_PLAYER;
                 if (players[1].getNumberOfFlagTurns() >= NUMBER_OF_FLAG_TURNS)
                     return GameState.WIN_SECOND_PLAYER;
+                return GameState.DRAW;
             default:
                 if (players[0].getHero().calculateHP() <= 0)
                     return GameState.WIN_SECOND_PLAYER;
                 if (players[1].getHero().calculateHP() <= 0)
                     return GameState.WIN_FIRST_PLAYER;
+                return GameState.DRAW;
         }
         return GameState.DRAW;
     }
@@ -1252,6 +1255,10 @@ public class Game extends InGameMenu {
 
     public void setPrize(int prize) {
         this.prize = prize;
+    }
+
+    public Account getOtherAccount() {
+        return accounts[turn % 2];
     }
 
     public enum GameState {
