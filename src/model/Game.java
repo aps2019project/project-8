@@ -128,6 +128,10 @@ public class Game extends InGameMenu {
                     Collectible collectible = (Collectible) destinationCell.getContent();
                     collectible.setCollectionItemID(getNewID(collectible));
                     getCurrentPlayer().addCollectible(collectible);
+                    if (collectible.getItemType() == ItemType.ADD_MANA) {
+                        currentItems.get(getCurrentPlayer()).add(collectible);
+                        itemCastingTurns.get(getCurrentPlayer()).put(collectible, turn);
+                    }
                 }
                 currentCell.setContent(null);
                 map.getGrid()[x][y].setContent(selectedUnit);
@@ -801,20 +805,20 @@ public class Game extends InGameMenu {
     }
 
     private void castItem(Item item, Player player, int r, int c, int startTime) {
-        if (item == null) {
+        if (item == null)
             return;
-        }
         switch (item.getItemType()) {
             case ADD_MANA:
-                if (item.getAddManaDuration() > (turn - startTime) / 2) {
+                if (item.getAddManaDuration() >= (turn - startTime) / 2) {
                     player.addMana(item.getAddMana());
                     if (item instanceof Collectible) {
                         getCurrentPlayer().removeCollectible(item);
                         currentItems.get(getCurrentPlayer()).remove(item);
                         itemCastingTurns.get(getCurrentPlayer()).remove(item);
+                        return;
                     }
                 }
-                if (!currentItems.get(player).contains(item)) {
+                if (!(currentItems.get(player).contains(item))) {
                     currentItems.get(player).add(item);
                     itemCastingTurns.get(player).put(item, turn);
                 }
@@ -893,7 +897,7 @@ public class Game extends InGameMenu {
                         StandardCharsets.UTF_8), Collectible.class));
             }
             Random random = new Random();
-            Cell cell = map.getCell(random.nextInt(3), random.nextInt(5));
+            Cell cell = map.getCell(random.nextInt(1), random.nextInt(1));
             while (cell.hasContent())
                 cell = map.getCell(random.nextInt(3), random.nextInt(5));
             cell.setContent(collectibles.get(random.nextInt(collectibles.size())));
