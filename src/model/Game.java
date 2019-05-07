@@ -159,7 +159,6 @@ public class Game extends InGameMenu {
         cell.setObjectOwner(null);
         cell.setContent(null);
         unit.setDead(true);
-
         int i = 0;
         for (Spell spell : unit.getSpecialPowers()) {
             if (unit.getSpecialPowerTypes().get(i) == SpecialPowerType.ON_DEATH) {
@@ -261,8 +260,7 @@ public class Game extends InGameMenu {
     public  void printSpells(Unit unit) {
         System.err.println(unit.getName());
         for (Spell spell : unit.getSpecialPowers()) {
-            for (Buff buff : spell.getBuffs())
-                System.err.println(buff);
+            System.err.println(spell);
         }
     }
 

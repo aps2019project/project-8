@@ -145,9 +145,10 @@ public class Spell {
 
     @Override
     public String toString() {
-        System.err.println();
-
-
+        String ans = "buffs : \n";
+        for (Buff buff : buffs)
+            ans.concat(buff.toString());
+        return ans;
     }
 
     public enum TargetType {
