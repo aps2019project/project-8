@@ -163,6 +163,7 @@ public class Game extends InGameMenu {
             }
             i++;
         }
+        moveCardToGraveYard(unit);
     }
 
     public void handlePoison(Unit unit) {
@@ -390,7 +391,7 @@ public class Game extends InGameMenu {
     }
 
     void moveCardToGraveYard(Card card) { // How to access the card
-
+        card.getPlayer().addToGraveyard(card);
     }
 
     Unit findUnitInGridByID(String cardID) {
@@ -707,7 +708,6 @@ public class Game extends InGameMenu {
         if (spellCard.getName().equals("kingsGuard")) {
             Hero hero = getCurrentPlayer().getHero();
 
-
             if (hero == null) { // redundant
                 // must throw an exception
                 return false;
@@ -726,7 +726,7 @@ public class Game extends InGameMenu {
             return false;
         }
         spellCard.setCollectionItemID(getNewID(spellCard));
-        getCurrentPlayer().addToGraveyard(spellCard);
+        moveCardToGraveYard(spellCard);
         return true;
     }
 
