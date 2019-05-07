@@ -946,10 +946,8 @@ public class Game extends InGameMenu {
                         Unit unit = (Unit) card;
                         for (int t = unit.getBuffs().size() - 1; t >= 0; t--) {
                             Buff buff = unit.getBuffs().get(t);
+                            handlePoison(unit);
                             buff.decrementDuration();
-
-                            unit.receiveDamage(buff.getPoison());
-
                             if (buff.getDuration() <= 0) {
                                 unit.getBuffs().remove(buff);
                             }
