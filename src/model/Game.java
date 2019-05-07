@@ -2,9 +2,14 @@
 
 package model;
 
+import com.gilecode.yagson.YaGson;
 import menus.InGameMenu;
 
+import javax.naming.CompositeName;
+import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -31,6 +36,7 @@ public class Game extends InGameMenu {
     private int prize = 1000;
     private ArrayList<HashMap<String, Integer>> numberOfPlayedCollectionItems = new ArrayList<>(2);
     private AI ai;
+    private ArrayList<Collectible> collectibles;
 
     public Game(Account firstPlayer, Account secondPlayer, GameType gameType, int numberOfFlags) {
         accounts = new Account[]{firstPlayer, secondPlayer};
@@ -245,20 +251,25 @@ public class Game extends InGameMenu {
         return 0;
     }
 
-    public void attackTargetCardWithSelectedUnit(String targetCardID) {
+    public boolean attackTargetCardWithSelectedUnit(String targetCardID) {
         Unit targetUnit = findUnitInGridByID(targetCardID);
         if (targetUnit == null || targetUnit.getPlayer() == getCurrentPlayer()) { // invalid card id
             view.showInvalidCardIDError();
-            return;
+            return false;
         }
         int state = attackUnitByUnit(selectedUnit, targetUnit, false);
         if (state == -1) { // has already attacked before or is stunned
             view.logMessage("Card with " + selectedUnit.getID() + " can't attack");
-            return;
+            return false;
         }
         if (state == -2) { // can't attack because
             view.logMessage("opponent minion is unavailable for attack");
+            return false;
         }
+        if (state == 1) {
+            return false;
+        }
+        return false;
     }
 
     public void attackCombo(String targetCardID, String[] friendlyCardsIDs) {
@@ -836,6 +847,17 @@ public class Game extends InGameMenu {
             }
         }
 
+        try {
+            for (File file : new File("./gameData/Collectibles/").listFiles()) {
+                YaGson yaGson = new YaGson();
+                collectibles.add(yaGson.fromJson(new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())),
+                        StandardCharsets.UTF_8), Collectible.class));
+            }
+            Random random = new Random();
+            map.getCell(random.nextInt(6), random.nextInt(10)).setContent(collectibles.get(random.nextInt(
+                    collectibles.size())));
+        } catch (Exception ignored) {}
+
         // initiate next turn
         initiateTurn();
     }
@@ -868,6 +890,7 @@ public class Game extends InGameMenu {
 
         if (hasAI[turn % 2]) {
             ai.makeMove();
+            endTurn();
         }
     }
 
@@ -914,6 +937,9 @@ public class Game extends InGameMenu {
 
         // add turn
         turn++;
+
+        selectedUnit = null;
+        selectedCollectible = null;
 
         // initiate next turn
         initiateTurn();
@@ -1034,25 +1060,24 @@ public class Game extends InGameMenu {
     public void shengdeShow() {
         System.err.println("Player 1 Mana(" + players[0].getMana() + ") hand:");
         for (Card card : players[0].getHand().getCards()) {
-            System.err.print(card.getName() + "\t");
+            System.err.format("%-20s", card.getName());
         }
         System.err.println();
         System.err.println("Player one usable item is: " + players[0].getDeck().getDeckUsableItem().getName());
         for (int row = 0; row < getMap().getNumberOfRows(); row++) {
             for (int column = 0; column < getMap().getNumberOfColumns(); column++) {
                 Cell cell = getMap().getCell(row, column);
-                if (!cell.hasContent() || !(cell.getContent() instanceof Unit)) {
-                    System.err.print(".\t\t");
+                if (!cell.hasContent() && !(cell.getContent() instanceof CollectionItem)) {
+                    System.err.format("%-20s", ".");
                 } else {
-                    Unit unit = (Unit) cell.getContent();
-                    System.err.print(unit.getName() + "\t\t");
+                    System.err.format("%-20s", ((CollectionItem) cell.getContent()).getName());
                 }
             }
             System.err.print("\n");
         }
         System.err.println("Player 2 Mana(" + players[1].getMana() + ") hand:");
         for (Card card : players[1].getHand().getCards()) {
-            System.err.print(card.getName() + "\t");
+            System.err.format("%-20s", card.getName());
         }
         System.err.println();
         System.err.println("Player 2 usable Item is: " + players[1].getDeck().getDeckUsableItem().getName());
