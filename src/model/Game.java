@@ -157,6 +157,20 @@ public class Game extends InGameMenu {
         }
     }
 
+    public void handlePoison(Unit unit) {
+        boolean isPoisonImmune = false;
+        for (Spell spell : unit.getSpecialPowers())
+            isPoisonImmune |= spell.isPoisonImmune();
+        if (isPoisonImmune) {
+            return;
+        }
+        for (Buff buff : unit.getBuffs()) {
+            unit.receiveDamage(buff.getPoison());
+        }
+        if (unit.calculateHP() <= 0) {
+            checkOnDeath(unit);
+        }
+    }
 
     // no special powers included
     private void rawAttack(Unit attacker, Unit defender) {
@@ -484,7 +498,7 @@ public class Game extends InGameMenu {
                 unit.removeBuffs(player != unit.getPlayer());
                 // if the the player casting the spell is the same one owning this unit
             }
-            if (spell.)
+//            if (spell.is)
 
             if (spell.getBuffs() != null) {
                 for (Buff buff : spell.getBuffs()) {

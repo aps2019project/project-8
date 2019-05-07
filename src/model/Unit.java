@@ -205,6 +205,11 @@ public class Unit extends Card {
     }
 
     public boolean isDisarmed() {
+        for (Spell spell : specialPowers) {
+            if (spell.isDisarmable()) {
+                return false;
+            }
+        }
         for (Buff buff : buffs) {
             if (buff.canDisarm()) {
                 return true;

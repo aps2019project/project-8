@@ -13,9 +13,9 @@ public class Spell {
     private Buff[] buffs;
     private boolean canDispel;
 
-    private boolean disarmable = true;
-    private boolean poisonImmune = false;
-    private boolean spellImmune = false;
+    private boolean disarmable = true; // goraze vahshi // ok!
+    private boolean poisonImmune = false; // piran // ok!
+    private boolean spellImmune = false; // giv
     private boolean isBully = false; //  ashkboos
     private boolean multiplied = false; // pahlevane fars
     private boolean ignoreHoly = false; // shire darande
