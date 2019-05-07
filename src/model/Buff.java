@@ -37,9 +37,6 @@ public class Buff {
 
     public void decrementDuration() {
         duration--;
-        if (duration < 0) { // ?
-
-        }
     }
 
     public int getDuration() {
