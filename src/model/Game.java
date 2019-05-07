@@ -721,13 +721,11 @@ public class Game extends InGameMenu {
     private void castItem(Item item, Player player, int r, int c, int startTime) {
         switch (item.getItemType()) {
             case ADD_MANA:
-                if (item.getAddManaDuration() > turn - startTime)
+                if (item.getAddManaDuration() > (turn - startTime) / 2)
                     player.addMana(item.getAddMana());
                 if (!currentItems.get(player).contains(item)) {
                     currentItems.get(player).add(item);
                     itemCastingTurns.get(player).put(item, turn);
-                } else {
-                    itemCastingTurns.get(player).replace(item, turn);
                 }
                 break;
             case ADD_A_SPECIAL_POWER:
