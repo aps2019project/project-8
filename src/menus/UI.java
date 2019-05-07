@@ -2,6 +2,7 @@ package menus;
 
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
+import gen.JsonMaker;
 import model.AI;
 import model.Account;
 import view.CommandLineView;
@@ -91,6 +92,7 @@ public class UI {
     private static boolean selectingUser = true;
 
     public static void main(String[] args) {
+        JsonMaker.main(new String[]{"java", "JsonMaker"});
         load();
         Menu.setView(view);
         help();
@@ -103,7 +105,7 @@ public class UI {
                     return;
                 }
             } catch (Exception ignored) {
-                ignored.printStackTrace();
+                System.out.println("Jooon!!!");
             }
                 command = scanner.nextLine();
                 command = command.trim();

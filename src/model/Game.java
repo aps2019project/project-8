@@ -132,6 +132,7 @@ public class Game extends InGameMenu {
                     }
                 }
                 selectedUnit.addFlags(destinationCell.getNumberOfFlags());
+                map.getCell(x, y).decreaseNumberOfFlags();
                 currentCell.setContent(null);
                 map.getGrid()[x][y].setContent(selectedUnit);
                 selectedUnit.setX(x);
@@ -1052,6 +1053,7 @@ public class Game extends InGameMenu {
                     }
                 }
             }
+
         // can move and can attack for all units
         for (int row = 0; row < getMap().getNumberOfRows(); row++)
             for (int column = 0; column < getMap().getNumberOfColumns(); column++) {
@@ -1217,11 +1219,12 @@ public class Game extends InGameMenu {
         for (int row = 0; row < getMap().getNumberOfRows(); row++) {
             for (int column = 0; column < getMap().getNumberOfColumns(); column++) {
                 Cell cell = getMap().getCell(row, column);
+                String output;
                 if (!cell.hasContent() && !(cell.getContent() instanceof CollectionItem)) {
-                    System.err.format("%-20s", ".");
+                    output = ".";
                 } else {
                     CollectionItem collectionItem = (CollectionItem) cell.getContent();
-                    String output = collectionItem.getName();
+                    output = collectionItem.getName();
                     if (collectionItem instanceof Unit) {
                         if (((Unit) collectionItem).getPlayer() == players[0]) {
                             output = "+" + output + "+";
@@ -1234,8 +1237,9 @@ public class Game extends InGameMenu {
                     } else {
                         output = "(" + output + ")";
                     }
-                    System.err.format("%-20s", output);
                 }
+                output += ":" + cell.getNumberOfFlags();
+                System.err.format("%-20s", output);
             }
             System.err.print("\n");
         }

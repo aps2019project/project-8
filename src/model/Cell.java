@@ -71,4 +71,11 @@ public class Cell {
     public void addFlag(int i) {
         numberOfFlags += i;
     }
+
+    public void decreaseNumberOfFlags() {
+        numberOfFlags--;
+        if (numberOfFlags < 0) {
+            numberOfFlags = 0;
+        }
+    }
 }
