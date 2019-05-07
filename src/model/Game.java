@@ -21,7 +21,7 @@ public class Game extends InGameMenu {
     private int turn;
     private Map map = new Map();
     private Player[] players;
-    private boolean hasAI;
+    private boolean[] hasAI;
     private Account[] accounts;
     private Unit selectedUnit;
     private Card selectedCard; // probably has no use
@@ -34,7 +34,7 @@ public class Game extends InGameMenu {
         accounts = new Account[]{firstPlayer, secondPlayer};
         players = new Player[]{firstPlayer.getPlayer().setName(firstPlayer.getName()), secondPlayer.getPlayer().
                 setName(secondPlayer.getName())};
-        hasAI = false;
+        hasAI[0] = hasAI[1] = false;
         this.gameType = gameType;
         this.numberOfFlags = numberOfFlags;
     }
@@ -42,12 +42,21 @@ public class Game extends InGameMenu {
     public Game(Account account, AI ai, GameType gameType, int numberOfFlags) {
         accounts = new Account[]{account, null};
         players = new Player[]{account.getPlayer().setName(account.getName()), ai.getPlayer().setName("COM")};
-        hasAI = false;
+        hasAI[0] = false;
+        hasAI[1] = true;
         this.gameType = gameType;
         this.numberOfFlags = numberOfFlags;
     }
 
-    private Player getCurrentPlayer() {
+    Player getFirstPlayer() {
+        return players[0];
+    }
+
+    Player getSecondPlayer() {
+        return players[1];
+    }
+
+    Player getCurrentPlayer() {
         if (turn % 2 == 0) {
             return players[0];
         } else {
@@ -55,7 +64,7 @@ public class Game extends InGameMenu {
         }
     }
 
-    private Map getMap() {
+    Map getMap() {
         return this.map;
     }
 
@@ -91,7 +100,7 @@ public class Game extends InGameMenu {
         }
     }
 
-    public boolean moveSelectedUnit(int x, int y) {
+    public boolean moveSelectedUnit(int x, int y) { // returns true if successful
         // can fly has got to do something in here
         if (selectedUnit == null) {
             view.showNoUnitSelectedError();
@@ -123,7 +132,7 @@ public class Game extends InGameMenu {
             }
         }
         view.showTargetOutOfRangeError();
-        return true;
+        return false;
     }
 
 
@@ -210,7 +219,7 @@ public class Game extends InGameMenu {
     // returns 0 for success
     // if oneSided is true defender doesn't counter attack (for combo attacks)
 
-    private int attackUnitByUnit(Unit attacker, Unit defender, boolean oneSided) {
+    int attackUnitByUnit(Unit attacker, Unit defender, boolean oneSided) {
         int state = canAttack(attacker, defender);
         if (state != 0) {
             return state;
@@ -285,24 +294,25 @@ public class Game extends InGameMenu {
     }
 
     // x, y must be valid
-    public void useHeroSpecialPower(int x, int y) {
+    public boolean useHeroSpecialPower(int x, int y) { // true if successful
         Hero hero = getCurrentPlayer().getHero();
         Player player = getCurrentPlayer();
         if (hero.getSpecialPowers() == null) {
-            return;
+            return false;
         }
         if (player.getMana() < hero.getManaCost()) {
             view.showNotEnoughManaError();
-            return;
+            return false;
         }
         if (hero.getRemainingCooldown() != 0) {
             view.showCooldownError();
-            return;
+            return false;
         }
         hero.resetRemainingCooldown();
         for (Spell spell : hero.getSpecialPowers()) {
             castSpell(spell, x, y, getCurrentPlayer());
         }
+        return true;
     }
 
     private void endGame() {
@@ -338,7 +348,7 @@ public class Game extends InGameMenu {
 
     }
 
-    private Unit findUnitInGridByID(String cardID) {
+    Unit findUnitInGridByID(String cardID) {
         for (Cell[] rowCells : map.getGrid()) {
             for (Cell cell : rowCells) {
                 if (cell.getContent() instanceof Unit) {
@@ -693,20 +703,20 @@ public class Game extends InGameMenu {
 
     // inserts card with name [cardName] from player's hand and puts it in cell ([x], [y])
     // if card is a spell card (x, y) is the target of the spell
-    public void insertCard(String cardName, int x, int y) {
+    public boolean insertCard(String cardName, int x, int y) { // returns true if successful
         Player player = getCurrentPlayer();
         Card card = player.findCardInHand(cardName);
         if (card == null) { // no such card is found in player's hand
             view.showInvalidCardError();
-            return;
+            return false;
         }
         if (!inMap(x, y)) {
             view.showInvalidCoordinatesError();
-            return;
+            return false;
         }
         if (player.getMana() < card.getManaCost()) { // player doesn't have enough mana
             view.showNotEnoughManaError();
-            return;
+            return false;
         }
         boolean inserted = false;
         if (card instanceof Unit) {
@@ -721,6 +731,7 @@ public class Game extends InGameMenu {
             player.decreaseMana(card.getManaCost());
             player.getHand().getCards().remove(card);
         }
+        return true;
     }
 
     public boolean hasUnit(String unitID) {
@@ -896,9 +907,10 @@ public class Game extends InGameMenu {
         initiateTurn();
     }
 
-    public Collectible selectCollectible(String collectibleID) {
+    public boolean selectCollectible(String collectibleID) {
         view.alertCollectibleSelection(collectibleID);
-        return getCurrentPlayer().getCollectible(collectibleID);
+        selectedCollectible = getCurrentPlayer().getCollectible(collectibleID);
+        return selectedCollectible != null;
     }
 
     public void applyCollectible(int row, int column) {
