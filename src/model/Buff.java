@@ -144,6 +144,12 @@ public class Buff {
         stringBuilder.append("\tbuff poison: ");
         stringBuilder.append(poison);
         stringBuilder.append("\n");
+        stringBuilder.append("\tbuff disarm: ");
+        stringBuilder.append(disarm);
+        stringBuilder.append("\n");
+        stringBuilder.append("\tbuff stun: ");
+        stringBuilder.append(stun);
+        stringBuilder.append("\n");
         return stringBuilder.toString();
     }
 }
