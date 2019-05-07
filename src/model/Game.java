@@ -378,7 +378,9 @@ public class Game extends InGameMenu {
             return false;
         }
         hero.resetRemainingCooldown();
-        for (Spell spell : hero.getSpecialPowers()) {
+        for (int i = 0; i < hero.getSpecialPowers().size(); i++) {
+            Spell spell = hero.getSpecialPowers().get(i);
+            SpecialPowerType specialPowerType = hero.getSpecialPowerTypes().get(i);
             castSpell(spell, x, y, getCurrentPlayer());
         }
         return true;
@@ -985,14 +987,10 @@ public class Game extends InGameMenu {
             for (int i = 0; i < unit.getSpecialPowers().size(); i++) {
                 Spell spell = unit.getSpecialPowers().get(i);
                 SpecialPowerType specialPowerType = unit.getSpecialPowerTypes().get(i);
-
-                //
-                System.err.println(unit);
-                System.err.println(spell);
-                System.err.println(specialPowerType);
-                //
-
                 if (specialPowerType == SpecialPowerType.PASSIVE) {
+
+                    System.out.println("FDSJFLKSJDFLKJSDLKFSLKDFLKSDJFLKSJDFLJALSFJLKSDJFLKIUERGHREIWUJ NKS");
+
                     System.err.println(spell);
                     castSpell(spell, unit.getX(), unit.getY(), unit.getPlayer());
                 }

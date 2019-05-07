@@ -212,8 +212,10 @@ public class GameMenu extends InGameMenu {
                 break;
             case WIN_SECOND_PLAYER:
                 account.addMatch(new Match((hasAI ? null : secondAccount), Result.WIN, LocalDateTime.now()));
-                secondAccount.addMatch(new Match(account, Result.WIN, LocalDateTime.now()));
-                secondAccount.payMoney(game.getPrize());
+                if (!(secondAccount == null)) {
+                    secondAccount.addMatch(new Match(account, Result.WIN, LocalDateTime.now()));
+                    secondAccount.payMoney(game.getPrize());
+                }
                 secondAccount = null;
                 view.showWinner(secondAccount, game.getPrize());
                 break;
