@@ -21,7 +21,7 @@ public class Game extends InGameMenu {
     private int turn;
     private Map map = new Map();
     private Player[] players;
-    private boolean hasAI;
+    private boolean[] hasAI;
     private Account[] accounts;
     private Unit selectedUnit;
     private Card selectedCard; // probably has no use
@@ -34,7 +34,7 @@ public class Game extends InGameMenu {
         accounts = new Account[]{firstPlayer, secondPlayer};
         players = new Player[]{firstPlayer.getPlayer().setName(firstPlayer.getName()), secondPlayer.getPlayer().
                 setName(secondPlayer.getName())};
-        hasAI = false;
+        hasAI[0] = hasAI[1] = false;
         this.gameType = gameType;
         this.numberOfFlags = numberOfFlags;
     }
@@ -42,7 +42,8 @@ public class Game extends InGameMenu {
     public Game(Account account, AI ai, GameType gameType, int numberOfFlags) {
         accounts = new Account[]{account, null};
         players = new Player[]{account.getPlayer().setName(account.getName()), ai.getPlayer().setName("COM")};
-        hasAI = false;
+        hasAI[0] = false;
+        hasAI[1] = true;
         this.gameType = gameType;
         this.numberOfFlags = numberOfFlags;
     }
@@ -841,7 +842,7 @@ public class Game extends InGameMenu {
                 }
             }
         }
-        
+
     }
 
     private void prepareUnit(Unit unit) {
