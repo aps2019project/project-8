@@ -295,4 +295,12 @@ public class Unit extends Card {
             return new Unit(card, hitPoint, attackPoint, unitType, specialPowerType, specialPower, canFly, attackRange);
         }
     }
+
+    public void showBuffs() {
+        int i = 1;
+        for (Buff buff: buffs) {
+            System.err.println("Buff number." + i + ":\n");
+            System.err.print(buff);
+        }
+    }
 }
