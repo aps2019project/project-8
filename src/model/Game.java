@@ -15,7 +15,6 @@ import java.util.Random;
 
 public class Game extends InGameMenu {
 
-    private static final int NUMBER_OF_PLAYERS = 2;
     private static final int[] HERO_INITIAL_ROW = {2, 2};
     private static final int[] HERO_INITIAL_COLUMN = {0, 8};
     private static final int NUMBER_OF_FLAG_TURNS = 6;
@@ -913,9 +912,9 @@ public class Game extends InGameMenu {
         itemCastingTurns.put(players[0], new HashMap<>());
         itemCastingTurns.put(players[1], new HashMap<>());
         turn = 0;
-        putUnitCard(players[0].getHero(), 2, 0);
+        putUnitCard(players[0].getHero(), HERO_INITIAL_ROW[0], HERO_INITIAL_COLUMN[0]);
         turn = 1;
-        putUnitCard(players[1].getHero(), 2, 1);
+        putUnitCard(players[1].getHero(), HERO_INITIAL_ROW[1], HERO_INITIAL_COLUMN[1]);
         turn = 0;
         if (gameType == GameType.COLLECT_THE_FLAGS) {
             for (int i = 0; i < numberOfFlags; i++) {
