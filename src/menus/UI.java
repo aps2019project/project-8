@@ -58,7 +58,7 @@ public class UI {
     private static final String COORDINATES = "\\(\\d+, \\d+\\)";
     private static final String MOVE = "(?i:move to) " + COORDINATES;
     private static final String ATTACK = "(?i:attack) " + ID;
-    private static final String ATTACK_COMBO = "(?i:attack combo) " + ID + " ( " + ID +")+";
+    private static final String ATTACK_COMBO = "(?i:attack combo) " + ID + " ( " + ID + ")+";
     private static final String SPECIAL_POWER = "(?i:use special power) " + COORDINATES;
     private static final String SHOW_HAND = "(?i:show hand)";
     private static final String INSERT = "(?i:insert) " + COLLECTION_ITEM_NAME + " (?i:in) " + COORDINATES;
@@ -89,6 +89,7 @@ public class UI {
     private static Menus menu = Menus.LOGIN;
     private static String command = null;
     private static boolean selectingUser = true;
+    private static boolean gameEnded = false;
 
     public static void main(String[] args) {
         load();
@@ -105,8 +106,8 @@ public class UI {
             } catch (Exception ignored) {
                 ignored.printStackTrace();
             }
-                command = scanner.nextLine();
-                command = command.trim();
+            command = scanner.nextLine();
+            command = command.trim();
         }
     }
 
@@ -277,8 +278,7 @@ public class UI {
             if (GameMenu.startGame(Integer.parseInt(command))) {
                 switchTo(Menus.GAME_MENU);
             }
-        }
-        else
+        } else
             view.showInvalidCommandError();
     }
 
@@ -292,8 +292,7 @@ public class UI {
             if (GameMenu.startGame(commandSplit[2], Integer.parseInt(commandSplit[3]), (commandSplit.length > 4 ?
                     Integer.parseInt(commandSplit[4]) : -1)))
                 switchTo(Menus.GAME_MENU);
-        }
-        else
+        } else
             view.showInvalidCommandError();
     }
 
@@ -318,8 +317,6 @@ public class UI {
             view.showInvalidCommandError();
     }
 
-    private static boolean gameEnded = false;
-
     public static void endGame() {
         gameEnded = true;
     }
@@ -329,8 +326,7 @@ public class UI {
             if (command.matches(EXIT)) {
                 GameMenu.exit();
                 switchTo(Menus.MAIN_MENU);
-            }
-            else if (command.matches(SHOW_MENU))
+            } else if (command.matches(SHOW_MENU))
                 GameMenu.help(false);
             else if (command.matches(HELP))
                 GameMenu.showOptions();
@@ -395,7 +391,7 @@ public class UI {
         command = command.split("\\(")[1];
         command = command.split("\\)")[0];
         String[] commandSplit = command.split(",");
-        return new int[] {Integer.parseInt(commandSplit[0]), Integer.parseInt(commandSplit[1].trim())};
+        return new int[]{Integer.parseInt(commandSplit[0]), Integer.parseInt(commandSplit[1].trim())};
     }
 
     private static void actGraveyard(String command) {
@@ -495,7 +491,8 @@ public class UI {
             }
             Shop.load();
             AI.load();
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+        }
     }
 
     public static void save() {
@@ -505,6 +502,7 @@ public class UI {
             out.write(yaGson.toJson(Menu.getAccount(), Account.class));
             out.flush();
             view.alertSave();
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+        }
     }
 }

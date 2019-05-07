@@ -267,7 +267,7 @@ public class Game extends InGameMenu {
     // returns 0 for success
     // if oneSided is true defender doesn't counter attack (for combo attacks)
 
-    public  void printSpells(Unit unit) {
+    public void printSpells(Unit unit) {
         System.err.println(unit.getName());
 //        System.err.println("SPECIAL POWERS: ");
 //        for (Spell spell : unit.getSpecialPowers()) {
@@ -1161,7 +1161,7 @@ public class Game extends InGameMenu {
 
     public void showMyMinions() {
         getCurrentPlayer().getUnits().forEach(view::showUnit);
-        for(Unit unit: getCurrentPlayer().getUnits()) {
+        for (Unit unit : getCurrentPlayer().getUnits()) {
 //            printSpells(unit);
         }
     }
@@ -1265,12 +1265,6 @@ public class Game extends InGameMenu {
         return accounts[turn % 2];
     }
 
-    public enum GameState {
-        WIN_FIRST_PLAYER,
-        DRAW,
-        WIN_SECOND_PLAYER
-    }
-
     public void killInstantly(String unitID) {
         Unit unit = findUnitInGridByID(unitID);
         if (unit == null) {
@@ -1278,5 +1272,11 @@ public class Game extends InGameMenu {
         }
         unit.receiveDamage(1000000);
         checkOnDeath(unit);
+    }
+
+    public enum GameState {
+        WIN_FIRST_PLAYER,
+        DRAW,
+        WIN_SECOND_PLAYER
     }
 }

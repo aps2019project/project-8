@@ -220,7 +220,7 @@ public class Unit extends Card {
 
     public boolean isBully() {
         boolean isBully = false;
-        for (Spell spell  : specialPowers)
+        for (Spell spell : specialPowers)
             isBully |= spell.isBully();
         return isBully;
     }
@@ -253,6 +253,14 @@ public class Unit extends Card {
 
     public void addFlags(int numberOfFlags) {
         flags += numberOfFlags;
+    }
+
+    public void showBuffs() {
+        int i = 1;
+        for (Buff buff : buffs) {
+            System.err.println("Buff number." + i + ":\n");
+            System.err.print(buff);
+        }
     }
 
     // Builder
@@ -309,14 +317,6 @@ public class Unit extends Card {
 
         public Unit build() {
             return new Unit(card, hitPoint, attackPoint, unitType, specialPowerType, specialPower, canFly, attackRange);
-        }
-    }
-
-    public void showBuffs() {
-        int i = 1;
-        for (Buff buff: buffs) {
-            System.err.println("Buff number." + i + ":\n");
-            System.err.print(buff);
         }
     }
 }
