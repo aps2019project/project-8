@@ -19,6 +19,7 @@ public class Game extends InGameMenu {
     private static final int[] HERO_INITIAL_ROW = {2, 2};
     private static final int[] HERO_INITIAL_COLUMN = {0, 8};
     private static final int NUMBER_OF_FLAG_TURNS = 6;
+    private static final int NUMBER_OF_COLLECTIBLES = 0;
 
     private HashMap<Player, ArrayList<Item>> currentItems = new HashMap<>();
     private HashMap<Player, HashMap<Item, Integer>> itemCastingTurns = new HashMap<>();
@@ -937,7 +938,7 @@ public class Game extends InGameMenu {
                         StandardCharsets.UTF_8), Collectible.class));
             }
             Collections.shuffle(collectibles);
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < NUMBER_OF_COLLECTIBLES; i++) {
                 Random random = new Random();
                 Cell cell = getRandomEmptyCell();
                 cell.setContent(collectibles.get(Integer.min(i, collectibles.size())));
