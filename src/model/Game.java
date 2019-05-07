@@ -15,8 +15,8 @@ public class Game extends InGameMenu {
     private static final int[] HERO_INITIAL_COLUMN = {0, 8};
     private static final int NUMBER_OF_FLAG_TURNS = 6;
 
-    private ArrayList<Item> currentItems = new ArrayList<>();
-    private ArrayList<Integer> itemCastingTurns = new ArrayList<>();
+    private HashMap<Player, ArrayList<Item>> currentItems = new HashMap<>();
+    private HashMap<Player, HashMap<Item, Integer>> itemCastingTurns = new HashMap<>();
     private int numberOfFlags;
     private int turn;
     private Map map = new Map();
@@ -524,8 +524,8 @@ public class Game extends InGameMenu {
                 break;
 
             case SELECTED_X_Y_GRID:
-                for (int i = x; i < x + spell.getGridX(); i++) {
-                    for (int j = y; i < y + spell.getGridY(); j++) {
+                for (int i = x; i < Integer.min(x + spell.getGridX(), Map.NUMBER_OF_ROWS); i++) {
+                    for (int j = y; i < Integer.min(y + spell.getGridY(), Map.NUMBER_OF_COLUMNS); j++) {
                         cell = map.getGrid()[i][j];
                         if (inMap(i, j) && isValidTarget(spell, cell, player)) {
                             targets.add(cell);
@@ -721,11 +721,14 @@ public class Game extends InGameMenu {
     private void castItem(Item item, Player player, int r, int c, int startTime) {
         switch (item.getItemType()) {
             case ADD_MANA:
-                if (item.getAddManaDuration() > turn - startTime) {
+                if (item.getAddManaDuration() > turn - startTime)
                     player.addMana(item.getAddMana());
+                if (!currentItems.get(player).contains(item)) {
+                    currentItems.get(player).add(item);
+                    itemCastingTurns.get(player).put(item, turn);
+                } else {
+                    itemCastingTurns.get(player).replace(item, turn);
                 }
-//                currentItems.add(item);
-                itemCastingTurns.add(turn);
                 break;
             case ADD_A_SPECIAL_POWER:
                 for (int i = 0; i < item.getSpecialPowers().size(); i++) {
@@ -778,7 +781,10 @@ public class Game extends InGameMenu {
     public void initiateGame() {
         numberOfPlayedCollectionItems.add(new HashMap<>());
         numberOfPlayedCollectionItems.add(new HashMap<>());
-
+        currentItems.put(players[0], new ArrayList<>());
+        currentItems.put(players[1], new ArrayList<>());
+        itemCastingTurns.put(players[0], new HashMap<>());
+        itemCastingTurns.put(players[1], new HashMap<>());
         turn = 0;
         putUnitCard(players[0].getHero(), 2, 0);
         turn = 1;
@@ -802,13 +808,14 @@ public class Game extends InGameMenu {
         getCurrentPlayer().refillHand();
 
         // item processes
-        for (int i = 0; i < currentItems.size(); i++) {
+        for (int i = 0; i < currentItems.get(getCurrentPlayer()).size(); i++) {
+            Item item = currentItems.get(getCurrentPlayer()).get(i);
+            int startTime = itemCastingTurns.get(getCurrentPlayer()).get(item);
 
-//            System.err.println(i + 1);
-//            System.err.println(currentItems.get(i));
+            System.err.println(i + 1);
+            System.err.println(currentItems.get(getCurrentPlayer()).get(i));
+            System.err.println(itemCastingTurns.get(getCurrentPlayer()).get(item));
 
-            Item item = currentItems.get(i);
-            int startTime = itemCastingTurns.get(i);
             castItem(item, getCurrentPlayer(), 0, 0, startTime);
         }
 
