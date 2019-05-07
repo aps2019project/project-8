@@ -485,4 +485,10 @@ public class CommandLineView implements View {
         System.out.println("Cards ready to be played:");
         availableOptions.forEach(System.out::println);
     }
+
+    @Override
+    public void showWinner(Account account, int prize) {
+        System.out.println("The winner is: " + account.getName());
+        System.out.println(prize + "$$$");
+    }
 }
