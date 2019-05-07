@@ -150,4 +150,8 @@ public class Player {
     public void removeCollectible(Item item) {
         collectibles.remove(item);
     }
+
+    public void removeFromUnits(Unit unit) {
+        units.remove(unit);
+    }
 }
