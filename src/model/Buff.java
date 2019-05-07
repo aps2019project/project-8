@@ -126,11 +126,24 @@ public class Buff {
         }
     }
 
-    public boolean isPositiveBuff() {
-        if (canDisarm() || canStun()) {
-            return false;
-        }
-        int sum = effectHp + effectHp + holy - poison;
-        return sum > 0;
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("\tbuff duration: " );
+        stringBuilder.append(duration);
+        stringBuilder.append("\n");
+        stringBuilder.append("\tbuff holy: ");
+        stringBuilder.append(holy);
+        stringBuilder.append("\n");
+        stringBuilder.append("\tbuff effect hp: ");
+        stringBuilder.append(effectHp);
+        stringBuilder.append("\n");
+        stringBuilder.append("\tbuff effect ap: ");
+        stringBuilder.append(effectAp);
+        stringBuilder.append("\n");
+        stringBuilder.append("\tbuff poison: ");
+        stringBuilder.append(poison);
+        stringBuilder.append("\n");
+        return stringBuilder.toString();
     }
 }

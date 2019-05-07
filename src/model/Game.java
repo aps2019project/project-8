@@ -5,7 +5,6 @@ package model;
 import com.gilecode.yagson.YaGson;
 import menus.InGameMenu;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -112,39 +111,43 @@ public class Game extends InGameMenu {
     public boolean moveSelectedUnit(int x, int y) { // returns true if successful
         // can fly has got to do something in here
         if (selectedUnit == null) {
-            if(!hasAI[turn%2])
+            if (!hasAI[turn % 2])
                 view.showNoUnitSelectedError();
             return false;
         }
         if (!selectedUnit.getCanMove()) {
-            if(!hasAI[turn%2])
+            if (!hasAI[turn % 2])
                 view.showUnableToMoveError();
             return false;
         }
         if (getDistance(selectedUnit.getX(), selectedUnit.getY(), x, y) <= 2) { // possibly we could add some moveRange to Unit class variables
             if (isPathEmpty(selectedUnit.getX(), selectedUnit.getY(), x, y, getCurrentPlayer())) {
                 Cell currentCell = map.getGrid()[selectedUnit.getX()][selectedUnit.getY()];
-                if (currentCell.getContent() != null && currentCell.getContent() instanceof Collectible) {
-                    Collectible collectible = (Collectible) currentCell.getContent();
+                Cell destinationCell = map.getGrid()[x][y];
+                if (destinationCell.getContent() != null && destinationCell.getContent() instanceof Collectible) {
+                    Collectible collectible = (Collectible) destinationCell.getContent();
                     collectible.setCollectionItemID(getNewID(collectible));
                     getCurrentPlayer().addCollectible(collectible);
+                    if (collectible.getItemType() == ItemType.ADD_MANA) {
+                        currentItems.get(getCurrentPlayer()).add(collectible);
+                        itemCastingTurns.get(getCurrentPlayer()).put(collectible, turn);
+                    }
                 }
                 currentCell.setContent(null);
                 map.getGrid()[x][y].setContent(selectedUnit);
                 selectedUnit.setX(x);
                 selectedUnit.setY(y);
-                if (!hasAI[turn%2])
+                if (!hasAI[turn % 2])
                     view.logMessage(selectedUnit.getID() + " moved to " + (x + 1) + " " + (y + 1));
                 selectedUnit.setCanMove(false);
                 return true;
-            }
-            else {
-                if (!hasAI[turn%2])
+            } else {
+                if (!hasAI[turn % 2])
                     view.showPathBlockedError();
                 return true;
             }
         }
-        if(!hasAI[turn%2])
+        if (!hasAI[turn % 2])
             view.showTargetOutOfRangeError();
         return false;
     }
@@ -276,25 +279,28 @@ public class Game extends InGameMenu {
     public boolean attackTargetCardWithSelectedUnit(String targetCardID) {
         Unit targetUnit = findUnitInGridByID(targetCardID);
         if (targetUnit == null || targetUnit.getPlayer() == getCurrentPlayer()) { // invalid card id
-            if (!hasAI[turn%2])
+            if (!hasAI[turn % 2])
                 view.showInvalidCardIDError();
             return false;
         }
+
+
         int state = attackUnitByUnit(selectedUnit, targetUnit, false);
         if (state == -1) { // has already attacked before or is stunned
-            if (!hasAI[turn%2])
+            if (!hasAI[turn % 2])
                 view.logMessage("Card with " + selectedUnit.getID() + " can't attack");
             return false;
         }
+
         if (state == -2) { // can't attack because
-            if (!hasAI[turn%2])
+            if (!hasAI[turn % 2])
                 view.logMessage("opponent minion is unavailable for attack");
             return false;
         }
         if (state == 1) {
             return false;
         }
-        return false;
+        return true;
     }
 
     public void attackCombo(String targetCardID, String[] friendlyCardsIDs) {
@@ -314,11 +320,11 @@ public class Game extends InGameMenu {
             }
             int state = attackState(attacker, defender);
             if (state == -1) {
-                if (!hasAI[turn%2])
+                if (!hasAI[turn % 2])
                     view.logMessage("Card with " + attacker.getID() + " can't attack");
                 return;
             } else if (state == -2) {
-                if (!hasAI[turn%2])
+                if (!hasAI[turn % 2])
                     view.logMessage("opponent minion is unavailable for attack");
                 return;
             }
@@ -338,12 +344,12 @@ public class Game extends InGameMenu {
             return false;
         }
         if (player.getMana() < hero.getManaCost()) {
-            if (!hasAI[turn%2])
+            if (!hasAI[turn % 2])
                 view.showNotEnoughManaError();
             return false;
         }
         if (hero.getRemainingCooldown() != 0) {
-            if (!hasAI[turn%2])
+            if (!hasAI[turn % 2])
                 view.showCooldownError();
             return false;
         }
@@ -404,11 +410,11 @@ public class Game extends InGameMenu {
     public void selectCard(String cardID) {
         Unit unit = findUnitInGridByID(cardID);
         if (unit == null || unit.getPlayer() != getCurrentPlayer()) {
-            if (!hasAI[turn%2])
+            if (!hasAI[turn % 2])
                 view.showInvalidCardIDError();
             return;
         }
-        if (!hasAI[turn%2])
+        if (!hasAI[turn % 2])
             view.alertUnitSelection(cardID);
         selectedUnit = unit;
     }
@@ -557,7 +563,7 @@ public class Game extends InGameMenu {
     }
 
     private ArrayList<Cell> getTargets(Spell spell, int x, int y, Player player) {
-        ArrayList<Cell> targets = new ArrayList<>(0);
+        ArrayList<Cell> targets = new ArrayList<>();
         switch (spell.getTargetArea()) {
             case ALL_OF_THE_MAP:
                 for (int i = 0; i < map.getNumberOfRows(); i++) {
@@ -759,17 +765,17 @@ public class Game extends InGameMenu {
         Player player = getCurrentPlayer();
         Card card = player.findCardInHand(cardName);
         if (card == null) { // no such card is found in player's hand
-            if (!hasAI[turn%2])
+            if (!hasAI[turn % 2])
                 view.showInvalidCardError();
             return false;
         }
         if (!inMap(x, y)) {
-            if (!hasAI[turn%2])
+            if (!hasAI[turn % 2])
                 view.showInvalidCoordinatesError();
             return false;
         }
         if (player.getMana() < card.getManaCost()) { // player doesn't have enough mana
-            if (!hasAI[turn%2])
+            if (!hasAI[turn % 2])
                 view.showNotEnoughManaError();
             return false;
         }
@@ -781,7 +787,7 @@ public class Game extends InGameMenu {
             inserted = castSpellCard((SpellCard) card, x, y, getCurrentPlayer());
         }
         if (inserted) {
-            if (!hasAI[turn%2])
+            if (!hasAI[turn % 2])
                 view.logMessage(cardName + " with " + card.getID() + " inserted to " + "(" + (x + 1) + "," + (y + 1) + ")");
             // log success message
             player.decreaseMana(card.getManaCost());
@@ -807,14 +813,20 @@ public class Game extends InGameMenu {
     }
 
     private void castItem(Item item, Player player, int r, int c, int startTime) {
-        if (item == null) {
+        if (item == null)
             return;
-        }
         switch (item.getItemType()) {
             case ADD_MANA:
-                if (item.getAddManaDuration() > (turn - startTime) / 2)
+                if (item.getAddManaDuration() >= (turn - startTime) / 2) {
                     player.addMana(item.getAddMana());
-                if (!currentItems.get(player).contains(item)) {
+                    if (item instanceof Collectible) {
+                        getCurrentPlayer().removeCollectible(item);
+                        currentItems.get(getCurrentPlayer()).remove(item);
+                        itemCastingTurns.get(getCurrentPlayer()).remove(item);
+                        return;
+                    }
+                }
+                if (!(currentItems.get(player).contains(item))) {
                     currentItems.get(player).add(item);
                     itemCastingTurns.get(player).put(item, turn);
                 }
@@ -847,7 +859,7 @@ public class Game extends InGameMenu {
                             }
                         }
                     }
-                    // Here      I add special power to units in deck
+                    // Here I add special power to units in deck
                     {
                         for (Card card : player.getDeck().getCards()) {
                             if (card instanceof Unit) {
@@ -862,6 +874,8 @@ public class Game extends InGameMenu {
                 castSpell(item.getSpell(), r, c, player);
                 break;
         }
+        if (item instanceof Collectible)
+            getCurrentPlayer().removeCollectible(item);
     }
 
     public void initiateGame() {
@@ -874,7 +888,7 @@ public class Game extends InGameMenu {
         turn = 0;
         putUnitCard(players[0].getHero(), 2, 0);
         turn = 1;
-        putUnitCard(players[1].getHero(), 2, 8);
+        putUnitCard(players[1].getHero(), 2, 1);
         turn = 0;
         for (int i = 0; i < 2; i++) {
             players[i].initiateHand();
@@ -891,8 +905,10 @@ public class Game extends InGameMenu {
                         StandardCharsets.UTF_8), Collectible.class));
             }
             Random random = new Random();
-            map.getCell(random.nextInt(6), random.nextInt(10)).setContent(collectibles.get(random.nextInt(
-                    collectibles.size())));
+            Cell cell = map.getCell(random.nextInt(1), random.nextInt(1));
+            while (cell.hasContent())
+                cell = map.getCell(random.nextInt(3), random.nextInt(5));
+            cell.setContent(collectibles.get(random.nextInt(collectibles.size())));
         } catch (Exception ignored) {
             ignored.printStackTrace();
         }
@@ -951,10 +967,8 @@ public class Game extends InGameMenu {
                         Unit unit = (Unit) card;
                         for (int t = unit.getBuffs().size() - 1; t >= 0; t--) {
                             Buff buff = unit.getBuffs().get(t);
+                            handlePoison(unit);
                             buff.decrementDuration();
-
-                            unit.receiveDamage(buff.getPoison());
-
                             if (buff.getDuration() <= 0) {
                                 unit.getBuffs().remove(buff);
                             }
@@ -987,13 +1001,17 @@ public class Game extends InGameMenu {
     }
 
     public boolean selectCollectible(String collectibleID) {
-        if (!hasAI[turn%2])
+        if (!hasAI[turn % 2])
             view.alertCollectibleSelection(collectibleID);
         selectedCollectible = getCurrentPlayer().getCollectible(collectibleID);
         return selectedCollectible != null;
     }
 
     public void applyCollectible(int row, int column) {
+        if (selectedCollectible.getItemType() == ItemType.ADD_MANA) {
+            view.showUncastableItemError();
+            return;
+        }
         castItem(selectedCollectible, getCurrentPlayer(), row, column, turn);
     }
 
@@ -1137,23 +1155,5 @@ public class Game extends InGameMenu {
         WIN_FIRST_PLAYER,
         DRAW,
         WIN_SECOND_PLAYER
-    }
-
-    class Pair {
-        int x;
-        int y;
-
-        Pair(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        int getX() {
-            return x;
-        }
-
-        int getY() {
-            return y;
-        }
     }
 }

@@ -6,7 +6,7 @@ public class Player {
     private Hand hand;
     private Deck deck;
     private ArrayList<Unit> units = new ArrayList<>();
-    private int mana;
+    private int mana = 1000;
     private ArrayList<Card> graveYard = new ArrayList<>();
     private ArrayList<Collectible> collectibles = new ArrayList<>();
     private int numberOfFlagTurns = 0;
@@ -145,5 +145,9 @@ public class Player {
             return;
         hand.addCard(deck.getNextCard());
         deck.deleteNextCard();
+    }
+
+    public void removeCollectible(Item item) {
+        collectibles.remove(item);
     }
 }

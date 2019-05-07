@@ -344,7 +344,7 @@ public class CommandLineView implements View {
 
     @Override
     public void showCollectibles(ArrayList<Collectible> collectibles) {
-        collectibles.forEach(System.out::println);
+        collectibles.forEach(o -> System.out.println(o.getCollectionItemID() + ": " + o));
     }
 
     @Override
@@ -459,5 +459,10 @@ public class CommandLineView implements View {
     @Override
     public void showNoUnitSelectedError() {
         System.out.println("No unit selected.");
+    }
+
+    @Override
+    public void showUncastableItemError() {
+        System.out.println("This item is not castable.");
     }
 }

@@ -150,4 +150,6 @@ View {
     void showPathBlockedError();
 
     void showNoUnitSelectedError();
+
+    void showUncastableItemError();
 }
