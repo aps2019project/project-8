@@ -1007,6 +1007,7 @@ public class Game extends InGameMenu {
                 if (specialPowerType == SpecialPowerType.PASSIVE) {
 //                    System.err.println(spell);
                     castSpell(unit, spell, unit.getX(), unit.getY(), unit.getPlayer());
+                    checkOnDeath(unit);
                 }
             }
         }
