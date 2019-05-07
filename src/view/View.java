@@ -164,4 +164,6 @@ View {
     void alertCPUWin();
 
     void showInvalidTargetError();
+
+    void showInvalidMainDeckError();
 }

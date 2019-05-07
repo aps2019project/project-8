@@ -501,4 +501,9 @@ public class CommandLineView implements View {
     public void showInvalidTargetError() {
         System.out.println("Invalid target");
     }
+
+    @Override
+    public void showInvalidMainDeckError() {
+        System.out.println("Your main deck is invalid.");
+    }
 }

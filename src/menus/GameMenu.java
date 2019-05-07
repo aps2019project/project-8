@@ -131,7 +131,7 @@ public class GameMenu extends InGameMenu {
             return true;
         }
         if (!getAccount().getMainDeck().isValid()) {
-            view.showInvalidDeckError();
+            view.showInvalidMainDeckError();
             return true;
         }
         return false;
@@ -145,7 +145,7 @@ public class GameMenu extends InGameMenu {
             return false;
         }
         if (!getAccount().getDeck(deckName).isValid()) {
-            view.showInvalidDeckError();
+            view.showInvalidMainDeckError();
             return false;
         }
         if (checkGameParameters(mode, numberOfFlags)) return false;
