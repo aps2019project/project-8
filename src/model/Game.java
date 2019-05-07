@@ -4,7 +4,6 @@ package model;
 
 import menus.InGameMenu;
 
-import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -16,13 +15,13 @@ public class Game extends InGameMenu {
     private static final int[] HERO_INITIAL_COLUMN = {0, 8};
     private static final int NUMBER_OF_FLAG_TURNS = 6;
 
-    private ArrayList<Item> currentItems = new ArrayList<>();
-    private ArrayList<Integer> itemCastingTurns = new ArrayList<>();
+    private HashMap<Player, ArrayList<Item>> currentItems = new HashMap<>();
+    private HashMap<Player, HashMap<Item, Integer>> itemCastingTurns = new HashMap<>();
     private int numberOfFlags;
     private int turn;
     private Map map = new Map();
     private Player[] players;
-    private boolean hasAI;
+    private boolean[] hasAI;
     private Account[] accounts;
     private Unit selectedUnit;
     private Card selectedCard; // probably has no use
@@ -35,7 +34,7 @@ public class Game extends InGameMenu {
         accounts = new Account[]{firstPlayer, secondPlayer};
         players = new Player[]{firstPlayer.getPlayer().setName(firstPlayer.getName()), secondPlayer.getPlayer().
                 setName(secondPlayer.getName())};
-        hasAI = false;
+        hasAI[0] = hasAI[1] = false;
         this.gameType = gameType;
         this.numberOfFlags = numberOfFlags;
     }
@@ -43,12 +42,21 @@ public class Game extends InGameMenu {
     public Game(Account account, AI ai, GameType gameType, int numberOfFlags) {
         accounts = new Account[]{account, null};
         players = new Player[]{account.getPlayer().setName(account.getName()), ai.getPlayer().setName("COM")};
-        hasAI = false;
+        hasAI[0] = false;
+        hasAI[1] = true;
         this.gameType = gameType;
         this.numberOfFlags = numberOfFlags;
     }
 
-    private Player getCurrentPlayer() {
+    Player getFirstPlayer() {
+        return players[0];
+    }
+
+    Player getSecondPlayer() {
+        return players[1];
+    }
+
+    Player getCurrentPlayer() {
         if (turn % 2 == 0) {
             return players[0];
         } else {
@@ -56,7 +64,7 @@ public class Game extends InGameMenu {
         }
     }
 
-    private Map getMap() {
+    Map getMap() {
         return this.map;
     }
 
@@ -92,11 +100,11 @@ public class Game extends InGameMenu {
         }
     }
 
-    public void moveSelectedUnit(int x, int y) {
+    public boolean moveSelectedUnit(int x, int y) { // returns true if successful
         // can fly has got to do something in here
         if (!selectedUnit.getCanMove()) {
             view.showUnableToMoveError();
-            return;
+            return false;
         }
         if (getDistance(selectedUnit.getX(), selectedUnit.getY(), x, y) <= 2) { // possibly we could add some moveRange to Unit class variables
             if (isPathEmpty(selectedUnit.getX(), selectedUnit.getY(), x, y, getCurrentPlayer())) {
@@ -112,10 +120,11 @@ public class Game extends InGameMenu {
                 selectedUnit.setY(y);
                 view.logMessage(selectedUnit.getID() + " moved to " + (x + 1) + " " + (y + 1));
                 selectedUnit.setCanMove(false);
-                return;
+                return true;
             }
         }
         view.showInvalidTargetError();
+        return false;
     }
 
 
@@ -261,24 +270,25 @@ public class Game extends InGameMenu {
     }
 
     // x, y must be valid
-    public void useHeroSpecialPower(int x, int y) {
+    public boolean useHeroSpecialPower(int x, int y) { // true if successful
         Hero hero = getCurrentPlayer().getHero();
         Player player = getCurrentPlayer();
         if (hero.getSpecialPowers() == null) {
-            return;
+            return false;
         }
         if (player.getMana() < hero.getManaCost()) {
             view.showNotEnoughManaError();
-            return;
+            return false;
         }
         if (hero.getRemainingCooldown() != 0) {
             view.showCooldownError();
-            return;
+            return false;
         }
         hero.resetRemainingCooldown();
         for (Spell spell : hero.getSpecialPowers()) {
             castSpell(spell, x, y, getCurrentPlayer());
         }
+        return true;
     }
 
     private void endGame() {
@@ -314,7 +324,7 @@ public class Game extends InGameMenu {
 
     }
 
-    private Unit findUnitInGridByID(String cardID) {
+    Unit findUnitInGridByID(String cardID) {
         for (Cell[] rowCells : map.getGrid()) {
             for (Cell cell : rowCells) {
                 if (cell.getContent() instanceof Unit) {
@@ -521,8 +531,8 @@ public class Game extends InGameMenu {
                 break;
 
             case SELECTED_X_Y_GRID:
-                for (int i = x; i < x + spell.getGridX(); i++) {
-                    for (int j = y; i < y + spell.getGridY(); j++) {
+                for (int i = x; i < Integer.min(x + spell.getGridX(), Map.NUMBER_OF_ROWS); i++) {
+                    for (int j = y; i < Integer.min(y + spell.getGridY(), Map.NUMBER_OF_COLUMNS); j++) {
                         cell = map.getGrid()[i][j];
                         if (inMap(i, j) && isValidTarget(spell, cell, player)) {
                             targets.add(cell);
@@ -669,20 +679,20 @@ public class Game extends InGameMenu {
 
     // inserts card with name [cardName] from player's hand and puts it in cell ([x], [y])
     // if card is a spell card (x, y) is the target of the spell
-    public void insertCard(String cardName, int x, int y) {
+    public boolean insertCard(String cardName, int x, int y) { // returns true if successful
         Player player = getCurrentPlayer();
         Card card = player.findCardInHand(cardName);
         if (card == null) { // no such card is found in player's hand
             view.showInvalidCardError();
-            return;
+            return false;
         }
         if (!inMap(x, y)) {
             view.showInvalidCoordinatesError();
-            return;
+            return false;
         }
         if (player.getMana() < card.getManaCost()) { // player doesn't have enough mana
             view.showNotEnoughManaError();
-            return;
+            return false;
         }
         boolean inserted = false;
         if (card instanceof Unit) {
@@ -697,6 +707,7 @@ public class Game extends InGameMenu {
             player.decreaseMana(card.getManaCost());
             player.getHand().getCards().remove(card);
         }
+        return true;
     }
 
     public boolean hasUnit(String unitID) {
@@ -718,11 +729,12 @@ public class Game extends InGameMenu {
     private void castItem(Item item, Player player, int r, int c, int startTime) {
         switch (item.getItemType()) {
             case ADD_MANA:
-                if (item.getAddManaDuration() > turn - startTime) {
+                if (item.getAddManaDuration() > (turn - startTime) / 2)
                     player.addMana(item.getAddMana());
+                if (!currentItems.get(player).contains(item)) {
+                    currentItems.get(player).add(item);
+                    itemCastingTurns.get(player).put(item, turn);
                 }
-//                currentItems.add(item);
-                itemCastingTurns.add(turn);
                 break;
             case ADD_A_SPECIAL_POWER:
                 for (int i = 0; i < item.getSpecialPowers().size(); i++) {
@@ -775,7 +787,10 @@ public class Game extends InGameMenu {
     public void initiateGame() {
         numberOfPlayedCollectionItems.add(new HashMap<>());
         numberOfPlayedCollectionItems.add(new HashMap<>());
-
+        currentItems.put(players[0], new ArrayList<>());
+        currentItems.put(players[1], new ArrayList<>());
+        itemCastingTurns.put(players[0], new HashMap<>());
+        itemCastingTurns.put(players[1], new HashMap<>());
         turn = 0;
         putUnitCard(players[0].getHero(), 2, 0);
         turn = 1;
@@ -799,13 +814,14 @@ public class Game extends InGameMenu {
         getCurrentPlayer().refillHand();
 
         // item processes
-        for (int i = 0; i < currentItems.size(); i++) {
+        for (int i = 0; i < currentItems.get(getCurrentPlayer()).size(); i++) {
+            Item item = currentItems.get(getCurrentPlayer()).get(i);
+            int startTime = itemCastingTurns.get(getCurrentPlayer()).get(item);
 
-//            System.err.println(i + 1);
-//            System.err.println(currentItems.get(i));
+            System.err.println(i + 1);
+            System.err.println(currentItems.get(getCurrentPlayer()).get(i));
+            System.err.println(itemCastingTurns.get(getCurrentPlayer()).get(item));
 
-            Item item = currentItems.get(i);
-            int startTime = itemCastingTurns.get(i);
             castItem(item, getCurrentPlayer(), 0, 0, startTime);
         }
 
@@ -822,6 +838,7 @@ public class Game extends InGameMenu {
                 }
             }
         }
+
     }
 
     private void prepareUnit(Unit unit) {
@@ -872,9 +889,10 @@ public class Game extends InGameMenu {
         initiateTurn();
     }
 
-    public Collectible selectCollectible(String collectibleID) {
+    public boolean selectCollectible(String collectibleID) {
         view.alertCollectibleSelection(collectibleID);
-        return getCurrentPlayer().getCollectible(collectibleID);
+        selectedCollectible = getCurrentPlayer().getCollectible(collectibleID);
+        return selectedCollectible != null;
     }
 
     public void applyCollectible(int row, int column) {

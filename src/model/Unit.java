@@ -200,7 +200,7 @@ public class Unit extends Card {
     public int calculateHP() {
         int ans = hitPoint;
         for (Buff buff : buffs)
-            ans += buff.getEffectAp();
+            ans += buff.getEffectHp();
         return ans;
     }
 
