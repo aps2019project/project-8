@@ -4,6 +4,7 @@ package model;
 
 import menus.InGameMenu;
 
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -21,7 +22,7 @@ public class Game extends InGameMenu {
     private int turn;
     private Map map = new Map();
     private Player[] players;
-    private boolean[] hasAI;
+    private boolean[] hasAI = new boolean[2];
     private Account[] accounts;
     private Unit selectedUnit;
     private Card selectedCard; // probably has no use
@@ -29,6 +30,7 @@ public class Game extends InGameMenu {
     private GameType gameType;
     private int prize = 1000;
     private ArrayList<HashMap<String, Integer>> numberOfPlayedCollectionItems = new ArrayList<>(2);
+    private AI ai;
 
     public Game(Account firstPlayer, Account secondPlayer, GameType gameType, int numberOfFlags) {
         accounts = new Account[]{firstPlayer, secondPlayer};
@@ -40,6 +42,7 @@ public class Game extends InGameMenu {
     }
 
     public Game(Account account, AI ai, GameType gameType, int numberOfFlags) {
+        this.ai = ai;
         accounts = new Account[]{account, null};
         players = new Player[]{account.getPlayer().setName(account.getName()), ai.getPlayer().setName("COM")};
         hasAI[0] = false;
@@ -861,6 +864,10 @@ public class Game extends InGameMenu {
                 }
             }
         }
+
+        if (hasAI[turn % 2]) {
+            ai.makeMove();
+        }
     }
 
     private void prepareUnit(Unit unit) {
@@ -1021,6 +1028,33 @@ public class Game extends InGameMenu {
                 cards.add(attacker);
         }
         return cards;
+    }
+
+    public void shengdeShow() {
+        System.err.println("Player 1 Mana(" + players[0].getMana() + ") hand:");
+        for (Card card : players[0].getHand().getCards()) {
+            System.err.print(card.getName() + "\t");
+        }
+        System.err.println();
+        System.err.println("Player one usable item is: " + players[0].getDeck().getDeckUsableItem().getName());
+        for (int row = 0; row < getMap().getNumberOfRows(); row++) {
+            for (int column = 0; column < getMap().getNumberOfColumns(); column++) {
+                Cell cell = getMap().getCell(row, column);
+                if (!cell.hasContent() || !(cell.getContent() instanceof Unit)) {
+                    System.err.print(".\t\t");
+                } else {
+                    Unit unit = (Unit) cell.getContent();
+                    System.err.print(unit.getName() + "\t\t");
+                }
+            }
+            System.err.print("\n");
+        }
+        System.err.println("Player 2 Mana(" + players[1].getMana() + ") hand:");
+        for (Card card : players[1].getHand().getCards()) {
+            System.err.print(card.getName() + "\t");
+        }
+        System.err.println();
+        System.err.println("Player 2 usable Item is: " + players[1].getDeck().getDeckUsableItem().getName());
     }
 
     public int getPrize() {

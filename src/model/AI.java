@@ -165,10 +165,10 @@ public class AI {
             }
 
             int indexAttacker, indexDefender;
-            do {
-                indexAttacker = rand.nextInt(attacker.getUnits().size());
-                indexDefender = rand.nextInt(defender.getUnits().size());
-            } while (game.attackUnitByUnit(attacker.getUnits().get(indexAttacker), attacker.getUnits().get(indexDefender),false) != 0);
+//            do {
+//                indexAttacker = rand.nextInt(attacker.getUnits().size());
+//                indexDefender = rand.nextInt(defender.getUnits().size());
+//            } while (game.attackUnitByUnit(attacker.getUnits().get(indexAttacker), attacker.getUnits().get(indexDefender),false) != 0);
         }
         // cast special power with a random unit if any unit has
         {
