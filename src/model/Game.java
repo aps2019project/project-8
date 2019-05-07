@@ -133,6 +133,7 @@ public class Game extends InGameMenu {
                         itemCastingTurns.get(getCurrentPlayer()).put(collectible, turn);
                     }
                 }
+                selectedUnit.addFlags(destinationCell.getNumberOfFlags());
                 currentCell.setContent(null);
                 map.getGrid()[x][y].setContent(selectedUnit);
                 selectedUnit.setX(x);
@@ -164,6 +165,7 @@ public class Game extends InGameMenu {
             i++;
         }
         moveCardToGraveYard(unit);
+        map.getCell(unit.getX(), unit.getY()).addFlag(unit.getNumberOfFlags());
     }
 
     public void handlePoison(Unit unit) {
@@ -912,6 +914,13 @@ public class Game extends InGameMenu {
         turn = 1;
         putUnitCard(players[1].getHero(), 2, 1);
         turn = 0;
+        if (gameType == GameType.COLLECT_THE_FLAGS) {
+            for (int i = 0; i < numberOfFlags; i++) {
+                putARandomFlag();
+            }
+        } else if (gameType == GameType.HOLD_THE_FLAG) {
+            putARandomFlag();
+        }
         for (int i = 0; i < 2; i++) {
             players[i].initiateHand();
             if (players[i].getUsable() != null) {
@@ -927,9 +936,9 @@ public class Game extends InGameMenu {
                         StandardCharsets.UTF_8), Collectible.class));
             }
             Random random = new Random();
-            Cell cell = map.getCell(random.nextInt(1), random.nextInt(1));
+            Cell cell = map.getCell(random.nextInt(5), random.nextInt(9));
             while (cell.hasContent())
-                cell = map.getCell(random.nextInt(3), random.nextInt(5));
+                cell = map.getCell(random.nextInt(5), random.nextInt(9));
             cell.setContent(collectibles.get(random.nextInt(collectibles.size())));
         } catch (Exception ignored) {
             ignored.printStackTrace();
@@ -937,6 +946,15 @@ public class Game extends InGameMenu {
 
         // initiate next turn
         initiateTurn();
+    }
+
+    private void putARandomFlag() {
+        Random random = new Random();
+        Cell cell = map.getCell(random.nextInt(5), random.nextInt(9));
+        while (cell.hasContent() || cell.getNumberOfFlags() != 0) {
+            cell = map.getCell(random.nextInt(5), random.nextInt(9));
+        }
+        cell.addFlag(1);
     }
 
     public void initiateTurn() {
@@ -1122,21 +1140,22 @@ public class Game extends InGameMenu {
         view.showCollectible(selectedCollectible);
     }
 
-    public ArrayList<Card> showAvailableOptions() {
+    public ArrayList<Card>[] showAvailableOptions() {
+        ArrayList<Card>[] availableOptions = new ArrayList[3];
+        for (int i = 0; i < availableOptions.length; i++)
+            availableOptions[i] = new ArrayList<>();
         Player player = getCurrentPlayer();
-        ArrayList<Card> cards = new ArrayList<Card>();
         for (Card card : player.getHand().getCards())
             if (card.getManaCost() <= player.getMana())
-                cards.add(card);
+                availableOptions[2].add(card);
         for (Unit attacker : player.getUnits()) {
-            boolean canAttackOne = false;
+            if (attacker.getCanMove())
+                availableOptions[0].add(attacker);
             for (Unit defender : players[1 - turn % 2].getUnits())
                 if (attackState(attacker, defender) == 0)
-                    canAttackOne = true;
-            if (canAttackOne || attacker.getCanMove())
-                cards.add(attacker);
+                    availableOptions[1].add(defender);
         }
-        return cards;
+        return availableOptions;
     }
 
     public void shengdeShow() {

@@ -3,6 +3,7 @@ package menus;
 import model.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class GameMenu extends InGameMenu {
     private static final String[] commands = {
@@ -192,7 +193,10 @@ public class GameMenu extends InGameMenu {
     }
 
     public static void showOptions() {
-        game.showAvailableOptions();
+        ArrayList<Card>[] availableOptions = game.showAvailableOptions();
+        view.showUnitsReadyToMove(availableOptions[0]);
+        view.showUnitsAvailableForAttack(availableOptions[1]);
+        view.showCardsReadyToBePlayed(availableOptions[2]);
     }
 
     public static void checkGameCondition() {

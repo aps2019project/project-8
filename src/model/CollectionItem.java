@@ -30,12 +30,12 @@ public class CollectionItem {
         return collectionItemID;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
     public void setCollectionItemID(String collectionItemID) {
         this.collectionItemID = collectionItemID;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public int getPrice() {
