@@ -215,9 +215,9 @@ public class GameMenu extends InGameMenu {
                 if (!(secondAccount == null)) {
                     secondAccount.addMatch(new Match(account, Result.WIN, LocalDateTime.now()));
                     secondAccount.payMoney(game.getPrize());
+                    view.showWinner(secondAccount, game.getPrize());
                 }
                 secondAccount = null;
-                view.showWinner(secondAccount, game.getPrize());
                 break;
             default:
                 return;
