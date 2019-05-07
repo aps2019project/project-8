@@ -632,6 +632,8 @@ public class Game extends InGameMenu {
                 for (int i = x - 1; i <= x + 1; i++) {
                     for (int j = y - 1; j <= y + 1; j++) {
                         if (inMap(i, j)) {
+                            if (i == x && y == j)
+                                continue;
                             cell = map.getGrid()[i][j];
                             if (isValidTarget(castingUnit, spell, cell, player)) {
                                 targets.add(cell);
