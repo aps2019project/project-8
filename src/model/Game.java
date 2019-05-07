@@ -634,7 +634,7 @@ public class Game extends InGameMenu {
 
             case SELECTED_X_Y_GRID:
                 for (int i = x; i < x + spell.getGridX(); i++) {
-                    for (int j = y; i < y + spell.getGridY(); j++) {
+                    for (int j = y; j < y + spell.getGridY(); j++) {
                         if (inMap(i, j)) {
                             cell = map.getGrid()[i][j];
                             if (isValidTarget(spell, cell, player)) {
@@ -985,6 +985,13 @@ public class Game extends InGameMenu {
             for (int i = 0; i < unit.getSpecialPowers().size(); i++) {
                 Spell spell = unit.getSpecialPowers().get(i);
                 SpecialPowerType specialPowerType = unit.getSpecialPowerTypes().get(i);
+
+                //
+                System.err.println(unit);
+                System.err.println(spell);
+                System.err.println(specialPowerType);
+                //
+
                 if (specialPowerType == SpecialPowerType.PASSIVE) {
                     System.err.println(spell);
                     castSpell(spell, unit.getX(), unit.getY(), unit.getPlayer());
