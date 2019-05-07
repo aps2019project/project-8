@@ -71,6 +71,12 @@ public class Buff {
         return dispellable;
     }
 
+    public boolean isPositiveBuff() {
+        if (stun || disarm)
+            return false;
+        return holy + effectHp + effectAp - poison > 0;
+    }
+
     public static class BuffBuilder {
         private int duration = 0;
         private int holy = 0;
