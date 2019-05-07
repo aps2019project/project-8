@@ -1,8 +1,8 @@
 package model;
 
 public class Map {
-    public static final int NUMBER_OF_ROWS = 6;
-    public static final int NUMBER_OF_COLUMNS = 10;
+    public static final int NUMBER_OF_ROWS = 5;
+    public static final int NUMBER_OF_COLUMNS = 9;
     private Cell[][] grid;
 
     public Map() {

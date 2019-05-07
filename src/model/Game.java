@@ -251,20 +251,25 @@ public class Game extends InGameMenu {
         return 0;
     }
 
-    public void attackTargetCardWithSelectedUnit(String targetCardID) {
+    public boolean attackTargetCardWithSelectedUnit(String targetCardID) {
         Unit targetUnit = findUnitInGridByID(targetCardID);
         if (targetUnit == null || targetUnit.getPlayer() == getCurrentPlayer()) { // invalid card id
             view.showInvalidCardIDError();
-            return;
+            return false;
         }
         int state = attackUnitByUnit(selectedUnit, targetUnit, false);
         if (state == -1) { // has already attacked before or is stunned
             view.logMessage("Card with " + selectedUnit.getID() + " can't attack");
-            return;
+            return false;
         }
         if (state == -2) { // can't attack because
             view.logMessage("opponent minion is unavailable for attack");
+            return false;
         }
+        if (state == 1) {
+            return false;
+        }
+        return false;
     }
 
     public void attackCombo(String targetCardID, String[] friendlyCardsIDs) {
@@ -1062,10 +1067,10 @@ public class Game extends InGameMenu {
             for (int column = 0; column < getMap().getNumberOfColumns(); column++) {
                 Cell cell = getMap().getCell(row, column);
                 if (!cell.hasContent() || !(cell.getContent() instanceof Unit)) {
-                    System.err.print(".\t\t");
+                    System.err.format("%-15s", ".");
                 } else {
                     Unit unit = (Unit) cell.getContent();
-                    System.err.print(unit.getName() + "\t\t");
+                    System.err.format("%-15s",unit.getName());
                 }
             }
             System.err.print("\n");
