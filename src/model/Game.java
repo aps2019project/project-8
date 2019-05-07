@@ -256,10 +256,10 @@ public class Game extends InGameMenu {
 
     public  void printSpells(Unit unit) {
         System.err.println(unit.getName());
-        System.err.println("SPECIAL POWERS: ");
-        for (Spell spell : unit.getSpecialPowers()) {
-            System.err.println(spell);
-        }
+//        System.err.println("SPECIAL POWERS: ");
+//        for (Spell spell : unit.getSpecialPowers()) {
+//            System.err.println(spell);
+//        }
         System.err.println("BUFFS: ");
         unit.getBuffs().forEach(System.out::println);
     }
@@ -413,7 +413,6 @@ public class Game extends InGameMenu {
                     return GameState.WIN_FIRST_PLAYER;
                 return GameState.DRAW;
         }
-        return GameState.DRAW;
     }
 
     private void rewardPlayer(Player player) {
@@ -700,6 +699,7 @@ public class Game extends InGameMenu {
     // returns true if spell had
 
     private void castSpell(Unit castingUnit, Spell spell, int x, int y, Player player) {
+        System.err.println(spell);
         ArrayList<Cell> targets = getTargets(castingUnit, spell, x, y, player);
         shuffle(targets); // here we handle random targets!
         for (int i = 0; i < Math.min(targets.size(), spell.getNumberOfRandomTargets()); i++) {
@@ -992,7 +992,6 @@ public class Game extends InGameMenu {
                 Spell spell = unit.getSpecialPowers().get(i);
                 SpecialPowerType specialPowerType = unit.getSpecialPowerTypes().get(i);
                 if (specialPowerType == SpecialPowerType.PASSIVE) {
-//                    System.err.println(spell);
                     castSpell(unit, spell, unit.getX(), unit.getY(), unit.getPlayer());
                 }
             }
@@ -1135,7 +1134,7 @@ public class Game extends InGameMenu {
                 player.getUnits().forEach(view::showUnit);
 
                 for(Unit unit: player.getUnits()) {
-//                    printSpells(unit);
+                    printSpells(unit);
                 }
 
             }
