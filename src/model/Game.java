@@ -416,7 +416,6 @@ public class Game extends InGameMenu {
     }
 
     private void rewardPlayer(Player player) {
-
     }
 
     void moveCardToGraveYard(Card card) { // How to access the card

@@ -200,7 +200,9 @@ public class GameMenu extends InGameMenu {
     }
 
     public static void checkGameCondition() {
-        switch (game.getGameState()) {
+        Game.GameState gameState = game.getGameState();
+        System.err.println(gameState);
+        switch (gameState) {
             case WIN_FIRST_PLAYER:
                 account.payMoney(game.getPrize());
                 account.addMatch(new Match((hasAI ? null : secondAccount), Result.WIN, LocalDateTime.now()));
@@ -209,6 +211,7 @@ public class GameMenu extends InGameMenu {
                 }
                 secondAccount = null;
                 view.showWinner(account, game.getPrize());
+                UI.endGame();
                 break;
             case WIN_SECOND_PLAYER:
                 account.addMatch(new Match((hasAI ? null : secondAccount), Result.WIN, LocalDateTime.now()));
@@ -218,6 +221,7 @@ public class GameMenu extends InGameMenu {
                     view.showWinner(secondAccount, game.getPrize());
                 }
                 secondAccount = null;
+                UI.endGame();
                 break;
             default:
                 return;
