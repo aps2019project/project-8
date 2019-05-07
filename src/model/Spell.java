@@ -147,7 +147,7 @@ public class Spell {
     public String toString() {
         String ans = "buffs : \n";
         for (Buff buff : buffs)
-            ans.concat(buff.toString());
+            ans = ans.concat(buff.toString());
         return ans;
     }
 

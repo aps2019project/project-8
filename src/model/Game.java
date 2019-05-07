@@ -247,7 +247,8 @@ public class Game extends InGameMenu {
     private void twoSidedAttack(Unit attacker, Unit defender) {
         oneSidedAttack(attacker, defender);
         // no ON_DEFEND for now!
-        if (defender.isDisarmed())
+        System.err.println("shit pel " + attacker.getName() + defender.getName() + defender.isDisarmed());
+        if (!defender.isDisarmed())
             rawAttack(defender, attacker);
     }
 
@@ -259,9 +260,12 @@ public class Game extends InGameMenu {
 
     public  void printSpells(Unit unit) {
         System.err.println(unit.getName());
+        System.err.println("SPECIAL POWERS: ");
         for (Spell spell : unit.getSpecialPowers()) {
             System.err.println(spell);
         }
+        System.err.println("BUFFS: ");
+        unit.getBuffs().forEach(System.out::println);
     }
 
     public void forTesting(Unit attacker, Unit defender) {
