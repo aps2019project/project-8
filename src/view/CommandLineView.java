@@ -496,4 +496,9 @@ public class CommandLineView implements View {
     public void alertCPUWin() {
         System.out.println("HAHA! You lost to this stupid shit!");
     }
+
+    @Override
+    public void showInvalidTargetError() {
+        System.out.println("Invalid target");
+    }
 }

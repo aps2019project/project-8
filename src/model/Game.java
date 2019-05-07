@@ -749,7 +749,7 @@ public class Game extends InGameMenu {
             castSpell(null, spellCard.getSpell(), x, y, player);
         } else {
             if (!hasAI[turn % 2])
-                view.showTargetOutOfRangeError();
+                view.showInvalidTargetError();
             return false;
         }
         spellCard.setCollectionItemID(getNewID(spellCard));
@@ -763,7 +763,7 @@ public class Game extends InGameMenu {
         if (grid[x][y].getContent() != null && grid[x][y].getContent() instanceof Unit) {
             // the cell is already not empty
             if (!hasAI[turn % 2])
-                view.showTargetOutOfRangeError();
+                view.showInvalidTargetError();
             return false;
         }
         Player player = getCurrentPlayer();

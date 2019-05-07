@@ -162,4 +162,6 @@ View {
     void showWinner(Account account, int prize);
 
     void alertCPUWin();
+
+    void showInvalidTargetError();
 }
