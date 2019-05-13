@@ -7,10 +7,7 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 public class Game extends InGameMenu {
 
@@ -84,7 +81,7 @@ public class Game extends InGameMenu {
 
     private boolean isPathEmpty(int srcX, int srcY, int desX, int desY, Player player) {
         Cell[][] grid = map.getGrid();
-        if (grid[desX][desY].getContent() != null && grid[desX][desY].getContent() instanceof Unit)
+        if (grid[desX][desY].getContent() instanceof Unit)
             return false;
         int distance = getDistance(srcX, srcY, desX, desY);
         if (distance == 1) {
@@ -188,7 +185,7 @@ public class Game extends InGameMenu {
     private void handleFireCell(Unit unit) {
         Cell cell = map.getCell(unit.getX(), unit.getY());
         for (Buff buff : cell.getEffects()) {
-            unit.addBuff(buff);
+            unit.addBuff(Buff.newFireBuff(buff.getEffectHp()));
         }
         if (unit.calculateHP() <= 0) {
             checkOnDeath(unit);
@@ -1057,18 +1054,17 @@ public class Game extends InGameMenu {
         for (int i = 0; i < getMap().getNumberOfRows(); i++)
             for (int j = 0; j < getMap().getNumberOfColumns(); j++) {
                 Cell cell = getMap().getCell(i, j);
-                if (!cell.hasContent())
-                    continue;
                 if (cell.getContent() instanceof Card) {
                     Card card = (Card) cell.getContent();
                     if (card instanceof Unit) {
                         Unit unit = (Unit) card;
+                        addPoison(cell, unit);
+                        addFire(cell, unit);
                         if (unit.getNumberOfFlags() > 0)
                             unit.getPlayer().addNumberOfFlagTurns();
                         for (int t = unit.getBuffs().size() - 1; t >= 0; t--) {
                             Buff buff = unit.getBuffs().get(t);
                             handlePoison(unit);
-                            handleFireCell(unit);
                             buff.decrementDuration();
                             if (buff.getDuration() <= 0) {
                                 unit.getBuffs().remove(t);
@@ -1076,6 +1072,10 @@ public class Game extends InGameMenu {
                         }
                     }
                 }
+                cell.getEffects().forEach(Buff::decrementDuration);
+                for (int k = cell.getEffects().size() - 1; k >= 0; k--)
+                    if (cell.getEffects().get(k).getDuration() <= 0)
+                        cell.getEffects().remove(cell.getEffects().get(k));
             }
 
         // can move and can attack for all units
@@ -1100,6 +1100,20 @@ public class Game extends InGameMenu {
 
         // initiate next turn
         initiateTurn();
+    }
+
+    private void addFire(Cell cell, Unit unit) {
+        cell.getEffects().forEach(o -> {
+            if (o.getEffectHp() != 0)
+                unit.addBuff(Buff.newFireBuff(o.getEffectHp()));
+        });
+    }
+
+    private void addPoison(Cell cell, Unit unit) {
+        cell.getEffects().forEach(o -> {
+            if (o.getPoison() != 0)
+                unit.addBuff(Buff.newPoisonBuff(o.getPoison()));
+        });
     }
 
     public boolean selectCollectible(String collectibleID) {
@@ -1254,7 +1268,7 @@ public class Game extends InGameMenu {
                     if (collectionItem instanceof Unit) {
                         if (((Unit) collectionItem).getPlayer() == players[0]) {
                             output = "+" + output + "+";
-                            if (((Unit) collectionItem) == selectedUnit) {
+                            if ((collectionItem) == selectedUnit) {
                                 output = "[" + output + "]";
                             }
                         } else {
@@ -1265,7 +1279,9 @@ public class Game extends InGameMenu {
                     }
                 }
                 output += ":" + cell.getNumberOfFlags();
-                System.err.format("%-20s", output);
+                output += "!" + (cell.getEffects().stream().map(Buff::getPoison).reduce(Integer::sum).orElse(0));
+                output += "?" + (cell.getEffects().stream().map(Buff::getEffectHp).reduce(Integer::sum).orElse(0));
+                System.err.format("%-24s", output);
             }
             System.err.print("\n");
         }

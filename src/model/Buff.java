@@ -35,6 +35,14 @@ public class Buff {
         this.dispellable = buff.dispellable;
     }
 
+    public static Buff newPoisonBuff(int poison) {
+        return new Buff(3, 0, poison, 0, 0, false, false, true);
+    }
+
+    public static Buff newFireBuff(int effectHp) {
+        return new Buff(1000000, 0, 0, effectHp, 0, false, false, false);
+    }
+
     public void decrementDuration() {
         duration--;
     }
