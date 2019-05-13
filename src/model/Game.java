@@ -777,11 +777,25 @@ public class Game extends InGameMenu {
 
     private boolean putUnitCard(Unit unit, int x, int y) {
         Cell[][] grid = map.getGrid();
-        if (grid[x][y].getContent() != null && grid[x][y].getContent() instanceof Unit) {
+        if (grid[x][y].getContent() instanceof Unit) {
             // the cell is already not empty
             if (!hasAI[turn % 2])
                 view.showInvalidTargetError();
             return false;
+        }
+        if (!(unit instanceof Hero)) {
+            boolean hasAdjacentFriendly = false;
+            for (int dx = -1; dx < 2; dx++)
+                for (int dy = -1; dy < 2; dy++)
+                    if (inMap(x + dx, y + dy))
+                        if (grid[x + dx][y + dy].getContent() instanceof Unit)
+                            if (((Unit) grid[x + dx][y + dy].getContent()).getPlayer() == getCurrentPlayer())
+                                hasAdjacentFriendly = true;
+            if (!hasAdjacentFriendly) {
+                if (!hasAI[turn % 2])
+                    view.showNoAdjacentFriendlyUnitError();
+                return false;
+            }
         }
         Player player = getCurrentPlayer();
         unit.setPlayer(player);
@@ -848,7 +862,7 @@ public class Game extends InGameMenu {
             player.getHand().getCards().remove(card);
         }
         checkForDeath();
-        return true;
+        return inserted;
     }
 
     public boolean hasUnit(String unitID) {

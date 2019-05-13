@@ -130,7 +130,7 @@ public class AI {
 
     public void makeMove() {
         // select random unit and move with it
-        int limitOnWhile = 20;
+        final int LIMIT_ON_WHILE = 20;
         {
             selectRandomUnit();
             int r, c, counter = 0;
@@ -138,7 +138,7 @@ public class AI {
                 r = rand.nextInt(game.getMap().getNumberOfRows());
                 c = rand.nextInt(game.getMap().getNumberOfColumns());
                 counter++;
-            } while (!game.moveSelectedUnit(r, c) && counter < limitOnWhile);
+            } while (!game.moveSelectedUnit(r, c) && counter < LIMIT_ON_WHILE);
         }
         // put a random card in map
         {
@@ -149,7 +149,7 @@ public class AI {
                 r = rand.nextInt(game.getMap().getNumberOfRows());
                 c = rand.nextInt(game.getMap().getNumberOfColumns());
                 counter++;
-            } while (!game.insertCard(player.getHand().getCards().get(index).getName(), r, c) && counter < limitOnWhile);
+            } while (!game.insertCard(player.getHand().getCards().get(index).getName(), r, c) && counter < LIMIT_ON_WHILE);
         }
         // select random unit and attack with it
         {
@@ -164,7 +164,7 @@ public class AI {
             do {
                 index = rand.nextInt(defender.getUnits().size());
                 counter++;
-            } while (!game.attackTargetCardWithSelectedUnit(defender.getUnits().get(index).getID()) && counter < limitOnWhile);
+            } while (!game.attackTargetCardWithSelectedUnit(defender.getUnits().get(index).getID()) && counter < LIMIT_ON_WHILE);
         }
         // cast special power with a random unit if any unit has
         {
@@ -173,7 +173,7 @@ public class AI {
                 r = rand.nextInt(game.getMap().getNumberOfRows());
                 c = rand.nextInt(game.getMap().getNumberOfColumns());
                 counter++;
-            } while (!game.useHeroSpecialPower(r, c) && counter < limitOnWhile);
+            } while (!game.useHeroSpecialPower(r, c) && counter < LIMIT_ON_WHILE);
         }
         // cast collectible if it has any
         {

@@ -506,4 +506,9 @@ public class CommandLineView implements View {
     public void showInvalidMainDeckError() {
         System.out.println("Your main deck is invalid.");
     }
+
+    @Override
+    public void showNoAdjacentFriendlyUnitError() {
+        System.out.println("No friendly unit in the vicinity.");
+    }
 }

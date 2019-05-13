@@ -166,4 +166,6 @@ View {
     void showInvalidTargetError();
 
     void showInvalidMainDeckError();
+
+    void showNoAdjacentFriendlyUnitError();
 }
