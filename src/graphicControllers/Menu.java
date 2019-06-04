@@ -1,7 +1,9 @@
 package graphicControllers;
 
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyEvent;
 import view.GraphicsView;
 import view.MenuChangeComponent;
 import view.MenuComponent;
@@ -59,6 +61,10 @@ public class Menu {
         menuComponents.remove(component);
         if (component instanceof MenuChangeComponent)
             menuChangeComponents.remove(component);
+    }
+
+    protected void setKeyPressEvent(EventHandler<KeyEvent> eventHandler) {
+        getView().getScene().setOnKeyPressed(eventHandler);
     }
 
     Menu getParentMenu() {
