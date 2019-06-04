@@ -1,9 +1,12 @@
 package graphicControllers;
 
 import graphicControllers.menus.AccountMenu;
+import graphicControllers.menus.LoginMenu;
 import graphicControllers.menus.MainMenu;
+import graphicControllers.menus.SignInMenu;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import menus.UI;
 
 public class GUI extends Application {
 
@@ -19,7 +22,9 @@ public class GUI extends Application {
         Menu initialMenu = new AccountMenu();
         try {
             menuManager.addMenu(initialMenu);
+            menuManager.addMenu(new LoginMenu());
             menuManager.addMenu(new MainMenu());
+            menuManager.addMenu(new SignInMenu());
         } catch (MenuAlreadyCreatedException e) {
             e.printStackTrace();
         }
@@ -28,6 +33,7 @@ public class GUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        UI.initiate();
         MenuManager menuManager = new MenuManager();
         primaryStage.setTitle("Duelyst");
         initiate(menuManager);

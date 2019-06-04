@@ -92,11 +92,15 @@ public class UI {
     private static boolean selectingUser = true;
     private static boolean gameEnded = false;
 
-    public static void main(String[] args) {
+    public static void initiate() {
         JsonMaker.main(new String[]{"java", "JsonMaker"});
         load();
         Menu.setView(view);
         help();
+    }
+
+    public static void main(String[] args) {
+        initiate();
         command = scanner.nextLine();
         command = command.trim();
         while (true) {
@@ -113,7 +117,7 @@ public class UI {
         }
     }
 
-    private static boolean decide(String command) {
+    public static boolean decide(String command) {
         switch (menu) {
             case LOGIN:
                 return actLogin(command);

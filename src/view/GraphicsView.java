@@ -9,7 +9,7 @@ public class GraphicsView {
     private Scene scene;
     private Group group;
 
-    public GraphicsView(int windowWidth, int windowHeight, String title) {
+    public GraphicsView(double windowWidth, double windowHeight, String title) {
         this.group = new Group();
         this.scene = new Scene(group, windowWidth, windowHeight);
     }

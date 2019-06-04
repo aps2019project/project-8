@@ -3,27 +3,25 @@ package graphicControllers.menus;
 import graphicControllers.Menu;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import menus.UI;
 import view.*;
 
 public class AccountMenu extends Menu {
 
     public AccountMenu() {
-        super(Id.ACCOUNT_MENU, "Account Menu", 1240, 720);
+        super(Id.ACCOUNT_MENU, "Account Menu", Menu.windowDefaultWidth, Menu.windowDefaultHeight);
 
-        GUIChangeMenuButton goToMenu = new GUIChangeMenuButton(10, 10, 200, 50);
-        goToMenu.setText("Go to main menu");
-        goToMenu.setGoalMenuID(Id.MAIN_MENU);
-        goToMenu.setOnMouseClicked(event -> System.out.println("shengdebao gone!"));
-        addComponent(goToMenu);
+        GUIChangeMenuButton gotoLogin = new GUIChangeMenuButton(windowWidth / 2 - 100.0 / 2, windowHeight / 2 - 30.0 / 2,
+                100, 30);
+        gotoLogin.setText("Login");
+        gotoLogin.setGoalMenuID(Id.LOGIN_MENU);
+        addComponent(gotoLogin);
 
-        Button button = new Button("this is a butt!");
-        button.relocate(300, 300);
-        button.setOnKeyPressed(e -> System.out.println("DSAHF"));
-        button.setOnMouseClicked(e -> System.out.println("Mouse clicked!"));
-        addComponent(new NodeWrapper(button));
-        Label label = new Label("masiri");
-        label.relocate(500, 500);
-        addComponent(new NodeWrapper(label));
+        GUIChangeMenuButton gotoCreateAccount = new GUIChangeMenuButton(windowWidth / 2 - 100.0 /2, windowHeight / 2 - 30.0 / 2 + 30 + 10,
+                100, 30);
+        gotoCreateAccount.setText("Create Account");
+        gotoCreateAccount.setGoalMenuID(Id.SIGN_IN_MENU);
+        addComponent(gotoCreateAccount);
     }
 
 

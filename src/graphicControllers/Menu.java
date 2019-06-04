@@ -9,15 +9,18 @@ import view.MenuChangeComponent;
 import view.MenuComponent;
 import view.NodeWrapper;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Menu {
+
+    public static double windowDefaultWidth = 800;
+    public static double windowDefaultHeight = 600;
+
     private int id;
     private String title = "No Title!";
     private transient Menu parentMenu = null;
-    private int windowHeight = 600, windowWidth = 800;
+    protected double windowHeight = windowDefaultHeight, windowWidth = windowDefaultWidth;
     private GraphicsView view = new GraphicsView(windowWidth, windowHeight, title);
 
     private ArrayList<MenuChangeComponent> menuChangeComponents = new ArrayList<>();
@@ -37,7 +40,7 @@ public class Menu {
         this.view = new GraphicsView(windowWidth, windowHeight, title);
     }
 
-    public Menu(int id, String title, int width, int height) {
+    public Menu(int id, String title, double width, double height) {
         this.id = id;
         this.title = title;
         this.windowWidth = width;
@@ -90,5 +93,7 @@ public class Menu {
         public static final int MULTIPLAYER_MENU = 448;
         public static final int IN_GAME_MENU = 66;
         public static final int GRAVE_YARD_MENU = 23;
+        public static final int LOGIN_MENU = 788;
+        public static final int SIGN_IN_MENU = 768;
     }
 }
