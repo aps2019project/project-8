@@ -87,10 +87,10 @@ public class UI {
 
     private static Scanner scanner = new Scanner(System.in);
     private static View view = new CommandLineView();
-    private static Menus menu = Menus.LOGIN;
-    private static String command = null;
+    private static Menus menu = Menus.LOGIN_MENU;
     private static boolean selectingUser = true;
     private static boolean gameEnded = false;
+    private static String name = null;
 
     public static void initiate() {
         JsonMaker.main(new String[]{"java", "JsonMaker"});
@@ -101,7 +101,7 @@ public class UI {
 
     public static void main(String[] args) {
         initiate();
-        command = scanner.nextLine();
+        String command = scanner.nextLine();
         command = command.trim();
         while (true) {
             try {
@@ -119,10 +119,16 @@ public class UI {
 
     public static boolean decide(String command) {
         switch (menu) {
-            case LOGIN:
-                return actLogin(command);
+            case LOGIN_MENU:
+                return actLoginMenu(command);
             case MAIN_MENU:
                 return actMainMenu(command);
+            case LOGIN_ACCOUNT:
+                actLoginAccount(command);
+                break;
+            case CREATE_ACCOUNT:
+                actCreateAccount(command);
+                break;
             case COLLECTION:
                 actCollection(command);
                 break;
@@ -153,7 +159,26 @@ public class UI {
         return false;
     }
 
-    private static boolean actLogin(String command) {
+    private static void actCreateAccount(String password) {
+        new Account(name, password);
+        view.alertAccountCreation();
+        name = null;
+        switchTo(Menus.LOGIN_MENU);
+    }
+
+    private static void actLoginAccount(String password) {
+        Account account = Account.getAccount(name);
+        if (account.isPasswordValid(password)) {
+            view.alertLogin();
+            Menu.setAccount(account);
+            switchTo(Menus.MAIN_MENU);
+            return;
+        }
+        view.showIncorrectPasswordError();
+        switchTo(Menus.LOGIN_MENU);
+    }
+
+    private static boolean actLoginMenu(String command) {
         if (command.matches(EXIT))
             return true;
         else if (command.matches(CREATE_ACCOUNT))
@@ -183,7 +208,7 @@ public class UI {
         else if (command.matches(SAVE))
             save();
         else if (command.matches(LOGOUT))
-            switchTo(Menus.LOGIN);
+            switchTo(Menus.LOGIN_MENU);
         else
             view.showInvalidCommandError();
         return false;
@@ -418,28 +443,19 @@ public class UI {
             view.showAccountCreationError();
             return;
         }
+        UI.name = name;
         view.promptPassword();
-        String password = scanner.nextLine();
-        new Account(name, password);
-        view.alertAccountCreation();
+        switchTo(Menus.CREATE_ACCOUNT);
     }
 
     private static void login(String name) {
-        Account account = Account.getAccount(name);
-        if (account == null) {
+        if (Account.getAccount(name) == null) {
             view.showNoSuchAccountError();
             return;
         }
+        UI.name = name;
         view.promptPassword();
-        String password = scanner.nextLine();
-        if (account.isPasswordValid(password)) {
-            view.alertLogin();
-            Menu.setAccount(account);
-            switchTo(Menus.MAIN_MENU);
-            menu = Menus.MAIN_MENU;
-            return;
-        }
-        view.showIncorrectPasswordError();
+        switchTo(Menus.LOGIN_ACCOUNT);
     }
 
     private static void showLeaderboard() {
@@ -453,7 +469,7 @@ public class UI {
     private static void switchTo(Menus menu) {
         UI.menu = menu;
         switch (menu) {
-            case LOGIN:
+            case LOGIN_MENU:
                 help();
                 break;
             case MAIN_MENU:
@@ -486,6 +502,8 @@ public class UI {
             case GRAVEYARD_MENU:
                 GraveyardMenu.help();
                 break;
+            default:
+                break;
         }
     }
 
@@ -501,7 +519,7 @@ public class UI {
         }
     }
 
-    public static void save() {
+    private static void save() {
         try {
             FileWriter out = new FileWriter("./save/" + Menu.getAccount().getName() + ".json", false);
             YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();

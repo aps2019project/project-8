@@ -14,7 +14,7 @@ public class Game extends InGameMenu {
     private static final int[] HERO_INITIAL_ROW = {2, 2};
     private static final int[] HERO_INITIAL_COLUMN = {0, 8};
     private static final int NUMBER_OF_FLAG_TURNS = 6;
-    private static final int NUMBER_OF_COLLECTIBLES = 0;
+    private static final int NUMBER_OF_COLLECTIBLES = 10;
 
     private HashMap<Player, ArrayList<Item>> currentItems = new HashMap<>();
     private HashMap<Player, HashMap<Item, Integer>> itemCastingTurns = new HashMap<>();

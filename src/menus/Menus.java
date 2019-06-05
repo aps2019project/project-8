@@ -1,7 +1,7 @@
 package menus;
 
 public enum Menus {
-    LOGIN,
+    LOGIN_MENU,
     MAIN_MENU,
     COLLECTION,
     SHOP,
@@ -11,5 +11,7 @@ public enum Menus {
     STORY,
     CUSTOM_GAME,
     GAME_MENU,
-    GRAVEYARD_MENU
+    GRAVEYARD_MENU,
+    LOGIN_ACCOUNT,
+    CREATE_ACCOUNT,
 }
