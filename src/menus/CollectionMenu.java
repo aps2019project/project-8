@@ -1,7 +1,10 @@
 package menus;
 
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
 import model.*;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -168,8 +171,38 @@ public class CollectionMenu extends Menu {
         view.alertDeckSelection();
     }
 
-    public static HashMap<String, ArrayList<CollectionItem>> getDecks() {
+    public static void exportDeck() {
+        if (getAccount().getMainDeck() == null) {
+            view.showNoMainDeckError();
+            return;
+        }
+        try {
+            String fileName = getAccount().getName() + "_" + getAccount().getMainDeck().getDeckName();
+            int index = 0;
+            while (new File("./export/" + fileName + index + ".json").exists())
+                index++;
+            fileName = fileName + index;
+            FileWriter out = new FileWriter("./export/" + fileName + ".json", false);
+            YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
+            out.write(yaGson.toJson(getAccount().getMainDeck(), Deck.class));
+            out.flush();
+            view.alertExport(fileName);
+        } catch (IOException ignored) {
+        }
+    }
 
-        return null;
+    public static void importDeck(String deckPath) {
+        File file = new File("./export/" + deckPath + ".json");
+        try {
+            getAccount().importDeck(new Deck(new YaGson().fromJson(new BufferedReader(new FileReader(file)), Deck.class)
+            ));
+        } catch (FileNotFoundException ignored) {
+            view.showNoSuchFileError();
+        } catch (Exception e) {
+            if (e.getMessage().startsWith("Imported")) {
+                view.showImportedCardError();
+            } else
+                view.showInvalidFileError();
+        }
     }
 }

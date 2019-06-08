@@ -73,6 +73,8 @@ public class UI {
     private static final String SHOW_CARDS = "(?i:show cards)";
     private static final String END_GAME = "(?i:end game)";
     private static final String SHOW_MENU = "(?i:show menu)";
+    private static final String EXPORT = "(?i:export)";
+    private static final String IMPORT = "(?i:import) " + NAME;
 
     private static final String SHENGDEBAO = "(?i:shengdebao)";
     private static final String KILL = "(?i:kill) " + ID;
@@ -246,6 +248,10 @@ public class UI {
             CollectionMenu.showAllDecks();
         else if (command.matches(SHOW_DECK))
             CollectionMenu.showDeck(commandSplit[2]);
+        else if (command.matches(EXPORT))
+            CollectionMenu.exportDeck();
+        else if (command.matches(IMPORT))
+            CollectionMenu.importDeck(command.split(" ")[1]);
         else
             view.showInvalidCommandError();
     }
@@ -439,7 +445,7 @@ public class UI {
     }
 
     private static void createAccount(String name) {
-        if (Account.getAccount(name) != null) {
+        if (Account.hasAccount(name)) {
             view.showAccountCreationError();
             return;
         }
@@ -519,7 +525,9 @@ public class UI {
         }
     }
 
-    private static void save() {
+    public static void save() {
+        if (Menu.getAccount() == null)
+            return;
         try {
             FileWriter out = new FileWriter("./save/" + Menu.getAccount().getName() + ".json", false);
             YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();

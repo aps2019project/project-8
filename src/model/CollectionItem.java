@@ -2,6 +2,7 @@ package model;
 
 public class CollectionItem {
     protected static final String DASH = " - ";
+    private static final String EQUALS = "equals";
     protected int price;
     protected String collectionItemID;
     protected String name;
@@ -69,5 +70,12 @@ public class CollectionItem {
 
     public String showInfo() {
         return "name: " + name + " price: " + price + " description: " + description;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof CollectionItem))
+            return false;
+        return collectionItemID.equals(((CollectionItem) obj).collectionItemID);
     }
 }

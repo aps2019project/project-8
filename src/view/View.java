@@ -168,4 +168,12 @@ View {
     void showInvalidMainDeckError();
 
     void showNoAdjacentFriendlyUnitError();
+
+    void alertExport(String fileName);
+
+    void showNoSuchFileError();
+
+    void showInvalidFileError();
+
+    void showImportedCardError();
 }

@@ -46,7 +46,7 @@ public class Collection {
     }
 
     public boolean hasDeck(String name) {
-        return decks.containsKey(name);
+        return decks.keySet().stream().anyMatch(key -> key.equalsIgnoreCase(name));
     }
 
     public Deck getDeck(String deckName) {
@@ -74,5 +74,9 @@ public class Collection {
         CollectionItem collectionItem = getCollectionItem(collectionItemID);
         collectionItems.remove(collectionItemID);
         decks.values().forEach(o -> o.removeCollectionItem(collectionItemID, collectionItem));
+    }
+
+    public void importDeck(Deck newDeck) {
+        decks.put(newDeck.getDeckName(), newDeck);
     }
 }

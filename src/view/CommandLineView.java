@@ -511,4 +511,24 @@ public class CommandLineView implements View {
     public void showNoAdjacentFriendlyUnitError() {
         System.out.println("No friendly unit in the vicinity.");
     }
+
+    @Override
+    public void alertExport(String fileName) {
+        System.out.println("Deck successfully exported to " + fileName);
+    }
+
+    @Override
+    public void showNoSuchFileError() {
+        System.out.println("No such file found.");
+    }
+
+    @Override
+    public void showInvalidFileError() {
+        System.out.println("The provided file is invalid.");
+    }
+
+    @Override
+    public void showImportedCardError() {
+        System.out.println("Imported card not found.");
+    }
 }

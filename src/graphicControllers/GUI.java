@@ -29,6 +29,7 @@ public class GUI extends Application {
             e.printStackTrace();
         }
         menuManager.setCurrentMenu(initialMenu);
+        currentStage.setOnCloseRequest(e -> UI.save());
     }
 
     @Override
