@@ -94,6 +94,7 @@ public class Menu {
         public static final int LOGIN_MENU = 788;
         public static final int SIGN_IN_MENU = 768;
         public static final int LEADERBOARD = 9999;
+        public static final int STORY_MODE = 8080;
     }
 
     public void refresh() {}

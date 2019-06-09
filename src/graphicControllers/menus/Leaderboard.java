@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import model.Account;
 import view.GUIChangeMenuButton;
 import view.NodeWrapper;
@@ -61,7 +62,7 @@ public class Leaderboard extends Menu {
     @Override
     public void refresh() {
         vBox.getChildren().clear();
-        Account.getAccounts().forEach(o -> {
+        Account.getAccounts().stream().sorted().forEach(o -> {
             try {
                 Label label = new Label();
                 label.setMinWidth(labelWidth);
@@ -71,6 +72,7 @@ public class Leaderboard extends Menu {
                 label.setAlignment(Pos.CENTER);
                 label.setTextFill(Color.GOLDENROD);
                 label.setText(o.getName() + " - Wins: " + o.getWins());
+                label.setFont(Font.loadFont(new FileInputStream("./fonts/averta-black-webfont.ttf"), 17));
                 Image image = new Image(new FileInputStream("./images/placeholders/gauntlet_control_bar_bg@2x.png"
                 ), labelWidth, LABEL_HEIGHT, true, true);
                 label.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,

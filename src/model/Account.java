@@ -1,9 +1,7 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class Account implements Comparable {
     private static ArrayList<Account> accounts = new ArrayList<>();
@@ -54,9 +52,9 @@ public class Account implements Comparable {
 
     @Override
     public int compareTo(Object o) {
-        if (o instanceof Account)
-            return -(wins - ((Account) o).wins);
-        return 0;
+        if (!(o instanceof Account))
+            return 0;
+        return Comparator.comparingInt(o1 -> ((Account) o1).getWins()).reversed().compare(this, o);
     }
 
     public String getName() {

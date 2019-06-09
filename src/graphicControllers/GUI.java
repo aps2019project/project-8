@@ -3,6 +3,7 @@ package graphicControllers;
 import graphicControllers.menus.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import menus.ShopMenu;
 import menus.UI;
 
 public class GUI extends Application {
@@ -23,6 +24,10 @@ public class GUI extends Application {
             menuManager.addMenu(new MainMenu());
             menuManager.addMenu(new SignInMenu());
             menuManager.addMenu(new Leaderboard());
+            menuManager.addMenu(new BattleMenu());
+            menuManager.addMenu(new SinglePlayerMenu());
+            menuManager.addMenu(new CollectionMenu());
+            menuManager.addMenu(new ShopMenu());
         } catch (MenuAlreadyCreatedException e) {
             e.printStackTrace();
         }

@@ -2,9 +2,11 @@ package graphicControllers.menus;
 
 import graphicControllers.Menu;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import view.GUIButton;
 import view.GUIChangeMenuButton;
+import view.NodeWrapper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,6 +16,20 @@ public class AccountMenu extends Menu {
 
     public AccountMenu() {
         super(Id.ACCOUNT_MENU, "Account Menu", Menu.windowDefaultWidth, Menu.windowDefaultHeight);
+        try {
+            ImageView imageView = new ImageView(new Image(new FileInputStream("images/logos/bnea-logo@2x.png")));
+            imageView.setPreserveRatio(true);
+            imageView.setFitWidth(50);
+            imageView.relocate(10, 10);
+            addComponent(new NodeWrapper(imageView));
+            ImageView logo = new ImageView(new Image(new FileInputStream("images/logos/icon.png")));
+            logo.setPreserveRatio(true);
+            logo.setFitWidth(140);
+            logo.relocate(windowWidth / 2 - 140.0 / 2, 40);
+            addComponent(new NodeWrapper(logo));
+        } catch (FileNotFoundException ignored) {
+        }
+
         try {
             getView().setBackground(new Image(new FileInputStream("./images/backgrounds/obsidian_woods_background@2x.jpg")));
             getView().setCursor(new Image(new FileInputStream("./images/cursors/mouse_auto.png")));
@@ -32,8 +48,8 @@ public class AccountMenu extends Menu {
         gotoCreateAccount.setGoalMenuID(Id.SIGN_IN_MENU);
         addComponent(gotoCreateAccount);
 
-        GUIChangeMenuButton gotoLogin = new GUIChangeMenuButton(windowWidth / 2 - 100.0 / 2, windowHeight / 2 -
-                50.0 / 2, 100, 50);
+        GUIChangeMenuButton gotoLogin = new GUIChangeMenuButton(windowWidth / 2 - 170.0 / 2, windowHeight / 2 -
+                50.0 / 2, 170, 50);
         try {
             gotoLogin.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             gotoLogin.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
@@ -44,8 +60,8 @@ public class AccountMenu extends Menu {
         gotoLogin.setGoalMenuID(Id.LOGIN_MENU);
         addComponent(gotoLogin);
 
-        GUIChangeMenuButton gotoLeaderboard = new GUIChangeMenuButton(windowWidth / 2 - 150.0 / 2, windowHeight
-                / 2 - 50.0 / 2 + 10 + 50, 150, 50);
+        GUIChangeMenuButton gotoLeaderboard = new GUIChangeMenuButton(windowWidth / 2 - 170.0 / 2, windowHeight
+                / 2 - 50.0 / 2 + 10 + 50, 170, 50);
         try {
             gotoLeaderboard.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             gotoLeaderboard.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));

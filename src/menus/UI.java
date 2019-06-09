@@ -94,6 +94,10 @@ public class UI {
     private static boolean gameEnded = false;
     private static String name = null;
 
+    public static Menus getMenu() {
+        return menu;
+    }
+
     public static void initiate() {
         JsonMaker.main(new String[]{"java", "JsonMaker"});
         load();
