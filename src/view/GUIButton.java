@@ -9,21 +9,29 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class GUIButton implements MenuComponent {
+    protected Button button;
     private EventHandler<MouseEvent> mouseClick;
     private EventHandler<MouseEvent> mouseEnter;
     private EventHandler<MouseEvent> mouseExit;
-
     private double frame = 5;
     private double x, y;
     private double width, height;
-    protected Button button;
     private Rectangle background;
+    private Image inactive = null;
+    private Image active = null;
+    private ImageView imageView = null;
+    private Media sound = null;
 
     private ArrayList<Node> components = new ArrayList<>();
 
@@ -49,40 +57,45 @@ public class GUIButton implements MenuComponent {
         background.setFill(Color.rgb(38, 31, 93));
         background.setOpacity(0);
 
-        mouseEnter = new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                background.setOpacity(1);
-            }
+        mouseEnter = event -> {
+            if (active != null)
+                imageView.setImage(active);
+            if (sound != null)
+                new MediaPlayer(sound).play();
         };
 
-        mouseExit = new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                background.setOpacity(0);
-            }
+        mouseExit = event -> {
+            if (inactive != null)
+                imageView.setImage(inactive);
         };
         button.setOnMouseEntered(mouseEnter);
         button.setOnMouseExited(mouseExit);
     }
 
     public void setImage(Image image) {
-        ImageView imageView = new ImageView(image);
+        inactive = image;
+        imageView = new ImageView(image);
         imageView.setFitWidth(width - frame * 2);
         imageView.setFitHeight(height - frame * 2);
         imageView.relocate(x + frame, y + frame);
         components.add(imageView);
     }
 
+    public void setActiveImage(Image image) {
+        active = image;
+    }
+
     public void setText(String text) {
         Label label = new Label(text);
+        try {
+            label.setFont(Font.loadFont(new FileInputStream("./fonts/averta-extrathin-webfont.ttf"), 17));
+        } catch (FileNotFoundException ignored) {
+        }
+        label.setTextFill(Color.CORAL);
         label.setMinSize(width - frame * 2, height - frame * 2);
         label.setMaxSize(width - frame * 2, height - frame * 2);
         label.relocate(x + frame, y + frame);
         label.setAlignment(Pos.CENTER);
-        Rectangle rectangle = new Rectangle(x + frame, y + frame, width - frame * 2, height - frame * 2);
-        rectangle.setFill(Color.rgb(71, 109, 151));
-        components.add(rectangle);
         components.add(label);
     }
 
@@ -144,10 +157,6 @@ public class GUIButton implements MenuComponent {
         return x;
     }
 
-    public double getY() {
-        return y;
-    }
-
     public GUIButton setX(double x) {
         this.x = x;
         background.setLayoutX(x);
@@ -155,6 +164,10 @@ public class GUIButton implements MenuComponent {
             node.setLayoutX(x + frame);
         button.setLayoutX(x);
         return this;
+    }
+
+    public double getY() {
+        return y;
     }
 
     public GUIButton setY(double y) {
@@ -186,5 +199,9 @@ public class GUIButton implements MenuComponent {
         for (Node node : components)
             group.getChildren().remove(node);
         group.getChildren().remove(button);
+    }
+
+    public void setSound(Media sound) {
+        this.sound = sound;
     }
 }

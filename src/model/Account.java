@@ -154,4 +154,8 @@ public class Account implements Comparable {
             throw importedCardException;
         collection.importDeck(newDeck);
     }
+
+    public int getWins() {
+        return wins;
+    }
 }

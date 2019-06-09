@@ -1,13 +1,11 @@
 package graphicControllers;
 
 import javafx.event.EventHandler;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import view.GraphicsView;
 import view.MenuChangeComponent;
 import view.MenuComponent;
-import view.NodeWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +14,12 @@ public class Menu {
 
     public static double windowDefaultWidth = 800;
     public static double windowDefaultHeight = 600;
-
+    protected double windowHeight = windowDefaultHeight, windowWidth = windowDefaultWidth;
     private int id;
     private String title = "No Title!";
     private transient Menu parentMenu = null;
-    protected double windowHeight = windowDefaultHeight, windowWidth = windowDefaultWidth;
     private GraphicsView view = new GraphicsView(windowWidth, windowHeight, title);
+    private Image backgroundImage = null;
 
     private ArrayList<MenuChangeComponent> menuChangeComponents = new ArrayList<>();
     private List<MenuComponent> menuComponents = new ArrayList<>();
@@ -95,5 +93,8 @@ public class Menu {
         public static final int GRAVE_YARD_MENU = 23;
         public static final int LOGIN_MENU = 788;
         public static final int SIGN_IN_MENU = 768;
+        public static final int LEADERBOARD = 9999;
     }
+
+    public void refresh() {}
 }

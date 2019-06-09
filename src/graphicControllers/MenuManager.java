@@ -1,7 +1,5 @@
 package graphicControllers;
 
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import view.MenuChangeComponent;
 
@@ -13,7 +11,7 @@ public class MenuManager {
     /**
      * Stage should be removed!
      */
-    Stage stage;
+    private Stage stage;
     public void setStage(Stage stage) {
         this.stage = stage;
     }
@@ -24,11 +22,12 @@ public class MenuManager {
     private Map<Integer, Menu> menusIDs = new HashMap<>();
 
     public void setCurrentMenu(Menu currentMenu) {
+        currentMenu.refresh();
         this.currentMenu = currentMenu;
     }
 
 
-    void listenForMenuChange() {
+    private void listenForMenuChange() {
         stage.setScene(currentMenu.getView().getScene());
         for (MenuChangeComponent changeComponent: currentMenu.getMenuChangeComponents()) {
             changeComponent.setOnAction(event -> {

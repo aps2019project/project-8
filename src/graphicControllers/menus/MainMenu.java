@@ -1,6 +1,7 @@
 package graphicControllers.menus;
 
 import graphicControllers.Menu;
+import javafx.scene.image.Image;
 import view.GUIChangeMenuButton;
 
 public class MainMenu extends Menu {

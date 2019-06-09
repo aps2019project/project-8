@@ -1,9 +1,10 @@
 package view;
 
 import javafx.scene.Group;
-import javafx.scene.Node;
+import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
 
 public class GraphicsView {
     private Scene scene;
@@ -12,6 +13,14 @@ public class GraphicsView {
     public GraphicsView(double windowWidth, double windowHeight, String title) {
         this.group = new Group();
         this.scene = new Scene(group, windowWidth, windowHeight);
+    }
+
+    public void setBackground(Image image) {
+        scene.setFill(new ImagePattern(image));
+    }
+
+    public void setCursor(Image image) {
+        scene.setCursor(new ImageCursor(image));
     }
 
     public void addComponent(MenuComponent menuComponent) {

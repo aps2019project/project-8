@@ -1,9 +1,6 @@
 package graphicControllers;
 
-import graphicControllers.menus.AccountMenu;
-import graphicControllers.menus.LoginMenu;
-import graphicControllers.menus.MainMenu;
-import graphicControllers.menus.SignInMenu;
+import graphicControllers.menus.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import menus.UI;
@@ -25,11 +22,11 @@ public class GUI extends Application {
             menuManager.addMenu(new LoginMenu());
             menuManager.addMenu(new MainMenu());
             menuManager.addMenu(new SignInMenu());
+            menuManager.addMenu(new Leaderboard());
         } catch (MenuAlreadyCreatedException e) {
             e.printStackTrace();
         }
         menuManager.setCurrentMenu(initialMenu);
-        currentStage.setOnCloseRequest(e -> UI.save());
     }
 
     @Override
