@@ -1,10 +1,10 @@
 package graphicControllers.menus;
 
 import graphicControllers.Menu;
+import graphicControllers.MenuManager;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -19,6 +19,7 @@ import view.NodeWrapper;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Optional;
 
 public class MultiplayerMenu extends Menu {
     private static final VBox vBox = new VBox();
@@ -88,6 +89,14 @@ public class MultiplayerMenu extends Menu {
                         });
                         label.setOnMouseExited(e -> label.setBackground(inactive));
                         vBox.getChildren().add(label);
+                        label.setOnMouseClicked(e -> {
+                            Optional<Integer>[] gameType = MenuManager.getInstance().getGameType();
+                            if (gameType[0].isPresent()) {
+                                UI.decide("select user " + label.getText());
+                                UI.decide("start multiplayer game " + gameType[0].get() + (gameType[1].isPresent() ? " " + gameType[1].get() : ""));
+                                MenuManager.getInstance().setCurrentMenu(Id.IN_GAME_MENU);
+                            }
+                        });
                     } catch (FileNotFoundException ignored) {
                     }
                 }

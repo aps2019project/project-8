@@ -1,14 +1,18 @@
 package graphicControllers;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -24,41 +28,36 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class MenuManager {
 
     private static final int BUTTON_HEIGHT = 40;
+    private static MenuManager instance = null;
     /**
      * Stage should be removed!
      */
     private Stage stage;
     private Stage popUp;
+    private Stage getGameMode;
     private VBox popUpContent = new VBox();
-    private Button back = new Button("Okay");
     private Media sound = new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString());
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
+    private Menu currentMenu;
+    private Map<Integer, Menu> menusIDs = new HashMap<>();
 
-    private static MenuManager instance = null;
+    private Optional[] gameMode = new Optional[]{Optional.empty(), Optional.empty()};
 
     public static MenuManager getInstance() {
         return instance;
     }
 
-    private Menu currentMenu;
-
-    private Map<Integer, Menu> menusIDs = new HashMap<>();
-
-    public void setCurrentMenu(Menu currentMenu) {
-        currentMenu.refresh();
-        this.currentMenu = currentMenu;
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
-
 
     private void listenForMenuChange() {
         stage.setScene(currentMenu.getView().getScene());
-        for (MenuChangeComponent changeComponent: currentMenu.getMenuChangeComponents()) {
+        for (MenuChangeComponent changeComponent : currentMenu.getMenuChangeComponents()) {
             changeComponent.setOnAction(event -> {
                 try {
                     int goalMenuID = changeComponent.getGoalMenuID();
@@ -98,10 +97,109 @@ public class MenuManager {
         return currentMenu;
     }
 
-    Label okay = new Label("Okay");
+    public void setCurrentMenu(Menu currentMenu) {
+        currentMenu.refresh();
+        this.currentMenu = currentMenu;
+    }
+
+    public void setCurrentMenu(int menuID) {
+        currentMenu = menusIDs.get(menuID);
+        currentMenu.refresh();
+        listenForMenuChange();
+    }
 
     public void startProcessOnStage() {
         instance = this;
+        setUpPopUp();
+        setUpGetGameMode();
+        listenForMenuChange();
+        stage.setResizable(false);
+        stage.show();
+    }
+
+    private void setUpGetGameMode() {
+        ComboBox<String> choiceBox = new ComboBox<>();
+        TextField textField = new TextField();
+        getGameMode = new Stage();
+        Group group = new Group();
+        VBox getGameModeContent = new VBox();
+        getGameModeContent.setFillWidth(true);
+        getGameModeContent.setMinWidth(320);
+        getGameModeContent.setMaxWidth(320);
+        try {
+            Image inactive = new Image(new FileInputStream("images/buttons/button_secondary@2x.png"));
+            Image active = new Image(new FileInputStream("images/buttons/button_secondary_glow@2x.png"));
+            ImageView imageView = new ImageView(inactive);
+            group.getChildren().add(imageView);
+            imageView.setFitWidth(90);
+            imageView.setFitHeight(BUTTON_HEIGHT);
+            imageView.relocate(320 / 2 - 90 / 2, 180 - BUTTON_HEIGHT);
+            Label button = new Label("Play");
+            button.setOnMouseEntered(e -> {
+                imageView.setImage(active);
+                new MediaPlayer(sound).play();
+            });
+            button.setOnMouseClicked(e -> {
+                if (choiceBox.getSelectionModel().getSelectedIndex() == -1) {
+                    showPopUp("Please select a game mode.");
+                } else if (choiceBox.getSelectionModel().getSelectedIndex() == 2 && !textField.getText().matches("\\d+"))
+                    showPopUp("Please enter the number of flags.");
+                else {
+                    gameMode[0] = Optional.of(choiceBox.getSelectionModel().getSelectedIndex() + 1);
+                    if (textField.getText().isEmpty())
+                        gameMode[1] = Optional.empty();
+                    else
+                        gameMode[1] = Optional.of(Integer.parseInt(textField.getText()));
+                    getGameMode.close();
+                }
+            });
+            button.setOnMouseExited(e -> imageView.setImage(inactive));
+            button.setFont(Font.loadFont(new FileInputStream("./fonts/averta-extrathin-webfont.ttf"), 17));
+            button.setTextFill(Color.CORAL);
+            button.setMinSize(90, BUTTON_HEIGHT);
+            button.setAlignment(Pos.CENTER);
+            button.setTextAlignment(TextAlignment.CENTER);
+            button.relocate(320 / 2 - 90 / 2, 180 - BUTTON_HEIGHT);
+            group.getChildren().add(button);
+        } catch (FileNotFoundException e) {
+        }
+        group.getChildren().add(getGameModeContent);
+        getGameMode.setScene(new Scene(group, 320, 180));
+        getGameMode.setResizable(false);
+        getGameModeContent.setAlignment(Pos.CENTER);
+        getGameModeContent.getStylesheets().add("css/vBox.css");
+        getGameModeContent.setMinHeight(180 - BUTTON_HEIGHT);
+        getGameModeContent.setMaxHeight(180 - BUTTON_HEIGHT);
+        getGameMode.initModality(Modality.APPLICATION_MODAL);
+        getGameMode.setAlwaysOnTop(true);
+        try {
+            getGameMode.getScene().setFill(new ImagePattern(new Image(new FileInputStream("images/backgrounds/color-plate-bg-orange@2x.png"))));
+            getGameMode.getScene().setCursor(new ImageCursor(new Image(new FileInputStream("images/cursors/mouse_auto.png"))));
+        } catch (FileNotFoundException ignored) {
+        }
+        getGameModeContent.getChildren().clear();
+        getGameModeContent.setSpacing((180 - BUTTON_HEIGHT) / 4);
+        choiceBox.setMinWidth(320 / 2);
+        choiceBox.setMaxWidth(320 / 2);
+        choiceBox.setItems(FXCollections.observableArrayList("Elimination", "Hold the Flag", "Collect the Flags"));
+        getGameModeContent.getChildren().add(choiceBox);
+        choiceBox.setPromptText("Game Mode");
+        textField.setPromptText("Number of Flags");
+        textField.setMaxWidth(320 / 2);
+        textField.setMinWidth(320 / 2);
+        textField.setDisable(true);
+        choiceBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.equals(2))
+                textField.setDisable(false);
+            else {
+                textField.setDisable(true);
+                textField.clear();
+            }
+        });
+        getGameModeContent.getChildren().add(textField);
+    }
+
+    private void setUpPopUp() {
         popUp = new Stage();
         Group group = new Group();
         popUpContent.setFillWidth(true);
@@ -115,20 +213,20 @@ public class MenuManager {
             imageView.setFitWidth(90);
             imageView.setFitHeight(BUTTON_HEIGHT);
             imageView.relocate(320 / 2 - 90 / 2, 180 - BUTTON_HEIGHT);
-            Label okay = new Label("Okay");
-            okay.setOnMouseEntered(e -> {
+            Label button = new Label("Okay");
+            button.setOnMouseEntered(e -> {
                 imageView.setImage(active);
                 new MediaPlayer(sound).play();
             });
-            okay.setOnMouseClicked(e -> popUp.close());
-            okay.setOnMouseExited(e -> imageView.setImage(inactive));
-            okay.setFont(Font.loadFont(new FileInputStream("./fonts/averta-extrathin-webfont.ttf"), 17));
-            okay.setTextFill(Color.CORAL);
-            okay.setMinSize(90, BUTTON_HEIGHT);
-            okay.setAlignment(Pos.CENTER);
-            okay.setTextAlignment(TextAlignment.CENTER);
-            okay.relocate(320 / 2 - 90 / 2, 180 - BUTTON_HEIGHT);
-            group.getChildren().add(okay);
+            button.setOnMouseClicked(e -> popUp.close());
+            button.setOnMouseExited(e -> imageView.setImage(inactive));
+            button.setFont(Font.loadFont(new FileInputStream("./fonts/averta-extrathin-webfont.ttf"), 17));
+            button.setTextFill(Color.CORAL);
+            button.setMinSize(90, BUTTON_HEIGHT);
+            button.setAlignment(Pos.CENTER);
+            button.setTextAlignment(TextAlignment.CENTER);
+            button.relocate(320 / 2 - 90 / 2, 180 - BUTTON_HEIGHT);
+            group.getChildren().add(button);
         } catch (FileNotFoundException e) {
         }
         group.getChildren().add(popUpContent);
@@ -145,15 +243,6 @@ public class MenuManager {
             popUp.getScene().setCursor(new ImageCursor(new Image(new FileInputStream("images/cursors/mouse_auto.png"))));
         } catch (FileNotFoundException ignored) {
         }
-        listenForMenuChange();
-        stage.setResizable(false);
-        stage.show();
-    }
-
-    public void setCurrentMenu(int menuID) {
-        currentMenu = menusIDs.get(menuID);
-        currentMenu.refresh();
-        listenForMenuChange();
     }
 
     public void showPopUp(String text) {
@@ -170,5 +259,11 @@ public class MenuManager {
         label.setMaxHeight(180 - BUTTON_HEIGHT);
         popUpContent.getChildren().add(label);
         popUp.showAndWait();
+    }
+
+    public Optional<Integer>[] getGameType() {
+        gameMode = new Optional[]{Optional.empty(), Optional.empty()};
+        getGameMode.showAndWait();
+        return gameMode;
     }
 }

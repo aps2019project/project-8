@@ -1,6 +1,7 @@
 package graphicControllers.menus;
 
 import graphicControllers.Menu;
+import graphicControllers.MenuManager;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -18,6 +19,7 @@ import view.NodeWrapper;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Optional;
 
 public class CustomGameMenu extends Menu {
     private static final VBox vBox = new VBox();
@@ -34,7 +36,7 @@ public class CustomGameMenu extends Menu {
             imageView.setFitWidth(windowWidth / 3);
             imageView.relocate(windowWidth * 2 / 3 - 10, 10);
             addComponent(new NodeWrapper(imageView));
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException ignored) {
         }
 
         try {
@@ -87,6 +89,13 @@ public class CustomGameMenu extends Menu {
                     label.setOnMouseExited(e -> label.setBackground(inactive));
                     label.setTooltip(new Tooltip(o.getHero().getName()));
                     vBox.getChildren().add(label);
+                    label.setOnMouseClicked(e -> {
+                        Optional<Integer>[] gameType = MenuManager.getInstance().getGameType();
+                        if (gameType[0].isPresent()) {
+                            UI.decide("start game " + label.getText() + " " + gameType[0].get() + (gameType[1].isPresent() ? " " + gameType[1].get() : ""));
+                            MenuManager.getInstance().setCurrentMenu(Id.IN_GAME_MENU);
+                        }
+                    });
                 } catch (FileNotFoundException ignored) {
                 }
             }
