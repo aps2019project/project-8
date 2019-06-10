@@ -6,6 +6,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -70,6 +71,10 @@ public class GUIButton implements MenuComponent {
         };
         button.setOnMouseEntered(mouseEnter);
         button.setOnMouseExited(mouseExit);
+    }
+
+    public void setTooltip(Tooltip tooltip) {
+        button.setTooltip(tooltip);
     }
 
     public void setImage(Image image) {

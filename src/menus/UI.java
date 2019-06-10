@@ -541,4 +541,8 @@ public class UI {
         } catch (IOException ignored) {
         }
     }
+
+    public static Account getAccount() {
+        return Menu.getAccount();
+    }
 }

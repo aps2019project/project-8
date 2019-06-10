@@ -2,6 +2,7 @@ package graphicControllers.menus;
 
 import graphicControllers.Menu;
 import graphicControllers.MenuManager;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
@@ -35,7 +36,7 @@ public class LoginMenu extends Menu {
         usernameField.relocate(windowWidth / 2 - 100.0 / 2, windowHeight / 2 - 30.0 - 5);
         addComponent(new NodeWrapper(usernameField));
 
-        passwordField = new TextField();
+        passwordField = new PasswordField();
         passwordField.setPromptText("Password");
         passwordField.setMinSize(100, 30);
         passwordField.setMaxSize(100, 30);
