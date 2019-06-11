@@ -16,7 +16,7 @@ import java.util.Optional;
 
 public class CollectionMenu extends Menu {
     public CollectionMenu() {
-        super(Id.COLLECTION_MENU, "Collection Menu", 1240, 720);
+        super(Id.COLLECTION_MENU, "Collection Menu", windowDefaultWidth, windowDefaultHeight);
 
         try {
             ImageView imageView = new ImageView(new Image(new FileInputStream("images/logos/brand_duelyst@2x.png")));

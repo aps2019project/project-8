@@ -28,7 +28,7 @@ public class CustomGameMenu extends Menu {
     private static final Media sound = new Media(new File("sfx/sfx_unit_onclick.m4a").toURI().toString());
 
     public CustomGameMenu() {
-        super(Id.START_CUSTOM_GAME_MENU, "Custom Game Menu", 1240, 720);
+        super(Id.START_CUSTOM_GAME_MENU, "Custom Game Menu", windowDefaultWidth, windowDefaultHeight);
 
         try {
             ImageView imageView = new ImageView(new Image(new FileInputStream("images/logos/brand_duelyst@2x.png")));

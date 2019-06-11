@@ -28,7 +28,7 @@ public class MultiplayerMenu extends Menu {
     private static double labelWidth;
 
     public MultiplayerMenu() {
-        super(Id.MULTIPLAYER_MENU, "Multiplayer Game Menu", 1240, 720);
+        super(Id.MULTIPLAYER_MENU, "Multiplayer Game Menu", windowDefaultWidth, windowDefaultHeight);
 
         try {
             ImageView imageView = new ImageView(new Image(new FileInputStream("images/logos/brand_duelyst@2x.png")));

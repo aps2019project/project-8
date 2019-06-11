@@ -23,7 +23,7 @@ public class Leaderboard extends Menu {
     private static double labelWidth;
 
     public Leaderboard() {
-        super(Id.LEADERBOARD, "Leaderboard", Menu.windowDefaultWidth, Menu.windowDefaultHeight);
+        super(Id.LEADERBOARD, "Leaderboard", 900, 800);
         try {
             getView().setBackground(new Image(new FileInputStream("./images/backgrounds/obsidian_woods_background@2x.jpg")));
             getView().setCursor(new Image(new FileInputStream("./images/cursors/mouse_auto.png")));

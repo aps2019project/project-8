@@ -15,7 +15,7 @@ import java.io.FileNotFoundException;
 
 public class BattleMenu extends Menu {
     public BattleMenu() {
-        super(Id.CHOOSE_BATTLE_MENU, "Battle Menu", 1240, 720);
+        super(Id.CHOOSE_BATTLE_MENU, "Battle Menu", windowDefaultWidth, windowDefaultHeight);
 
         try {
             ImageView imageView = new ImageView(new Image(new FileInputStream("images/logos/brand_duelyst@2x.png")));

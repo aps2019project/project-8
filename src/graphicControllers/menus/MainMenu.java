@@ -15,7 +15,7 @@ import java.io.FileNotFoundException;
 
 public class MainMenu extends Menu {
     public MainMenu() {
-        super(Id.MAIN_MENU, "Main Menu", 1240, 720);
+        super(Id.MAIN_MENU, "Main Menu", windowDefaultWidth, windowDefaultHeight);
 
         try {
             ImageView imageView = new ImageView(new Image(new FileInputStream("images/logos/brand_duelyst@2x.png")));

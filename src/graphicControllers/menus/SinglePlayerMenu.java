@@ -15,7 +15,7 @@ import java.io.FileNotFoundException;
 
 public class SinglePlayerMenu extends Menu {
     public SinglePlayerMenu() {
-        super(Id.SINGLEPLAYER_MENU, "Single Player Menu", 1240, 720);
+        super(Id.SINGLEPLAYER_MENU, "Single Player Menu", windowDefaultWidth, windowDefaultHeight);
 
         try {
             ImageView imageView = new ImageView(new Image(new FileInputStream("images/logos/brand_duelyst@2x.png")));

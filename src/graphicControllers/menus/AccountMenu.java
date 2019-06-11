@@ -15,7 +15,7 @@ import java.io.FileNotFoundException;
 public class AccountMenu extends Menu {
 
     public AccountMenu() {
-        super(Id.ACCOUNT_MENU, "Account Menu", Menu.windowDefaultWidth, Menu.windowDefaultHeight);
+        super(Id.ACCOUNT_MENU, "Account Menu", 900, 800);
         try {
             ImageView imageView = new ImageView(new Image(new FileInputStream("images/logos/bnea-logo@2x.png")));
             imageView.setPreserveRatio(true);
