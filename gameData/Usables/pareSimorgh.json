@@ -36,5 +36,6 @@
   "price": 3500,
   "collectionItemID": "4006",
   "name": "pareSimorgh",
-  "description": "reduces attackpoint of enemy hero"
+  "description": "reduces attackpoint of enemy hero",
+  "imageAddress": ""
 }

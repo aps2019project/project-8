@@ -61,5 +61,6 @@
   "price": 700,
   "collectionItemID": "2010",
   "name": "tooraaniSpy",
-  "description": "Disarms for 1 turn and poisons for 4 turns"
+  "description": "Disarms for 1 turn and poisons for 4 turns",
+  "imageAddress": ""
 }

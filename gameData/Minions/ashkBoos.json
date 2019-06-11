@@ -37,5 +37,6 @@
   "price": 400,
   "collectionItemID": "2032",
   "name": "ashkBoos",
-  "description": "is a bully"
+  "description": "is a bully",
+  "imageAddress": ""
 }

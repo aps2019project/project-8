@@ -44,5 +44,6 @@
   "price": 7000,
   "collectionItemID": "4016",
   "name": "poisonousDagger",
-  "description": "every unit gives poison buff to a random enemy unit when it attacks"
+  "description": "every unit gives poison buff to a random enemy unit when it attacks",
+  "imageAddress": ""
 }

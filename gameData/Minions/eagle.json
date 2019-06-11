@@ -51,5 +51,6 @@
   "price": 200,
   "collectionItemID": "2015",
   "name": "eagle",
-  "description": "Passive 10HP power buff"
+  "description": "Passive 10HP power buff",
+  "imageAddress": ""
 }

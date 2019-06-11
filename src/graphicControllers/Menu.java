@@ -57,14 +57,14 @@ public class Menu {
     private Stage getGameMode;
     private VBox popUpContent = new VBox();
     // bere tu guiButton
-    private Media sound = new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString());
+    private Media sound = new Media(new File("./sfx/sfx_ui_menu_hover.m4a").toURI().toString());
 
     private Optional[] gameMode = new Optional[]{Optional.empty(), Optional.empty()};
     private MediaPlayer backGroundMedia = new MediaPlayer(new Media(new File("music/mainmenu_v2c_looping.m4a").toURI().toString()));
 
     private void playMedia() {
-        backGroundMedia.play();
-        backGroundMedia.setOnEndOfMedia(() -> backGroundMedia.seek(Duration.ZERO));
+//        backGroundMedia.play();
+//        backGroundMedia.setOnEndOfMedia(() -> backGroundMedia.seek(Duration.ZERO));
     }
 
     public Menu() {
@@ -94,6 +94,7 @@ public class Menu {
 
     protected void setSound(String musicAddress) {
         backGroundMedia.stop();
+        backGroundMedia = new MediaPlayer(new Media(new File(musicAddress).toURI().toString()));
         playMedia();
     }
 

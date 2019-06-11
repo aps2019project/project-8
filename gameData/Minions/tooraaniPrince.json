@@ -39,5 +39,6 @@
   "price": 800,
   "collectionItemID": "2012",
   "name": "tooraaniPrince",
-  "description": "Combo"
+  "description": "Combo",
+  "imageAddress": ""
 }

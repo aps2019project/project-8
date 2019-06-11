@@ -36,5 +36,6 @@
   "price": 0,
   "collectionItemID": "4011",
   "name": "randomDamage",
-  "description": "gives 2 attack points to a random unit"
+  "description": "gives 2 attack points to a random unit",
+  "imageAddress": ""
 }

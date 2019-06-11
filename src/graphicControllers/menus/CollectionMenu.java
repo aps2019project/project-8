@@ -38,7 +38,7 @@ public class CollectionMenu extends Menu {
         try {
             show.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             show.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            show.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            show.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         show.setText("Show");
@@ -49,7 +49,7 @@ public class CollectionMenu extends Menu {
         try {
             search.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             search.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            search.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            search.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         search.setText("Search");
@@ -71,7 +71,7 @@ public class CollectionMenu extends Menu {
         try {
             save.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             save.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            save.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            save.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         save.setText("Save");
@@ -86,7 +86,7 @@ public class CollectionMenu extends Menu {
         try {
             createDeck.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             createDeck.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            createDeck.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            createDeck.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         createDeck.setText("Create");
@@ -107,7 +107,7 @@ public class CollectionMenu extends Menu {
         try {
             deleteDeck.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             deleteDeck.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            deleteDeck.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            deleteDeck.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         deleteDeck.setText("Delete");
@@ -122,7 +122,7 @@ public class CollectionMenu extends Menu {
         try {
             addCard.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             addCard.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            addCard.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            addCard.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         addCard.setText("Add");
@@ -133,7 +133,7 @@ public class CollectionMenu extends Menu {
         try {
             removeCard.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             removeCard.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            removeCard.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            removeCard.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         removeCard.setText("Remove");
@@ -144,7 +144,7 @@ public class CollectionMenu extends Menu {
         try {
             validateDeck.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             validateDeck.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            validateDeck.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            validateDeck.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         validateDeck.setText("Validate");
@@ -159,7 +159,7 @@ public class CollectionMenu extends Menu {
         try {
             select.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             select.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            select.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            select.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         select.setText("Select");
@@ -174,7 +174,7 @@ public class CollectionMenu extends Menu {
         try {
             showAllDecks.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             showAllDecks.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            showAllDecks.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            showAllDecks.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         showAllDecks.setText("Show All");
@@ -185,7 +185,7 @@ public class CollectionMenu extends Menu {
         try {
             showDeck.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             showDeck.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            showDeck.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            showDeck.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         showDeck.setText("Show Deck");
@@ -200,7 +200,7 @@ public class CollectionMenu extends Menu {
         try {
             back.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             back.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            back.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            back.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         back.setText("Back");

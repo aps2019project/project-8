@@ -24,7 +24,7 @@ import java.util.Optional;
 public class MultiplayerMenu extends Menu {
     private static final VBox vBox = new VBox();
     private static final int LABEL_HEIGHT = 40;
-    private static final Media sound = new Media(new File("sfx/sfx_unit_onclick.m4a").toURI().toString());
+    private static final Media sound = new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString());
     private static double labelWidth;
 
     public MultiplayerMenu() {

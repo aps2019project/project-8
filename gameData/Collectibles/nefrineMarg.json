@@ -44,5 +44,6 @@
   "price": 0,
   "collectionItemID": "4010",
   "name": "nefrineMarg",
-  "description": "give a random minion the ability to hit a random closest unit by 8 points"
+  "description": "give a random minion the ability to hit a random closest unit by 8 points",
+  "imageAddress": ""
 }

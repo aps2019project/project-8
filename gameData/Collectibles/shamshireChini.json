@@ -44,5 +44,6 @@
   "price": 0,
   "collectionItemID": "4020",
   "name": "shamshireChini",
-  "description": "adds 5 to attack power of melee units"
+  "description": "adds 5 to attack power of melee units",
+  "imageAddress": ""
 }

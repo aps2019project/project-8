@@ -20,5 +20,6 @@
   "price": 300,
   "collectionItemID": "2014",
   "name": "divSlinger",
-  "description": ""
+  "description": "",
+  "imageAddress": ""
 }

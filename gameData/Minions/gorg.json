@@ -61,5 +61,6 @@
   "price": 400,
   "collectionItemID": "2024",
   "name": "gorg",
-  "description": "reduces 6 hp from enemy minion in next turn"
+  "description": "reduces 6 hp from enemy minion in next turn",
+  "imageAddress": ""
 }

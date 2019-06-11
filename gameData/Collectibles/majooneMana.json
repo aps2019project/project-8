@@ -8,5 +8,6 @@
   "price": 0,
   "collectionItemID": "4008",
   "name": "majooneMana",
-  "description": "adds mana by 3 for next turn"
+  "description": "adds mana by 3 for next turn",
+  "imageAddress": ""
 }

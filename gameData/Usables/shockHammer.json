@@ -44,5 +44,6 @@
   "price": 15000,
   "collectionItemID": "4017",
   "name": "shockHammer",
-  "description": "friendly hero when attacking disarms enemy unit for one turn"
+  "description": "friendly hero when attacking disarms enemy unit for one turn",
+  "imageAddress": ""
 }

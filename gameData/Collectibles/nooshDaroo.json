@@ -36,5 +36,6 @@
   "price": 0,
   "collectionItemID": "4004",
   "name": "nooshDaroo",
-  "description": "adds health to random friendly unit"
+  "description": "adds health to random friendly unit",
+  "imageAddress": ""
 }

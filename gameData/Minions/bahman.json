@@ -51,5 +51,6 @@
   "price": 450,
   "collectionItemID": "2031",
   "name": "bahman",
-  "description": "reduces hp of random enemy minion by 16"
+  "description": "reduces hp of random enemy minion by 16",
+  "imageAddress": ""
 }

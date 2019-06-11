@@ -53,5 +53,6 @@
   "price": 11000,
   "collectionItemID": "3008",
   "name": "afsaane",
-  "description": "Dispels an enemy unit"
+  "description": "Dispels an enemy unit",
+  "imageAddress": ""
 }

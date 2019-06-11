@@ -53,5 +53,6 @@
   "price": 12000,
   "collectionItemID": "3009",
   "name": "esfandiaar",
-  "description": "3 continuous holy buffs"
+  "description": "3 continuous holy buffs",
+  "imageAddress": ""
 }

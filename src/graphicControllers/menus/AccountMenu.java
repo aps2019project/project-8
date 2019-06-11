@@ -41,7 +41,7 @@ public class AccountMenu extends Menu {
         try {
             gotoCreateAccount.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             gotoCreateAccount.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            gotoCreateAccount.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            gotoCreateAccount.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         gotoCreateAccount.setText("Create Account");
@@ -53,7 +53,7 @@ public class AccountMenu extends Menu {
         try {
             gotoLogin.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             gotoLogin.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            gotoLogin.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            gotoLogin.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         gotoLogin.setText("Login");
@@ -65,7 +65,7 @@ public class AccountMenu extends Menu {
         try {
             gotoLeaderboard.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             gotoLeaderboard.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            gotoLeaderboard.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            gotoLeaderboard.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         gotoLeaderboard.setText("Leaderboard");
@@ -76,7 +76,7 @@ public class AccountMenu extends Menu {
         try {
             exit.setImage(new Image(new FileInputStream("./images/buttons/button_cancel@2x.png")));
             exit.setActiveImage(new Image(new FileInputStream("./images/buttons/button_cancel_glow@2x.png")));
-            exit.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            exit.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         exit.setText("Exit");

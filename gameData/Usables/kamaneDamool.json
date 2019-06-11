@@ -44,5 +44,6 @@
   "price": 30000,
   "collectionItemID": "4003",
   "name": "kamaneDamool",
-  "description": "adds disarm to each attack of ranged or hybrid hero for 1 turn"
+  "description": "adds disarm to each attack of ranged or hybrid hero for 1 turn",
+  "imageAddress": ""
 }

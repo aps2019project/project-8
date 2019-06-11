@@ -39,5 +39,6 @@
   "price": 550,
   "collectionItemID": "2035",
   "name": "ghoulDoSar",
-  "description": "dispels each unit it attacks"
+  "description": "dispels each unit it attacks",
+  "imageAddress": ""
 }
