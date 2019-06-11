@@ -4,6 +4,13 @@ import graphicControllers.Menu;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
+import menus.UI;
+import model.Game;
+import view.ComponentSet;
+import view.NodeSet;
 import view.NodeWrapper;
 
 import java.io.FileInputStream;
@@ -11,6 +18,9 @@ import java.io.FileNotFoundException;
 
 public class GameMenu extends Menu {
     Label[] playerNames = new Label[]{new Label(), new Label()};
+
+    ImageView[] playerTopIcons = new ImageView[2];
+
     public GameMenu() {
         super(Id.IN_GAME_MENU, "Game Menu", windowDefaultWidth, windowDefaultHeight);
 
@@ -39,11 +49,19 @@ public class GameMenu extends Menu {
         } catch (FileNotFoundException ignored) {
         }
 
-        playerNames[0].relocate(windowWidth / 4, windowHeight / 5);
+        refresh();
     }
 
     @Override
     public void refresh() {
-
+        if (UI.getGame() == null)
+            return;
+        String[] playerNames = UI.getGame().getPlayerNames();
+        Label firstPlayer = new Label(playerNames[0]);
+        firstPlayer.relocate(10, 10);
+        Label secondPlayer = new Label(playerNames[1]);
+        secondPlayer.relocate(windowWidth - 10 - 50, 10);
+        addComponent(new NodeWrapper(firstPlayer));
+        addComponent(new NodeWrapper(secondPlayer));
     }
 }

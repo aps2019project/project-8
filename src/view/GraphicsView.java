@@ -59,6 +59,10 @@ public class GraphicsView {
             group.getChildren().add(((NodeWrapper) menuComponent).getValue());
         if (menuComponent instanceof GUIButton)
             ((GUIButton) menuComponent).addInGroup(group);
+        if (menuComponent instanceof NodeSet)
+            ((NodeSet) menuComponent).addInGroup(group);
+        if (menuComponent instanceof ComponentSet)
+            ((ComponentSet) menuComponent).addInGroup(group);
         /**
          * you can add new menu components here
          */
@@ -69,6 +73,10 @@ public class GraphicsView {
             group.getChildren().remove(((NodeWrapper) menuComponent).getValue());
         if (menuComponent instanceof GUIButton)
             ((GUIButton) menuComponent).removeFromGroup(group);
+        if (menuComponent instanceof NodeSet)
+            ((NodeSet) menuComponent).removeFromGroup(group);
+        if (menuComponent instanceof NodeSet)
+            ((NodeSet) menuComponent).removeFromGroup(group);
         /**
          * you can remove menu components here
          */

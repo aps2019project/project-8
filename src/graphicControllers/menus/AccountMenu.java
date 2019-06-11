@@ -1,9 +1,13 @@
 package graphicControllers.menus;
 
 import graphicControllers.Menu;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import view.ComponentSet;
 import view.GUIButton;
 import view.GUIChangeMenuButton;
 import view.NodeWrapper;
@@ -82,6 +86,7 @@ public class AccountMenu extends Menu {
         exit.setText("Exit");
         addComponent(exit);
         exit.setOnMouseClicked(e -> System.exit(0));
+
     }
 
 
