@@ -449,6 +449,7 @@ class ManualFeatureAdder {
         String name, collectionItemID;
         int price;
         String description;
+        String address;
 
         ShengdeBaoPrinter.addString("Collection Item: ");
 
@@ -468,9 +469,13 @@ class ManualFeatureAdder {
             ShengdeBaoPrinter.println("Enter collection item price (0 if it is collectible)");
             price = Integer.parseInt(getInput());
         }
+        {
+            ShengdeBaoPrinter.println("Enter collection item image address:");
+            address = getInput();
+        }
         ShengdeBaoPrinter.println("Collection item created!");
         ShengdeBaoPrinter.undo();
-        return new CollectionItem(price, collectionItemID, name, description);
+        return new CollectionItem(price, collectionItemID, name, description, address);
     }
 
     private static Card addCard(CollectionItem collectionItem) throws Exception {
@@ -598,7 +603,6 @@ class ManualFeatureAdder {
             CollectionItem collectionItem = addCollectionItem();
             collectionItem = askCollectionItem(collectionItem);
             if (hasArg) {
-                ShengdeBaoPrinter.println("************** I HAVA ARG!!! ********** " + arg3);
                 saveCollectionItem(collectionItem);
             }
             if (!hasArg) {

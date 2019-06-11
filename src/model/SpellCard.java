@@ -15,6 +15,7 @@ public class SpellCard extends Card {
         this.price = spellCard.price;
         this.collectionItemID = spellCard.collectionItemID;
         this.name = spellCard.name;
+        this.imageAddress = spellCard.imageAddress;
         this.manaCost = spellCard.manaCost;
         this.spell = spellCard.spell;
     }

@@ -15,6 +15,7 @@ public class Card extends CollectionItem {
         this.price = card.price;
         this.collectionItemID = card.collectionItemID;
         this.name = card.name;
+        this.imageAddress = card.imageAddress;
         this.manaCost = card.manaCost;
         this.description = card.description;
     }
