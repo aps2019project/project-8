@@ -1,20 +1,26 @@
 package view;
 
+import com.sun.javafx.tk.FontLoader;
+import com.sun.javafx.tk.Toolkit;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.text.Font;
+import javafx.util.Pair;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ComponentSet implements MenuComponent {
-    double x, y;
+    private double x, y;
 
     private transient ArrayList<MenuComponent> components = new ArrayList<>();
 
-    public ArrayList<MenuComponent> getChildren() {
-        return components;
-    }
+    private Map<String, Integer> map = new HashMap<>();
 
     public void addInGroup(Group group) {
         for (MenuComponent component : components) {
@@ -45,6 +51,7 @@ public class ComponentSet implements MenuComponent {
     public double getY() {
         return this.y;
     }
+
     public void relocate(double x, double y) {
         for (MenuComponent component : components) {
             if (component instanceof NodeWrapper) {
@@ -58,7 +65,7 @@ public class ComponentSet implements MenuComponent {
             }
             if (component instanceof ComponentSet) {
                 ComponentSet componentSet = (ComponentSet) component;
-                componentSet.relocate(x - this.x + getX(), y - this.x + getY());
+                componentSet.relocate(x - this.x + componentSet.getX(), y - this.y + componentSet.getY());
             }
         }
         this.x = x;
@@ -71,41 +78,20 @@ public class ComponentSet implements MenuComponent {
                 Node node = ((NodeWrapper) component).getValue();
                 node.relocate((node.getLayoutX() - x) * widthResizeFactor + x, (node.getLayoutY() - y) * heightResizeFactor + y);
 
-                Method getMinHeight = null, getMinWidth = null, setMinHeight = null, setMinWidth = null;
-                Method setMaxHeight = null, setMaxWidth = null;
+                Method getFont = null, setFont = null;
                 Method setFitHeight = null, setFitWidth = null, getFitHeight = null, getFitWidth = null;
                 Method setHeight = null, getHeight = null, setWidth = null, getWidth = null;
 
                 try {
-                    getMinHeight = node.getClass().getMethod("getMinHeight");
+                    getFont = node.getClass().getMethod("getFont");
                 } catch (NoSuchMethodException e) {
-
                 }
+
                 try {
-                    getMinWidth = node.getClass().getMethod("getMinWidth");
+                    setFont = node.getClass().getMethod("setFont", Font.class);
                 } catch (NoSuchMethodException e) {
-
                 }
-                try {
-                    setMinHeight = node.getClass().getMethod("setMinHeight", double.class);
-                } catch (NoSuchMethodException e) {
 
-                }
-                try {
-                    setMinWidth = node.getClass().getMethod("setMinWidth", double.class);
-                } catch (NoSuchMethodException e) {
-
-                }
-                try {
-                    setMaxHeight = node.getClass().getMethod("setMaxHeight", double.class);
-                } catch (NoSuchMethodException e) {
-
-                }
-                try {
-                    setMaxWidth = node.getClass().getMethod("setMaxWidth", double.class);
-                } catch (NoSuchMethodException e) {
-
-                }
                 try {
                     setFitHeight = node.getClass().getMethod("setFitHeight", double.class);
                 } catch (NoSuchMethodException e) {
@@ -146,15 +132,14 @@ public class ComponentSet implements MenuComponent {
                 }
 
 
+                if (node instanceof Label) {
+
+                }
                 try {
-                    if (getMinHeight != null && getMinWidth != null && setMinHeight != null &&
-                            setMaxHeight != null && setMaxWidth != null) {
-                        double previousHeight = (Double) getMinHeight.invoke(node);
-                        double previousWidth = (Double) getMinWidth.invoke(node);
-                        setMinHeight.invoke(node, previousHeight * heightResizeFactor);
-                        setMaxHeight.invoke(node, previousHeight * heightResizeFactor);
-                        setMinWidth.invoke(node, previousWidth * widthResizeFactor);
-                        setMaxWidth.invoke(node, previousWidth * widthResizeFactor);
+                    if (getFont != null && setFont != null) {
+                        Font font = (Font) getFont.invoke(node);
+                        double size = font.getSize();
+                        setFont.invoke(node, new Font(size * heightResizeFactor));
                     }
                     if (setFitHeight != null && setFitWidth != null && getFitHeight != null && getFitWidth != null) {
                         double previousFitHeight = (Double) getFitHeight.invoke(node);
@@ -163,13 +148,10 @@ public class ComponentSet implements MenuComponent {
                         setFitWidth.invoke(node, previousFitWidth * widthResizeFactor);
                     }
                     if (setWidth != null && setHeight != null && getWidth != null && getHeight != null) {
-                        System.err.println("YOYO");
                         double previousHeight = (Double) getHeight.invoke(node);
                         double previousWidth = (Double) getWidth.invoke(node);
-                        System.err.println(previousHeight + " ---- " + previousWidth);
                         setHeight.invoke(node, previousHeight * heightResizeFactor);
                         setWidth.invoke(node, previousWidth * widthResizeFactor);
-                        System.err.println((Double) getHeight.invoke(node) + " ==== " + (Double) getWidth.invoke(node));
                     }
                 } catch (IllegalAccessException e) {
 
@@ -186,14 +168,80 @@ public class ComponentSet implements MenuComponent {
             }
             if (component instanceof ComponentSet) {
                 ComponentSet componentSet = (ComponentSet) component;
+                componentSet.relocate((componentSet.getX() - x) * widthResizeFactor + x,
+                        (componentSet.getY() - y) * heightResizeFactor + y);
                 componentSet.resize(widthResizeFactor, heightResizeFactor);
             }
         }
     }
 
+    private ArrayList<Double> getComponentWidths() {
+        ArrayList<Double> widths = new ArrayList<>();
+        for (MenuComponent component : components) {
+            if (component instanceof NodeWrapper) {
+                widths.add(((NodeWrapper) component).getValue().getLayoutX());
+            }
+            if (component instanceof GUIButton) {
+                widths.add(((GUIButton) component).getX());
+            }
+            if (component instanceof ComponentSet) {
+                widths.addAll(((ComponentSet) component).getComponentWidths());
+            }
+        }
+        return widths;
+    }
+
+    public void reflectVertically() {
+        ArrayList<Double> widths = getComponentWidths();
+        double minWidth = Double.MAX_VALUE, maxWidth = Double.MIN_VALUE;
+        for (Double w : widths) {
+            minWidth = Math.min(minWidth, w);
+            maxWidth = Math.max(maxWidth, w);
+        }
+        double line = (maxWidth + minWidth) / 2 + 100;
+        reflectVertically(line);
+    }
+
+    private void reflectVertically(double line) {
+        for (MenuComponent component : components) {
+            if (component instanceof NodeWrapper) {
+                Node node = ((NodeWrapper) component).getValue();
+                if (node instanceof ImageView) {
+                    node.relocate(2 * line - (node.getLayoutX() + ((ImageView) node).getFitWidth()), node.getLayoutY());
+                } else if (node instanceof Label) {
+                    FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
+                    double width = fontLoader.computeStringWidth(((Label) node).getText(), ((Label) node).getFont());
+                    node.relocate(2 * line - (node.getLayoutX() + width), node.getLayoutY());
+                } else {
+                    node.relocate(line + (line - node.getLayoutX()), node.getLayoutY());
+                }
+            }
+            if (component instanceof GUIButton) {
+                GUIButton guiButton = (GUIButton) component;
+                guiButton.setCentreX(2 * line - (guiButton.getX() + guiButton.getWidth() / 2));
+            }
+            if (component instanceof ComponentSet) {
+                ((ComponentSet) component).reflectVertically(line);
+            }
+        }
+    }
+
+    public MenuComponent getComponentByID(String id) {
+        if (!map.containsKey(id))
+            return null;
+        return components.get(map.get(id));
+    }
+
+    public void addMenuComponent(MenuComponent component, String id) {
+        map.put(id, components.size());
+        components.add(component);
+    }
 
     public void addMenuComponent(MenuComponent component) {
-        components.add(component);
+        Integer t = components.size();
+        while (map.containsKey(t.toString()))
+            t++;
+        addMenuComponent(component, t.toString());
     }
 
     public void removeMenuComponent(MenuComponent component) {

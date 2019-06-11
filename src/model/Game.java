@@ -1334,8 +1334,8 @@ public class Game extends InGameMenu {
         checkOnDeath(unit);
     }
 
-    public String[] getPlayerNames() {
-        return new String[] {players[0].getName(), players[1].getName()};
+    public Player[] getPlayers() {
+        return new Player[] {new Player(players[0]), new Player(players[1])};
     }
 
     public enum GameState {

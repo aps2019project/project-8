@@ -1,12 +1,14 @@
 package model;
 
+import javafx.application.Platform;
+
 import java.util.ArrayList;
 
 public class Player {
     private Hand hand;
     private Deck deck;
     private ArrayList<Unit> units = new ArrayList<>();
-    private int mana = 1000;
+    private int mana = 2;
     private ArrayList<Card> graveYard = new ArrayList<>();
     private ArrayList<Collectible> collectibles = new ArrayList<>();
     private int numberOfFlagTurns = 0;
@@ -16,6 +18,11 @@ public class Player {
     public Player(Deck deck) {
         this.deck = new Deck(deck);
         hand = new Hand();
+    }
+
+    public Player(Player player) {
+        this.mana = player.mana;
+        this.name = player.name;
     }
 
     public ArrayList<Unit> getUnits() {
@@ -80,7 +87,7 @@ public class Player {
         return hand;
     }
 
-    int getMana() {
+    public int getMana() {
         return mana;
     }
 

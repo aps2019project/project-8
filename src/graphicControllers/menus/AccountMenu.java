@@ -87,7 +87,9 @@ public class AccountMenu extends Menu {
         addComponent(exit);
         exit.setOnMouseClicked(e -> System.exit(0));
 
+
     }
+
 
 
 }
