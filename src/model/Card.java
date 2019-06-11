@@ -12,12 +12,8 @@ public class Card extends CollectionItem {
 
     // Copy Constructor
     public Card(Card card) {
-        this.price = card.price;
-        this.collectionItemID = card.collectionItemID;
-        this.name = card.name;
-        this.imageAddress = card.imageAddress;
+        super(card);
         this.manaCost = card.manaCost;
-        this.description = card.description;
     }
 
     protected Card() {

@@ -11,13 +11,7 @@ public class Collectible extends Item {
 
     // Copy constructor
     public Collectible(Collectible collectible) {
-        this.price = collectible.price;
-        this.collectionItemID = collectible.collectionItemID;
-        this.name = collectible.name;
-        this.description = collectible.description;
-        this.spell = collectible.spell;
-        this.addMana = collectible.addMana;
-        this.addManaDuration = collectible.addManaDuration;
+        super(collectible);
     }
 
     protected Collectible() {}
