@@ -36,6 +36,7 @@ public class GUI extends Application {
             menuManager.addMenu(new StoryMenu());
             menuManager.addMenu(new CustomGameMenu());
             menuManager.addMenu(new MultiplayerMenu());
+            menuManager.addMenu(new GameMenu());
         } catch (MenuAlreadyCreatedException e) {
             e.printStackTrace();
         }

@@ -31,5 +31,6 @@
   "price": 1600,
   "collectionItemID": "1018",
   "name": "sacrifice",
-  "description": "6HP weakness buff and 8AP power buff"
+  "description": "6HP weakness buff and 8AP power buff",
+  "imageAddress": ""
 }

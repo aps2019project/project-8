@@ -31,5 +31,6 @@
   "price": 1000,
   "collectionItemID": "1017",
   "name": "weakening",
-  "description": "Casts a 4AP weakness on an enemy minion"
+  "description": "Casts a 4AP weakness on an enemy minion",
+  "imageAddress": ""
 }

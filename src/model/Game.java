@@ -984,7 +984,7 @@ public class Game extends InGameMenu {
             for (int i = 0; i < NUMBER_OF_COLLECTIBLES; i++) {
                 Random random = new Random();
                 Cell cell = getRandomEmptyCell();
-                cell.setContent(collectibles.get(Integer.min(i, collectibles.size())));
+                cell.setContent(collectibles.get(Integer.min(i, collectibles.size() - 1)));
             }
         } catch (Exception ignored) {
             ignored.printStackTrace();

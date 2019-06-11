@@ -31,5 +31,6 @@
   "price": 1000,
   "collectionItemID": "1001",
   "name": "totalDisarm",
-  "description": "disarms till the end"
+  "description": "disarms till the end",
+  "imageAddress": ""
 }

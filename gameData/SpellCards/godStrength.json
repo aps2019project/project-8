@@ -31,5 +31,6 @@
   "price": 450,
   "collectionItemID": "1005",
   "name": "godStrength",
-  "description": "Adds 4 APs to your hero"
+  "description": "Adds 4 APs to your hero",
+  "imageAddress": ""
 }

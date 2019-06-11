@@ -470,12 +470,12 @@ class ManualFeatureAdder {
             price = Integer.parseInt(getInput());
         }
         {
-            ShengdeBaoPrinter.println("Enter collection item image address:");
-            address = getInput();
+//            ShengdeBaoPrinter.println("Enter collection item image address:");
+//            address = getInput();
         }
         ShengdeBaoPrinter.println("Collection item created!");
         ShengdeBaoPrinter.undo();
-        return new CollectionItem(price, collectionItemID, name, description, address);
+        return new CollectionItem(price, collectionItemID, name, description, "");
     }
 
     private static Card addCard(CollectionItem collectionItem) throws Exception {

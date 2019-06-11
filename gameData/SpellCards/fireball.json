@@ -31,5 +31,6 @@
   "price": 400,
   "collectionItemID": "1004",
   "name": "fireball",
-  "description": "Hits an enemy with 4 APs"
+  "description": "Hits an enemy with 4 APs",
+  "imageAddress": ""
 }

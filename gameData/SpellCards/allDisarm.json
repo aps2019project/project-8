@@ -31,5 +31,6 @@
   "price": 2000,
   "collectionItemID": "1010",
   "name": "allDisarm",
-  "description": "Disarms for 1 turn"
+  "description": "Disarms for 1 turn",
+  "imageAddress": ""
 }

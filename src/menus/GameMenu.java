@@ -243,4 +243,8 @@ public class GameMenu extends InGameMenu {
             account.receiveMoney(game.getPrize());
         }
     }
+
+    public static Game getGame() {
+        return game;
+    }
 }

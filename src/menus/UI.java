@@ -5,6 +5,7 @@ import com.gilecode.yagson.YaGsonBuilder;
 import gen.JsonMaker;
 import model.AI;
 import model.Account;
+import model.Game;
 import view.CommandLineView;
 import view.View;
 
@@ -545,4 +546,6 @@ public class UI {
     public static Account getAccount() {
         return Menu.getAccount();
     }
+
+    public static Game getGame() { return GameMenu.getGame(); }
 }

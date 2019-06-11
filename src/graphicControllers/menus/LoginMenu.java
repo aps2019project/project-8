@@ -22,7 +22,7 @@ public class LoginMenu extends Menu {
     GUIButton enterButton;
 
     public LoginMenu() {
-        super(Id.LOGIN_MENU, "Login Menu", 900, 800);
+        super(Id.LOGIN_MENU, "Login Menu", 800, 600);
 
         try {
             getView().setBackground(new Image(new FileInputStream("./images/backgrounds/color-plate-bg-orange@2x.png")));

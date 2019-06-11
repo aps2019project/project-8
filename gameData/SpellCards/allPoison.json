@@ -31,5 +31,6 @@
   "price": 1500,
   "collectionItemID": "1011",
   "name": "allPoison",
-  "description": "Poisons all units for 4 turns"
+  "description": "Poisons all units for 4 turns",
+  "imageAddress": ""
 }

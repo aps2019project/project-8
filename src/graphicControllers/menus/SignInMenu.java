@@ -22,7 +22,7 @@ public class SignInMenu extends Menu {
     GUIButton enterButton;
 
     public SignInMenu() {
-        super(Id.SIGN_IN_MENU, "Login Menu", 900, 800);
+        super(Id.SIGN_IN_MENU, "Login Menu", 800, 600);
 
         try {
             getView().setBackground(new Image(new FileInputStream("./images/backgrounds/color-plate-bg-orange@2x.png")));
