@@ -38,10 +38,7 @@ public class Item extends CollectionItem {
 
     // Copy constructor
     public Item(Item item) {
-        this.price = item.price;
-        this.collectionItemID = item.collectionItemID;
-        this.name = item.name;
-        this.description = item.description;
+        super(item);
         this.spell = item.spell;
         this.addMana = item.addMana;
         this.addManaDuration = item.addManaDuration;

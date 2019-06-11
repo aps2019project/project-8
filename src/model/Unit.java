@@ -41,10 +41,7 @@ public class Unit extends Card {
 
     // Copy constructor
     public Unit(Unit unit) {
-        this.price = unit.price;
-        this.collectionItemID = unit.collectionItemID;
-        this.name = unit.name;
-        this.manaCost = unit.manaCost;
+        super(unit);
         this.hitPoint = unit.hitPoint;
         this.attackPoint = unit.attackPoint;
         this.unitType = unit.unitType;
