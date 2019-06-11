@@ -2,9 +2,14 @@ package graphicControllers;
 
 import graphicControllers.menus.*;
 import javafx.application.Application;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import menus.ShopMenu;
 import menus.UI;
+
+import java.io.File;
 
 public class GUI extends Application {
 
@@ -39,6 +44,9 @@ public class GUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        MediaPlayer mediaPlayer = new MediaPlayer(new Media(new File("music/mainmenu_v2c_looping.m4a").toURI().toString()));
+        mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
+        mediaPlayer.play();
         UI.initiate();
         MenuManager menuManager = new MenuManager();
         primaryStage.setTitle("Duelyst");

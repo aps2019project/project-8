@@ -12,6 +12,7 @@ import view.NodeWrapper;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Optional;
 
 public class CollectionMenu extends Menu {
     public CollectionMenu() {
@@ -52,6 +53,17 @@ public class CollectionMenu extends Menu {
         } catch (FileNotFoundException ignored) {
         }
         search.setText("Search");
+        search.setOnMouseClicked(e -> {
+            Optional<String> name = MenuManager.getInstance().getText("Card name | item name", "Search");
+            if (name.isPresent()) {
+                if (!UI.getAccount().getCollection().hasCollectionItem(name.get()))
+                    MenuManager.getInstance().showPopUp("No such item found.");
+                else {
+                    UI.decide("search " + name.get());
+                    UI.getAccount().getCollection().getCollectionItemIDs(name.get());
+                }
+            }
+        });
         addComponent(search);
 
         GUIButton save = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
@@ -78,6 +90,16 @@ public class CollectionMenu extends Menu {
         } catch (FileNotFoundException ignored) {
         }
         createDeck.setText("Create");
+        createDeck.setOnMouseClicked(e -> {
+            Optional<String> deckName = MenuManager.getInstance().getText("Deck name", "Create");
+            if (deckName.isPresent()) {
+                if (UI.getAccount().getCollection().hasDeck(deckName.get()))
+                    MenuManager.getInstance().showPopUp("A deck with this name already exists.");
+                else
+                    MenuManager.getInstance().showPopUp("Deck successfully created.");
+                UI.decide("create deck " + deckName.orElse(""));
+            }
+        });
         addComponent(createDeck);
 
         GUIButton deleteDeck = new GUIButton(windowWidth / 2 - 170.0 / 2 + windowWidth / 3, windowHeight
@@ -89,6 +111,10 @@ public class CollectionMenu extends Menu {
         } catch (FileNotFoundException ignored) {
         }
         deleteDeck.setText("Delete");
+        deleteDeck.setOnMouseClicked(e -> {
+            Optional<String> deckName = MenuManager.getInstance().getText("Deck name", "Delete");
+            UI.decide("delete deck " + deckName.orElse(""));
+        });
         addComponent(deleteDeck);
 
         GUIButton addCard = new GUIButton(windowWidth / 2 - 170.0 / 2 + windowWidth / 3, windowHeight
@@ -122,18 +148,26 @@ public class CollectionMenu extends Menu {
         } catch (FileNotFoundException ignored) {
         }
         validateDeck.setText("Validate");
+        validateDeck.setOnMouseClicked(e -> {
+            Optional<String> deckName = MenuManager.getInstance().getText("Deck name", "Validate");
+            UI.decide("validate deck " + deckName.orElse(""));
+        });
         addComponent(validateDeck);
 
-        GUIButton Select = new GUIButton(windowWidth / 2 - 170.0 / 2 - windowWidth / 3, windowHeight
+        GUIButton select = new GUIButton(windowWidth / 2 - 170.0 / 2 - windowWidth / 3, windowHeight
                 / 2 - 50.0 / 2, 170, 50);
         try {
-            Select.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
-            Select.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            Select.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            select.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+            select.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+            select.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
-        Select.setText("Select");
-        addComponent(Select);
+        select.setText("Select");
+        select.setOnMouseClicked(e -> {
+            Optional<String> deckName = MenuManager.getInstance().getText("Deck name", "Select");
+            UI.decide("select deck " + deckName.orElse(""));
+        });
+        addComponent(select);
 
         GUIButton showAllDecks = new GUIButton(windowWidth / 2 - 170.0 / 2 - windowWidth / 3, windowHeight
                 / 2 - 50.0 / 2 + 10 + 50, 170, 50);
@@ -155,6 +189,10 @@ public class CollectionMenu extends Menu {
         } catch (FileNotFoundException ignored) {
         }
         showDeck.setText("Show Deck");
+        showDeck.setOnMouseClicked(e -> {
+            Optional<String> deckName = MenuManager.getInstance().getText("Deck name", "Show Deck");
+            UI.decide("show deck " + deckName.orElse(""));
+        });
         addComponent(showDeck);
 
         GUIButton back = new GUIButton(windowWidth / 2 - 100.0 / 2, windowHeight - 50,

@@ -1,7 +1,5 @@
 package graphicControllers;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -40,6 +38,10 @@ public class MenuManager {
     private Stage stage;
     private Stage popUp;
     private Stage getGameMode;
+    private Stage getText;
+    private Optional<String> text = Optional.empty();
+    private TextField textField;
+    private Label button;
     private VBox popUpContent = new VBox();
     private Media sound = new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString());
     private Menu currentMenu;
@@ -112,9 +114,46 @@ public class MenuManager {
         instance = this;
         setUpPopUp();
         setUpGetGameMode();
+        setUpGetText();
         listenForMenuChange();
         stage.setResizable(false);
         stage.show();
+    }
+
+    private void setUpGetText() {
+        textField = new TextField();
+        getText = new Stage();
+        Group group = new Group();
+        VBox vBox = new VBox();
+        vBox.setFillWidth(true);
+        vBox.setMinWidth(320);
+        vBox.setMaxWidth(320);
+        try {
+            Image inactive = new Image(new FileInputStream("images/buttons/button_secondary@2x.png"));
+            Image active = new Image(new FileInputStream("images/buttons/button_secondary_glow@2x.png"));
+            ImageView imageView = new ImageView(inactive);
+            group.getChildren().add(imageView);
+            imageView.setFitWidth(170);
+            imageView.setFitHeight(BUTTON_HEIGHT);
+            imageView.relocate(320 / 2 - 170 / 2, 180 - BUTTON_HEIGHT);
+            button = new Label();
+            button.setOnMouseEntered(e -> {
+                imageView.setImage(active);
+                new MediaPlayer(sound).play();
+            });
+            button.setOnMouseClicked(e -> {
+                text = Optional.of(textField.getText());
+                textField.clear();
+                getText.close();
+            });
+            fixPopUpButton(group, inactive, imageView, button);
+        } catch (FileNotFoundException ignored) {
+        }
+        setPopUpContent(group, vBox, getText);
+        textField.setPromptText("");
+        textField.setMaxWidth(320 / 2);
+        textField.setMinWidth(320 / 2);
+        vBox.getChildren().add(textField);
     }
 
     private void setUpGetGameMode() {
@@ -153,32 +192,10 @@ public class MenuManager {
                     getGameMode.close();
                 }
             });
-            button.setOnMouseExited(e -> imageView.setImage(inactive));
-            button.setFont(Font.loadFont(new FileInputStream("./fonts/averta-extrathin-webfont.ttf"), 17));
-            button.setTextFill(Color.CORAL);
-            button.setMinSize(90, BUTTON_HEIGHT);
-            button.setAlignment(Pos.CENTER);
-            button.setTextAlignment(TextAlignment.CENTER);
-            button.relocate(320 / 2 - 90 / 2, 180 - BUTTON_HEIGHT);
-            group.getChildren().add(button);
-        } catch (FileNotFoundException e) {
-        }
-        group.getChildren().add(getGameModeContent);
-        getGameMode.setScene(new Scene(group, 320, 180));
-        getGameMode.setResizable(false);
-        getGameModeContent.setAlignment(Pos.CENTER);
-        getGameModeContent.getStylesheets().add("css/vBox.css");
-        getGameModeContent.setMinHeight(180 - BUTTON_HEIGHT);
-        getGameModeContent.setMaxHeight(180 - BUTTON_HEIGHT);
-        getGameMode.initModality(Modality.APPLICATION_MODAL);
-        getGameMode.setAlwaysOnTop(true);
-        try {
-            getGameMode.getScene().setFill(new ImagePattern(new Image(new FileInputStream("images/backgrounds/color-plate-bg-orange@2x.png"))));
-            getGameMode.getScene().setCursor(new ImageCursor(new Image(new FileInputStream("images/cursors/mouse_auto.png"))));
+            fixPopUpButton(group, inactive, imageView, button);
         } catch (FileNotFoundException ignored) {
         }
-        getGameModeContent.getChildren().clear();
-        getGameModeContent.setSpacing((180 - BUTTON_HEIGHT) / 4);
+        setPopUpContent(group, getGameModeContent, getGameMode);
         choiceBox.setMinWidth(320 / 2);
         choiceBox.setMaxWidth(320 / 2);
         choiceBox.setItems(FXCollections.observableArrayList("Elimination", "Hold the Flag", "Collect the Flags"));
@@ -197,6 +214,40 @@ public class MenuManager {
             }
         });
         getGameModeContent.getChildren().add(textField);
+    }
+
+    private void setPopUpContent(Group group, VBox getGameModeContent, Stage getGameMode) {
+        fixPopUpContent(group, getGameModeContent, getGameMode);
+        try {
+            getGameMode.getScene().setFill(new ImagePattern(new Image(new FileInputStream("images/backgrounds/color-plate-bg-orange@2x.png"))));
+            getGameMode.getScene().setCursor(new ImageCursor(new Image(new FileInputStream("images/cursors/mouse_auto.png"))));
+        } catch (FileNotFoundException ignored) {
+        }
+        getGameModeContent.getChildren().clear();
+        getGameModeContent.setSpacing((180 - BUTTON_HEIGHT) / 4);
+    }
+
+    private void fixPopUpContent(Group group, VBox getGameModeContent, Stage getGameMode) {
+        group.getChildren().add(getGameModeContent);
+        getGameMode.setScene(new Scene(group, 320, 180));
+        getGameMode.setResizable(false);
+        getGameModeContent.setAlignment(Pos.CENTER);
+        getGameModeContent.getStylesheets().add("css/vBox.css");
+        getGameModeContent.setMinHeight(180 - BUTTON_HEIGHT);
+        getGameModeContent.setMaxHeight(180 - BUTTON_HEIGHT);
+        getGameMode.initModality(Modality.APPLICATION_MODAL);
+        getGameMode.setAlwaysOnTop(true);
+    }
+
+    private void fixPopUpButton(Group group, Image inactive, ImageView imageView, Label button) throws FileNotFoundException {
+        button.setOnMouseExited(e -> imageView.setImage(inactive));
+        button.setFont(Font.loadFont(new FileInputStream("./fonts/averta-extrathin-webfont.ttf"), 17));
+        button.setTextFill(Color.CORAL);
+        button.setMinSize(90, BUTTON_HEIGHT);
+        button.setAlignment(Pos.CENTER);
+        button.setTextAlignment(TextAlignment.CENTER);
+        button.relocate(320 / 2 - 90 / 2, 180 - BUTTON_HEIGHT);
+        group.getChildren().add(button);
     }
 
     private void setUpPopUp() {
@@ -219,25 +270,10 @@ public class MenuManager {
                 new MediaPlayer(sound).play();
             });
             button.setOnMouseClicked(e -> popUp.close());
-            button.setOnMouseExited(e -> imageView.setImage(inactive));
-            button.setFont(Font.loadFont(new FileInputStream("./fonts/averta-extrathin-webfont.ttf"), 17));
-            button.setTextFill(Color.CORAL);
-            button.setMinSize(90, BUTTON_HEIGHT);
-            button.setAlignment(Pos.CENTER);
-            button.setTextAlignment(TextAlignment.CENTER);
-            button.relocate(320 / 2 - 90 / 2, 180 - BUTTON_HEIGHT);
-            group.getChildren().add(button);
-        } catch (FileNotFoundException e) {
+            fixPopUpButton(group, inactive, imageView, button);
+        } catch (FileNotFoundException ignored) {
         }
-        group.getChildren().add(popUpContent);
-        popUp.setScene(new Scene(group, 320, 180));
-        popUp.setResizable(false);
-        popUpContent.setAlignment(Pos.CENTER);
-        popUpContent.getStylesheets().add("css/vBox.css");
-        popUpContent.setMinHeight(180 - BUTTON_HEIGHT);
-        popUpContent.setMaxHeight(180 - BUTTON_HEIGHT);
-        popUp.initModality(Modality.APPLICATION_MODAL);
-        popUp.setAlwaysOnTop(true);
+        fixPopUpContent(group, popUpContent, popUp);
         try {
             popUp.getScene().setFill(new ImagePattern(new Image(new FileInputStream("images/backgrounds/color-plate-bg-purple@2x.png"))));
             popUp.getScene().setCursor(new ImageCursor(new Image(new FileInputStream("images/cursors/mouse_auto.png"))));
@@ -265,5 +301,13 @@ public class MenuManager {
         gameMode = new Optional[]{Optional.empty(), Optional.empty()};
         getGameMode.showAndWait();
         return gameMode;
+    }
+
+    public Optional<String> getText(String prompt, String buttonText) {
+        text = Optional.empty();
+        textField.setPromptText(prompt);
+        button.setText(buttonText);
+        getText.showAndWait();
+        return text;
     }
 }
