@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
@@ -26,6 +27,7 @@ import javafx.util.Duration;
 import view.GraphicsView;
 import view.MenuChangeComponent;
 import view.MenuComponent;
+import view.NodeWrapper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -77,15 +79,13 @@ public class Menu {
     }
 
     public Menu(int id, String title) {
-        playMedia();
-        this.id = id;
+        this(id);
         this.title = title;
         this.view = new GraphicsView(windowWidth, windowHeight, title);
     }
 
     public Menu(int id, String title, double width, double height) {
-        playMedia();
-        this.id = id;
+        this(id);
         this.title = title;
         this.windowWidth = width;
         this.windowHeight = height;

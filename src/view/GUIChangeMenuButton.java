@@ -6,7 +6,7 @@ import javafx.event.EventHandler;
 public class GUIChangeMenuButton extends GUIButton implements MenuChangeComponent {
 
     private int goalMenuID;
-    private boolean ready = false;
+    private boolean ready = true;
 
     public GUIChangeMenuButton(double x, double y, double width, double height) {
         super(x, y, width, height);

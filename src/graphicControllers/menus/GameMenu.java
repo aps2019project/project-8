@@ -12,20 +12,14 @@ import java.io.FileNotFoundException;
 public class GameMenu extends Menu {
     Label[] playerNames = new Label[]{new Label(), new Label()};
     public GameMenu() {
-        super(Id.IN_GAME_MENU, "Game Menu", 1240, 720);
+        super(Id.IN_GAME_MENU, "Game Menu", windowDefaultWidth, windowDefaultHeight);
 
+        // setting up the back ground
         try {
-            getView().setBackground(new Image(new FileInputStream("images/backgrounds/battlemap0_background@2x.png")));
+            setBackGround(new Image(new FileInputStream("images/backgrounds/battlemap0_background@2x.png")));
         } catch (FileNotFoundException ignored) {
         }
 
-        try {
-            ImageView map = new ImageView(new Image(new FileInputStream("images/maps/battlemap0_middleground@2x.png")));
-            map.setFitWidth(1240);
-            map.setFitHeight(720);
-            addComponent(new NodeWrapper(map));
-        } catch (FileNotFoundException ignored) {
-        }
 
         try {
             ImageView foreGround = new ImageView(new Image(new FileInputStream("images/foregrounds/battlemap0_foreground_001@2x.png")));
