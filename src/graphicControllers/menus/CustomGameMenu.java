@@ -90,7 +90,7 @@ public class CustomGameMenu extends Menu {
                     label.setTooltip(new Tooltip(o.getHero().getName()));
                     vBox.getChildren().add(label);
                     label.setOnMouseClicked(e -> {
-                        Optional<Integer>[] gameType = MenuManager.getInstance().getGameType();
+                        Optional<Integer>[] gameType = popUpGetGameType();
                         if (gameType[0].isPresent()) {
                             UI.decide("start game " + label.getText() + " " + gameType[0].get() + (gameType[1].isPresent() ? " " + gameType[1].get() : ""));
                             MenuManager.getInstance().setCurrentMenu(Id.IN_GAME_MENU);

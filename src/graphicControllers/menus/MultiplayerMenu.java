@@ -90,7 +90,7 @@ public class MultiplayerMenu extends Menu {
                         label.setOnMouseExited(e -> label.setBackground(inactive));
                         vBox.getChildren().add(label);
                         label.setOnMouseClicked(e -> {
-                            Optional<Integer>[] gameType = MenuManager.getInstance().getGameType();
+                            Optional<Integer>[] gameType = popUpGetGameType();
                             if (gameType[0].isPresent()) {
                                 UI.decide("select user " + label.getText());
                                 UI.decide("start multiplayer game " + gameType[0].get() + (gameType[1].isPresent() ? " " + gameType[1].get() : ""));

@@ -54,10 +54,10 @@ public class CollectionMenu extends Menu {
         }
         search.setText("Search");
         search.setOnMouseClicked(e -> {
-            Optional<String> name = MenuManager.getInstance().getText("Card name | item name", "Search");
+            Optional<String> name = popUpGetText("Card name | item name", "Search");
             if (name.isPresent()) {
                 if (!UI.getAccount().getCollection().hasCollectionItem(name.get()))
-                    MenuManager.getInstance().showPopUp("No such item found.");
+                    showPopUp("No such item found.");
                 else {
                     UI.decide("search " + name.get());
                     UI.getAccount().getCollection().getCollectionItemIDs(name.get());
@@ -76,7 +76,7 @@ public class CollectionMenu extends Menu {
         }
         save.setText("Save");
         save.setOnMouseClicked(e -> {
-            MenuManager.getInstance().showPopUp("Successfully saved account.");
+            showPopUp("Successfully saved account.");
             UI.decide("save");
         });
         addComponent(save);
@@ -91,12 +91,12 @@ public class CollectionMenu extends Menu {
         }
         createDeck.setText("Create");
         createDeck.setOnMouseClicked(e -> {
-            Optional<String> deckName = MenuManager.getInstance().getText("Deck name", "Create");
+            Optional<String> deckName = popUpGetText("Deck name", "Create");
             if (deckName.isPresent()) {
                 if (UI.getAccount().getCollection().hasDeck(deckName.get()))
-                    MenuManager.getInstance().showPopUp("A deck with this name already exists.");
+                    showPopUp("A deck with this name already exists.");
                 else
-                    MenuManager.getInstance().showPopUp("Deck successfully created.");
+                    showPopUp("Deck successfully created.");
                 UI.decide("create deck " + deckName.orElse(""));
             }
         });
@@ -112,7 +112,7 @@ public class CollectionMenu extends Menu {
         }
         deleteDeck.setText("Delete");
         deleteDeck.setOnMouseClicked(e -> {
-            Optional<String> deckName = MenuManager.getInstance().getText("Deck name", "Delete");
+            Optional<String> deckName = popUpGetText("Deck name", "Delete");
             UI.decide("delete deck " + deckName.orElse(""));
         });
         addComponent(deleteDeck);
@@ -149,7 +149,7 @@ public class CollectionMenu extends Menu {
         }
         validateDeck.setText("Validate");
         validateDeck.setOnMouseClicked(e -> {
-            Optional<String> deckName = MenuManager.getInstance().getText("Deck name", "Validate");
+            Optional<String> deckName = popUpGetText("Deck name", "Validate");
             UI.decide("validate deck " + deckName.orElse(""));
         });
         addComponent(validateDeck);
@@ -164,7 +164,7 @@ public class CollectionMenu extends Menu {
         }
         select.setText("Select");
         select.setOnMouseClicked(e -> {
-            Optional<String> deckName = MenuManager.getInstance().getText("Deck name", "Select");
+            Optional<String> deckName = popUpGetText("Deck name", "Select");
             UI.decide("select deck " + deckName.orElse(""));
         });
         addComponent(select);
@@ -190,7 +190,7 @@ public class CollectionMenu extends Menu {
         }
         showDeck.setText("Show Deck");
         showDeck.setOnMouseClicked(e -> {
-            Optional<String> deckName = MenuManager.getInstance().getText("Deck name", "Show Deck");
+            Optional<String> deckName = popUpGetText("Deck name", "Show Deck");
             UI.decide("show deck " + deckName.orElse(""));
         });
         addComponent(showDeck);

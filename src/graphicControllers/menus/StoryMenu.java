@@ -49,7 +49,7 @@ public class StoryMenu extends Menu {
             if (UI.getMenu() == Menus.GAME_MENU)
                 MenuManager.getInstance().setCurrentMenu(Id.IN_GAME_MENU);
             else
-                MenuManager.getInstance().showPopUp("You have no valid main deck to play with.");
+                showPopUp("You have no valid main deck to play with.");
         });
         addComponent(diveSefid);
 
@@ -68,7 +68,7 @@ public class StoryMenu extends Menu {
             if (UI.getMenu() == Menus.GAME_MENU)
                 MenuManager.getInstance().setCurrentMenu(Id.IN_GAME_MENU);
             else
-                MenuManager.getInstance().showPopUp("You have no main deck to play with.");
+                showPopUp("You have no main deck to play with.");
         });
         addComponent(zahhaak);
 
@@ -87,7 +87,7 @@ public class StoryMenu extends Menu {
             if (UI.getMenu() == Menus.GAME_MENU)
                 MenuManager.getInstance().setCurrentMenu(Id.IN_GAME_MENU);
             else
-                MenuManager.getInstance().showPopUp("You have no main deck to play with.");
+                showPopUp("You have no main deck to play with.");
         });
         addComponent(Aarash);
     }

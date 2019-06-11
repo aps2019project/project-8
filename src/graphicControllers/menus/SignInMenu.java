@@ -50,15 +50,15 @@ public class SignInMenu extends Menu {
                 if (!passwordField.getText().isEmpty()) {
                     UI.decide("create account " + usernameField.getText());
                     if (UI.getMenu() == Menus.CREATE_ACCOUNT) {
-                        MenuManager.getInstance().showPopUp("Account successfully created.");
+                        showPopUp("Account successfully created.");
                         UI.decide(passwordField.getText());
                         MenuManager.getInstance().setCurrentMenu(Id.ACCOUNT_MENU);
                     } else
-                        MenuManager.getInstance().showPopUp("An account with this name already exists.");
+                        showPopUp("An account with this name already exists.");
                 } else
-                    MenuManager.getInstance().showPopUp("Please enter the password.");
+                    showPopUp("Please enter the password.");
             } else
-                MenuManager.getInstance().showPopUp("Please enter a username.");
+                showPopUp("Please enter a username.");
         });
         try {
             enterButton.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));

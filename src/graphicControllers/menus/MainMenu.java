@@ -102,7 +102,7 @@ public class MainMenu extends Menu {
         }
         save.setText("Save");
         save.setOnMouseClicked(e -> {
-            MenuManager.getInstance().showPopUp("Successfully saved account.");
+            showPopUp("Successfully saved account.");
             UI.decide("save");
         });
         addComponent(save);

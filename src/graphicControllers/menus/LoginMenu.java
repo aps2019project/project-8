@@ -54,13 +54,13 @@ public class LoginMenu extends Menu {
                         if (UI.getMenu() == Menus.MAIN_MENU)
                             MenuManager.getInstance().setCurrentMenu(Id.MAIN_MENU);
                         else
-                            MenuManager.getInstance().showPopUp("Incorrect password entered");
+                            showPopUp("Incorrect password entered");
                     } else
-                        MenuManager.getInstance().showPopUp("No account with this name exists.");
+                        showPopUp("No account with this name exists.");
                 } else
-                    MenuManager.getInstance().showPopUp("Please enter the password.");
+                    showPopUp("Please enter the password.");
             } else
-                MenuManager.getInstance().showPopUp("Please enter a username.");
+                showPopUp("Please enter a username.");
         });
         try {
             enterButton.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
