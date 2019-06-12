@@ -117,6 +117,12 @@ public class Menu {
     }
 
     protected void removeComponent(MenuComponent component) {
+        if (component instanceof ComponentSet) {
+            for (MenuComponent c : ((ComponentSet) component).getComponents()) {
+                removeComponent(c);
+            }
+            return;
+        }
         view.removeComponent(component);
         menuComponents.remove(component);
         if (component instanceof MenuChangeComponent)

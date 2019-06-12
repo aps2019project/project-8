@@ -89,19 +89,29 @@ public class AccountMenu extends Menu {
         addComponent(exit);
         exit.setOnMouseClicked(e -> System.exit(0));
 
-        //setUpCardBar();
+        setUpQuickStart();
     }
 
-    private void setUpCardBar() {
-        ImageView imageView = new ImageView();
-        imageView.setFitHeight(100);
-        imageView.setFitWidth(100);
+    private void setUpQuickStart() {
+        GUIChangeMenuButton guiButton = new GUIChangeMenuButton(windowWidth / 2 - 150, windowHeight - 150, 300, 100);
+        guiButton.setText("QUICK START");
         try {
-            imageView.setImage(new Image(new FileInputStream("images/test.gif")));
+            guiButton.setImage(new Image(new FileInputStream("images/buttons/button_cancel@2x.png")));
+            guiButton.setActiveImage(new Image(new FileInputStream("images/buttons/button_cancel_glow@2x.png")));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        addComponent(new NodeWrapper(imageView));
+        guiButton.setOnMouseClicked(e -> {
+            UI.decide("login aa");
+            UI.decide("aa");
+            UI.decide("battle");
+            UI.decide("singleplayer");
+            UI.decide("story");
+            UI.decide("1");
+            GameMenu.getInstance().refresh();
+        });
+        guiButton.setGoalMenuID(Id.IN_GAME_MENU);
+        addComponent(guiButton);
     }
 
 }

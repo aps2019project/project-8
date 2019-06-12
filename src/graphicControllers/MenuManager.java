@@ -53,11 +53,7 @@ public class MenuManager {
         stage.setScene(currentMenu.getView().getScene());
         for (MenuChangeComponent changeComponent : currentMenu.getMenuChangeComponents()) {
             if (changeComponent.isReady()) {
-                if (changeComponent instanceof GUIChangeMenuButton) {
-                    System.err.println(changeComponent + " " + ((GUIChangeMenuButton) changeComponent).getText());
-                }
                 changeComponent.setOnAction(event -> {
-                    System.err.println("HIHI");
                     try {
                         int goalMenuID = changeComponent.getGoalMenuID();
                         boolean success = false;

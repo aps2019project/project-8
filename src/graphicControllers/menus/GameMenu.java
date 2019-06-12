@@ -5,6 +5,7 @@ import javafx.scene.ParallelCamera;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -15,6 +16,7 @@ import model.Map;
 import model.Player;
 import view.*;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
@@ -28,6 +30,12 @@ public class GameMenu extends Menu {
     private ComponentSet gridCells;
     private ComponentSet cardBar;
     private ComponentSet menuButtons;
+
+    private static transient GameMenu instance = null;
+
+    public static GameMenu getInstance() {
+        return instance;
+    }
 
     private String getUIOutputAsString(String command) {
         PrintStream prevOut = System.out;
@@ -69,6 +77,7 @@ public class GameMenu extends Menu {
         super(Id.IN_GAME_MENU, "Game Menu", windowDefaultWidth, windowDefaultHeight);
         setUpBackGround();
         setUpMenuButtons();
+        instance = this;
     }
 
     private void setOnEnterAndExitEffect(GUIButton guiButton, String text, String enterImagePath, String exitImagePath) {
@@ -78,32 +87,27 @@ public class GameMenu extends Menu {
             e.printStackTrace();
         }
         guiButton.setText(text);
-        guiButton.setOnMouseEntered(e -> {
-            System.err.println("PESHGEL");
-            try {
-                guiButton.setImage(new Image(new FileInputStream(enterImagePath)));
-                guiButton.setText("PESHGEL");
-            } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
-            }
-        });
-        guiButton.setOnMouseExited(e -> {
-            try {
-                guiButton.setImage(new Image(new FileInputStream(exitImagePath)));
-            } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
-            }
-        });
+        try {
+            guiButton.setActiveImage(new Image(new FileInputStream(enterImagePath)));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        guiButton.setSound(new Media(new File("sfx/sfx_unit_onclick.m4a").toURI().toString()));
     }
 
     private void setUpMenuButtons() {
         menuButtons = new ComponentSet();
-        GUIButton endTurnButton = new GUIButton(0, 0, 200, 100);
+        GUIButton endTurnButton = new GUIButton(-50, 0, 300, 100);
         setOnEnterAndExitEffect(endTurnButton, "END TURN", "images/gameIcons/menuButtons/end_turn_glow.png"
                 , "images/gameIcons/menuButtons/end_turn_normal.png");
+        endTurnButton.setOnMouseClicked(e -> {
+            UI.decide("end turn");
+            showPopUp("Turn Ended!");
+            refresh();
+        });
         menuButtons.addMenuComponent(endTurnButton);
 
-        GUIChangeMenuButton mainMenu = new GUIChangeMenuButton(0, 100, 100, 50);
+        GUIChangeMenuButton mainMenu = new GUIChangeMenuButton(-50 + 20, 100 - 20, 150, 70);
         setOnEnterAndExitEffect(mainMenu, "Main Menu", "images/gameIcons/menuButtons/ui_left_glowing.png",
                 "images/gameIcons/menuButtons/ui_left_normal.png");
         mainMenu.setOnMouseClicked(e -> {
@@ -112,9 +116,14 @@ public class GameMenu extends Menu {
         mainMenu.setGoalMenuID(Id.MAIN_MENU);
         menuButtons.addMenuComponent(mainMenu);
 
+        GUIChangeMenuButton graveyard = new GUIChangeMenuButton(-50 + 150 - 20, 100 - 20, 150, 70);
+        setOnEnterAndExitEffect(graveyard, "Graveyard", "images/gameIcons/menuButtons/ui_right_glowing.png",
+                "images/gameIcons/menuButtons/ui_right_normal.png");
+        menuButtons.addMenuComponent(graveyard);
 
         menuButtons.relocate(windowWidth - 250, windowHeight - 200);
         addComponent(menuButtons);
+
     }
 
     private ComponentSet setHandOptions(String deckCapacityNumber) {
@@ -289,10 +298,29 @@ public class GameMenu extends Menu {
             }
         }
 
-        removeAndReplace(firstPlayerBar, makeFirstPlayerStat(firstPlayerName, playerOneUsableItemName, firstPlayerMana));
-        removeAndReplace(secondPlayerBar, makeSecondPlayerStat(secondPlayerName, playerTwoUsableItemName, secondPlayerMana));
-        removeAndReplace(cardBar, makeCardBar(firstPlayerDeckCapacity, handCardNames, handCardManaCosts));
-        //removeAndReplace(gridCells, makeGridCells(gridStrings));
+        if (firstPlayerBar != null)
+            removeComponent(firstPlayerBar);
+        if (secondPlayerBar != null)
+            removeComponent(secondPlayerBar);
+        if (cardBar != null)
+            removeComponent(cardBar);
+        if (gridCells != null)
+            removeComponent(gridCells);
+
+        firstPlayerBar = makeFirstPlayerStat(firstPlayerName, playerOneUsableItemName, firstPlayerMana);
+        secondPlayerBar =  makeSecondPlayerStat(secondPlayerName, playerTwoUsableItemName, secondPlayerMana);
+        cardBar =  makeCardBar(firstPlayerDeckCapacity, handCardNames, handCardManaCosts);
+        gridCells =  makeGridCells(gridStrings);
+
+        if (firstPlayerBar != null)
+            addComponent(firstPlayerBar);
+        if (secondPlayerBar != null)
+            addComponent(secondPlayerBar);
+        if (cardBar != null)
+            addComponent(cardBar);
+        if (gridCells != null)
+            addComponent(gridCells);
+
     }
 
     private ComponentSet makeGridCells(String[][] gridStrings) {
@@ -306,14 +334,43 @@ public class GameMenu extends Menu {
         for (int i = 0; i < 5; i++) {
             ComponentSet handCard = new ComponentSet();
             try {
+                ImageView manaIcon = new ImageView(new Image(new FileInputStream("images/gameIcons/MenuIcons/icon_mana.png")));
+                if (i >= size) {
+                    manaIcon.setImage(new Image(new FileInputStream("images/gameIcons/MenuIcons/icon_mana_inactive.png")));
+                }
+                manaIcon.setOpacity(0.7);
+                manaIcon.setFitWidth(20);
+                manaIcon.setFitHeight(20);
+                manaIcon.relocate(i * 55 + 25 - 7, 50 + 1);
+                handCard.addMenuComponent(new NodeWrapper(manaIcon));
+
                 ImageView imageView = new ImageView(new Image(new FileInputStream("images/gameIcons/card_background.png")));
-                imageView.setFitHeight(50);
-                imageView.setFitWidth(50);
+                imageView.setFitHeight(55);
+                imageView.setFitWidth(55);
                 imageView.relocate(i * 55, 0);
+
+
+                ImageView innerGlow = new ImageView(new Image(new FileInputStream("images/gameIcons/card_background_inner_glow.png")));
+                innerGlow.setFitWidth(55);
+                innerGlow.setFitHeight(55);
+                innerGlow.relocate(i * 55, 0);
+                innerGlow.setOpacity(0.7);
+
                 if (i < size) {
+                    String x = handCardManaCosts.get(i);
+                    Label label = new Label(x);
+                    label.relocate(i * 55 + 25 - 1, 50 + 3.8);
+                    label.setFont(new Font(12));
+                    label.setTextFill(Color.LIGHTCYAN);
+                    label.setOpacity(0.7);
+                    handCard.addMenuComponent(new NodeWrapper(label));
+
                     imageView.setOnMouseEntered(e -> {
                         try {
                             imageView.setImage(new Image(new FileInputStream("images/gameIcons/cardbackground_highlight.png")));
+                            innerGlow.setOpacity(1);
+                            manaIcon.setOpacity(1);
+                            label.setOpacity(1);
                         } catch (FileNotFoundException e1) {
                             e1.printStackTrace();
                         }
@@ -321,28 +378,19 @@ public class GameMenu extends Menu {
                     imageView.setOnMouseExited(e -> {
                         try {
                             imageView.setImage(new Image(new FileInputStream("images/gameIcons/card_background.png")));
+                            innerGlow.setOpacity(0.7);
+                            manaIcon.setOpacity(0.7);
+                            label.setOpacity(0.7);
                         } catch (FileNotFoundException e1) {
                             e1.printStackTrace();
                         }
                     });
+
+                    handCard.addMenuComponent(new NodeWrapper(innerGlow));
                 }
                 handCard.addMenuComponent(new NodeWrapper(imageView));
 
-                ImageView manaIcon = new ImageView(new Image(new FileInputStream("images/gameIcons/MenuIcons/icon_mana.png")));
-                if (i >= size) {
-                    manaIcon.setImage(new Image(new FileInputStream("images/gameIcons/MenuIcons/icon_mana_inactive.png")));
-                }
-                manaIcon.setFitWidth(20);
-                manaIcon.setFitHeight(20);
-                manaIcon.relocate(i * 55 + 25 - 5, 50 - 5);
-                handCard.addMenuComponent(new NodeWrapper(manaIcon));
 
-                if (i < size) {
-                    String x = handCardManaCosts.get(i);
-                    Label label = new Label(x);
-                    label.relocate(i * 55 + 25, 50);
-                    handCard.addMenuComponent(new NodeWrapper(label));
-                }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -354,17 +402,8 @@ public class GameMenu extends Menu {
             cardBar.addMenuComponent(handCard, "card_" + i);
         }
         cardBar.resize(2.5, 2.5);
-        cardBar.relocate(300, windowHeight - 200);
+        cardBar.relocate(300 - 120 + 30, windowHeight - 200);
         return cardBar;
-    }
-
-    private void removeAndReplace(ComponentSet component, ComponentSet value) {
-        if (value == null)
-            return;
-        if (component != null)
-            removeComponent(component);
-        component = value;
-        addComponent(component);
     }
 
 }
