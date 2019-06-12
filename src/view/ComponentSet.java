@@ -22,26 +22,8 @@ public class ComponentSet implements MenuComponent {
 
     private Map<String, Integer> map = new HashMap<>();
 
-    public void addInGroup(Group group) {
-        for (MenuComponent component : components) {
-            if (component instanceof NodeWrapper)
-                group.getChildren().add(((NodeWrapper) component).getValue());
-            if (component instanceof GUIButton)
-                ((GUIButton) component).addInGroup(group);
-            if (component instanceof ComponentSet)
-                ((ComponentSet) component).addInGroup(group);
-        }
-    }
-
-    public void removeFromGroup(Group group) {
-        for (MenuComponent component : components) {
-            if (component instanceof NodeWrapper)
-                group.getChildren().remove(((NodeWrapper) component).getValue());
-            if (component instanceof GUIButton)
-                ((GUIButton) component).removeFromGroup(group);
-            if (component instanceof ComponentSet)
-                ((ComponentSet) component).removeFromGroup(group);
-        }
+    public ArrayList<MenuComponent> getComponents() {
+        return components;
     }
 
     public double getX() {

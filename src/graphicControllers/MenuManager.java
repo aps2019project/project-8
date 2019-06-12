@@ -19,6 +19,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import view.GUIChangeMenuButton;
 import view.MenuChangeComponent;
 
 import java.io.File;
@@ -52,7 +53,11 @@ public class MenuManager {
         stage.setScene(currentMenu.getView().getScene());
         for (MenuChangeComponent changeComponent : currentMenu.getMenuChangeComponents()) {
             if (changeComponent.isReady()) {
+                if (changeComponent instanceof GUIChangeMenuButton) {
+                    System.err.println(changeComponent + " " + ((GUIChangeMenuButton) changeComponent).getText());
+                }
                 changeComponent.setOnAction(event -> {
+                    System.err.println("HIHI");
                     try {
                         int goalMenuID = changeComponent.getGoalMenuID();
                         boolean success = false;

@@ -23,6 +23,7 @@ public class Player {
     public Player(Player player) {
         this.mana = player.mana;
         this.name = player.name;
+        this.deck = player.deck;
     }
 
     public ArrayList<Unit> getUnits() {

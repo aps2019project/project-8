@@ -24,10 +24,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import view.GraphicsView;
-import view.MenuChangeComponent;
-import view.MenuComponent;
-import view.NodeWrapper;
+import view.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -106,10 +103,17 @@ public class Menu {
     }
 
     protected void addComponent(MenuComponent component) {
+        if (component instanceof ComponentSet) {
+            for (MenuComponent c : ((ComponentSet) component).getComponents()) {
+                addComponent(c);
+            }
+            return;
+        }
         view.addComponent(component);
         menuComponents.add(component);
-        if (component instanceof MenuChangeComponent)
+        if (component instanceof MenuChangeComponent) {
             menuChangeComponents.add((MenuChangeComponent) component);
+        }
     }
 
     protected void removeComponent(MenuComponent component) {

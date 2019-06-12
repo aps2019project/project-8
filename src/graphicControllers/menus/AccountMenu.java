@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import menus.UI;
 import view.ComponentSet;
 import view.GUIButton;
 import view.GUIChangeMenuButton;
@@ -15,6 +16,7 @@ import view.NodeWrapper;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.PrintStream;
 
 public class AccountMenu extends Menu {
 
@@ -87,9 +89,19 @@ public class AccountMenu extends Menu {
         addComponent(exit);
         exit.setOnMouseClicked(e -> System.exit(0));
 
-
+        //setUpCardBar();
     }
 
-
+    private void setUpCardBar() {
+        ImageView imageView = new ImageView();
+        imageView.setFitHeight(100);
+        imageView.setFitWidth(100);
+        try {
+            imageView.setImage(new Image(new FileInputStream("images/test.gif")));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        addComponent(new NodeWrapper(imageView));
+    }
 
 }

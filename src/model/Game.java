@@ -266,12 +266,12 @@ public class Game extends InGameMenu {
     // if oneSided is true defender doesn't counter attack (for combo attacks)
 
     public void printSpells(Unit unit) {
-        System.err.println(unit.getName());
+        //System.err.println(unit.getName());
 //        System.err.println("SPECIAL POWERS: ");
 //        for (Spell spell : unit.getSpecialPowers()) {
 //            System.err.println(spell);
 //        }
-        System.err.println("BUFFS: ");
+        //System.err.println("BUFFS: ");
         unit.getBuffs().forEach(System.out::println);
     }
 
@@ -1258,16 +1258,16 @@ public class Game extends InGameMenu {
     }
 
     public void shengdeShow() {
-        System.err.println("Player 1 Mana(" + players[0].getMana() + ") hand:");
+        System.out.println(players[0].getName() + " Mana(" + players[0].getMana() + ") deck(" + players[0].getDeck().getCards().size() + ") hand:");
         for (Card card : players[0].getHand().getCards()) {
-            System.err.format("%-20s", card.getName());
+            System.out.format("%-35s", card.getName() + "(" + card.getManaCost() + ")");
         }
-        System.err.println();
-        System.err.print("Player one usable item is: ");
+        System.out.println();
+        System.out.print("Player 1 usable item is: ");
         if (players[0].getDeck().getDeckUsableItem() == null) {
-            System.err.println("No Items selected");
+            System.out.println("No Items selected");
         } else {
-            System.err.println(players[0].getDeck().getDeckUsableItem().getName());
+            System.out.println(players[0].getDeck().getDeckUsableItem().getName());
         }
 
         for (int row = 0; row < getMap().getNumberOfRows(); row++) {
@@ -1295,20 +1295,20 @@ public class Game extends InGameMenu {
                 output += ":" + cell.getNumberOfFlags();
                 output += "!" + (cell.getEffects().stream().map(Buff::getPoison).reduce(Integer::sum).orElse(0));
                 output += "?" + (cell.getEffects().stream().map(Buff::getEffectHp).reduce(Integer::sum).orElse(0));
-                System.err.format("%-24s", output);
+                System.out.format("%-40s", output);
             }
-            System.err.print("\n");
+            System.out.print("\n");
         }
-        System.err.println("Player 2 Mana(" + players[1].getMana() + ") hand:");
+        System.out.println(players[1].getName() + " Mana(" + players[0].getMana() + ") deck(" + players[1].getDeck().getCards().size() + ") hand:");
         for (Card card : players[1].getHand().getCards()) {
-            System.err.format("%-20s", card.getName());
+            System.out.format("%-35s", card.getName() + "(" + card.getManaCost() + ")");
         }
-        System.err.println();
-        System.err.println("Player 2 usable Item is: ");
+        System.out.println();
+        System.out.print("Player 2 usable item is: ");
         if (players[1].getDeck().getDeckUsableItem() == null) {
-            System.err.println("No Items selected");
+            System.out.println("No Items selected");
         } else {
-            System.err.println(players[1].getDeck().getDeckUsableItem().getName());
+            System.out.println(players[1].getDeck().getDeckUsableItem().getName());
         }
 
     }
@@ -1332,10 +1332,6 @@ public class Game extends InGameMenu {
         }
         unit.receiveDamage(1000000);
         checkOnDeath(unit);
-    }
-
-    public Player[] getPlayers() {
-        return new Player[] {new Player(players[0]), new Player(players[1])};
     }
 
     public enum GameState {

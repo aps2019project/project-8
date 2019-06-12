@@ -92,7 +92,10 @@ public class GUIButton implements MenuComponent {
         active = image;
     }
 
+    private String guiButtonText;
+
     public void setText(String text) {
+        guiButtonText = text;
         Label label = new Label(text);
         try {
             label.setFont(Font.loadFont(new FileInputStream("./fonts/averta-extrathin-webfont.ttf"), 17));
@@ -154,10 +157,12 @@ public class GUIButton implements MenuComponent {
 
     public void setOnMouseEntered(EventHandler<MouseEvent> mouseEnter) {
         this.mouseEnter = mouseEnter;
+        button.setOnMouseEntered(mouseEnter);
     }
 
     public void setOnMouseExited(EventHandler<MouseEvent> mouseExit) {
         this.mouseExit = mouseExit;
+        button.setOnMouseExited(mouseExit);
     }
 
     public double getX() {
@@ -246,5 +251,9 @@ public class GUIButton implements MenuComponent {
 
     public double getHeight() {
         return height;
+    }
+
+    public String getText() {
+        return guiButtonText;
     }
 }
