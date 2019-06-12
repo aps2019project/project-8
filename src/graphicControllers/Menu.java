@@ -14,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -133,6 +134,21 @@ public class Menu {
         getView().getScene().setOnKeyPressed(eventHandler);
     }
 
+    protected void setMouseClickEvent(EventHandler<MouseEvent> eventHandler) {
+        getView().getScene().setOnMouseClicked(eventHandler);
+    }
+
+    protected void setMouseReleaseEvent(EventHandler<MouseEvent> eventHandler) {
+        getView().getScene().setOnMouseReleased(eventHandler);
+    }
+
+    protected double getCursorX() {
+        return getView().getScene().getX();
+    }
+
+    protected double getCursorY() {
+        return getView().getScene().getY();
+    }
     Menu getParentMenu() {
         return parentMenu;
     }

@@ -1142,6 +1142,7 @@ public class Game extends InGameMenu {
             view.showUncastableItemError();
             return;
         }
+        //return null;
         castItem(selectedCollectible, getCurrentPlayer(), row, column, turn);
         checkForDeath();
     }
@@ -1299,7 +1300,7 @@ public class Game extends InGameMenu {
             }
             System.out.print("\n");
         }
-        System.out.println(players[1].getName() + " Mana(" + players[0].getMana() + ") deck(" + players[1].getDeck().getCards().size() + ") hand:");
+        System.out.println(players[1].getName() + " Mana(" + players[1].getMana() + ") deck(" + players[1].getDeck().getCards().size() + ") hand:");
         for (Card card : players[1].getHand().getCards()) {
             System.out.format("%-35s", card.getName() + "(" + card.getManaCost() + ")");
         }
