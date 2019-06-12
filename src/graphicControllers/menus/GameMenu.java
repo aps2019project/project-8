@@ -202,7 +202,7 @@ public class GameMenu extends Menu {
                 e.printStackTrace();
             }
             Label label = new Label(mana + "/" + mana);
-            label.relocate(mana * 20 + 15, 2.5);
+            label.relocate(mana * 25 + 5, 2.5);
             manaBar.addMenuComponent(new NodeWrapper(label));
         }
         return manaBar;
@@ -226,17 +226,27 @@ public class GameMenu extends Menu {
         statBar.addMenuComponent(new NodeWrapper(playerNameLabel));
 
 
+        try {
+            ImageView usableBackground = new ImageView(new Image(new FileInputStream("images/gameIcons/Hero/usable_background.png")));
+            usableBackground.setFitHeight(35);
+            usableBackground.setFitWidth(35);
+            usableBackground.relocate(45, 57);
+            statBar.addMenuComponent(new NodeWrapper(usableBackground));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
         statBar.addMenuComponent(makeManaBar(Integer.parseInt(mana)), "ManaBar");
         ((ComponentSet) statBar.getComponentByID("ManaBar")).relocate(50 + 10, 30);
         statBar.relocate(30, 30);
-        statBar.resize(1.7, 1.7);
+        statBar.resize(2.2, 2.2);
         return statBar;
     }
 
     private ComponentSet makeSecondPlayerStat(String playerName, String usableName, String mana) {
         ComponentSet statBar = makeFirstPlayerStat(playerName, usableName, mana);
         statBar.reflectVertically();
-        statBar.relocate(statBar.getX() + 770, statBar.getY());
+        statBar.relocateUpRight(windowWidth - 300 , statBar.getY());
         return statBar;
     }
 

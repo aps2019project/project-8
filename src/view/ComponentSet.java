@@ -17,6 +17,7 @@ import java.util.Map;
 
 public class ComponentSet implements MenuComponent {
     private double x, y;
+    private double lazyX, lazyY;
 
     private transient ArrayList<MenuComponent> components = new ArrayList<>();
 
@@ -34,7 +35,31 @@ public class ComponentSet implements MenuComponent {
         return this.y;
     }
 
+    private double getMinWidth() {
+        ArrayList<Double> widths = getComponentWidths();
+        double minWidth = Double.MAX_VALUE;
+        for (Double w : widths) {
+            minWidth = Math.min(minWidth, w);
+        }
+        return minWidth;
+    }
+
+    private double getMaxWidth() {
+        ArrayList<Double> widths = getComponentWidths();
+        double maxWidth = Double.MIN_VALUE;
+        for (Double w : widths) {
+            maxWidth = Math.max(maxWidth, w);
+        }
+        return maxWidth;
+    }
+
+    public void relocateUpRight(double x, double y) {
+        relocate(x - (getMaxWidth() - getMinWidth()), y);
+    }
+
     public void relocate(double x, double y) {
+        x += lazyX;
+        y += lazyY;
         for (MenuComponent component : components) {
             if (component instanceof NodeWrapper) {
                 Node node = ((NodeWrapper) component).getValue();
@@ -174,12 +199,7 @@ public class ComponentSet implements MenuComponent {
     }
 
     public void reflectVertically() {
-        ArrayList<Double> widths = getComponentWidths();
-        double minWidth = Double.MAX_VALUE, maxWidth = Double.MIN_VALUE;
-        for (Double w : widths) {
-            minWidth = Math.min(minWidth, w);
-            maxWidth = Math.max(maxWidth, w);
-        }
+        double minWidth = getMinWidth(), maxWidth = getMaxWidth();
         double line = (maxWidth + minWidth) / 2 + 100;
         reflectVertically(line);
     }
