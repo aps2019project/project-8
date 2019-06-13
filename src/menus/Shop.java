@@ -28,7 +28,11 @@ public class Shop extends Menu {
     private static ArrayList<CollectionItem> collectionItems = new ArrayList<>();
     private static ArrayList<Collectible> collectibles = new ArrayList<>();
 
-    private static CollectionItem getCollectionItemByName(String collectionItemName) {
+    public static ArrayList<CollectionItem> getCollectionItems() {
+        return collectionItems;
+    }
+
+    public static CollectionItem getCollectionItemByName(String collectionItemName) {
         for (CollectionItem collectionItem : collectionItems) {
             if (collectionItem.equalsName(collectionItemName))
                 return collectionItem;
@@ -96,7 +100,7 @@ public class Shop extends Menu {
         view.alertBuy();
     }
 
-    private static CollectionItem getCopy(CollectionItem collectionItem) {
+    public static CollectionItem getCopy(CollectionItem collectionItem) {
         if (collectionItem instanceof Hero)
             return new Hero((Hero)collectionItem);
         if (collectionItem instanceof Minion)

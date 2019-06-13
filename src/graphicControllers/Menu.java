@@ -1,6 +1,5 @@
 package graphicControllers;
 
-import com.sun.media.jfxmediaimpl.MediaUtils;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -10,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -65,6 +63,7 @@ public class Menu {
     private Optional<String> listItem = Optional.empty();
     private ScrollPane scrollPane;
     private Label showPopUpButton;
+    private ImageView popUpButtonImage;
 
     private void playMedia() {
         backGroundMedia.play();
@@ -360,20 +359,20 @@ public class Menu {
         try {
             Image inactive = new Image(new FileInputStream("images/buttons/button_secondary@2x.png"));
             Image active = new Image(new FileInputStream("images/buttons/button_secondary_glow@2x.png"));
-            ImageView imageView = new ImageView(inactive);
-            group.getChildren().add(imageView);
-            imageView.setFitWidth(90);
-            imageView.setFitHeight(POP_UP_BUTTON_HEIGHT);
-            imageView.relocate(popUpContent.getMinWidth() / 2 - 90 / 2, 180 - POP_UP_BUTTON_HEIGHT);
+            popUpButtonImage = new ImageView(inactive);
+            group.getChildren().add(popUpButtonImage);
+            popUpButtonImage.setFitWidth(90);
+            popUpButtonImage.setFitHeight(POP_UP_BUTTON_HEIGHT);
+            popUpButtonImage.relocate(popUpContent.getMinWidth() / 2 - 90 / 2, 180 - POP_UP_BUTTON_HEIGHT);
             showPopUpButton = new Label("Okay");
             showPopUpButton.setMinHeight(POP_UP_BUTTON_HEIGHT);
             showPopUpButton.setMaxHeight(POP_UP_BUTTON_HEIGHT);
             showPopUpButton.setOnMouseEntered(e -> {
-                imageView.setImage(active);
+                popUpButtonImage.setImage(active);
                 new MediaPlayer(sound).play();
             });
             showPopUpButton.setOnMouseClicked(e -> popUp.close());
-            fixPopUpButton(group, inactive, imageView, showPopUpButton);
+            fixPopUpButton(group, inactive, popUpButtonImage, showPopUpButton);
         } catch (FileNotFoundException ignored) {
         }
         popUp.setScene(new Scene(group, 320, 180));
@@ -430,26 +429,23 @@ public class Menu {
         label.setTextFill(Color.CORAL);
         label.setMinHeight(180 - POP_UP_BUTTON_HEIGHT - 2);
         popUpContent.getChildren().add(label);
-        popUp.setWidth(1240);
-        popUp.setHeight(720);
         scrollPane.setMinWidth(1240);
+        Scene scene = new Scene(new Group(popUp.getScene().getRoot()), 1240, 720);
+        popUp.setScene(scene);
         scrollPane.setMaxWidth(1240);
-        scrollPane.setMinHeight(720 - POP_UP_BUTTON_HEIGHT);
-        scrollPane.setMaxHeight(720 - POP_UP_BUTTON_HEIGHT);
         popUpContent.setMinWidth(1240);
         popUpContent.setMaxWidth(1240);
+        scrollPane.setMinHeight(720 - POP_UP_BUTTON_HEIGHT);
+        scrollPane.setMaxHeight(720 - POP_UP_BUTTON_HEIGHT);
         popUpContent.setMinHeight(720 - POP_UP_BUTTON_HEIGHT - 2);
         showPopUpButton.relocate(1240 / 2 - 90 / 2, 720 - POP_UP_BUTTON_HEIGHT);
+        popUpButtonImage.relocate(1240 / 2 - 90 / 2, 720 - POP_UP_BUTTON_HEIGHT);
+        try {
+            popUp.getScene().setFill(new ImagePattern(new Image(new FileInputStream("images/backgrounds/color-plate-bg-purple@2x.png"))));
+            popUp.getScene().setCursor(new ImageCursor(new Image(new FileInputStream("images/cursors/mouse_auto.png"))));
+        } catch (FileNotFoundException ignored) {
+        }
         popUp.showAndWait();
-        popUp.setWidth(320);
-        popUpContent.setMinWidth(320);
-        popUpContent.setMaxWidth(320);
-        popUpContent.setMinHeight(180 - POP_UP_BUTTON_HEIGHT - 2);
-        scrollPane.setMinWidth(320);
-        scrollPane.setMaxWidth(320);
-        scrollPane.setMinHeight(180 - POP_UP_BUTTON_HEIGHT);
-        scrollPane.setMaxHeight(180 - POP_UP_BUTTON_HEIGHT);
-        showPopUpButton.relocate(320 / 2 - 90 / 2, 180 - POP_UP_BUTTON_HEIGHT);
     }
 
     protected Optional<Integer>[] popUpGetGameType() {

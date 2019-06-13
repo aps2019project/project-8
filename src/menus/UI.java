@@ -547,5 +547,7 @@ public class UI {
         return Menu.getAccount();
     }
 
-    public static Game getGame() { return GameMenu.getGame(); }
+    public static Game getGame() {
+        return GameMenu.getGame();
+    }
 }
