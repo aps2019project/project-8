@@ -268,7 +268,6 @@ public class GameMenu extends Menu {
     private String getCardIDByLocation(int row, int column, String command) {
         String[] output = getUIOutputAsString(command).split("\\n");
         for (int i = 0; i < output.length; i++) {
-            System.err.println(output[i]);
             if (output[i].contains("location: (" + (row + 1) + ", " + (column + 1) + ")")) {
                 return output[i].replaceAll(":.*", "").trim();
             }
@@ -492,9 +491,15 @@ public class GameMenu extends Menu {
                 double opacity = tile.getOpacity();
                 interactor.setOnMouseEntered(e -> tile.setOpacity(0.7));
                 interactor.setOnMouseExited(e -> tile.setOpacity(opacity));
+                int finalRow = row, finalColumn = column;
                 interactor.setOnMouseClicked(e -> {
-                    System.err.println("YO");
-                    refresh();
+                    if (!hasFriendly(finalRow, finalColumn) && !hasEnemy(finalRow, finalColumn)) {
+                        showPopUp(getUIOutputAsString("move to (" + (finalRow + 1) + ", " + (finalColumn + 1) + ")"));
+                        refresh();
+                    } if (hasEnemy(finalRow, finalColumn)) {
+                        showPopUp(getUIOutputAsString("attack " + getEnemyCardID(finalRow, finalColumn)));
+                        refresh();
+                    }
                 });
             }
         }
