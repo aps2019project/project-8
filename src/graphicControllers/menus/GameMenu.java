@@ -2,6 +2,8 @@ package graphicControllers.menus;
 
 import gen.NamesAndTypes;
 import graphicControllers.Menu;
+import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -34,6 +36,7 @@ public class GameMenu extends Menu {
     private String draggedCardName;
     private MenuComponent draggedComponenet;
     private ArrayList<String> selectedComboCardIds = new ArrayList<>();
+    private boolean clickedOnShowNextCard = false;
 
     private static transient GameMenu instance = null;
 
@@ -136,22 +139,75 @@ public class GameMenu extends Menu {
             ImageView backGround = new ImageView(new Image(new FileInputStream("images/gameIcons/hand_options_background.png")));
             backGround.setFitWidth(70);
             backGround.setFitHeight(70);
+            backGround.setOpacity(0.5);
             handOptions.addMenuComponent(new NodeWrapper(backGround));
             ImageView textBackground = new ImageView(new Image(new FileInputStream("images/gameIcons/simple_text_background.png")));
             textBackground.setFitHeight(10);
             textBackground.setFitWidth(20);
             textBackground.relocate(35 - 10, 35 - 5);
-            handOptions.addMenuComponent(new NodeWrapper(textBackground));
+            handOptions.addMenuComponent(new NodeWrapper(textBackground), "text_background");
             Label deckNameLabel = new Label("Deck");
             deckNameLabel.relocate(35 - 10 + 4, 35 - 5 + 2);
             deckNameLabel.setTextFill(Color.AZURE);
             deckNameLabel.setFont(new Font(5));
-            handOptions.addMenuComponent(new NodeWrapper(deckNameLabel));
+            handOptions.addMenuComponent(new NodeWrapper(deckNameLabel), "deck_name_label");
             Label deckCapacity = new Label(deckCapacityNumber + "/" + 20);
             deckCapacity.relocate(35 - 10, 35 - 5 + 2 + 15);
             deckCapacity.setTextFill(Color.AZURE);
             deckCapacity.setFont(new Font(7));
             handOptions.addMenuComponent(new NodeWrapper(deckCapacity));
+            ImageView interactor = new ImageView(new Image(new FileInputStream("images/gameIcons/hand_options_background.png")));
+            interactor.setFitWidth(70);
+            interactor.setFitWidth(70);
+            interactor.setOpacity(0);
+            interactor.setOnMouseEntered(e -> backGround.setOpacity(0.5));
+            interactor.setOnMouseExited(e -> backGround.setOpacity(1));
+
+            interactor.setOnMouseClicked(e -> {
+                if (clickedOnShowNextCard)
+                    return;
+                clickedOnShowNextCard = true;
+                String s = getUIOutputAsString("show next card");
+                s = s.replaceFirst(".*Name : ", "");
+                s = s.replaceAll(" - Class :.*", "").trim();
+
+                ImageView imageView = getImageViewByCardName(s, "idle", "gif");
+                imageView.setFitWidth(150);
+                imageView.setFitHeight(170);
+                imageView.relocate(50 - 17, windowHeight - 200 - 10);
+
+                addComponent(new NodeWrapper(imageView));
+                double prevLabelOpacity = deckNameLabel.getOpacity();
+                double prevTextBackGroundOpacity = textBackground.getOpacity();
+                double prevDeckCapacityOpacity = deckCapacity.getOpacity();
+                deckNameLabel.setOpacity(-100);
+                textBackground.setOpacity(-100);
+                deckCapacity.setOpacity(-100);
+                backGround.setOpacity(1);
+                interactor.setOnMouseEntered(event -> {});
+                interactor.setOnMouseExited(event -> {});
+
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
+                    Platform.runLater(() -> {
+                        removeComponent(new NodeWrapper(imageView));
+                        deckNameLabel.setOpacity(prevLabelOpacity);
+                        textBackground.setOpacity(prevTextBackGroundOpacity);
+                        deckCapacity.setOpacity(prevDeckCapacityOpacity);
+                        interactor.setOnMouseEntered(event -> backGround.setOpacity(0.5));
+                        interactor.setOnMouseExited(event -> backGround.setOpacity(1));
+
+                    });
+                    clickedOnShowNextCard = false;
+                }).start();
+
+
+            });
+            handOptions.addMenuComponent(new NodeWrapper(interactor));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -440,9 +496,6 @@ public class GameMenu extends Menu {
             card.setFitHeight(30);
             card.setFitWidth(50);
             card.relocate(j * 50, i * 30);
-            //card.setFitHeight(70);
-            //card.setFitWidth(70);
-            //card.relocate(card.getLayoutX() - 10, card.getLayoutY() - 20 - 20);
             cell.addMenuComponent(new NodeWrapper(card), "card_content");
         }
 
@@ -636,7 +689,7 @@ public class GameMenu extends Menu {
             ComponentSet handOptions = setHandOptions(firstPlayerDeckCapacity);
             handOptions.relocate(-80, -7);
             handOptions.resize(1.2, 1.2);
-            cardBar.addMenuComponent(handOptions);
+            cardBar.addMenuComponent(handOptions, "hand_options");
 
             cardBar.addMenuComponent(handCard, "card_" + i);
         }
