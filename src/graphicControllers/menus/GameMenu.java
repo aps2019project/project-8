@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -451,8 +452,13 @@ public class GameMenu extends Menu {
             interactor.setOnMouseClicked(mouseEvent -> {
                 String cardID = getFriendlyCardID(i, j);
                 if (cardID != null) {
-                    showPopUp(getUIOutputAsString("select " + cardID));
-                    cardSelectedGridChange();
+                    if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+                        showPopUp(getUIOutputAsString("select " + cardID));
+                        cardSelectedGridChangePrimary();
+                    }
+                    if (mouseEvent.getButton() == MouseButton.SECONDARY) {
+                        comboGridChange();
+                    }
                 }
             });
 
@@ -463,31 +469,34 @@ public class GameMenu extends Menu {
         return cell;
     }
 
-    private void cardSelectedGridChange() {
+    private void comboGridChange() {
         for (int row = 0; row < Map.NUMBER_OF_ROWS; row++) {
             for (int column = 0; column < Map.NUMBER_OF_COLUMNS; column++) {
                 ComponentSet cell = (ComponentSet) gridCells.getComponentByID(row + "," + column);
                 ImageView tile = (ImageView) ((NodeWrapper) cell.getComponentByID("tile")).getValue();
                 ImageView interactor = (ImageView) ((NodeWrapper) cell.getComponentByID("interactor")).getValue();
 
-                ColorAdjust monochrome = new ColorAdjust();
-                monochrome.setSaturation(-1.0);
+                (new NodeWrapper(tile)).setColor(Color.ORANGE);
+                double opacity = tile.getOpacity();
+                interactor.setOnMouseEntered(e -> tile.setOpacity(0.7));
+                interactor.setOnMouseExited(e -> tile.setOpacity(opacity));
+                int finalRow = row, finalColumn = column;
+                interactor.setOnMouseClicked(e -> {
 
-                Blend blush = new Blend(
-                        BlendMode.MULTIPLY,
-                        monochrome,
-                        new ColorInput(
-                                0,
-                                0,
-                                tile.getFitWidth(),
-                                tile.getFitHeight(),
-                                Color.BLUE
-                        )
-                );
+                });
+            }
+        }
+    }
 
-                tile.setEffect(blush);
-                tile.setCache(true);
-                tile.setCacheHint(CacheHint.SPEED);
+    private void cardSelectedGridChangePrimary() {
+        for (int row = 0; row < Map.NUMBER_OF_ROWS; row++) {
+            for (int column = 0; column < Map.NUMBER_OF_COLUMNS; column++) {
+                ComponentSet cell = (ComponentSet) gridCells.getComponentByID(row + "," + column);
+                ImageView tile = (ImageView) ((NodeWrapper) cell.getComponentByID("tile")).getValue();
+                ImageView interactor = (ImageView) ((NodeWrapper) cell.getComponentByID("interactor")).getValue();
+
+
+                (new NodeWrapper(tile)).setColor(Color.BLUE);
                 double opacity = tile.getOpacity();
                 interactor.setOnMouseEntered(e -> tile.setOpacity(0.7));
                 interactor.setOnMouseExited(e -> tile.setOpacity(opacity));
@@ -504,6 +513,7 @@ public class GameMenu extends Menu {
             }
         }
     }
+
 
     private ComponentSet makeCardBar(String firstPlayerDeckCapacity, ArrayList<String> handCardNames, ArrayList<String> handCardManaCosts) {
 
