@@ -1,21 +1,16 @@
 package graphicControllers.menus;
 
 import graphicControllers.Menu;
-import javafx.application.Platform;
-import javafx.scene.ParallelCamera;
+import javafx.scene.CacheHint;
 import javafx.scene.control.Label;
+import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import menus.UI;
-import model.Game;
 import model.Map;
-import model.Match;
-import model.Player;
 import view.*;
 import view.MenuComponent;
 
@@ -270,6 +265,33 @@ public class GameMenu extends Menu {
 
     }
 
+    private String getCardIDByLocation(int row, int column, String command) {
+        String[] output = getUIOutputAsString(command).split("\\n");
+        for (int i = 0; i < output.length; i++) {
+            System.err.println(output[i]);
+            if (output[i].contains("location: (" + (row + 1) + ", " + (column + 1) + ")")) {
+                return output[i].replaceAll(":.*", "").trim();
+            }
+        }
+        return null;
+    }
+
+    private boolean hasFriendly(int row, int column) {
+        return getFriendlyCardID(row, column) != null;
+    }
+
+    private boolean hasEnemy(int row, int column) {
+        return getEnemyCardID(row, column) != null;
+    }
+
+    private String getFriendlyCardID(int row, int column) {
+        return getCardIDByLocation(row, column, "show my minions");
+    }
+
+    private String getEnemyCardID(int row, int column) {
+        return getCardIDByLocation(row, column, "show opponent minions");
+    }
+
     private ComponentSet makeReverseEmptyPlayerStat(String playerName, String usableItemName) {
         ComponentSet statBar = makeEmptyPlayerStat(playerName, usableItemName);
         statBar.reflectVertically();
@@ -351,9 +373,6 @@ public class GameMenu extends Menu {
                 Pattern pattern = Pattern.compile("((\\+|-|\\()?)(\\[?)(.*)(]?)((\\+|-|\\))?):(\\d+)\\!(\\d+)\\?(\\d+)");
                 Matcher matcher = pattern.matcher(gridStrings[i][j]);
 
-                if (i == 2 && j == 0) {
-                    System.out.println(gridStrings[i][j]);
-                }
                 boolean isFriendly = false, isSelected = false;
                 String contentCardName = ".";
                 int numberOfFlags = 0, poisonEffect = 0, hpEffect = 0;
@@ -386,14 +405,13 @@ public class GameMenu extends Menu {
                 String cordinate = "(" + (i + 1) + ", " + (j + 1) + ")";
                 interactor.setOnMouseDragReleased(e -> {
                     if (draggedCardName != null) {
-                        System.err.println("insert " + draggedCardName + " in " + cordinate);
                         String output = getUIOutputAsString("insert " + draggedCardName + " in " + cordinate);
                         if (output.contains("inserted")) {
                             refresh();
-                        } else if (output.contains("mana")) {
-                            showPopUp("Insufficient Mana!");
+                        } else {
+                            showPopUp(output);
                         }
-                        //refresh();
+                        refresh();
                     }
                 });
             }
@@ -431,11 +449,55 @@ public class GameMenu extends Menu {
 
             interactor.setOnMouseEntered(e -> ((ImageView) ((NodeWrapper) cell.getComponentByID("tile")).getValue()).setOpacity(0.5));
             interactor.setOnMouseExited(e -> ((ImageView) ((NodeWrapper) cell.getComponentByID("tile")).getValue()).setOpacity(0.1));
+            interactor.setOnMouseClicked(mouseEvent -> {
+                String cardID = getFriendlyCardID(i, j);
+                if (cardID != null) {
+                    showPopUp(getUIOutputAsString("select " + cardID));
+                    cardSelectedGridChange();
+                }
+            });
+
             cell.addMenuComponent(new NodeWrapper(interactor), "interactor");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         return cell;
+    }
+
+    private void cardSelectedGridChange() {
+        for (int row = 0; row < Map.NUMBER_OF_ROWS; row++) {
+            for (int column = 0; column < Map.NUMBER_OF_COLUMNS; column++) {
+                ComponentSet cell = (ComponentSet) gridCells.getComponentByID(row + "," + column);
+                ImageView tile = (ImageView) ((NodeWrapper) cell.getComponentByID("tile")).getValue();
+                ImageView interactor = (ImageView) ((NodeWrapper) cell.getComponentByID("interactor")).getValue();
+
+                ColorAdjust monochrome = new ColorAdjust();
+                monochrome.setSaturation(-1.0);
+
+                Blend blush = new Blend(
+                        BlendMode.MULTIPLY,
+                        monochrome,
+                        new ColorInput(
+                                0,
+                                0,
+                                tile.getFitWidth(),
+                                tile.getFitHeight(),
+                                Color.BLUE
+                        )
+                );
+
+                tile.setEffect(blush);
+                tile.setCache(true);
+                tile.setCacheHint(CacheHint.SPEED);
+                double opacity = tile.getOpacity();
+                interactor.setOnMouseEntered(e -> tile.setOpacity(0.7));
+                interactor.setOnMouseExited(e -> tile.setOpacity(opacity));
+                interactor.setOnMouseClicked(e -> {
+                    System.err.println("YO");
+                    refresh();
+                });
+            }
+        }
     }
 
     private ComponentSet makeCardBar(String firstPlayerDeckCapacity, ArrayList<String> handCardNames, ArrayList<String> handCardManaCosts) {
@@ -555,18 +617,7 @@ public class GameMenu extends Menu {
                 background.setOnMouseDragged(mouseEvent -> {
                     ((NodeWrapper) draggedComponenet).getValue().relocate(mouseEvent.getSceneX() - 50, mouseEvent.getSceneY() - 50);
                 });
-                background.setOnMouseReleased(mouseEvent -> {
-                    refresh();
-//                    if (draggedComponenet != null) {
-//                        synchronized (draggedComponenet) {
-//                            if (draggedComponenet != null)
-//                                removeComponent(draggedComponenet);
-//                        }
-//                    }
-//                    addComponent(new NodeWrapper(content));
-//                    removeComponent(new NodeWrapper(background));
-//                    addComponent(new NodeWrapper(background));
-                });
+                background.setOnMouseReleased(mouseEvent -> refresh());
             }
         }
         return cardBar;
