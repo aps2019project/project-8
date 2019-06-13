@@ -39,7 +39,7 @@ public class StoryMenu extends Menu {
         try {
             diveSefid.setImage(new Image(new FileInputStream("images/placeholders/diamond_main_menu_container@2x.png")));
             diveSefid.setActiveImage(new Image(new FileInputStream("images/placeholders/gold_main_menu_container@2x.png")));
-            diveSefid.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            diveSefid.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
             diveSefid.setTooltip(new Tooltip("Elimination"));
         } catch (FileNotFoundException ignored) {
         }
@@ -58,7 +58,7 @@ public class StoryMenu extends Menu {
         try {
             zahhaak.setImage(new Image(new FileInputStream("images/placeholders/diamond_main_menu_container@2x.png")));
             zahhaak.setActiveImage(new Image(new FileInputStream("images/placeholders/gold_main_menu_container@2x.png")));
-            zahhaak.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            zahhaak.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
             zahhaak.setTooltip(new Tooltip("Hold the Flag"));
         } catch (FileNotFoundException ignored) {
         }
@@ -77,7 +77,7 @@ public class StoryMenu extends Menu {
         try {
             Aarash.setImage(new Image(new FileInputStream("images/placeholders/diamond_main_menu_container@2x.png")));
             Aarash.setActiveImage(new Image(new FileInputStream("images/placeholders/gold_main_menu_container@2x.png")));
-            Aarash.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            Aarash.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
             Aarash.setTooltip(new Tooltip("Collect the Flags"));
         } catch (FileNotFoundException ignored) {
         }

@@ -7,9 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -57,10 +55,16 @@ public class Menu {
     private Stage getGameMode;
     private VBox popUpContent = new VBox();
     // bere tu guiButton
-    private Media sound = new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString());
+    private Media sound = new Media(new File("./sfx/sfx_ui_menu_hover.m4a").toURI().toString());
 
     private Optional[] gameMode = new Optional[]{Optional.empty(), Optional.empty()};
     private MediaPlayer backGroundMedia = new MediaPlayer(new Media(new File("music/mainmenu_v2c_looping.m4a").toURI().toString()));
+    private ComboBox<String> choiceBox;
+    private Stage getListItem;
+    private Label getListButton;
+    private Optional<String> listItem = Optional.empty();
+    private ScrollPane scrollPane;
+    private Label showPopUpButton;
 
     private void playMedia() {
         backGroundMedia.play();
@@ -92,6 +96,7 @@ public class Menu {
 
     protected void setSound(String musicAddress) {
         backGroundMedia.stop();
+        backGroundMedia = new MediaPlayer(new Media(new File(musicAddress).toURI().toString()));
         playMedia();
     }
 
@@ -276,6 +281,41 @@ public class Menu {
         getGameModeContent.getChildren().add(textField);
     }
 
+    private void setUpGetListItem() {
+        choiceBox = new ComboBox<>();
+        choiceBox.setMinWidth(320 / 2);
+        choiceBox.setMaxWidth(320 / 2);
+        getListItem = new Stage();
+        Group group = new Group();
+        VBox vBox = new VBox();
+        vBox.setFillWidth(true);
+        vBox.setMinWidth(320);
+        vBox.setMaxWidth(320);
+        try {
+            Image inactive = new Image(new FileInputStream("images/buttons/button_secondary@2x.png"));
+            Image active = new Image(new FileInputStream("images/buttons/button_secondary_glow@2x.png"));
+            ImageView imageView = new ImageView(inactive);
+            group.getChildren().add(imageView);
+            imageView.setFitWidth(170);
+            imageView.setFitHeight(POP_UP_BUTTON_HEIGHT);
+            imageView.relocate(320 / 2 - 170 / 2, 180 - POP_UP_BUTTON_HEIGHT);
+            getListButton = new Label();
+            getListButton.setOnMouseEntered(e -> {
+                imageView.setImage(active);
+                new MediaPlayer(sound).play();
+            });
+            getListButton.setOnMouseClicked(e -> {
+                if (choiceBox.getSelectionModel().getSelectedIndex() != -1)
+                    listItem = Optional.of(choiceBox.getSelectionModel().getSelectedItem());
+                getListItem.close();
+            });
+            fixPopUpButton(group, inactive, imageView, getListButton);
+        } catch (FileNotFoundException ignored) {
+        }
+        setPopUpContent(group, vBox, getListItem);
+        vBox.getChildren().add(choiceBox);
+    }
+
     private void setPopUpContent(Group group, VBox getGameModeContent, Stage getGameMode) {
         fixPopUpContent(group, getGameModeContent, getGameMode);
         try {
@@ -288,8 +328,8 @@ public class Menu {
     }
 
     private void fixPopUpContent(Group group, VBox getGameModeContent, Stage getGameMode) {
-        group.getChildren().add(getGameModeContent);
         getGameMode.setScene(new Scene(group, 320, 180));
+        group.getChildren().add(getGameModeContent);
         getGameMode.setResizable(false);
         getGameModeContent.setAlignment(Pos.CENTER);
         getGameModeContent.getStylesheets().add("css/vBox.css");
@@ -304,6 +344,7 @@ public class Menu {
         button.setFont(Font.loadFont(new FileInputStream("./fonts/averta-extrathin-webfont.ttf"), 17));
         button.setTextFill(Color.CORAL);
         button.setMinSize(90, POP_UP_BUTTON_HEIGHT);
+        button.setMaxSize(90, POP_UP_BUTTON_HEIGHT);
         button.setAlignment(Pos.CENTER);
         button.setTextAlignment(TextAlignment.CENTER);
         button.relocate(320 / 2 - 90 / 2, 180 - POP_UP_BUTTON_HEIGHT);
@@ -323,17 +364,36 @@ public class Menu {
             group.getChildren().add(imageView);
             imageView.setFitWidth(90);
             imageView.setFitHeight(POP_UP_BUTTON_HEIGHT);
-            imageView.relocate(320 / 2 - 90 / 2, 180 - POP_UP_BUTTON_HEIGHT);
-            Label button = new Label("Okay");
-            button.setOnMouseEntered(e -> {
+            imageView.relocate(popUpContent.getMinWidth() / 2 - 90 / 2, 180 - POP_UP_BUTTON_HEIGHT);
+            showPopUpButton = new Label("Okay");
+            showPopUpButton.setMinHeight(POP_UP_BUTTON_HEIGHT);
+            showPopUpButton.setMaxHeight(POP_UP_BUTTON_HEIGHT);
+            showPopUpButton.setOnMouseEntered(e -> {
                 imageView.setImage(active);
                 new MediaPlayer(sound).play();
             });
-            button.setOnMouseClicked(e -> popUp.close());
-            fixPopUpButton(group, inactive, imageView, button);
+            showPopUpButton.setOnMouseClicked(e -> popUp.close());
+            fixPopUpButton(group, inactive, imageView, showPopUpButton);
         } catch (FileNotFoundException ignored) {
         }
-        fixPopUpContent(group, popUpContent, popUp);
+        popUp.setScene(new Scene(group, 320, 180));
+        scrollPane = new ScrollPane(popUpContent);
+        scrollPane.setMinWidth(320);
+        scrollPane.setMaxWidth(320);
+        scrollPane.setMaxHeight(180 - POP_UP_BUTTON_HEIGHT);
+        scrollPane.setFitToWidth(true);
+        popUpContent.setFillWidth(true);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setHmax(0);
+        scrollPane.getStylesheets().add("css/scrollPane.css");
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        group.getChildren().add(scrollPane);
+        popUp.setResizable(false);
+        popUpContent.setAlignment(Pos.CENTER);
+        popUpContent.getStylesheets().add("css/vBox.css");
+        popUpContent.setMinHeight(180 - POP_UP_BUTTON_HEIGHT - 2);
+        popUp.initModality(Modality.APPLICATION_MODAL);
+        popUp.setAlwaysOnTop(true);
         try {
             popUp.getScene().setFill(new ImagePattern(new Image(new FileInputStream("images/backgrounds/color-plate-bg-purple@2x.png"))));
             popUp.getScene().setCursor(new ImageCursor(new Image(new FileInputStream("images/cursors/mouse_auto.png"))));
@@ -352,10 +412,44 @@ public class Menu {
         } catch (FileNotFoundException ignored) {
         }
         label.setTextFill(Color.CORAL);
-        label.setMinHeight(180 - POP_UP_BUTTON_HEIGHT);
-        label.setMaxHeight(180 - POP_UP_BUTTON_HEIGHT);
+        label.setMinHeight(180 - POP_UP_BUTTON_HEIGHT - 2);
         popUpContent.getChildren().add(label);
         popUp.showAndWait();
+    }
+
+    protected void showWidePopUp(String text) {
+        setUpPopUp();
+        popUpContent.getChildren().clear();
+        Label label = new Label(text);
+        label.setWrapText(true);
+        label.setTextAlignment(TextAlignment.CENTER);
+        try {
+            label.setFont(Font.loadFont(new FileInputStream("./fonts/averta-black-webfont.ttf"), 17));
+        } catch (FileNotFoundException ignored) {
+        }
+        label.setTextFill(Color.CORAL);
+        label.setMinHeight(180 - POP_UP_BUTTON_HEIGHT - 2);
+        popUpContent.getChildren().add(label);
+        popUp.setWidth(1240);
+        popUp.setHeight(720);
+        scrollPane.setMinWidth(1240);
+        scrollPane.setMaxWidth(1240);
+        scrollPane.setMinHeight(720 - POP_UP_BUTTON_HEIGHT);
+        scrollPane.setMaxHeight(720 - POP_UP_BUTTON_HEIGHT);
+        popUpContent.setMinWidth(1240);
+        popUpContent.setMaxWidth(1240);
+        popUpContent.setMinHeight(720 - POP_UP_BUTTON_HEIGHT - 2);
+        showPopUpButton.relocate(1240 / 2 - 90 / 2, 720 - POP_UP_BUTTON_HEIGHT);
+        popUp.showAndWait();
+        popUp.setWidth(320);
+        popUpContent.setMinWidth(320);
+        popUpContent.setMaxWidth(320);
+        popUpContent.setMinHeight(180 - POP_UP_BUTTON_HEIGHT - 2);
+        scrollPane.setMinWidth(320);
+        scrollPane.setMaxWidth(320);
+        scrollPane.setMinHeight(180 - POP_UP_BUTTON_HEIGHT);
+        scrollPane.setMaxHeight(180 - POP_UP_BUTTON_HEIGHT);
+        showPopUpButton.relocate(320 / 2 - 90 / 2, 180 - POP_UP_BUTTON_HEIGHT);
     }
 
     protected Optional<Integer>[] popUpGetGameType() {
@@ -372,5 +466,15 @@ public class Menu {
         button.setText(buttonText);
         getText.showAndWait();
         return text;
+    }
+
+    protected Optional<String> popUpGetList(List list, String buttonText, String prompt) {
+        setUpGetListItem();
+        listItem = Optional.empty();
+        getListButton.setText(buttonText);
+        choiceBox.setPromptText(prompt);
+        choiceBox.setItems(FXCollections.observableArrayList(list));
+        getListItem.showAndWait();
+        return listItem;
     }
 }

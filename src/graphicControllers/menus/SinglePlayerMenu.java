@@ -38,7 +38,7 @@ public class SinglePlayerMenu extends Menu {
         try {
             gotoStory.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             gotoStory.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            gotoStory.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            gotoStory.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         gotoStory.setText("Story");
@@ -53,7 +53,7 @@ public class SinglePlayerMenu extends Menu {
         try {
             gotoCustomGame.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             gotoCustomGame.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            gotoCustomGame.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            gotoCustomGame.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         gotoCustomGame.setText("Custom Game");

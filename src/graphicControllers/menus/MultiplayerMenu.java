@@ -24,7 +24,7 @@ import java.util.Optional;
 public class MultiplayerMenu extends Menu {
     private static final VBox vBox = new VBox();
     private static final int LABEL_HEIGHT = 40;
-    private static final Media sound = new Media(new File("sfx/sfx_unit_onclick.m4a").toURI().toString());
+    private static final Media sound = new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString());
     private static double labelWidth;
 
     public MultiplayerMenu() {
@@ -90,11 +90,15 @@ public class MultiplayerMenu extends Menu {
                         label.setOnMouseExited(e -> label.setBackground(inactive));
                         vBox.getChildren().add(label);
                         label.setOnMouseClicked(e -> {
-                            Optional<Integer>[] gameType = popUpGetGameType();
-                            if (gameType[0].isPresent()) {
-                                UI.decide("select user " + label.getText());
-                                UI.decide("start multiplayer game " + gameType[0].get() + (gameType[1].isPresent() ? " " + gameType[1].get() : ""));
-                                MenuManager.getInstance().setCurrentMenu(Id.IN_GAME_MENU);
+                            if (UI.getAccount().getMainDeck() == null || !UI.getAccount().getMainDeck().isValid())
+                                showPopUp("You have no main deck to play with.");
+                            else {
+                                Optional<Integer>[] gameType = popUpGetGameType();
+                                if (gameType[0].isPresent()) {
+                                    UI.decide("select user " + label.getText());
+                                    UI.decide("start multiplayer game " + gameType[0].get() + (gameType[1].isPresent() ? " " + gameType[1].get() : ""));
+                                    MenuManager.getInstance().setCurrentMenu(Id.IN_GAME_MENU);
+                                }
                             }
                         });
                     } catch (FileNotFoundException ignored) {

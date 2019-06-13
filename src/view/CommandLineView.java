@@ -531,4 +531,9 @@ public class CommandLineView implements View {
     public void showImportedCardError() {
         System.out.println("Imported card not found.");
     }
+
+    @Override
+    public void showSuccessfulImport() {
+        System.out.println("Deck successfully imported.");
+    }
 }
