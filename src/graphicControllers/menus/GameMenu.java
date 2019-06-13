@@ -317,36 +317,34 @@ public class GameMenu extends Menu {
         return imageView;
     }
 
-    boolean dragDetect = false;
     private ComponentSet makeGridCells(String[][] gridStrings) {
-    //    boolean dragDetect = false;
+        //    boolean dragDetect = false;
         ComponentSet grid = new ComponentSet();
         for (int i = 0; i < gridStrings.length; i++)
             for (int j = 0; j < gridStrings[i].length; j++) {
-                ComponentSet cell = new ComponentSet();
-                try {
-                    ImageView imageView = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/tile_normal.png")));
-                    imageView.setFitWidth(50);
-                    imageView.setFitHeight(30);
-                    imageView.relocate(j * 50, i * 30);
-                    imageView.setOpacity(0.1);
 
-                    imageView.setOnMouseEntered(e -> imageView.setOpacity(0.5));
-                    imageView.setOnMouseExited(e -> imageView.setOpacity(0.1));
-                    cell.addMenuComponent(new NodeWrapper(imageView), "tile");
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                Pattern pattern = Pattern.compile("((\\+|-|\\()?)(\\[?)(.*)(]?)((\\+|-|\\))?):(\\d+)\\!(\\d+)\\?(\\d+)");
+                Matcher matcher = pattern.matcher(gridStrings[i][j]);
+
+                if (i == 2 && j == 0) {
+                    System.out.println(gridStrings[i][j]);
                 }
-
-                //Pattern pattern = Pattern.compile("(.+)")
-
-
-                grid.addMenuComponent(cell, i + "," + j);
+                boolean isFriendly = false, isSelected = false;
+                String contentCardName = ".";
+                int numberOfFlags = 0, poisonEffect = 0, hpEffect = 0;
+                if (matcher.find()) {
+                    isFriendly = matcher.group(1).equals("+");
+                    isSelected = matcher.group(3).equals("[");
+                    contentCardName = matcher.group(4);
+                    numberOfFlags = Integer.parseInt(matcher.group(8));
+                    poisonEffect = Integer.parseInt(matcher.group(9));
+                    hpEffect = Integer.parseInt(matcher.group(10));
+                }
+                ComponentSet cell_content = makeCellContent(i, j, isFriendly, isSelected, contentCardName, numberOfFlags, poisonEffect, hpEffect);
+                grid.addMenuComponent(cell_content, i + "," + j);
             }
         grid.relocate(210, 200);
         grid.resize(1.8, 2);
-
-
 
 
         getView().getScene().setOnDragDetected(event -> {
@@ -356,17 +354,19 @@ public class GameMenu extends Menu {
         for (int i = 0; i < gridStrings.length; i++)
             for (int j = 0; j < gridStrings[i].length; j++) {
                 ComponentSet cell = (ComponentSet) grid.getComponentByID(i + "," + j);
+                ImageView interactor = (ImageView) ((NodeWrapper) cell.getComponentByID("interactor")).getValue();
                 ImageView tile = (ImageView) ((NodeWrapper) cell.getComponentByID("tile")).getValue();
-                //tile.setOnMouseDragEntered();
-                tile.setOnMouseDragEntered(e -> tile.setOpacity(1));
-                tile.setOnMouseDragExited(e -> tile.setOpacity(0.1));
-                String cordinate = "(" + (i+1) + ", " + (j+1) + ")";
-                tile.setOnMouseDragReleased(e -> {
+                interactor.setOnMouseDragEntered(e -> tile.setOpacity(1));
+                interactor.setOnMouseDragExited(e -> tile.setOpacity(0.1));
+                String cordinate = "(" + (i + 1) + ", " + (j + 1) + ")";
+                interactor.setOnMouseDragReleased(e -> {
                     if (draggedCardName != null) {
                         System.err.println("insert " + draggedCardName + " in " + cordinate);
                         String output = getUIOutputAsString("insert " + draggedCardName + " in " + cordinate);
                         if (output.contains("inserted")) {
                             refresh();
+                        } else if (output.contains("mana")) {
+                            showPopUp("Insufficient Mana!");
                         }
                         draggedCardName = null;
                         if (draggedComponenet != null) {
@@ -381,6 +381,44 @@ public class GameMenu extends Menu {
                 });
             }
         return grid;
+    }
+
+    private ComponentSet makeCellContent(int i, int j, boolean isFriendly, boolean isSelected, String contentCardName, int numberOfFlags, int poisonEffect, int hpEffect) {
+        ComponentSet cell = new ComponentSet();
+        try {
+            ImageView imageView = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/tile_normal.png")));
+            imageView.setFitWidth(50);
+            imageView.setFitHeight(30);
+            imageView.relocate(j * 50, i * 30);
+            imageView.setOpacity(0.1);
+            cell.addMenuComponent(new NodeWrapper(imageView), "tile");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (contentCardName != null && !contentCardName.equals(".")) {
+            ImageView card = getImageViewByCardName(contentCardName, "idle", "gif");
+            card.setFitHeight(50);
+            card.setFitWidth(50);
+            card.relocate(j * 50, i * 30 - 20);
+            cell.addMenuComponent(new NodeWrapper(card), "card_content");
+        }
+
+        try {
+            ImageView interactor = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/active_cell.png")));
+
+            interactor.setFitWidth(50);
+            interactor.setFitHeight(30);
+            interactor.relocate(j * 50, i * 30);
+            interactor.setOpacity(0);
+
+            interactor.setOnMouseEntered(e -> ((ImageView) ((NodeWrapper) cell.getComponentByID("tile")).getValue()).setOpacity(0.5));
+            interactor.setOnMouseExited(e -> ((ImageView) ((NodeWrapper) cell.getComponentByID("tile")).getValue()).setOpacity(0.1));
+            cell.addMenuComponent(new NodeWrapper(interactor), "interactor");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return cell;
     }
 
     private ComponentSet makeCardBar(String firstPlayerDeckCapacity, ArrayList<String> handCardNames, ArrayList<String> handCardManaCosts) {
@@ -487,10 +525,17 @@ public class GameMenu extends Menu {
                     ((ImageView) ((NodeWrapper) draggedComponenet).getValue()).setFitHeight(100);
                     draggedCardName = cardName;
                     addComponent(draggedComponenet);
+                    for (int row = 0; row < Map.NUMBER_OF_ROWS; row++) {
+                        for (int column = 0; column < Map.NUMBER_OF_COLUMNS; column++) {
+                            ComponentSet cell = (ComponentSet) gridCells.getComponentByID(row + "," + column);
+                            removeComponent(cell.getComponentByID("interactor"));
+                            addComponent(cell.getComponentByID("interactor"));
+                        }
+                    }
                 });
 
                 background.setOnMouseDragged(mouseEvent -> {
-                    ((NodeWrapper) draggedComponenet).getValue().relocate(mouseEvent.getSceneX() - 50, mouseEvent.getSceneY() - 101);
+                    ((NodeWrapper) draggedComponenet).getValue().relocate(mouseEvent.getSceneX() - 50, mouseEvent.getSceneY() - 50);
                 });
                 background.setOnMouseReleased(mouseEvent -> {
                     if (draggedComponenet != null) {
