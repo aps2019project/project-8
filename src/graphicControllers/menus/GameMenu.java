@@ -184,10 +184,12 @@ public class GameMenu extends Menu {
     }
 
     @Override
-    public void refresh() {
+    public synchronized void refresh() {
         if (UI.getGame() == null)
             return;
 
+        draggedComponenet = null;
+        draggedCardName = null;
         String firstPlayerName = null, secondPlayerName = null, firstPlayerMana = null, secondPlayerMana = null;
         String firstPlayerDeckCapacity = null;
         ArrayList<String> handCardNames = new ArrayList<>();
@@ -391,15 +393,7 @@ public class GameMenu extends Menu {
                         } else if (output.contains("mana")) {
                             showPopUp("Insufficient Mana!");
                         }
-                        draggedCardName = null;
-                        if (draggedComponenet != null) {
-                            synchronized (draggedComponenet) {
-                                if (draggedComponenet != null) {
-                                    removeComponent(draggedComponenet);
-                                    draggedComponenet = null;
-                                }
-                            }
-                        }
+                        //refresh();
                     }
                 });
             }
@@ -548,6 +542,7 @@ public class GameMenu extends Menu {
                     ((ImageView) ((NodeWrapper) draggedComponenet).getValue()).setFitHeight(100);
                     draggedCardName = cardName;
                     addComponent(draggedComponenet);
+                    everyThing.addMenuComponent(draggedComponenet);
                     for (int row = 0; row < Map.NUMBER_OF_ROWS; row++) {
                         for (int column = 0; column < Map.NUMBER_OF_COLUMNS; column++) {
                             ComponentSet cell = (ComponentSet) gridCells.getComponentByID(row + "," + column);
@@ -561,15 +556,16 @@ public class GameMenu extends Menu {
                     ((NodeWrapper) draggedComponenet).getValue().relocate(mouseEvent.getSceneX() - 50, mouseEvent.getSceneY() - 50);
                 });
                 background.setOnMouseReleased(mouseEvent -> {
-                    if (draggedComponenet != null) {
-                        synchronized (draggedComponenet) {
-                            if (draggedComponenet != null)
-                                removeComponent(draggedComponenet);
-                        }
-                    }
-                    addComponent(new NodeWrapper(content));
-                    removeComponent(new NodeWrapper(background));
-                    addComponent(new NodeWrapper(background));
+                    refresh();
+//                    if (draggedComponenet != null) {
+//                        synchronized (draggedComponenet) {
+//                            if (draggedComponenet != null)
+//                                removeComponent(draggedComponenet);
+//                        }
+//                    }
+//                    addComponent(new NodeWrapper(content));
+//                    removeComponent(new NodeWrapper(background));
+//                    addComponent(new NodeWrapper(background));
                 });
             }
         }
