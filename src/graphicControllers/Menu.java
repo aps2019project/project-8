@@ -10,7 +10,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -21,9 +23,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import view.GraphicsView;
-import view.MenuChangeComponent;
-import view.MenuComponent;
+import view.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -81,15 +81,13 @@ public class Menu {
     }
 
     public Menu(int id, String title) {
-        playMedia();
-        this.id = id;
+        this(id);
         this.title = title;
         this.view = new GraphicsView(windowWidth, windowHeight, title);
     }
 
     public Menu(int id, String title, double width, double height) {
-        playMedia();
-        this.id = id;
+        this(id);
         this.title = title;
         this.windowWidth = width;
         this.windowHeight = height;
@@ -111,13 +109,26 @@ public class Menu {
     }
 
     protected void addComponent(MenuComponent component) {
+        if (component instanceof ComponentSet) {
+            for (MenuComponent c : ((ComponentSet) component).getComponents()) {
+                addComponent(c);
+            }
+            return;
+        }
         view.addComponent(component);
         menuComponents.add(component);
-        if (component instanceof MenuChangeComponent)
+        if (component instanceof MenuChangeComponent) {
             menuChangeComponents.add((MenuChangeComponent) component);
+        }
     }
 
     protected void removeComponent(MenuComponent component) {
+        if (component instanceof ComponentSet) {
+            for (MenuComponent c : ((ComponentSet) component).getComponents()) {
+                removeComponent(c);
+            }
+            return;
+        }
         view.removeComponent(component);
         menuComponents.remove(component);
         if (component instanceof MenuChangeComponent)
@@ -128,6 +139,21 @@ public class Menu {
         getView().getScene().setOnKeyPressed(eventHandler);
     }
 
+    protected void setMouseClickEvent(EventHandler<MouseEvent> eventHandler) {
+        getView().getScene().setOnMouseClicked(eventHandler);
+    }
+
+    protected void setMouseReleaseEvent(EventHandler<MouseEvent> eventHandler) {
+        getView().getScene().setOnMouseReleased(eventHandler);
+    }
+
+    protected double getCursorX() {
+        return getView().getScene().getX();
+    }
+
+    protected double getCursorY() {
+        return getView().getScene().getY();
+    }
     Menu getParentMenu() {
         return parentMenu;
     }
