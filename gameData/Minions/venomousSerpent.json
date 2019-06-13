@@ -1,28 +1,42 @@
 {
   "unitType": "RANGED",
   "hitPoint": 5,
-  "attackPoint": 7,
+  "attackPoint": 6,
   "specialPowerTypes": [
-    "ON_DEFEND"
+    "ON_ATTACK"
   ],
   "specialPowers": [
     {
-      "targetType": "CELL",
+      "targetType": "UNIT",
       "targetArea": "SELECTED_CELL",
+      "targetUnit": "ENEMY_UNIT",
+      "targetUnitType": "ALL",
       "numberOfRandomTargets": 100,
       "gridX": 1,
       "gridY": 1,
+      "buffs": [
+        {
+          "duration": 3,
+          "holy": 0,
+          "poison": 3,
+          "effectHp": 0,
+          "effectAp": 0,
+          "stun": false,
+          "disarm": false,
+          "dispellable": true
+        }
+      ],
       "canDispel": false,
       "disarmable": true,
       "poisonImmune": false,
-      "spellImmune": true,
+      "spellImmune": false,
       "isBully": false,
       "multiplied": false,
       "ignoreHoly": false
     }
   ],
   "canFly": false,
-  "attackRange": 5,
+  "attackRange": 4,
   "buffs": [],
   "flags": 0,
   "canMove": false,
@@ -34,8 +48,8 @@
   "defenceTimes": 0,
   "hasAttacked": [],
   "manaCost": 4,
-  "price": 450,
-  "collectionItemID": "2030",
-  "name": "giv",
-  "description": "immune to spell!"
+  "price": 300,
+  "collectionItemID": "2018",
+  "name": "venomousSerpent",
+  "description": "Poisons enemy with hit for 3 turns"
 }

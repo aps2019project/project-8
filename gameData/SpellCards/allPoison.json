@@ -1,22 +1,22 @@
 {
   "spell": {
     "targetType": "UNIT",
-    "targetArea": "SELECTED_X_Y_GRID",
+    "targetArea": "ALL_OF_THE_MAP",
     "targetUnit": "ENEMY_UNIT",
     "targetUnitType": "ALL",
     "numberOfRandomTargets": 100,
-    "gridX": -1,
+    "gridX": 1,
     "gridY": 1,
     "buffs": [
       {
-        "duration": 1000000,
+        "duration": 4,
         "holy": 0,
-        "poison": 0,
-        "effectHp": -6,
+        "poison": 1,
+        "effectHp": 0,
         "effectAp": 0,
         "stun": false,
         "disarm": false,
-        "dispellable": false
+        "dispellable": true
       }
     ],
     "canDispel": false,
@@ -27,9 +27,9 @@
     "multiplied": false,
     "ignoreHoly": false
   },
-  "manaCost": 4,
+  "manaCost": 8,
   "price": 1500,
-  "collectionItemID": "1016",
-  "name": "allAttack",
-  "description": "Hits all enemy units in a column with 6 AP"
+  "collectionItemID": "1011",
+  "name": "allPoison",
+  "description": "Poisons all units for 4 turns"
 }

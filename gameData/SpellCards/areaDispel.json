@@ -2,24 +2,24 @@
   "spell": {
     "targetType": "UNIT",
     "targetArea": "SELECTED_X_Y_GRID",
-    "targetUnit": "ENEMY_UNIT",
+    "targetUnit": "UNIT",
     "targetUnitType": "ALL",
     "numberOfRandomTargets": 100,
-    "gridX": -1,
-    "gridY": 1,
+    "gridX": 2,
+    "gridY": 2,
     "buffs": [
       {
-        "duration": 1000000,
+        "duration": 1,
         "holy": 0,
         "poison": 0,
-        "effectHp": -6,
+        "effectHp": 0,
         "effectAp": 0,
         "stun": false,
         "disarm": false,
         "dispellable": false
       }
     ],
-    "canDispel": false,
+    "canDispel": true,
     "disarmable": true,
     "poisonImmune": false,
     "spellImmune": false,
@@ -27,9 +27,9 @@
     "multiplied": false,
     "ignoreHoly": false
   },
-  "manaCost": 4,
+  "manaCost": 2,
   "price": 1500,
-  "collectionItemID": "1016",
-  "name": "allAttack",
-  "description": "Hits all enemy units in a column with 6 AP"
+  "collectionItemID": "1002",
+  "name": "areaDispel",
+  "description": "Purges friendly and enemy units"
 }

@@ -1,9 +1,11 @@
 {
-  "unitType": "RANGED",
-  "hitPoint": 5,
-  "attackPoint": 7,
+  "cooldown": 3,
+  "remainingCooldown": 0,
+  "unitType": "MELEE",
+  "hitPoint": 50,
+  "attackPoint": 4,
   "specialPowerTypes": [
-    "ON_DEFEND"
+    "ON_USE"
   ],
   "specialPowers": [
     {
@@ -12,17 +14,29 @@
       "numberOfRandomTargets": 100,
       "gridX": 1,
       "gridY": 1,
+      "buffs": [
+        {
+          "duration": 3,
+          "holy": 1,
+          "poison": 0,
+          "effectHp": 0,
+          "effectAp": 0,
+          "stun": false,
+          "disarm": false,
+          "dispellable": false
+        }
+      ],
       "canDispel": false,
       "disarmable": true,
       "poisonImmune": false,
-      "spellImmune": true,
+      "spellImmune": false,
       "isBully": false,
       "multiplied": false,
       "ignoreHoly": false
     }
   ],
   "canFly": false,
-  "attackRange": 5,
+  "attackRange": 0,
   "buffs": [],
   "flags": 0,
   "canMove": false,
@@ -33,9 +47,9 @@
   "attackTimes": 0,
   "defenceTimes": 0,
   "hasAttacked": [],
-  "manaCost": 4,
-  "price": 450,
-  "collectionItemID": "2030",
-  "name": "giv",
-  "description": "immune to spell!"
+  "manaCost": 1,
+  "price": 8000,
+  "collectionItemID": "3006",
+  "name": "kaave",
+  "description": "Imbues a cell with holiness for 3 turns"
 }

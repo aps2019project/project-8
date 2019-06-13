@@ -1,21 +1,21 @@
 {
   "spell": {
     "targetType": "UNIT",
-    "targetArea": "SELECTED_X_Y_GRID",
-    "targetUnit": "ENEMY_UNIT",
+    "targetArea": "SELECTED_CELL",
+    "targetUnit": "FRIENDLY_UNIT",
     "targetUnitType": "ALL",
     "numberOfRandomTargets": 100,
-    "gridX": -1,
+    "gridX": 1,
     "gridY": 1,
     "buffs": [
       {
-        "duration": 1000000,
+        "duration": 3,
         "holy": 0,
         "poison": 0,
-        "effectHp": -6,
-        "effectAp": 0,
+        "effectHp": 0,
+        "effectAp": 4,
         "stun": false,
-        "disarm": false,
+        "disarm": true,
         "dispellable": false
       }
     ],
@@ -27,9 +27,9 @@
     "multiplied": false,
     "ignoreHoly": false
   },
-  "manaCost": 4,
-  "price": 1500,
-  "collectionItemID": "1016",
-  "name": "allAttack",
-  "description": "Hits all enemy units in a column with 6 AP"
+  "manaCost": 0,
+  "price": 650,
+  "collectionItemID": "1009",
+  "name": "madness",
+  "description": "For 3 turns, adds 4 APs, but disarms"
 }

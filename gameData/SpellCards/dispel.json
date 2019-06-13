@@ -1,0 +1,23 @@
+{
+  "spell": {
+    "targetType": "UNIT",
+    "targetArea": "SELECTED_CELL",
+    "targetUnit": "UNIT",
+    "targetUnitType": "ALL",
+    "numberOfRandomTargets": 100,
+    "gridX": 1,
+    "gridY": 1,
+    "canDispel": true,
+    "disarmable": true,
+    "poisonImmune": false,
+    "spellImmune": false,
+    "isBully": false,
+    "multiplied": false,
+    "ignoreHoly": false
+  },
+  "manaCost": 0,
+  "price": 2100,
+  "collectionItemID": "1012",
+  "name": "dispel",
+  "description": "Purges the selcted unit"
+}

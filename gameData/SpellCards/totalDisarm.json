@@ -5,18 +5,18 @@
     "targetUnit": "ENEMY_UNIT",
     "targetUnitType": "ALL",
     "numberOfRandomTargets": 100,
-    "gridX": -1,
+    "gridX": 1,
     "gridY": 1,
     "buffs": [
       {
         "duration": 1000000,
         "holy": 0,
         "poison": 0,
-        "effectHp": -6,
+        "effectHp": 0,
         "effectAp": 0,
         "stun": false,
-        "disarm": false,
-        "dispellable": false
+        "disarm": true,
+        "dispellable": true
       }
     ],
     "canDispel": false,
@@ -27,9 +27,9 @@
     "multiplied": false,
     "ignoreHoly": false
   },
-  "manaCost": 4,
-  "price": 1500,
-  "collectionItemID": "1016",
-  "name": "allAttack",
-  "description": "Hits all enemy units in a column with 6 AP"
+  "manaCost": 0,
+  "price": 1000,
+  "collectionItemID": "1001",
+  "name": "totalDisarm",
+  "description": "disarms till the end"
 }

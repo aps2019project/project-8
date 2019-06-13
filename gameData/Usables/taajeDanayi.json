@@ -1,0 +1,12 @@
+{
+  "addMana": 1,
+  "addManaDuration": 3,
+  "itemType": "ADD_MANA",
+  "specialPowerTypes": [],
+  "specialPowers": [],
+  "specialPowerTargets": [],
+  "price": 300,
+  "collectionItemID": "4001",
+  "name": "taajeDanayi",
+  "description": "adds mana in first 3 turns"
+}

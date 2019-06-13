@@ -7,15 +7,13 @@ public class CollectionItem {
     protected String collectionItemID;
     protected String name;
     protected String description;
-    protected String imageAddress;
 
     // Main constructor
-    public CollectionItem(int price, String collectionItemID, String name, String description, String imageAddress) {
+    public CollectionItem(int price, String collectionItemID, String name, String description) {
         this.price = price;
         this.collectionItemID = collectionItemID;
         this.name = name;
         this.description = description;
-        this.imageAddress = imageAddress;
     }
 
     // Copy constructor
@@ -24,7 +22,6 @@ public class CollectionItem {
         this.collectionItemID = collectionItem.collectionItemID;
         this.name = collectionItem.name;
         this.description = collectionItem.description;
-        this.imageAddress = collectionItem.imageAddress;
     }
 
     protected CollectionItem() {
@@ -66,9 +63,6 @@ public class CollectionItem {
         this.name = name;
     }
 
-    public String getImageAddress() {
-        return imageAddress;
-    }
 
     @Override
     public String toString() {

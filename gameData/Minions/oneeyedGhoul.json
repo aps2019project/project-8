@@ -1,14 +1,14 @@
 {
-  "unitType": "RANGED",
-  "hitPoint": 14,
-  "attackPoint": 7,
+  "unitType": "HYBRID",
+  "hitPoint": 12,
+  "attackPoint": 11,
   "specialPowerTypes": [
-    "ON_SPAWN"
+    "ON_DEFEND"
   ],
   "specialPowers": [
     {
       "targetType": "UNIT",
-      "targetArea": "DISTANCE_2",
+      "targetArea": "ADJACENT_8",
       "targetUnit": "ENEMY_MINION",
       "targetUnitType": "ALL",
       "numberOfRandomTargets": 100,
@@ -17,9 +17,9 @@
       "buffs": [
         {
           "duration": 1000000,
-          "holy": -1,
+          "holy": 0,
           "poison": 0,
-          "effectHp": 0,
+          "effectHp": -2,
           "effectAp": 0,
           "stun": false,
           "disarm": false,
@@ -36,7 +36,7 @@
     }
   ],
   "canFly": false,
-  "attackRange": 5,
+  "attackRange": 3,
   "buffs": [],
   "flags": 0,
   "canMove": false,
@@ -47,9 +47,9 @@
   "attackTimes": 0,
   "defenceTimes": 0,
   "hasAttacked": [],
-  "manaCost": 8,
+  "manaCost": 7,
   "price": 500,
-  "collectionItemID": "2021",
-  "name": "giganticSerpent",
-  "description": "Minions within distance 2, get 2 unholy buffs on spawn"
+  "collectionItemID": "2017",
+  "name": "oneeyedGhoul",
+  "description": "Hits adjacent minions with 2 APs when dying"
 }

@@ -1,12 +1,14 @@
 package graphicControllers.menus;
 
+import gen.NamesAndTypes;
 import graphicControllers.Menu;
-import javafx.scene.CacheHint;
+import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -33,6 +35,8 @@ public class GameMenu extends Menu {
 
     private String draggedCardName;
     private MenuComponent draggedComponenet;
+    private ArrayList<String> selectedComboCardIds = new ArrayList<>();
+    private boolean clickedOnShowNextCard = false;
 
     private static transient GameMenu instance = null;
 
@@ -135,22 +139,75 @@ public class GameMenu extends Menu {
             ImageView backGround = new ImageView(new Image(new FileInputStream("images/gameIcons/hand_options_background.png")));
             backGround.setFitWidth(70);
             backGround.setFitHeight(70);
+            backGround.setOpacity(0.5);
             handOptions.addMenuComponent(new NodeWrapper(backGround));
             ImageView textBackground = new ImageView(new Image(new FileInputStream("images/gameIcons/simple_text_background.png")));
             textBackground.setFitHeight(10);
             textBackground.setFitWidth(20);
             textBackground.relocate(35 - 10, 35 - 5);
-            handOptions.addMenuComponent(new NodeWrapper(textBackground));
+            handOptions.addMenuComponent(new NodeWrapper(textBackground), "text_background");
             Label deckNameLabel = new Label("Deck");
             deckNameLabel.relocate(35 - 10 + 4, 35 - 5 + 2);
             deckNameLabel.setTextFill(Color.AZURE);
             deckNameLabel.setFont(new Font(5));
-            handOptions.addMenuComponent(new NodeWrapper(deckNameLabel));
+            handOptions.addMenuComponent(new NodeWrapper(deckNameLabel), "deck_name_label");
             Label deckCapacity = new Label(deckCapacityNumber + "/" + 20);
             deckCapacity.relocate(35 - 10, 35 - 5 + 2 + 15);
             deckCapacity.setTextFill(Color.AZURE);
             deckCapacity.setFont(new Font(7));
             handOptions.addMenuComponent(new NodeWrapper(deckCapacity));
+            ImageView interactor = new ImageView(new Image(new FileInputStream("images/gameIcons/hand_options_background.png")));
+            interactor.setFitWidth(70);
+            interactor.setFitWidth(70);
+            interactor.setOpacity(0);
+            interactor.setOnMouseEntered(e -> backGround.setOpacity(0.5));
+            interactor.setOnMouseExited(e -> backGround.setOpacity(1));
+
+            interactor.setOnMouseClicked(e -> {
+                if (clickedOnShowNextCard)
+                    return;
+                clickedOnShowNextCard = true;
+                String s = getUIOutputAsString("show next card");
+                s = s.replaceFirst(".*Name : ", "");
+                s = s.replaceAll(" - Class :.*", "").trim();
+
+                ImageView imageView = getImageViewByCardName(s, "idle", "gif");
+                imageView.setFitWidth(150);
+                imageView.setFitHeight(170);
+                imageView.relocate(50 - 17, windowHeight - 200 - 10);
+
+                addComponent(new NodeWrapper(imageView));
+                double prevLabelOpacity = deckNameLabel.getOpacity();
+                double prevTextBackGroundOpacity = textBackground.getOpacity();
+                double prevDeckCapacityOpacity = deckCapacity.getOpacity();
+                deckNameLabel.setOpacity(-100);
+                textBackground.setOpacity(-100);
+                deckCapacity.setOpacity(-100);
+                backGround.setOpacity(1);
+                interactor.setOnMouseEntered(event -> {});
+                interactor.setOnMouseExited(event -> {});
+
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
+                    Platform.runLater(() -> {
+                        removeComponent(new NodeWrapper(imageView));
+                        deckNameLabel.setOpacity(prevLabelOpacity);
+                        textBackground.setOpacity(prevTextBackGroundOpacity);
+                        deckCapacity.setOpacity(prevDeckCapacityOpacity);
+                        interactor.setOnMouseEntered(event -> backGround.setOpacity(0.5));
+                        interactor.setOnMouseExited(event -> backGround.setOpacity(1));
+
+                    });
+                    clickedOnShowNextCard = false;
+                }).start();
+
+
+            });
+            handOptions.addMenuComponent(new NodeWrapper(interactor));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -353,7 +410,9 @@ public class GameMenu extends Menu {
     private ImageView getImageViewByCardName(String cardName, String state, String format) {
         ImageView imageView = null;
         try {
-            imageView = new ImageView(new Image(new FileInputStream("images/gameIcons/gifs/" + cardName + "_" + state + "." + format)));
+            imageView = new ImageView(new Image(new FileInputStream("images/gameIcons/gifs/" + NamesAndTypes.getType(cardName)
+                    + "/" + cardName + "/" + state + "." + format)));
+
         } catch (FileNotFoundException e) {
             try {
                 imageView = new ImageView(new Image(new FileInputStream("images/gameIcons/gifs/test_idle.gif")));
@@ -384,6 +443,7 @@ public class GameMenu extends Menu {
                     poisonEffect = Integer.parseInt(matcher.group(9));
                     hpEffect = Integer.parseInt(matcher.group(10));
                 }
+                contentCardName = contentCardName.replaceAll("(\\[|]|-|\\+|\\(|\\))", "");
                 ComponentSet cell_content = makeCellContent(i, j, isFriendly, isSelected, contentCardName, numberOfFlags, poisonEffect, hpEffect);
                 grid.addMenuComponent(cell_content, i + "," + j);
             }
@@ -433,9 +493,9 @@ public class GameMenu extends Menu {
 
         if (contentCardName != null && !contentCardName.equals(".")) {
             ImageView card = getImageViewByCardName(contentCardName, "idle", "gif");
-            card.setFitHeight(50);
+            card.setFitHeight(30);
             card.setFitWidth(50);
-            card.relocate(j * 50, i * 30 - 20);
+            card.relocate(j * 50, i * 30);
             cell.addMenuComponent(new NodeWrapper(card), "card_content");
         }
 
@@ -457,6 +517,10 @@ public class GameMenu extends Menu {
                         cardSelectedGridChangePrimary();
                     }
                     if (mouseEvent.getButton() == MouseButton.SECONDARY) {
+                        selectedComboCardIds.clear();
+                        selectedComboCardIds.add(cardID);
+                        (new NodeWrapper(getInteractor(i, j))).disableMouseEvents();
+                        getTile(i, j).setOpacity(1);
                         comboGridChange();
                     }
                 }
@@ -470,36 +534,67 @@ public class GameMenu extends Menu {
     }
 
     private void comboGridChange() {
+        setGridColor(Color.ORANGE);
         for (int row = 0; row < Map.NUMBER_OF_ROWS; row++) {
             for (int column = 0; column < Map.NUMBER_OF_COLUMNS; column++) {
-                ComponentSet cell = (ComponentSet) gridCells.getComponentByID(row + "," + column);
-                ImageView tile = (ImageView) ((NodeWrapper) cell.getComponentByID("tile")).getValue();
-                ImageView interactor = (ImageView) ((NodeWrapper) cell.getComponentByID("interactor")).getValue();
+                ImageView interactor = getInteractor(row, column);
 
-                (new NodeWrapper(tile)).setColor(Color.ORANGE);
-                double opacity = tile.getOpacity();
-                interactor.setOnMouseEntered(e -> tile.setOpacity(0.7));
-                interactor.setOnMouseExited(e -> tile.setOpacity(opacity));
                 int finalRow = row, finalColumn = column;
                 interactor.setOnMouseClicked(e -> {
-
+                    if (hasFriendly(finalRow, finalColumn)) {
+                        (new NodeWrapper(getInteractor(finalRow, finalColumn))).disableMouseEvents();
+                        getTile(finalRow, finalColumn).setOpacity(1);
+                        selectedComboCardIds.add(getFriendlyCardID(finalRow, finalColumn));
+                    }
+                    if (hasEnemy(finalRow, finalColumn)) {
+                        StringBuilder stringBuilder = new StringBuilder("attack combo ");
+                        stringBuilder.append(getEnemyCardID(finalRow, finalColumn));
+                        for (String s : selectedComboCardIds) {
+                            stringBuilder.append(" ");
+                            stringBuilder.append(s);
+                        }
+                        selectedComboCardIds.clear();
+                        showPopUp(getUIOutputAsString(stringBuilder.toString()));
+                        refresh();
+                    }
                 });
             }
         }
     }
 
-    private void cardSelectedGridChangePrimary() {
+    ImageView getTile(int row, int column) {
+        ComponentSet cell = (ComponentSet) gridCells.getComponentByID(row + "," + column);
+        return (ImageView) ((NodeWrapper) cell.getComponentByID("tile")).getValue();
+    }
+
+    ImageView getInteractor(int row, int column) {
+        ComponentSet cell = (ComponentSet) gridCells.getComponentByID(row + "," + column);
+        return (ImageView) ((NodeWrapper) cell.getComponentByID("interactor")).getValue();
+    }
+
+    private void setGridColor(Color color) {
         for (int row = 0; row < Map.NUMBER_OF_ROWS; row++) {
             for (int column = 0; column < Map.NUMBER_OF_COLUMNS; column++) {
-                ComponentSet cell = (ComponentSet) gridCells.getComponentByID(row + "," + column);
-                ImageView tile = (ImageView) ((NodeWrapper) cell.getComponentByID("tile")).getValue();
-                ImageView interactor = (ImageView) ((NodeWrapper) cell.getComponentByID("interactor")).getValue();
+                ImageView tile = getTile(row, column);
+                ImageView interactor = getInteractor(row, column);
 
-
-                (new NodeWrapper(tile)).setColor(Color.BLUE);
+                (new NodeWrapper(tile)).setColor(color);
                 double opacity = tile.getOpacity();
                 interactor.setOnMouseEntered(e -> tile.setOpacity(0.7));
                 interactor.setOnMouseExited(e -> tile.setOpacity(opacity));
+                interactor.setOnMouseDragEntered(e -> tile.setOpacity(0.7));
+                interactor.setOnMouseDragReleased(e -> {});
+                interactor.setOnMouseDragExited(e -> tile.setOpacity(opacity));
+            }
+        }
+    }
+
+    private void cardSelectedGridChangePrimary() {
+        setGridColor(Color.BLUE);
+        for (int row = 0; row < Map.NUMBER_OF_ROWS; row++) {
+            for (int column = 0; column < Map.NUMBER_OF_COLUMNS; column++) {
+                ImageView interactor = getInteractor(row, column);
+
                 int finalRow = row, finalColumn = column;
                 interactor.setOnMouseClicked(e -> {
                     if (!hasFriendly(finalRow, finalColumn) && !hasEnemy(finalRow, finalColumn)) {
@@ -594,7 +689,7 @@ public class GameMenu extends Menu {
             ComponentSet handOptions = setHandOptions(firstPlayerDeckCapacity);
             handOptions.relocate(-80, -7);
             handOptions.resize(1.2, 1.2);
-            cardBar.addMenuComponent(handOptions);
+            cardBar.addMenuComponent(handOptions, "hand_options");
 
             cardBar.addMenuComponent(handCard, "card_" + i);
         }

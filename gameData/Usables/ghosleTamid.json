@@ -1,0 +1,48 @@
+{
+  "addMana": 0,
+  "addManaDuration": 0,
+  "itemType": "ADD_A_SPECIAL_POWER",
+  "specialPowerTypes": [
+    "ON_SPAWN"
+  ],
+  "specialPowers": [
+    {
+      "targetType": "UNIT",
+      "targetArea": "ALL_OF_THE_MAP",
+      "targetUnit": "FRIENDLY_UNIT",
+      "targetUnitType": "ALL",
+      "numberOfRandomTargets": 100,
+      "gridX": 1,
+      "gridY": 1,
+      "buffs": [
+        {
+          "duration": 2,
+          "holy": 1,
+          "poison": 0,
+          "effectHp": 0,
+          "effectAp": 0,
+          "stun": false,
+          "disarm": false,
+          "dispellable": true
+        }
+      ],
+      "canDispel": false,
+      "disarmable": true,
+      "poisonImmune": false,
+      "spellImmune": false,
+      "isBully": false,
+      "multiplied": false,
+      "ignoreHoly": false
+    }
+  ],
+  "specialPowerTargets": [
+    {
+      "targetUnit": "FRIENDLY_UNIT",
+      "targetUnitType": "ALL"
+    }
+  ],
+  "price": 20000,
+  "collectionItemID": "4019",
+  "name": "ghosleTamid",
+  "description": "every minion when spawned gets holy buff with power 1 for two turns"
+}

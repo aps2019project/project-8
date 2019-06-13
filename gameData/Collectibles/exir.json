@@ -1,0 +1,50 @@
+{
+  "spell": {
+    "targetType": "UNIT",
+    "targetArea": "ALL_OF_THE_MAP",
+    "targetUnit": "FRIENDLY_MINION",
+    "targetUnitType": "ALL",
+    "numberOfRandomTargets": 1,
+    "gridX": 1,
+    "gridY": 1,
+    "buffs": [
+      {
+        "duration": 1000000,
+        "holy": 0,
+        "poison": 0,
+        "effectHp": 3,
+        "effectAp": 0,
+        "stun": false,
+        "disarm": false,
+        "dispellable": false
+      },
+      {
+        "duration": 1000000,
+        "holy": 0,
+        "poison": 0,
+        "effectHp": 0,
+        "effectAp": 3,
+        "stun": false,
+        "disarm": false,
+        "dispellable": true
+      }
+    ],
+    "canDispel": false,
+    "disarmable": true,
+    "poisonImmune": false,
+    "spellImmune": false,
+    "isBully": false,
+    "multiplied": false,
+    "ignoreHoly": false
+  },
+  "addMana": 0,
+  "addManaDuration": 0,
+  "itemType": "CAST_A_SPELL",
+  "specialPowerTypes": [],
+  "specialPowers": [],
+  "specialPowerTargets": [],
+  "price": 0,
+  "collectionItemID": "4007",
+  "name": "exir",
+  "description": "adds power buff 3 for ap and adds hp by 3 on a random minion"
+}

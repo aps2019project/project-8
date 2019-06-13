@@ -1,14 +1,14 @@
 {
   "unitType": "RANGED",
-  "hitPoint": 14,
-  "attackPoint": 7,
+  "hitPoint": 3,
+  "attackPoint": 4,
   "specialPowerTypes": [
     "ON_SPAWN"
   ],
   "specialPowers": [
     {
       "targetType": "UNIT",
-      "targetArea": "DISTANCE_2",
+      "targetArea": "ADJACENT_8",
       "targetUnit": "ENEMY_MINION",
       "targetUnitType": "ALL",
       "numberOfRandomTargets": 100,
@@ -17,13 +17,13 @@
       "buffs": [
         {
           "duration": 1000000,
-          "holy": -1,
+          "holy": 0,
           "poison": 0,
           "effectHp": 0,
           "effectAp": 0,
-          "stun": false,
+          "stun": true,
           "disarm": false,
-          "dispellable": false
+          "dispellable": true
         }
       ],
       "canDispel": false,
@@ -47,9 +47,9 @@
   "attackTimes": 0,
   "defenceTimes": 0,
   "hasAttacked": [],
-  "manaCost": 8,
+  "manaCost": 3,
   "price": 500,
-  "collectionItemID": "2021",
-  "name": "giganticSerpent",
-  "description": "Minions within distance 2, get 2 unholy buffs on spawn"
+  "collectionItemID": "2036",
+  "name": "naneSarma",
+  "description": "stuns enemy minions in 8 adjacent cells"
 }

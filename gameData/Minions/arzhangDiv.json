@@ -1,28 +1,30 @@
 {
-  "unitType": "RANGED",
-  "hitPoint": 5,
-  "attackPoint": 7,
+  "unitType": "MELEE",
+  "hitPoint": 6,
+  "attackPoint": 6,
   "specialPowerTypes": [
-    "ON_DEFEND"
+    "COMBO"
   ],
   "specialPowers": [
     {
-      "targetType": "CELL",
+      "targetType": "UNIT",
       "targetArea": "SELECTED_CELL",
+      "targetUnit": "ENEMY_UNIT",
+      "targetUnitType": "ALL",
       "numberOfRandomTargets": 100,
       "gridX": 1,
       "gridY": 1,
       "canDispel": false,
       "disarmable": true,
       "poisonImmune": false,
-      "spellImmune": true,
+      "spellImmune": false,
       "isBully": false,
       "multiplied": false,
       "ignoreHoly": false
     }
   ],
   "canFly": false,
-  "attackRange": 5,
+  "attackRange": 0,
   "buffs": [],
   "flags": 0,
   "canMove": false,
@@ -33,9 +35,9 @@
   "attackTimes": 0,
   "defenceTimes": 0,
   "hasAttacked": [],
-  "manaCost": 4,
-  "price": 450,
-  "collectionItemID": "2030",
-  "name": "giv",
-  "description": "immune to spell!"
+  "manaCost": 3,
+  "price": 600,
+  "collectionItemID": "2040",
+  "name": "arzhangDiv",
+  "description": "arzhang khube"
 }

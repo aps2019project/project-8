@@ -1,18 +1,16 @@
 {
   "spell": {
-    "targetType": "UNIT",
+    "targetType": "CELL",
     "targetArea": "SELECTED_X_Y_GRID",
-    "targetUnit": "ENEMY_UNIT",
-    "targetUnitType": "ALL",
     "numberOfRandomTargets": 100,
-    "gridX": -1,
-    "gridY": 1,
+    "gridX": 2,
+    "gridY": 2,
     "buffs": [
       {
-        "duration": 1000000,
+        "duration": 2,
         "holy": 0,
         "poison": 0,
-        "effectHp": -6,
+        "effectHp": -2,
         "effectAp": 0,
         "stun": false,
         "disarm": false,
@@ -27,9 +25,9 @@
     "multiplied": false,
     "ignoreHoly": false
   },
-  "manaCost": 4,
-  "price": 1500,
-  "collectionItemID": "1016",
-  "name": "allAttack",
-  "description": "Hits all enemy units in a column with 6 AP"
+  "manaCost": 3,
+  "price": 600,
+  "collectionItemID": "1006",
+  "name": "hellFire",
+  "description": "Imbues the selected cells with fire for 2 turns"
 }
