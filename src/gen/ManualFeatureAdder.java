@@ -27,6 +27,8 @@ class ManualFeatureAdder {
     private static boolean hasArg = false;
     private static String arg3;
 
+    private static String collectionItemName;
+
     private static String getInput() throws Exception {
         String string = scanner.nextLine();
         if (string.equals("exit"))
@@ -449,13 +451,13 @@ class ManualFeatureAdder {
         String name, collectionItemID;
         int price;
         String description;
-        String address;
 
         ShengdeBaoPrinter.addString("Collection Item: ");
 
         {
             ShengdeBaoPrinter.println("Enter collection item name");
             name = getInput();
+            collectionItemName = name;
         }
         {
             ShengdeBaoPrinter.println("Enter description (empty for none)");
@@ -469,13 +471,10 @@ class ManualFeatureAdder {
             ShengdeBaoPrinter.println("Enter collection item price (0 if it is collectible)");
             price = Integer.parseInt(getInput());
         }
-        {
-//            ShengdeBaoPrinter.println("Enter collection item image address:");
-//            address = getInput();
-        }
+
         ShengdeBaoPrinter.println("Collection item created!");
         ShengdeBaoPrinter.undo();
-        return new CollectionItem(price, collectionItemID, name, description, "");
+        return new CollectionItem(price, collectionItemID, name, description);
     }
 
     private static Card addCard(CollectionItem collectionItem) throws Exception {
