@@ -51,7 +51,7 @@ public class Leaderboard extends Menu {
         try {
             back.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             back.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            back.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            back.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         back.setText("Back");

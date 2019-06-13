@@ -38,7 +38,7 @@ public class BattleMenu extends Menu {
         try {
             gotoSinglePlayer.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             gotoSinglePlayer.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            gotoSinglePlayer.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            gotoSinglePlayer.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         gotoSinglePlayer.setText("Single Player");
@@ -53,7 +53,7 @@ public class BattleMenu extends Menu {
         try {
             gotoMultiplayer.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             gotoMultiplayer.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            gotoMultiplayer.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            gotoMultiplayer.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         gotoMultiplayer.setText("Multiplayer");

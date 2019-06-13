@@ -25,7 +25,7 @@ public class CustomGameMenu extends Menu {
     private static final VBox vBox = new VBox();
     private static final int LABEL_HEIGHT = 40;
     private static double labelWidth;
-    private static final Media sound = new Media(new File("sfx/sfx_unit_onclick.m4a").toURI().toString());
+    private static final Media sound = new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString());
 
     public CustomGameMenu() {
         super(Id.START_CUSTOM_GAME_MENU, "Custom Game Menu", windowDefaultWidth, windowDefaultHeight);
