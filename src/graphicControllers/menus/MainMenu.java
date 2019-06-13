@@ -37,7 +37,7 @@ public class MainMenu extends Menu {
         try {
             gotoCollection.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             gotoCollection.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            gotoCollection.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            gotoCollection.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         gotoCollection.setText("Collection");
@@ -52,7 +52,7 @@ public class MainMenu extends Menu {
         try {
             gotoShop.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             gotoShop.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            gotoShop.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            gotoShop.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         gotoShop.setText("Shop");
@@ -67,7 +67,7 @@ public class MainMenu extends Menu {
         try {
             gotoBattle.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             gotoBattle.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            gotoBattle.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            gotoBattle.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         gotoBattle.setText("Battle");
@@ -82,7 +82,7 @@ public class MainMenu extends Menu {
         try {
             logout.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             logout.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            logout.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            logout.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         logout.setText("Logout");
@@ -97,7 +97,7 @@ public class MainMenu extends Menu {
         try {
             save.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
             save.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            save.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            save.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         save.setText("Save");
@@ -111,7 +111,7 @@ public class MainMenu extends Menu {
         try {
             exit.setImage(new Image(new FileInputStream("./images/buttons/button_cancel@2x.png")));
             exit.setActiveImage(new Image(new FileInputStream("./images/buttons/button_cancel_glow@2x.png")));
-            exit.setSound(new Media(new File("./sfx/sfx_unit_onclick.m4a").toURI().toString()));
+            exit.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
         } catch (FileNotFoundException ignored) {
         }
         exit.setText("Exit");

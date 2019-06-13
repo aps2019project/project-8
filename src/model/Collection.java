@@ -33,7 +33,7 @@ public class Collection {
         return collectionItemIDs;
     }
 
-    HashMap<String, CollectionItem> getCollectionItems() {
+    public HashMap<String, CollectionItem> getCollectionItems() {
         return collectionItems;
     }
 

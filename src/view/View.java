@@ -176,4 +176,6 @@ View {
     void showInvalidFileError();
 
     void showImportedCardError();
+
+    void showSuccessfulImport();
 }
