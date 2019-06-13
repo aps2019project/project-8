@@ -204,5 +204,6 @@ public class CollectionMenu extends Menu {
             } else
                 view.showInvalidFileError();
         }
+        view.showSuccessfulImport();
     }
 }
