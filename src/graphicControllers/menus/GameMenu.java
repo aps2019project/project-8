@@ -14,6 +14,7 @@ import javafx.scene.text.Font;
 import menus.UI;
 import model.Game;
 import model.Map;
+import model.Match;
 import model.Player;
 import view.*;
 import view.MenuComponent;
@@ -32,6 +33,7 @@ public class GameMenu extends Menu {
     private ComponentSet gridCells;
     private ComponentSet cardBar;
     private ComponentSet menuButtons;
+    private ComponentSet everyThing;
 
     private String draggedCardName;
     private MenuComponent draggedComponenet;
@@ -159,11 +161,14 @@ public class GameMenu extends Menu {
         return handOptions;
     }
 
-    private ComponentSet makeManaBar(int mana) {
+    private ComponentSet makeManaBar(int mana, int capacity) {
         ComponentSet manaBar = new ComponentSet();
-        for (int i = 0; i < mana; i++) {
+        for (int i = 0; i < capacity; i++) {
             try {
-                ImageView imageView = new ImageView(new Image(new FileInputStream("images/gameIcons/MenuIcons/icon_mana.png")));
+                ImageView imageView = new ImageView(new Image(new FileInputStream("images/gameIcons/MenuIcons/icon_mana_inactive.png")));
+                if (i < mana) {
+                    imageView.setImage(new Image(new FileInputStream("images/gameIcons/MenuIcons/icon_mana.png")));
+                }
                 imageView.setFitWidth(20);
                 imageView.setFitHeight(20);
                 imageView.relocate(i * 20 + i * 5, 0);
@@ -171,53 +176,11 @@ public class GameMenu extends Menu {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-            Label label = new Label(mana + "/" + mana);
-            label.relocate(mana * 25 + 5, 2.5);
+            Label label = new Label(mana + "/" + capacity);
+            label.relocate(capacity * 25 + 5, 2.5);
             manaBar.addMenuComponent(new NodeWrapper(label));
         }
         return manaBar;
-    }
-
-    public ComponentSet makeFirstPlayerStat(String playerName, String usableName, String mana) {
-        ComponentSet statBar = new ComponentSet();
-
-        ImageView backGround = null;
-        try {
-            backGround = new ImageView(new Image(new FileInputStream("images/gameIcons/Hero/hero_background.png")));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        backGround.setFitHeight(50);
-        backGround.setFitWidth(50);
-        statBar.addMenuComponent(new NodeWrapper(backGround));
-
-        Label playerNameLabel = new Label(playerName);
-        playerNameLabel.relocate(50 + 10, 5);
-        statBar.addMenuComponent(new NodeWrapper(playerNameLabel));
-
-
-        try {
-            ImageView usableBackground = new ImageView(new Image(new FileInputStream("images/gameIcons/Hero/usable_background.png")));
-            usableBackground.setFitHeight(35);
-            usableBackground.setFitWidth(35);
-            usableBackground.relocate(45, 57);
-            statBar.addMenuComponent(new NodeWrapper(usableBackground));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        statBar.addMenuComponent(makeManaBar(Integer.parseInt(mana)), "ManaBar");
-        ((ComponentSet) statBar.getComponentByID("ManaBar")).relocate(50 + 10, 30);
-        statBar.relocate(30, 30);
-        statBar.resize(2.2, 2.2);
-        return statBar;
-    }
-
-    private ComponentSet makeSecondPlayerStat(String playerName, String usableName, String mana) {
-        ComponentSet statBar = makeFirstPlayerStat(playerName, usableName, mana);
-        statBar.reflectVertically();
-        statBar.relocateUpRight(windowWidth - 300, statBar.getY());
-        return statBar;
     }
 
     @Override
@@ -231,10 +194,13 @@ public class GameMenu extends Menu {
         ArrayList<String> handCardManaCosts = new ArrayList<>();
         String playerOneUsableItemName = null, playerTwoUsableItemName = null;
         String[][] gridStrings = new String[Map.NUMBER_OF_ROWS][Map.NUMBER_OF_COLUMNS];
+        int turnNumber = 0;
 
         String[] shengdeShow = getUIOutputAsString("shengdebao").split("\\n");
         for (int i = 0; i < shengdeShow.length; i++) {
             if (i == 0) {
+                turnNumber = Integer.parseInt(shengdeShow[i].replaceFirst("Turn number: ", ""));
+            } else if (i == 1) {
                 Pattern pattern = Pattern.compile("(.+) Mana\\((\\d+)\\) deck\\((\\d+)\\) hand:.*");
                 Matcher matcher = pattern.matcher(shengdeShow[i]);
                 if (matcher.find()) {
@@ -242,14 +208,14 @@ public class GameMenu extends Menu {
                     firstPlayerMana = matcher.group(2);
                     firstPlayerDeckCapacity = matcher.group(3);
                 }
-            } else if (i == 1) {
+            } else if (i == 2) {
                 Pattern pattern = Pattern.compile("([a-zA-Z0-9]+)\\((\\d+)\\)");
                 Matcher matcher = pattern.matcher(shengdeShow[i]);
                 while (matcher.find()) {
                     handCardNames.add(matcher.group(1));
                     handCardManaCosts.add(matcher.group(2));
                 }
-            } else if (i == 2) {
+            } else if (i == 3) {
                 Pattern pattern = Pattern.compile("Player 1 usable item is: (.+)");
                 Matcher matcher = pattern.matcher(shengdeShow[i]);
                 if (matcher.find()) {
@@ -272,35 +238,92 @@ public class GameMenu extends Menu {
                     if (playerTwoUsableItemName.equals("No Items selected"))
                         playerTwoUsableItemName = null;
                 }
-            } else if (i < 3 + Map.NUMBER_OF_ROWS) {
+            } else if (i < 4 + Map.NUMBER_OF_ROWS) {
                 String[] strings = shengdeShow[i].split(" +");
-                gridStrings[i - 3] = Arrays.copyOf(strings, gridStrings[i - 3].length);
+                gridStrings[i - 4] = Arrays.copyOf(strings, gridStrings[i - 4].length);
             }
         }
 
-        if (gridCells != null)
-            removeComponent(gridCells);
-        if (firstPlayerBar != null)
-            removeComponent(firstPlayerBar);
-        if (secondPlayerBar != null)
-            removeComponent(secondPlayerBar);
-        if (cardBar != null)
-            removeComponent(cardBar);
+        if (everyThing != null)
+            removeComponent(everyThing);
+        everyThing = new ComponentSet();
 
-        firstPlayerBar = makeFirstPlayerStat(firstPlayerName, playerOneUsableItemName, firstPlayerMana);
-        secondPlayerBar = makeSecondPlayerStat(secondPlayerName, playerTwoUsableItemName, secondPlayerMana);
+        if (turnNumber % 2 == 0) {
+            firstPlayerBar = makePlayerStat(firstPlayerName, playerOneUsableItemName, firstPlayerMana, Math.min(9, (turnNumber + 1) / 2 + 2));
+            secondPlayerBar = makeReverseEmptyPlayerStat(secondPlayerName, playerTwoUsableItemName);
+        } else {
+            firstPlayerBar = makeEmptyPlayerStat(firstPlayerName, playerOneUsableItemName);
+            secondPlayerBar = makeReversePlayerStat(secondPlayerName, playerTwoUsableItemName, secondPlayerMana, Math.min(9, (turnNumber + 1) / 2 + 1));
+        }
         cardBar = makeCardBar(firstPlayerDeckCapacity, handCardNames, handCardManaCosts);
         gridCells = makeGridCells(gridStrings);
+        everyThing.addMenuComponent(firstPlayerBar, "first_player_bar");
+        everyThing.addMenuComponent(secondPlayerBar, "second_player_bar");
+        everyThing.addMenuComponent(cardBar, "card_bar");
+        everyThing.addMenuComponent(gridCells, "grid_cells");
 
-        if (gridCells != null)
-            addComponent(gridCells);
-        if (firstPlayerBar != null)
-            addComponent(firstPlayerBar);
-        if (secondPlayerBar != null)
-            addComponent(secondPlayerBar);
-        if (cardBar != null)
-            addComponent(cardBar);
+        everyThing.setLabelFontStyle("Monospace");
 
+        addComponent(everyThing);
+
+    }
+
+    private ComponentSet makeReverseEmptyPlayerStat(String playerName, String usableItemName) {
+        ComponentSet statBar = makeEmptyPlayerStat(playerName, usableItemName);
+        statBar.reflectVertically();
+        statBar.relocateUpRight(windowWidth - 290, 30);
+        return statBar;
+    }
+
+    private ComponentSet makeReversePlayerStat(String playerName, String usableItemName, String mana, int manaCapacity) {
+        ComponentSet statBar = makePlayerStat(playerName, usableItemName, mana, manaCapacity);
+        statBar.reflectVertically();
+        statBar.relocateUpRight(windowWidth - 290, 30);
+        return statBar;
+    }
+
+
+    private ComponentSet makeEmptyPlayerStat(String playerName, String usableItemName) {
+        ComponentSet statBar = makePlayerStat(playerName, usableItemName, "1", 1);
+        statBar.turnBlackAndWhite();
+        return statBar;
+    }
+
+    private ComponentSet makePlayerStat(String playerName, String usableItemName, String mana, int manaCapacity) {
+        ComponentSet statBar = new ComponentSet();
+
+        ImageView backGround = null;
+        try {
+            backGround = new ImageView(new Image(new FileInputStream("images/gameIcons/Hero/hero_background.png")));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        backGround.setFitHeight(55);
+        backGround.setFitWidth(55);
+        statBar.addMenuComponent(new NodeWrapper(backGround));
+
+        Label playerNameLabel = new Label(playerName);
+        playerNameLabel.relocate(50 + 10, 5);
+        statBar.addMenuComponent(new NodeWrapper(playerNameLabel));
+
+
+        try {
+            ImageView usableBackground = new ImageView(new Image(new FileInputStream("images/gameIcons/Hero/usable_background.png")));
+            usableBackground.setFitHeight(35);
+            usableBackground.setFitWidth(35);
+            usableBackground.relocate(45, 57);
+            statBar.addMenuComponent(new NodeWrapper(usableBackground));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        ComponentSet manaBar = makeManaBar(Integer.parseInt(mana), manaCapacity);
+        manaBar.resize(0.85, 0.85);
+        statBar.addMenuComponent(manaBar, "ManaBar");
+        ((ComponentSet) statBar.getComponentByID("ManaBar")).relocate(50 + 10, 30);
+        statBar.relocate(30, 30);
+        statBar.resize(2.2, 2.2);
+        return statBar;
     }
 
     private ImageView getImageViewByCardName(String cardName, String state, String format) {

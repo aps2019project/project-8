@@ -5,6 +5,8 @@ import com.sun.javafx.tk.Toolkit;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.util.Pair;
@@ -55,6 +57,20 @@ public class ComponentSet implements MenuComponent {
 
     public void relocateUpRight(double x, double y) {
         relocate(x - (getMaxWidth() - getMinWidth()), y);
+    }
+
+    public void setLabelFontStyle(String family) {
+        for (MenuComponent component : components) {
+            if (component instanceof NodeWrapper) {
+                Node node = ((NodeWrapper) component).getValue();
+                if (node instanceof Label) {
+                    ((Label) node).setFont(Font.font(family, ((Label) node).getFont().getSize()));
+                }
+            }
+            if (component instanceof ComponentSet) {
+                ((ComponentSet) component).setLabelFontStyle(family);
+            }
+        }
     }
 
     public void relocate(double x, double y) {
@@ -248,5 +264,23 @@ public class ComponentSet implements MenuComponent {
 
     public void removeMenuComponent(MenuComponent component) {
         components.remove(component);
+    }
+
+    public void setEffect(Effect effect) {
+        for (MenuComponent component : components) {
+            if (component instanceof NodeWrapper) {
+                Node node = ((NodeWrapper) component).getValue();
+                node.setEffect(effect);
+            }
+            if (component instanceof ComponentSet) {
+                ((ComponentSet) component).setEffect(effect);
+            }
+        }
+    }
+
+    public void turnBlackAndWhite() {
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setBrightness(-0.3);
+        setEffect(colorAdjust);
     }
 }

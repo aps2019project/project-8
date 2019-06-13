@@ -1259,6 +1259,7 @@ public class Game extends InGameMenu {
     }
 
     public void shengdeShow() {
+        System.out.println("Turn number: " + turn);
         System.out.println(players[0].getName() + " Mana(" + players[0].getMana() + ") deck(" + players[0].getDeck().getCards().size() + ") hand:");
         for (Card card : players[0].getHand().getCards()) {
             System.out.format("%-35s", card.getName() + "(" + card.getManaCost() + ")");
