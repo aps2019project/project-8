@@ -107,6 +107,17 @@ public class GameMenu extends Menu {
 
     private void setUpMenuButtons() {
         menuButtons = new ComponentSet();
+
+        try {
+            ImageView collectibleBackground = new ImageView(new Image(new FileInputStream("images/gameIcons/menuButtons/collectible_background.png")));
+            collectibleBackground.setFitHeight(270);
+            collectibleBackground.setFitWidth(170);
+            collectibleBackground.relocate(50, -270);
+            menuButtons.addMenuComponent(new NodeWrapper(collectibleBackground));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
         GUIButton endTurnButton = new GUIButton(-50, 0, 300, 100);
         setOnEnterAndExitEffect(endTurnButton, "END TURN", "images/gameIcons/menuButtons/end_turn_glow.png"
                 , "images/gameIcons/menuButtons/end_turn_normal.png");
@@ -131,7 +142,7 @@ public class GameMenu extends Menu {
                 "images/gameIcons/menuButtons/ui_right_normal.png");
         menuButtons.addMenuComponent(graveyard);
 
-        GUIButton collectibles = new GUIButton(150, -100, 100, 100);
+        GUIButton collectibles = new GUIButton(140 - 10, -100 + 10, 100, 100);
         setOnEnterAndExitEffect(collectibles, "", "images/gameIcons/menuButtons/select_collectible_hovered.png",
                 "images/gameIcons/menuButtons/select_collectible.png");
         collectibles.setOnMouseClicked(e -> {
@@ -159,11 +170,10 @@ public class GameMenu extends Menu {
     }
 
     private void makeGridReadyForCollectible() {
-
         ImageView selectedCollectible = getImageViewByCardName(getNameFromID(selectedCollectibleID), "idle", "gif");
         selectedCollectible.setFitHeight(200);
         selectedCollectible.setFitWidth(200);
-        selectedCollectible.relocate(windowWidth - 200, windowHeight - 500);
+        selectedCollectible.relocate(windowWidth - 220, windowHeight - 500 + 20);
         selectedCollectible.setOnMouseClicked(e -> showPopUp(getUIOutputAsString("show info")));
         selectedCollectible.setOpacity(0.5);
         selectedCollectible.setOnMouseEntered(e -> {
@@ -173,7 +183,7 @@ public class GameMenu extends Menu {
         addComponent(new NodeWrapper(selectedCollectible));
 
         Label label = new Label(getNameFromID(selectedCollectibleID));
-        label.relocate(windowWidth - 200, windowHeight - 500 + 200 - 20);
+        label.relocate(windowWidth - 200 + 10, windowHeight - 500 + 200);
         label.setTextFill(Color.AZURE);
         label.setFont(new Font(15));
         addComponent(new NodeWrapper(label));
