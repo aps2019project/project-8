@@ -6,7 +6,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import menus.ShopMenu;
+import graphicControllers.menus.ShopMenu;
 import menus.UI;
 
 import java.io.File;

@@ -6,10 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import menus.UI;
-import model.CollectionItem;
-import model.Deck;
-import model.Hero;
-import model.Usable;
+import model.*;
 import view.GUIButton;
 import view.NodeWrapper;
 
@@ -17,10 +14,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class CollectionMenu extends Menu {
+    private static final String DASH = " - ";
+
     public CollectionMenu() {
         super(Id.COLLECTION_MENU, "Collection Menu", windowDefaultWidth, windowDefaultHeight);
 
@@ -30,7 +30,7 @@ public class CollectionMenu extends Menu {
             imageView.setFitWidth(windowWidth / 3);
             imageView.relocate(windowWidth * 2 / 3 - 10, 10);
             addComponent(new NodeWrapper(imageView));
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException ignored) {
         }
 
         try {
@@ -48,6 +48,35 @@ public class CollectionMenu extends Menu {
         } catch (FileNotFoundException ignored) {
         }
         show.setText("Show");
+        show.setOnMouseClicked(e -> {
+            UI.decide("show");
+            Collection<CollectionItem> collectionItems = UI.getAccount().getCollectionItems().values();
+            if (collectionItems.isEmpty()) {
+                showPopUp("Your collection is empty!");
+                return;
+            }
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("Heroes :\n");
+            int index = 1;
+            for (CollectionItem collectionItem : collectionItems) {
+                if (collectionItem instanceof Hero) {
+                    index = showIndexedCollectionItemWithPrice(index, collectionItem, "Sell", stringBuilder);
+                }
+            }
+            stringBuilder.append("Items :\n");
+            index = 1;
+            for (CollectionItem collectionItem : collectionItems) {
+                if (collectionItem instanceof Item)
+                    index = showIndexedCollectionItemWithPrice(index, collectionItem, "Sell", stringBuilder);
+            }
+            stringBuilder.append("Cards :\n");
+            index = 1;
+            for (CollectionItem collectionItem : collectionItems) {
+                if (collectionItem instanceof Card && !(collectionItem instanceof Hero))
+                    index = showIndexedCollectionItemWithPrice(index, collectionItem, "Sell", stringBuilder);
+            }
+            showWidePopUp(stringBuilder.toString());
+        });
         addComponent(show);
 
         GUIButton search = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
@@ -60,16 +89,12 @@ public class CollectionMenu extends Menu {
         }
         search.setText("Search");
         search.setOnMouseClicked(e -> {
-            Optional<String> name = popUpGetText("Card name | item name", "Search");
+            Optional<String> name = popUpGetList(UI.getAccount().getCollectionItems().values().stream().map(CollectionItem::getName).distinct().sorted().collect(Collectors.toList()), "Search", "Card name | item name");
             if (name.isPresent()) {
-                if (UI.getAccount().getCollectionItems().values().stream().noneMatch(collectionItem -> collectionItem.equalsName(name.get())))
-                    showPopUp("No such item found.");
-                else {
-                    UI.decide("search " + name.get());
-                    StringBuilder stringBuilder = new StringBuilder();
-                    UI.getAccount().getCollection().getCollectionItemIDs(name.get()).forEach(o -> stringBuilder.append(o + "\n"));
-                    showPopUp(stringBuilder.toString());
-                }
+                UI.decide("search " + name.get());
+                StringBuilder stringBuilder = new StringBuilder();
+                UI.getAccount().getCollection().getCollectionItemIDs(name.get()).forEach(o -> stringBuilder.append(o + "\n"));
+                showPopUp(stringBuilder.toString());
             }
         });
         addComponent(search);
@@ -251,15 +276,13 @@ public class CollectionMenu extends Menu {
         } catch (FileNotFoundException ignored) {
         }
         select.setText("Select");
-        select.setOnMouseClicked(e -> {
-            popUpGetList(UI.getAccount().getDecks().stream().map(Deck::getDeckName).collect(Collectors.toList()), "Select", "Deck name").ifPresent(s -> {
-                if (UI.getAccount().getDeck(s).isValid()) {
-                    showPopUp("Main deck successfully changed.");
-                } else
-                    showPopUp("The deck is invalid.");
-                UI.decide("select deck " + s);
-            });
-        });
+        select.setOnMouseClicked(e -> popUpGetList(UI.getAccount().getDecks().stream().map(Deck::getDeckName).collect(Collectors.toList()), "Select", "Deck name").ifPresent(s -> {
+            if (UI.getAccount().getDeck(s).isValid()) {
+                showPopUp("Main deck successfully changed.");
+            } else
+                showPopUp("The deck is invalid.");
+            UI.decide("select deck " + s);
+        }));
         addComponent(select);
 
         GUIButton showAllDecks = new GUIButton(windowWidth / 2 - 170.0 / 2 - windowWidth / 3, windowHeight
@@ -271,6 +294,21 @@ public class CollectionMenu extends Menu {
         } catch (FileNotFoundException ignored) {
         }
         showAllDecks.setText("Show All");
+        showAllDecks.setOnMouseClicked(e -> {
+            ArrayList<Deck> decks = UI.getAccount().getDecks();
+            if (decks.isEmpty()) {
+                showPopUp("No deck.");
+                return;
+            }
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i < decks.size(); i++) {
+                Deck deck = decks.get(i);
+                stringBuilder.append((i + 1) + " : " + deck.getDeckName() + "\n");
+                stringBuilder.append(deck + "\n");
+            }
+            showWidePopUp(stringBuilder.toString());
+            UI.decide("show all decks");
+        });
         addComponent(showAllDecks);
 
         GUIButton showDeck = new GUIButton(windowWidth / 2 - 170.0 / 2 - windowWidth / 3, windowHeight
@@ -304,5 +342,10 @@ public class CollectionMenu extends Menu {
             MenuManager.getInstance().setCurrentMenu(Id.MAIN_MENU);
         });
         addComponent(back);
+    }
+
+    private int showIndexedCollectionItemWithPrice(int index, CollectionItem collectionItem, String tradeKind, StringBuilder stringBuilder) {
+        stringBuilder.append(index++ + " : " + collectionItem + DASH + tradeKind + " Cost : " + collectionItem.getPrice() + "\n");
+        return index;
     }
 }
