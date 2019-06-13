@@ -34,6 +34,7 @@ public class GameMenu extends Menu {
     private ComponentSet cardBar;
     private ComponentSet menuButtons;
     private ComponentSet everyThing;
+    private ComponentSet collectibleComponents;
 
     private String draggedCardName;
     private MenuComponent draggedComponenet;
@@ -118,6 +119,12 @@ public class GameMenu extends Menu {
             e.printStackTrace();
         }
 
+        GUIButton refresh = new GUIButton(-925, -120, 100, 100);
+        setOnEnterAndExitEffect(refresh, "", "images/gameIcons/menuButtons/cancel.png",
+                "images/gameIcons/menuButtons/cancel.png");
+        refresh.setOnMouseClicked(e -> refresh());
+        menuButtons.addMenuComponent(refresh);
+
         GUIButton endTurnButton = new GUIButton(-50, 0, 300, 100);
         setOnEnterAndExitEffect(endTurnButton, "END TURN", "images/gameIcons/menuButtons/end_turn_glow.png"
                 , "images/gameIcons/menuButtons/end_turn_normal.png");
@@ -170,6 +177,8 @@ public class GameMenu extends Menu {
     }
 
     private void makeGridReadyForCollectible() {
+        collectibleComponents = new ComponentSet();
+
         ImageView selectedCollectible = getImageViewByCardName(getNameFromID(selectedCollectibleID), "idle", "gif");
         selectedCollectible.setFitHeight(200);
         selectedCollectible.setFitWidth(200);
@@ -180,14 +189,15 @@ public class GameMenu extends Menu {
             selectedCollectible.setOpacity(1);
         });
         selectedCollectible.setOnMouseExited(e -> selectedCollectible.setOpacity(0.5));
-        addComponent(new NodeWrapper(selectedCollectible));
+        collectibleComponents.addMenuComponent(new NodeWrapper(selectedCollectible));
 
         Label label = new Label(getNameFromID(selectedCollectibleID));
         label.relocate(windowWidth - 200 + 10, windowHeight - 500 + 200);
         label.setTextFill(Color.AZURE);
         label.setFont(new Font(15));
-        addComponent(new NodeWrapper(label));
+        collectibleComponents.addMenuComponent(new NodeWrapper(label));
 
+        addComponent(collectibleComponents);
         setGridColor(Color.GOLD);
         for (int row = 0; row < Map.NUMBER_OF_ROWS; row++) {
             for (int column = 0; column < Map.NUMBER_OF_COLUMNS; column++) {
@@ -195,8 +205,6 @@ public class GameMenu extends Menu {
                 int finalRow = row, finalColumn = column;
                 interactor.setOnMouseClicked(e -> {
                     showPopUp(getUIOutputAsString("use (" + (finalRow + 1) + ", " + (finalColumn + 1) + ")"));
-                    removeComponent(new NodeWrapper(selectedCollectible));
-                    removeComponent(new NodeWrapper(label));
                     refresh();
                 });
             }
@@ -331,6 +339,11 @@ public class GameMenu extends Menu {
     public synchronized void refresh() {
         if (UI.getGame() == null)
             return;
+
+        if (collectibleComponents != null) {
+            removeComponent(collectibleComponents);
+            collectibleComponents = null;
+        }
 
         draggedComponenet = null;
         draggedCardName = null;
@@ -755,7 +768,7 @@ public class GameMenu extends Menu {
                             refresh();
                         }
                     }
-                    if (e.getButton() == MouseButton.SECONDARY) {
+                    if (e.getButton() == MouseButton.MIDDLE) {
                         if (hasEnemy(finalRow, finalColumn)) {
                             showPopUp(getUIOutputAsString("use special power (" + finalRow + ", " + finalColumn + ")"));
                             refresh();
