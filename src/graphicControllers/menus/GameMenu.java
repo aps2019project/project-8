@@ -3,12 +3,14 @@ package graphicControllers.menus;
 import gen.NamesAndTypes;
 import graphicControllers.Menu;
 import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import menus.UI;
 import model.Map;
@@ -548,22 +550,22 @@ public class GameMenu extends Menu {
         for (int i = 0; i < gridStrings.length; i++)
             for (int j = 0; j < gridStrings[i].length; j++) {
 
-                Pattern pattern = Pattern.compile("((\\+|-|\\()?)(\\[?)(.*)(]?)((\\+|-|\\))?):(\\d+)\\!(\\d+)\\?(\\d+)");
+                Pattern pattern = Pattern.compile("(\\[?)((\\+|-|\\()?)(.*)((\\+|-|\\))?)(]?):(\\d+)\\!(\\d+)\\?(\\d+)");
                 Matcher matcher = pattern.matcher(gridStrings[i][j]);
 
-                boolean isFriendly = false, isSelected = false;
+                boolean isFriendly = false, isEnemy = false;
                 String contentCardName = ".";
                 int numberOfFlags = 0, poisonEffect = 0, hpEffect = 0;
                 if (matcher.find()) {
-                    isFriendly = matcher.group(1).equals("+");
-                    isSelected = matcher.group(3).equals("[");
+                    isFriendly = matcher.group(2).equals("+");
+                    isEnemy = matcher.group(2).equals("-");
                     contentCardName = matcher.group(4);
                     numberOfFlags = Integer.parseInt(matcher.group(8));
                     poisonEffect = Integer.parseInt(matcher.group(9));
                     hpEffect = Integer.parseInt(matcher.group(10));
                 }
                 contentCardName = contentCardName.replaceAll("(\\[|]|-|\\+|\\(|\\))", "");
-                ComponentSet cell_content = makeCellContent(i, j, isFriendly, isSelected, contentCardName, numberOfFlags, poisonEffect, hpEffect);
+                ComponentSet cell_content = makeCellContent(i, j, isFriendly, isEnemy, contentCardName, numberOfFlags, poisonEffect, hpEffect);
                 grid.addMenuComponent(cell_content, i + "," + j);
             }
         grid.relocate(210, 200);
@@ -597,7 +599,7 @@ public class GameMenu extends Menu {
         return grid;
     }
 
-    private ComponentSet makeCellContent(int i, int j, boolean isFriendly, boolean isSelected, String contentCardName, int numberOfFlags, int poisonEffect, int hpEffect) {
+    private ComponentSet makeCellContent(int i, int j, boolean isFriendly, boolean isEnemy, String contentCardName, int numberOfFlags, int poisonEffect, int hpEffect) {
         ComponentSet cell = new ComponentSet();
         try {
             ImageView imageView = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/tile_normal.png")));
@@ -606,6 +608,22 @@ public class GameMenu extends Menu {
             imageView.relocate(j * 50, i * 30);
             imageView.setOpacity(0.1);
             cell.addMenuComponent(new NodeWrapper(imageView), "tile");
+
+            ImageView background = null;
+            if (isFriendly) {
+                background = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/friendly_background.png")));
+            }
+
+            if (isEnemy) {
+                background = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/opponent_background.png")));
+            }
+
+            if (background != null) {
+                background.setFitWidth(50);
+                background.setFitHeight(30);
+                background.relocate(j * 50, i * 30);
+                cell.addMenuComponent(new NodeWrapper(background), "friendliness");
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
