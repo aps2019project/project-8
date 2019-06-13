@@ -44,6 +44,5 @@
   "price": 5000,
   "collectionItemID": "4012",
   "name": "terrorHood",
-  "description": "adds on attack weakness buff 2 for all units",
-  "imageAddress": ""
+  "description": "adds on attack weakness buff 2 for all units"
 }

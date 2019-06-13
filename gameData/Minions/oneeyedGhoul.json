@@ -51,6 +51,5 @@
   "price": 500,
   "collectionItemID": "2017",
   "name": "oneeyedGhoul",
-  "description": "Hits adjacent minions with 2 APs when dying",
-  "imageAddress": ""
+  "description": "Hits adjacent minions with 2 APs when dying"
 }

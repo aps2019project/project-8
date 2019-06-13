@@ -51,6 +51,5 @@
   "price": 500,
   "collectionItemID": "2036",
   "name": "naneSarma",
-  "description": "stuns enemy minions in 8 adjacent cells",
-  "imageAddress": ""
+  "description": "stuns enemy minions in 8 adjacent cells"
 }

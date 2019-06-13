@@ -44,6 +44,5 @@
   "price": 20000,
   "collectionItemID": "4019",
   "name": "ghosleTamid",
-  "description": "every minion when spawned gets holy buff with power 1 for two turns",
-  "imageAddress": ""
+  "description": "every minion when spawned gets holy buff with power 1 for two turns"
 }

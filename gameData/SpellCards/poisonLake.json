@@ -29,6 +29,5 @@
   "price": 900,
   "collectionItemID": "1008",
   "name": "poisonLake",
-  "description": "Imbues the selected cells with poison for 1 turn",
-  "imageAddress": ""
+  "description": "Imbues the selected cells with poison for 1 turn"
 }

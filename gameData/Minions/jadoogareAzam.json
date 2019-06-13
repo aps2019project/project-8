@@ -51,6 +51,5 @@
   "price": 550,
   "collectionItemID": "2026",
   "name": "jadoogareAzam",
-  "description": "adds a power buff with 2 points holy buff and one point decrease to health points to the minions to 8 adjacent cells and the minion itself",
-  "imageAddress": ""
+  "description": "adds a power buff with 2 points holy buff and one point decrease to health points to the minions to 8 adjacent cells and the minion itself"
 }

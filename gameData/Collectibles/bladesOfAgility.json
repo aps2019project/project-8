@@ -36,6 +36,5 @@
   "price": 0,
   "collectionItemID": "4013",
   "name": "bladesOfAgility",
-  "description": "adds power ap to a random friendly unit by 6",
-  "imageAddress": ""
+  "description": "adds power ap to a random friendly unit by 6"
 }

@@ -44,6 +44,5 @@
   "price": 15000,
   "collectionItemID": "4015",
   "name": "asssassinationDagger",
-  "description": "when you put any unit on the map it hits enemy hero by 1",
-  "imageAddress": ""
+  "description": "when you put any unit on the map it hits enemy hero by 1"
 }

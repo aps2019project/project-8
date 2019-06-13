@@ -51,6 +51,5 @@
   "price": 600,
   "collectionItemID": "2005",
   "name": "persianChampion",
-  "description": "AP increased by 5 per times hit the target before",
-  "imageAddress": ""
+  "description": "AP increased by 5 per times hit the target before"
 }

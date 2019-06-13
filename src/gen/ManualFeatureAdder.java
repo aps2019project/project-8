@@ -236,6 +236,7 @@ class ManualFeatureAdder {
     }
 
     private static SpellCard addSpellCard(Card card) throws Exception {
+        NamesAndTypes.addSpellCard(collectionItemName);
 
         ShengdeBaoPrinter.println("***Enter Spell Card***");
         Spell spell;
@@ -316,6 +317,8 @@ class ManualFeatureAdder {
     }
 
     private static Hero addHero(Unit unit) throws Exception {
+        NamesAndTypes.addHero(collectionItemName);
+
         ShengdeBaoPrinter.println("***Enter Hero***");
         ShengdeBaoPrinter.addString("Hero: ");
         int coolDown;
@@ -329,6 +332,8 @@ class ManualFeatureAdder {
     }
 
     private static Minion addMinion(Unit unit) throws Exception {
+        NamesAndTypes.addMinion(collectionItemName);
+
         ShengdeBaoPrinter.println("***Enter Minion***");
         ShengdeBaoPrinter.addString("Minion: ");
         ShengdeBaoPrinter.println("Minion created!");
@@ -432,6 +437,8 @@ class ManualFeatureAdder {
     }
 
     private static Usable addUsable(Item item) throws Exception {
+        NamesAndTypes.addUsable(collectionItemName);
+
         ShengdeBaoPrinter.println("***Enter Usable***");
         ShengdeBaoPrinter.addString("Usable: ");
         ShengdeBaoPrinter.println("Usable created!");
@@ -440,6 +447,8 @@ class ManualFeatureAdder {
     }
 
     private static Collectible addCollectible(Item item) throws Exception {
+        NamesAndTypes.addCollectible(collectionItemName);
+
         ShengdeBaoPrinter.println("***Enter collectible***");
         ShengdeBaoPrinter.addString("Collectible: ");
         ShengdeBaoPrinter.println("Collectible created!");

@@ -31,6 +31,5 @@
   "price": 1750,
   "collectionItemID": "1019",
   "name": "kingsGuard",
-  "description": "Kills a random enemy minion in the hero's vicinity",
-  "imageAddress": ""
+  "description": "Kills a random enemy minion in the hero's vicinity"
 }

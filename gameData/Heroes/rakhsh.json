@@ -53,6 +53,5 @@
   "price": 8000,
   "collectionItemID": "3004",
   "name": "rakhsh",
-  "description": "Stuns an enemy for 1 turn",
-  "imageAddress": ""
+  "description": "Stuns an enemy for 1 turn"
 }

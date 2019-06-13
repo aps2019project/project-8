@@ -1,5 +1,6 @@
 package graphicControllers.menus;
 
+import gen.NamesAndTypes;
 import graphicControllers.Menu;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -353,7 +354,9 @@ public class GameMenu extends Menu {
     private ImageView getImageViewByCardName(String cardName, String state, String format) {
         ImageView imageView = null;
         try {
-            imageView = new ImageView(new Image(new FileInputStream("images/gameIcons/gifs/" + cardName + "_" + state + "." + format)));
+            imageView = new ImageView(new Image(new FileInputStream("images/gameIcons/gifs/" + NamesAndTypes.getType(cardName)
+                    + "/" + cardName + "/" + state + "." + format)));
+
         } catch (FileNotFoundException e) {
             try {
                 imageView = new ImageView(new Image(new FileInputStream("images/gameIcons/gifs/test_idle.gif")));
@@ -384,6 +387,7 @@ public class GameMenu extends Menu {
                     poisonEffect = Integer.parseInt(matcher.group(9));
                     hpEffect = Integer.parseInt(matcher.group(10));
                 }
+                contentCardName = contentCardName.replaceAll("(\\[|]|-|\\+|\\(|\\))", "");
                 ComponentSet cell_content = makeCellContent(i, j, isFriendly, isSelected, contentCardName, numberOfFlags, poisonEffect, hpEffect);
                 grid.addMenuComponent(cell_content, i + "," + j);
             }
@@ -433,9 +437,12 @@ public class GameMenu extends Menu {
 
         if (contentCardName != null && !contentCardName.equals(".")) {
             ImageView card = getImageViewByCardName(contentCardName, "idle", "gif");
-            card.setFitHeight(50);
+            card.setFitHeight(30);
             card.setFitWidth(50);
-            card.relocate(j * 50, i * 30 - 20);
+            card.relocate(j * 50, i * 30);
+            //card.setFitHeight(70);
+            //card.setFitWidth(70);
+            //card.relocate(card.getLayoutX() - 10, card.getLayoutY() - 20 - 20);
             cell.addMenuComponent(new NodeWrapper(card), "card_content");
         }
 

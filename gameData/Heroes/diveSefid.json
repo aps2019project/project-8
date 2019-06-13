@@ -53,6 +53,5 @@
   "price": 8000,
   "collectionItemID": "3001",
   "name": "diveSefid",
-  "description": "Activates a 4AP power buff on himself",
-  "imageAddress": ""
+  "description": "Activates a 4AP power buff on himself"
 }

@@ -31,6 +31,5 @@
   "price": 1200,
   "collectionItemID": "1020",
   "name": "shock",
-  "description": "Stuns an enemy for 2 turns",
-  "imageAddress": ""
+  "description": "Stuns an enemy for 2 turns"
 }

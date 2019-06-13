@@ -31,6 +31,5 @@
   "price": 2500,
   "collectionItemID": "1014",
   "name": "powerUp",
-  "description": "6 AP power buffs",
-  "imageAddress": ""
+  "description": "6 AP power buffs"
 }

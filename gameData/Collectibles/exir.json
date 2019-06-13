@@ -46,6 +46,5 @@
   "price": 0,
   "collectionItemID": "4007",
   "name": "exir",
-  "description": "adds power buff 3 for ap and adds hp by 3 on a random minion",
-  "imageAddress": ""
+  "description": "adds power buff 3 for ap and adds hp by 3 on a random minion"
 }

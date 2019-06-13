@@ -51,6 +51,5 @@
   "price": 8000,
   "collectionItemID": "3006",
   "name": "kaave",
-  "description": "Imbues a cell with holiness for 3 turns",
-  "imageAddress": ""
+  "description": "Imbues a cell with holiness for 3 turns"
 }

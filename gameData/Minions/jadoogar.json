@@ -51,6 +51,5 @@
   "price": 550,
   "collectionItemID": "2025",
   "name": "jadoogar",
-  "description": "adds a power buff with two points increase to attack power and one point decrease to health points to the minions to 8 adjacent cells and the minion itself",
-  "imageAddress": ""
+  "description": "adds a power buff with two points increase to attack power and one point decrease to health points to the minions to 8 adjacent cells and the minion itself"
 }

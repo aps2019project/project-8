@@ -31,6 +31,5 @@
   "price": 1500,
   "collectionItemID": "1016",
   "name": "allAttack",
-  "description": "Hits all enemy units in a column with 6 AP",
-  "imageAddress": ""
+  "description": "Hits all enemy units in a column with 6 AP"
 }

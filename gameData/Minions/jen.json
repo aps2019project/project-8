@@ -51,6 +51,5 @@
   "price": 500,
   "collectionItemID": "2027",
   "name": "jen",
-  "description": "gives power buff 1 to all friendly minions (passive)",
-  "imageAddress": ""
+  "description": "gives power buff 1 to all friendly minions (passive)"
 }

@@ -31,6 +31,5 @@
   "price": 1500,
   "collectionItemID": "1002",
   "name": "areaDispel",
-  "description": "Purges friendly and enemy units",
-  "imageAddress": ""
+  "description": "Purges friendly and enemy units"
 }
