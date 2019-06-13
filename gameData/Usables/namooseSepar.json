@@ -1,0 +1,41 @@
+{
+  "spell": {
+    "targetType": "UNIT",
+    "targetArea": "ALL_OF_THE_MAP",
+    "targetUnit": "FRIENDLY_HERO",
+    "targetUnitType": "ALL",
+    "numberOfRandomTargets": 100,
+    "gridX": 1,
+    "gridY": 1,
+    "buffs": [
+      {
+        "duration": 1000000,
+        "holy": 12,
+        "poison": 0,
+        "effectHp": 0,
+        "effectAp": 0,
+        "stun": false,
+        "disarm": false,
+        "dispellable": true
+      }
+    ],
+    "canDispel": false,
+    "disarmable": true,
+    "poisonImmune": false,
+    "spellImmune": false,
+    "isBully": false,
+    "multiplied": false,
+    "ignoreHoly": false
+  },
+  "addMana": 0,
+  "addManaDuration": 0,
+  "itemType": "CAST_A_SPELL",
+  "specialPowerTypes": [],
+  "specialPowers": [],
+  "specialPowerTargets": [],
+  "price": 4000,
+  "collectionItemID": "4002",
+  "name": "namooseSepar",
+  "description": "adds 12 holy buffs to hero",
+  "imageAddress": ""
+}

@@ -1,0 +1,42 @@
+{
+  "unitType": "MELEE",
+  "hitPoint": 20,
+  "attackPoint": 12,
+  "specialPowerTypes": [
+    "ON_DEFEND"
+  ],
+  "specialPowers": [
+    {
+      "targetType": "CELL",
+      "targetArea": "SELECTED_CELL",
+      "numberOfRandomTargets": 100,
+      "gridX": 1,
+      "gridY": 1,
+      "canDispel": false,
+      "disarmable": true,
+      "poisonImmune": true,
+      "spellImmune": false,
+      "isBully": false,
+      "multiplied": false,
+      "ignoreHoly": false
+    }
+  ],
+  "canFly": false,
+  "attackRange": 0,
+  "buffs": [],
+  "flags": 0,
+  "canMove": false,
+  "canAttack": false,
+  "isDead": false,
+  "x": 0,
+  "y": 0,
+  "attackTimes": 0,
+  "defenceTimes": 0,
+  "hasAttacked": [],
+  "manaCost": 8,
+  "price": 400,
+  "collectionItemID": "2029",
+  "name": "piran",
+  "description": "can't get poisoned ",
+  "imageAddress": ""
+}

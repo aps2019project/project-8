@@ -42,6 +42,16 @@ public class NodeWrapper implements MenuComponent {
         }
     }
 
+    public void disableMouseEvents() {
+        value.setOnMouseClicked(e -> {});
+        value.setOnMousePressed(e -> {});
+        value.setOnDragDetected(e -> {});
+        value.setOnMouseDragEntered(e -> {});
+        value.setOnMouseDragExited(e -> {});
+        value.setOnMouseDragReleased(e -> {});
+        value.setOnMouseEntered(e -> {});
+        value.setOnMouseExited(e -> {});
+    }
     @Override
     public boolean equals(Object object) {
         if (object instanceof NodeWrapper)

@@ -1,0 +1,49 @@
+{
+  "addMana": 0,
+  "addManaDuration": 0,
+  "itemType": "ADD_A_SPECIAL_POWER",
+  "specialPowerTypes": [
+    "ON_ATTACK"
+  ],
+  "specialPowers": [
+    {
+      "targetType": "UNIT",
+      "targetArea": "ALL_OF_THE_MAP",
+      "targetUnit": "ENEMY_UNIT",
+      "targetUnitType": "ALL",
+      "numberOfRandomTargets": 1,
+      "gridX": 1,
+      "gridY": 1,
+      "buffs": [
+        {
+          "duration": 1,
+          "holy": 0,
+          "poison": 0,
+          "effectHp": 0,
+          "effectAp": -2,
+          "stun": false,
+          "disarm": false,
+          "dispellable": true
+        }
+      ],
+      "canDispel": false,
+      "disarmable": true,
+      "poisonImmune": false,
+      "spellImmune": false,
+      "isBully": false,
+      "multiplied": false,
+      "ignoreHoly": false
+    }
+  ],
+  "specialPowerTargets": [
+    {
+      "targetUnit": "FRIENDLY_UNIT",
+      "targetUnitType": "ALL"
+    }
+  ],
+  "price": 5000,
+  "collectionItemID": "4012",
+  "name": "terrorHood",
+  "description": "adds on attack weakness buff 2 for all units",
+  "imageAddress": ""
+}
