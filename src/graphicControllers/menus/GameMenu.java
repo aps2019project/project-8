@@ -3,12 +3,10 @@ package graphicControllers.menus;
 import gen.NamesAndTypes;
 import graphicControllers.Menu;
 import javafx.application.Platform;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -23,6 +21,8 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,6 +37,7 @@ public class GameMenu extends Menu {
     private MenuComponent draggedComponenet;
     private ArrayList<String> selectedComboCardIds = new ArrayList<>();
     private boolean clickedOnShowNextCard = false;
+    private String selectedCollectibleID;
 
     private static transient GameMenu instance = null;
 
@@ -50,7 +51,7 @@ public class GameMenu extends Menu {
         System.setOut(new java.io.PrintStream(out));
         UI.decide(command);
         System.setOut(prevOut);
-        return out.toString();
+        return out.toString().isEmpty() ? "Successful!" : out.toString();
     }
 
     private void setUpBackGround() {
@@ -128,9 +129,85 @@ public class GameMenu extends Menu {
                 "images/gameIcons/menuButtons/ui_right_normal.png");
         menuButtons.addMenuComponent(graveyard);
 
+        GUIButton collectibles = new GUIButton(150, -100, 100, 100);
+        setOnEnterAndExitEffect(collectibles, "", "images/gameIcons/menuButtons/select_collectible_hovered.png",
+                "images/gameIcons/menuButtons/select_collectible.png");
+        collectibles.setOnMouseClicked(e -> {
+            Optional<String> s = popUpGetList(getCollectibles(), "Select!", "select a collectible");
+            if (s.isPresent()) {
+                selectedCollectibleID = s.get();
+                showPopUp(getUIOutputAsString("select " + s.get()));
+                makeGridReadyForCollectible();
+            }
+        });
+        menuButtons.addMenuComponent(collectibles);
+
         menuButtons.relocate(windowWidth - 250, windowHeight - 200);
         addComponent(menuButtons);
 
+    }
+
+    private String getNameFromID(String s) {
+        Pattern pattern = Pattern.compile("([^_]*)_([^_]*)_([^_]*)");
+        Matcher matcher = pattern.matcher(s);
+        if (matcher.find()) {
+            return matcher.group(2);
+        }
+        return null;
+    }
+
+    private void makeGridReadyForCollectible() {
+
+        ImageView selectedCollectible = getImageViewByCardName(getNameFromID(selectedCollectibleID), "idle", "gif");
+        selectedCollectible.setFitHeight(200);
+        selectedCollectible.setFitWidth(200);
+        selectedCollectible.relocate(windowWidth - 200, windowHeight - 500);
+        selectedCollectible.setOnMouseClicked(e -> showPopUp(getUIOutputAsString("show info")));
+        selectedCollectible.setOpacity(0.5);
+        selectedCollectible.setOnMouseEntered(e -> {
+            selectedCollectible.setOpacity(1);
+        });
+        selectedCollectible.setOnMouseExited(e -> selectedCollectible.setOpacity(0.5));
+        addComponent(new NodeWrapper(selectedCollectible));
+
+        Label label = new Label(getNameFromID(selectedCollectibleID));
+        label.relocate(windowWidth - 200, windowHeight - 500 + 200 - 20);
+        label.setTextFill(Color.AZURE);
+        label.setFont(new Font(15));
+        addComponent(new NodeWrapper(label));
+
+        setGridColor(Color.GOLD);
+        for (int row = 0; row < Map.NUMBER_OF_ROWS; row++) {
+            for (int column = 0; column < Map.NUMBER_OF_COLUMNS; column++) {
+                ImageView interactor = getInteractor(row, column);
+                int finalRow = row, finalColumn = column;
+                interactor.setOnMouseClicked(e -> {
+                    showPopUp(getUIOutputAsString("use (" + (finalRow + 1) + ", " + (finalColumn + 1) + ")"));
+                    removeComponent(new NodeWrapper(selectedCollectible));
+                    removeComponent(new NodeWrapper(label));
+                    refresh();
+                });
+            }
+        }
+
+        getView().getScene().setOnMousePressed(event -> {
+            if (event.getButton() == MouseButton.SECONDARY) {
+                removeComponent(new NodeWrapper(selectedCollectible));
+                removeComponent(new NodeWrapper(label));
+                refresh();
+            }
+        });
+    }
+
+    private List getCollectibles() {
+        ArrayList<String> list = new ArrayList<>();
+        String[] collectibles = getUIOutputAsString("show collectibles").split("\\n");
+        for (String s : collectibles) {
+            if (s.matches(".+: Name :.*")) {
+                list.add(s.replaceAll(": Name.*", ""));
+            }
+        }
+        return list;
     }
 
     private ComponentSet setHandOptions(String deckCapacityNumber) {
@@ -184,8 +261,10 @@ public class GameMenu extends Menu {
                 textBackground.setOpacity(-100);
                 deckCapacity.setOpacity(-100);
                 backGround.setOpacity(1);
-                interactor.setOnMouseEntered(event -> {});
-                interactor.setOnMouseExited(event -> {});
+                interactor.setOnMouseEntered(event -> {
+                });
+                interactor.setOnMouseExited(event -> {
+                });
 
                 new Thread(() -> {
                     try {
@@ -303,12 +382,15 @@ public class GameMenu extends Menu {
             removeComponent(everyThing);
         everyThing = new ComponentSet();
 
+        String friendlyHeroName = getFriendlyHeroName();
+        String opponentHeroName = getOpponentHeroName();
+
         if (turnNumber % 2 == 0) {
-            firstPlayerBar = makePlayerStat(firstPlayerName, playerOneUsableItemName, firstPlayerMana, Math.min(9, (turnNumber + 1) / 2 + 2));
-            secondPlayerBar = makeReverseEmptyPlayerStat(secondPlayerName, playerTwoUsableItemName);
+            firstPlayerBar = makePlayerStat(firstPlayerName, friendlyHeroName, playerOneUsableItemName, firstPlayerMana, Math.min(9, (turnNumber + 1) / 2 + 2));
+            secondPlayerBar = makeReverseEmptyPlayerStat(secondPlayerName, opponentHeroName, playerTwoUsableItemName);
         } else {
-            firstPlayerBar = makeEmptyPlayerStat(firstPlayerName, playerOneUsableItemName);
-            secondPlayerBar = makeReversePlayerStat(secondPlayerName, playerTwoUsableItemName, secondPlayerMana, Math.min(9, (turnNumber + 1) / 2 + 1));
+            firstPlayerBar = makeEmptyPlayerStat(firstPlayerName, opponentHeroName, playerOneUsableItemName);
+            secondPlayerBar = makeReversePlayerStat(secondPlayerName, friendlyHeroName, playerTwoUsableItemName, secondPlayerMana, Math.min(9, (turnNumber + 1) / 2 + 1));
         }
         cardBar = makeCardBar(firstPlayerDeckCapacity, handCardNames, handCardManaCosts);
         gridCells = makeGridCells(gridStrings);
@@ -322,6 +404,33 @@ public class GameMenu extends Menu {
         addComponent(everyThing);
 
     }
+
+    private String getFriendlyHeroName() {
+        for (int i = 0; i < Map.NUMBER_OF_ROWS; i++)
+            for (int j = 0; j < Map.NUMBER_OF_COLUMNS; j++) {
+                String s = getFriendlyCardID(i, j);
+                if (s != null) {
+                    s = getNameFromID(s);
+                    if (NamesAndTypes.getType(s).equals("hero"))
+                        return s;
+                }
+            }
+        return null;
+    }
+
+    private String getOpponentHeroName() {
+        for (int i = 0; i < Map.NUMBER_OF_ROWS; i++)
+            for (int j = 0; j < Map.NUMBER_OF_COLUMNS; j++) {
+                String s = getEnemyCardID(i, j);
+                if (s != null) {
+                    s = getNameFromID(s);
+                    if (NamesAndTypes.getType(s).equals("hero"))
+                        return s;
+                }
+            }
+        return null;
+    }
+
 
     private String getCardIDByLocation(int row, int column, String command) {
         String[] output = getUIOutputAsString(command).split("\\n");
@@ -349,39 +458,43 @@ public class GameMenu extends Menu {
         return getCardIDByLocation(row, column, "show opponent minions");
     }
 
-    private ComponentSet makeReverseEmptyPlayerStat(String playerName, String usableItemName) {
-        ComponentSet statBar = makeEmptyPlayerStat(playerName, usableItemName);
+    private ComponentSet makeReverseEmptyPlayerStat(String playerName, String heroName, String usableItemName) {
+        ComponentSet statBar = makeEmptyPlayerStat(playerName, heroName, usableItemName);
         statBar.reflectVertically();
         statBar.relocateUpRight(windowWidth - 290, 30);
         return statBar;
     }
 
-    private ComponentSet makeReversePlayerStat(String playerName, String usableItemName, String mana, int manaCapacity) {
-        ComponentSet statBar = makePlayerStat(playerName, usableItemName, mana, manaCapacity);
+    private ComponentSet makeReversePlayerStat(String playerName, String heroName, String usableItemName, String mana, int manaCapacity) {
+        ComponentSet statBar = makePlayerStat(playerName, heroName, usableItemName, mana, manaCapacity);
         statBar.reflectVertically();
         statBar.relocateUpRight(windowWidth - 290, 30);
         return statBar;
     }
 
 
-    private ComponentSet makeEmptyPlayerStat(String playerName, String usableItemName) {
-        ComponentSet statBar = makePlayerStat(playerName, usableItemName, "1", 1);
+    private ComponentSet makeEmptyPlayerStat(String playerName, String heroName, String usableItemName) {
+        ComponentSet statBar = makePlayerStat(playerName, heroName, usableItemName, "1", 1);
         statBar.turnBlackAndWhite();
         return statBar;
     }
 
-    private ComponentSet makePlayerStat(String playerName, String usableItemName, String mana, int manaCapacity) {
+    private ComponentSet makePlayerStat(String playerName, String heroName, String usableItemName, String mana, int manaCapacity) {
         ComponentSet statBar = new ComponentSet();
 
-        ImageView backGround = null;
         try {
-            backGround = new ImageView(new Image(new FileInputStream("images/gameIcons/Hero/hero_background.png")));
+            ImageView backGround = new ImageView(new Image(new FileInputStream("images/gameIcons/Hero/hero_background.png")));
+            backGround.setFitHeight(55);
+            backGround.setFitWidth(55);
+            statBar.addMenuComponent(new NodeWrapper(backGround));
+            ImageView heroIcon = getImageViewByCardName(heroName, "idle", "gif");
+            heroIcon.setFitWidth(55);
+            heroIcon.setFitHeight(70);
+            heroIcon.relocate(heroIcon.getLayoutX(), heroIcon.getLayoutY() - 20);
+            statBar.addMenuComponent(new NodeWrapper(heroIcon));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        backGround.setFitHeight(55);
-        backGround.setFitWidth(55);
-        statBar.addMenuComponent(new NodeWrapper(backGround));
 
         Label playerNameLabel = new Label(playerName);
         playerNameLabel.relocate(50 + 10, 5);
@@ -394,6 +507,12 @@ public class GameMenu extends Menu {
             usableBackground.setFitWidth(35);
             usableBackground.relocate(45, 57);
             statBar.addMenuComponent(new NodeWrapper(usableBackground));
+
+            ImageView usable = getImageViewByCardName(usableItemName, "idle", "format");
+            usable.setFitHeight(35);
+            usable.setFitWidth(35);
+            usable.relocate(45, 57);
+            statBar.addMenuComponent(new NodeWrapper(usable));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -583,7 +702,8 @@ public class GameMenu extends Menu {
                 interactor.setOnMouseEntered(e -> tile.setOpacity(0.7));
                 interactor.setOnMouseExited(e -> tile.setOpacity(opacity));
                 interactor.setOnMouseDragEntered(e -> tile.setOpacity(0.7));
-                interactor.setOnMouseDragReleased(e -> {});
+                interactor.setOnMouseDragReleased(e -> {
+                });
                 interactor.setOnMouseDragExited(e -> tile.setOpacity(opacity));
             }
         }
@@ -597,12 +717,21 @@ public class GameMenu extends Menu {
 
                 int finalRow = row, finalColumn = column;
                 interactor.setOnMouseClicked(e -> {
-                    if (!hasFriendly(finalRow, finalColumn) && !hasEnemy(finalRow, finalColumn)) {
-                        showPopUp(getUIOutputAsString("move to (" + (finalRow + 1) + ", " + (finalColumn + 1) + ")"));
-                        refresh();
-                    } if (hasEnemy(finalRow, finalColumn)) {
-                        showPopUp(getUIOutputAsString("attack " + getEnemyCardID(finalRow, finalColumn)));
-                        refresh();
+                    if (e.getButton() == MouseButton.PRIMARY) {
+                        if (!hasFriendly(finalRow, finalColumn) && !hasEnemy(finalRow, finalColumn)) {
+                            showPopUp(getUIOutputAsString("move to (" + (finalRow + 1) + ", " + (finalColumn + 1) + ")"));
+                            refresh();
+                        }
+                        if (hasEnemy(finalRow, finalColumn)) {
+                            showPopUp(getUIOutputAsString("attack " + getEnemyCardID(finalRow, finalColumn)));
+                            refresh();
+                        }
+                    }
+                    if (e.getButton() == MouseButton.SECONDARY) {
+                        if (hasEnemy(finalRow, finalColumn)) {
+                            showPopUp(getUIOutputAsString("use special power (" + finalRow + ", " + finalColumn + ")"));
+                            refresh();
+                        }
                     }
                 });
             }
