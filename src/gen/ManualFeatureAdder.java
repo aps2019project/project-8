@@ -236,6 +236,7 @@ class ManualFeatureAdder {
     }
 
     private static SpellCard addSpellCard(Card card) throws Exception {
+
         ShengdeBaoPrinter.println("***Enter Spell Card***");
         Spell spell;
         ShengdeBaoPrinter.addString("SpellCard: ");
