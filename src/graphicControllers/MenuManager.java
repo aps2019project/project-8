@@ -19,6 +19,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import view.GUIChangeMenuButton;
 import view.MenuChangeComponent;
 
 import java.io.File;
@@ -51,26 +52,28 @@ public class MenuManager {
     private void listenForMenuChange() {
         stage.setScene(currentMenu.getView().getScene());
         for (MenuChangeComponent changeComponent : currentMenu.getMenuChangeComponents()) {
-            changeComponent.setOnAction(event -> {
-                try {
-                    int goalMenuID = changeComponent.getGoalMenuID();
-                    boolean success = false;
-                    for (Map.Entry<Integer, Menu> entry : menusIDs.entrySet()) {
-                        if (entry.getKey().equals(goalMenuID)) {
-                            System.err.println(entry.getValue());
-                            setCurrentMenu(entry.getValue());
-                            success = true;
-                            break;
+            if (changeComponent.isReady()) {
+                changeComponent.setOnAction(event -> {
+                    try {
+                        int goalMenuID = changeComponent.getGoalMenuID();
+                        boolean success = false;
+                        for (Map.Entry<Integer, Menu> entry : menusIDs.entrySet()) {
+                            if (entry.getKey().equals(goalMenuID)) {
+                                System.err.println(entry.getValue());
+                                setCurrentMenu(entry.getValue());
+                                success = true;
+                                break;
+                            }
                         }
+                        if (!success) {
+                            throw new MenuDoesNotExistException();
+                        }
+                        listenForMenuChange();
+                    } catch (MenuDoesNotExistException e1) {
+                        e1.printStackTrace();
                     }
-                    if (!success) {
-                        throw new MenuDoesNotExistException();
-                    }
-                    listenForMenuChange();
-                } catch (MenuDoesNotExistException e1) {
-                    e1.printStackTrace();
-                }
-            });
+                });
+            }
         }
     }
 

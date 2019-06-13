@@ -14,6 +14,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 
 import java.io.FileInputStream;
@@ -90,7 +91,10 @@ public class GUIButton implements MenuComponent {
         active = image;
     }
 
+    private String guiButtonText;
+
     public void setText(String text) {
+        guiButtonText = text;
         Label label = new Label(text);
         try {
             label.setFont(Font.loadFont(new FileInputStream("./fonts/averta-extrathin-webfont.ttf"), 17));
@@ -152,10 +156,12 @@ public class GUIButton implements MenuComponent {
 
     public void setOnMouseEntered(EventHandler<MouseEvent> mouseEnter) {
         this.mouseEnter = mouseEnter;
+        button.setOnMouseEntered(mouseEnter);
     }
 
     public void setOnMouseExited(EventHandler<MouseEvent> mouseExit) {
         this.mouseExit = mouseExit;
+        button.setOnMouseExited(mouseExit);
     }
 
     public double getX() {
@@ -208,5 +214,45 @@ public class GUIButton implements MenuComponent {
 
     public void setSound(Media sound) {
         this.sound = sound;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
+        for (Node node : components) {
+            if (node instanceof ImageView)
+                ((ImageView) node).setFitWidth(width);
+            if (node instanceof Rectangle)
+                ((Rectangle) node).setWidth(width);
+            if (node instanceof Label) {
+                ((Label) node).setMinWidth(width);
+                ((Label) node).setMaxWidth(width);
+            }
+        }
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+        for (Node node : components) {
+            if (node instanceof ImageView)
+                ((ImageView) node).setFitHeight(height);
+            if (node instanceof Rectangle)
+                ((Rectangle) node).setHeight(height);
+            if (node instanceof Label) {
+                ((Label) node).setMinHeight(height);
+                ((Label) node).setMaxHeight(height);
+            }
+        }
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public String getText() {
+        return guiButtonText;
     }
 }
