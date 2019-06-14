@@ -34,6 +34,7 @@ public class GUI extends Application {
             menuManager.addMenu(new CustomGameMenu());
             menuManager.addMenu(new MultiplayerMenu());
             menuManager.addMenu(new GameMenu());
+            menuManager.addMenu(new Graveyard());
         } catch (MenuAlreadyCreatedException e) {
             e.printStackTrace();
         }
@@ -42,9 +43,6 @@ public class GUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-//        MediaPlayer mediaPlayer = new MediaPlayer(new Media(new File("music/mainmenu_v2c_looping.m4a").toURI().toString()));
-//        mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
-//        mediaPlayer.play();
         UI.initiate();
         MenuManager menuManager = new MenuManager();
         primaryStage.setTitle("Duelyst");

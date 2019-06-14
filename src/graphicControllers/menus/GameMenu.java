@@ -145,6 +145,7 @@ public class GameMenu extends Menu {
         GUIChangeMenuButton graveyard = new GUIChangeMenuButton(-50 + 150 - 20, 100 - 20, 150, 70);
         setOnEnterAndExitEffect(graveyard, "Graveyard", "images/gameIcons/menuButtons/ui_right_glowing.png",
                 "images/gameIcons/menuButtons/ui_right_normal.png");
+        graveyard.setGoalMenuID(Id.GRAVE_YARD_MENU);
         menuButtons.addMenuComponent(graveyard);
 
         GUIButton collectibles = new GUIButton(140 - 10, -100 + 10, 100, 100);

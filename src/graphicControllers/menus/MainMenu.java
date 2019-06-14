@@ -8,7 +8,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import menus.Shop;
 import menus.UI;
-import model.*;
+import model.SpecialPowerType;
+import model.Spell;
+import model.UnitType;
 import view.GUIButton;
 import view.NodeWrapper;
 
@@ -23,217 +25,218 @@ public class MainMenu extends Menu {
 
     public MainMenu() {
         super(Id.MAIN_MENU, "Main Menu", windowDefaultWidth, windowDefaultHeight);
+        new Thread(() -> {
+            try {
+                ImageView imageView = new ImageView(new Image(new FileInputStream("images/logos/brand_duelyst@2x.png")));
+                imageView.setPreserveRatio(true);
+                imageView.setFitWidth(windowWidth / 3);
+                imageView.relocate(windowWidth * 2 / 3 - 10, 10);
+                addComponent(new NodeWrapper(imageView));
+            } catch (FileNotFoundException e) {
+            }
 
-        try {
-            ImageView imageView = new ImageView(new Image(new FileInputStream("images/logos/brand_duelyst@2x.png")));
-            imageView.setPreserveRatio(true);
-            imageView.setFitWidth(windowWidth / 3);
-            imageView.relocate(windowWidth * 2 / 3 - 10, 10);
-            addComponent(new NodeWrapper(imageView));
-        } catch (FileNotFoundException e) {
-        }
+            try {
+                getView().setBackground(new Image(new FileInputStream("images/backgrounds/background@2x.jpg")));
+                getView().setCursor(new Image(new FileInputStream("./images/cursors/mouse_auto.png")));
+            } catch (FileNotFoundException ignored) {
+            }
 
-        try {
-            getView().setBackground(new Image(new FileInputStream("images/backgrounds/background@2x.jpg")));
-            getView().setCursor(new Image(new FileInputStream("./images/cursors/mouse_auto.png")));
-        } catch (FileNotFoundException ignored) {
-        }
+            GUIButton gotoCollection = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
+                    / 2 - 50.0 / 2 - 2 * 10 - 2 * 50, 170, 50);
+            try {
+                gotoCollection.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+                gotoCollection.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+                gotoCollection.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+            } catch (FileNotFoundException ignored) {
+            }
+            gotoCollection.setText("Collection");
+            gotoCollection.setOnMouseClicked(e -> {
+                UI.decide("collection");
+                MenuManager.getInstance().setCurrentMenu(Id.COLLECTION_MENU);
+            });
+            addComponent(gotoCollection);
 
-        GUIButton gotoCollection = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
-                / 2 - 50.0 / 2 - 2 * 10 - 2 * 50, 170, 50);
-        try {
-            gotoCollection.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
-            gotoCollection.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            gotoCollection.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
-        } catch (FileNotFoundException ignored) {
-        }
-        gotoCollection.setText("Collection");
-        gotoCollection.setOnMouseClicked(e -> {
-            UI.decide("collection");
-            MenuManager.getInstance().setCurrentMenu(Id.COLLECTION_MENU);
-        });
-        addComponent(gotoCollection);
+            GUIButton gotoShop = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
+                    / 2 - 50.0 / 2 - 10 - 50, 170, 50);
+            try {
+                gotoShop.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+                gotoShop.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+                gotoShop.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+            } catch (FileNotFoundException ignored) {
+            }
+            gotoShop.setText("Shop");
+            gotoShop.setOnMouseClicked(e -> {
+                UI.decide("shop");
+                MenuManager.getInstance().setCurrentMenu(Id.SHOP_MENU);
+            });
+            addComponent(gotoShop);
 
-        GUIButton gotoShop = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
-                / 2 - 50.0 / 2 - 10 - 50, 170, 50);
-        try {
-            gotoShop.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
-            gotoShop.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            gotoShop.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
-        } catch (FileNotFoundException ignored) {
-        }
-        gotoShop.setText("Shop");
-        gotoShop.setOnMouseClicked(e -> {
-            UI.decide("shop");
-            MenuManager.getInstance().setCurrentMenu(Id.SHOP_MENU);
-        });
-        addComponent(gotoShop);
+            GUIButton gotoBattle = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
+                    / 2 - 50.0 / 2, 170, 50);
+            try {
+                gotoBattle.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+                gotoBattle.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+                gotoBattle.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+            } catch (FileNotFoundException ignored) {
+            }
+            gotoBattle.setText("Battle");
+            gotoBattle.setOnMouseClicked(e -> {
+                UI.decide("battle");
+                MenuManager.getInstance().setCurrentMenu(Id.CHOOSE_BATTLE_MENU);
+            });
+            addComponent(gotoBattle);
 
-        GUIButton gotoBattle = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
-                / 2 - 50.0 / 2, 170, 50);
-        try {
-            gotoBattle.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
-            gotoBattle.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            gotoBattle.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
-        } catch (FileNotFoundException ignored) {
-        }
-        gotoBattle.setText("Battle");
-        gotoBattle.setOnMouseClicked(e -> {
-            UI.decide("battle");
-            MenuManager.getInstance().setCurrentMenu(Id.CHOOSE_BATTLE_MENU);
-        });
-        addComponent(gotoBattle);
+            GUIButton logout = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
+                    / 2 - 50.0 / 2 + 10 + 50, 170, 50);
+            try {
+                logout.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+                logout.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+                logout.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+            } catch (FileNotFoundException ignored) {
+            }
+            logout.setText("Logout");
+            logout.setOnMouseClicked(e -> {
+                UI.decide("logout");
+                MenuManager.getInstance().setCurrentMenu(Id.ACCOUNT_MENU);
+            });
+            addComponent(logout);
 
-        GUIButton logout = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
-                / 2 - 50.0 / 2 + 10 + 50, 170, 50);
-        try {
-            logout.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
-            logout.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            logout.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
-        } catch (FileNotFoundException ignored) {
-        }
-        logout.setText("Logout");
-        logout.setOnMouseClicked(e -> {
-            UI.decide("logout");
-            MenuManager.getInstance().setCurrentMenu(Id.ACCOUNT_MENU);
-        });
-        addComponent(logout);
+            GUIButton save = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
+                    / 2 - 50.0 / 2 + 2 * 10 + 2 * 50, 170, 50);
+            try {
+                save.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+                save.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+                save.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+            } catch (FileNotFoundException ignored) {
+            }
+            save.setText("Save");
+            save.setOnMouseClicked(e -> {
+                showPopUp("Successfully saved account.");
+                UI.decide("save");
+            });
+            addComponent(save);
 
-        GUIButton save = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
-                / 2 - 50.0 / 2 + 2 * 10 + 2 * 50, 170, 50);
-        try {
-            save.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
-            save.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            save.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
-        } catch (FileNotFoundException ignored) {
-        }
-        save.setText("Save");
-        save.setOnMouseClicked(e -> {
-            showPopUp("Successfully saved account.");
-            UI.decide("save");
-        });
-        addComponent(save);
-
-        GUIButton createCard = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
-                / 2 - 50.0 / 2 + 3 * 10 + 3 * 50, 170, 50);
-        try {
-            createCard.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
-            createCard.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            createCard.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
-        } catch (FileNotFoundException ignored) {
-        }
-        createCard.setText("Create Card");
-        createCard.setOnMouseClicked(e -> {
-            popUpGetText("Name", "Next").ifPresent(name -> {
-                if (Shop.getCollectionItemByName(name) != null) {
-                    showPopUp("A card with this name already exists.");
-                    return;
-                }
-                StringBuilder stringBuilder = new StringBuilder(name).append("\n");
-                stringBuilder.append(popUpGetText("Description", "Next").orElse("none")).append("\n");
-                stringBuilder.append(name).append("\n");
-                Optional<Integer> price = getNumber("Price");
-                if (!price.isPresent()) return;
-                stringBuilder.append(price.get()).append("\n").append("Card").append("\n");
-                Optional<String> type = popUpGetList(Arrays.asList(MINION, "Spell", "Hero"), "Next", "Type");
-                if (!type.isPresent())
-                    return;
-                if (!type.get().equals("Spell")) {
-                    if (type.get().equals(MINION)) {
-                        Optional<Integer> mana = getNumber("Mana");
-                        if (!mana.isPresent()) return;
-                        stringBuilder.append(mana.get()).append("\n");
+            GUIButton createCard = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
+                    / 2 - 50.0 / 2 + 3 * 10 + 3 * 50, 170, 50);
+            try {
+                createCard.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+                createCard.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+                createCard.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+            } catch (FileNotFoundException ignored) {
+            }
+            createCard.setText("Create Card");
+            createCard.setOnMouseClicked(e -> {
+                popUpGetText("Name", "Next").ifPresent(name -> {
+                    if (Shop.getCollectionItemByName(name) != null) {
+                        showPopUp("A card with this name already exists.");
+                        return;
                     }
-                    StringBuilder unit = new StringBuilder();
-                    unit.append("Unit").append("\n");
-                    Optional<Integer> hp = getNumber("HP");
-                    if (!hp.isPresent()) return;
-                    unit.append(hp.get()).append("\n");
-                    Optional<Integer> ap = getNumber("AP");
-                    if (!ap.isPresent()) return;
-                    unit.append(ap.get()).append("\n");
-                    Optional<String> attackType = popUpGetList(Arrays.stream(UnitType.values()).map(Enum::toString).map(this::fixCase).collect(Collectors.toList()), "Next", "Attack type");
-                    if (!attackType.isPresent())
+                    StringBuilder stringBuilder = new StringBuilder(name).append("\n");
+                    stringBuilder.append(popUpGetText("Description", "Next").orElse("none")).append("\n");
+                    stringBuilder.append(name).append("\n");
+                    Optional<Integer> price = getNumber("Price");
+                    if (!price.isPresent()) return;
+                    stringBuilder.append(price.get()).append("\n").append("Card").append("\n");
+                    Optional<String> type = popUpGetList(Arrays.asList(MINION, "Spell", "Hero"), "Next", "Type");
+                    if (!type.isPresent())
                         return;
-                    int attackTypeIndex = Arrays.stream(UnitType.values()).map(Enum::toString).map(this::fixCase).collect(Collectors.toList()).indexOf(attackType.get()) + 1;
-                    unit.append(attackTypeIndex).append("\n");
-                    Optional<String> sp = popUpGetList(Arrays.asList("Yes", "No"), "Next", "Special Power");
-                    if (!sp.isPresent())
-                        return;
-                    unit.append(sp.get().toLowerCase()).append("\n");
-                    Optional<Integer> coolDown = Optional.empty();
-                    if (sp.get().equals("Yes")) {
-                        int spActivationIndex;
+                    if (!type.get().equals("Spell")) {
                         if (type.get().equals(MINION)) {
-                            Optional<String> spActivation = popUpGetList(Arrays.stream(Arrays.copyOfRange(SpecialPowerType.values(), 0, SpecialPowerType.values().length - 1)).map(Enum::toString).map(this::fixCase).collect(Collectors.toList()), "Next", "Special power activation");
-                            if (!spActivation.isPresent())
-                                return;
-                            spActivationIndex = Arrays.stream(Arrays.copyOfRange(SpecialPowerType.values(), 0, SpecialPowerType.values().length - 1)).map(Enum::toString).map(this::fixCase).collect(Collectors.toList()).indexOf(spActivation.get()) + 1;
-                            unit.append(spActivationIndex).append("\n");
-                        } else {
                             Optional<Integer> mana = getNumber("Mana");
                             if (!mana.isPresent()) return;
                             stringBuilder.append(mana.get()).append("\n");
-                            Optional<String> spActivation = popUpGetList(Arrays.stream(SpecialPowerType.values()).map(Enum::toString).map(this::fixCase).collect(Collectors.toList()), "Next", "Special power activation");
-                            if (!spActivation.isPresent())
-                                return;
-                            spActivationIndex = Arrays.stream(SpecialPowerType.values()).map(Enum::toString).map(this::fixCase).collect(Collectors.toList()).indexOf(spActivation.get()) + 1;
-                            unit.append(spActivationIndex).append("\n");
                         }
-                        getSpell(unit);
-                        if (type.get().equals("Hero") && spActivationIndex == 8) {
-                            coolDown = getNumber("Cooldown");
-                            if (!coolDown.isPresent()) return;
+                        StringBuilder unit = new StringBuilder();
+                        unit.append("Unit").append("\n");
+                        Optional<Integer> hp = getNumber("HP");
+                        if (!hp.isPresent()) return;
+                        unit.append(hp.get()).append("\n");
+                        Optional<Integer> ap = getNumber("AP");
+                        if (!ap.isPresent()) return;
+                        unit.append(ap.get()).append("\n");
+                        Optional<String> attackType = popUpGetList(Arrays.stream(UnitType.values()).map(Enum::toString).map(this::fixCase).collect(Collectors.toList()), "Next", "Attack type");
+                        if (!attackType.isPresent())
+                            return;
+                        int attackTypeIndex = Arrays.stream(UnitType.values()).map(Enum::toString).map(this::fixCase).collect(Collectors.toList()).indexOf(attackType.get()) + 1;
+                        unit.append(attackTypeIndex).append("\n");
+                        Optional<String> sp = popUpGetList(Arrays.asList("Yes", "No"), "Next", "Special Power");
+                        if (!sp.isPresent())
+                            return;
+                        unit.append(sp.get().toLowerCase()).append("\n");
+                        Optional<Integer> coolDown = Optional.empty();
+                        if (sp.get().equals("Yes")) {
+                            int spActivationIndex;
+                            if (type.get().equals(MINION)) {
+                                Optional<String> spActivation = popUpGetList(Arrays.stream(Arrays.copyOfRange(SpecialPowerType.values(), 0, SpecialPowerType.values().length - 1)).map(Enum::toString).map(this::fixCase).collect(Collectors.toList()), "Next", "Special power activation");
+                                if (!spActivation.isPresent())
+                                    return;
+                                spActivationIndex = Arrays.stream(Arrays.copyOfRange(SpecialPowerType.values(), 0, SpecialPowerType.values().length - 1)).map(Enum::toString).map(this::fixCase).collect(Collectors.toList()).indexOf(spActivation.get()) + 1;
+                                unit.append(spActivationIndex).append("\n");
+                            } else {
+                                Optional<Integer> mana = getNumber("Mana");
+                                if (!mana.isPresent()) return;
+                                stringBuilder.append(mana.get()).append("\n");
+                                Optional<String> spActivation = popUpGetList(Arrays.stream(SpecialPowerType.values()).map(Enum::toString).map(this::fixCase).collect(Collectors.toList()), "Next", "Special power activation");
+                                if (!spActivation.isPresent())
+                                    return;
+                                spActivationIndex = Arrays.stream(SpecialPowerType.values()).map(Enum::toString).map(this::fixCase).collect(Collectors.toList()).indexOf(spActivation.get()) + 1;
+                                unit.append(spActivationIndex).append("\n");
+                            }
+                            getSpell(unit);
+                            if (type.get().equals("Hero") && spActivationIndex == 8) {
+                                coolDown = getNumber("Cooldown");
+                                if (!coolDown.isPresent()) return;
+                            }
+                        } else if (type.get().equals("Hero")) {
+                            stringBuilder.append(0).append("\n");
                         }
-                    } else if (type.get().equals("Hero")) {
-                        stringBuilder.append(0).append("\n");
+                        Optional<String> canFly = popUpGetList(Arrays.asList("Yes", "No"), "Next", "Can fly");
+                        if (!canFly.isPresent())
+                            return;
+                        unit.append(canFly.get().toLowerCase()).append("\n");
+                        Optional<Integer> range = getNumber("Range");
+                        if (!range.isPresent()) return;
+                        unit.append(range.get()).append("\n");
+                        unit.append(type.get()).append("\n");
+                        if (sp.get().equals("No") && !type.get().equals(MINION)) {
+                            unit.append(0).append("\n");
+                        } else if (sp.get().equals("Yes") && !type.get().equals(MINION)) {
+                            unit.append(coolDown.orElse(0)).append("\n");
+                        }
+                        stringBuilder.append(unit);
+                    } else {
+                        Optional<Integer> mana = getNumber("Mana");
+                        if (!mana.isPresent()) return;
+                        stringBuilder.append(mana.get()).append("\n").append("SpellCard").append("\n");
+                        getSpell(stringBuilder);
                     }
-                    Optional<String> canFly = popUpGetList(Arrays.asList("Yes", "No"), "Next", "Can fly");
-                    if (!canFly.isPresent())
-                        return;
-                    unit.append(canFly.get().toLowerCase()).append("\n");
-                    Optional<Integer> range = getNumber("Range");
-                    if (!range.isPresent()) return;
-                    unit.append(range.get()).append("\n");
-                    unit.append(type.get()).append("\n");
-                    if (sp.get().equals("No") && !type.get().equals(MINION)) {
-                        unit.append(0).append("\n");
-                    } else if (sp.get().equals("Yes") && !type.get().equals(MINION)) {
-                        unit.append(coolDown.orElse(0)).append("\n");
+                    try {
+                        FileWriter fileWriter = new FileWriter(new File("gameData/ManualFeatureInputLogs/" + name + ".txt"), false);
+                        fileWriter.append(stringBuilder);
+                        fileWriter.flush();
+                        fileWriter.close();
+                        new Thread(() -> {
+                            JsonMaker.main(new String[]{"java", "JsonMaker"});
+                            Shop.load();
+                            UI.getAccount().getCollection().addCollectionItem(Shop.getCollectionItemByName(name));
+                        }).start();
+                    } catch (IOException ignored) {
                     }
-                    stringBuilder.append(unit);
-                } else {
-                    Optional<Integer> mana = getNumber("Mana");
-                    if (!mana.isPresent()) return;
-                    stringBuilder.append(mana.get()).append("\n").append("SpellCard").append("\n");
-                    getSpell(stringBuilder);
-                }
-                try {
-                    FileWriter fileWriter = new FileWriter(new File("gameData/ManualFeatureInputLogs/" + name + ".txt"), false);
-                    fileWriter.append(stringBuilder);
-                    fileWriter.flush();
-                    fileWriter.close();
-                    new Thread(() -> {
-                        JsonMaker.main(new String[]{"java", "JsonMaker"});
-                        Shop.load();
-                        UI.getAccount().getCollection().addCollectionItem(Shop.getCollectionItemByName(name));
-                    }).start();
-                } catch (IOException ignored) {
-                }
+                });
             });
-        });
-        addComponent(createCard);
+            addComponent(createCard);
 
-        GUIButton exit = new GUIButton(windowWidth - 100, windowHeight - 50, 100, 50);
-        try {
-            exit.setImage(new Image(new FileInputStream("./images/buttons/button_cancel@2x.png")));
-            exit.setActiveImage(new Image(new FileInputStream("./images/buttons/button_cancel_glow@2x.png")));
-            exit.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
-        } catch (FileNotFoundException ignored) {
-        }
-        exit.setText("Exit");
-        addComponent(exit);
-        exit.setOnMouseClicked(e -> System.exit(0));
+            GUIButton exit = new GUIButton(windowWidth - 100, windowHeight - 50, 100, 50);
+            try {
+                exit.setImage(new Image(new FileInputStream("./images/buttons/button_cancel@2x.png")));
+                exit.setActiveImage(new Image(new FileInputStream("./images/buttons/button_cancel_glow@2x.png")));
+                exit.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+            } catch (FileNotFoundException ignored) {
+            }
+            exit.setText("Exit");
+            addComponent(exit);
+            exit.setOnMouseClicked(e -> System.exit(0));
+        }).start();
     }
 
     private Optional<Integer> getNumber(String prompt) {

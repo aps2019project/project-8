@@ -56,7 +56,7 @@ public class Menu {
     private Media sound = new Media(new File("./sfx/sfx_ui_menu_hover.m4a").toURI().toString());
 
     private Optional[] gameMode = new Optional[]{Optional.empty(), Optional.empty()};
-//    private MediaPlayer backGroundMedia = new MediaPlayer(new Media(new File("music/mainmenu_v2c_looping.m4a").toURI().toString()));
+    private MediaPlayer backGroundMedia = new MediaPlayer(new Media(new File("music/mainmenu_v2c_looping.m4a").toURI().toString()));
     private ComboBox<String> choiceBox;
     private Stage getListItem;
     private Label getListButton;
@@ -65,9 +65,9 @@ public class Menu {
     private Label showPopUpButton;
     private ImageView popUpButtonImage;
 
-    private void playMedia() {
-//        backGroundMedia.play();
-//        backGroundMedia.setOnEndOfMedia(() -> backGroundMedia.seek(Duration.ZERO));
+    public void playMedia() {
+        backGroundMedia.play();
+        backGroundMedia.setOnEndOfMedia(() -> backGroundMedia.seek(Duration.ZERO));
     }
 
     public Menu() {
@@ -94,9 +94,9 @@ public class Menu {
     }
 
     protected void setSound(String musicAddress) {
-//        backGroundMedia.stop();
-//        backGroundMedia = new MediaPlayer(new Media(new File(musicAddress).toURI().toString()));
-//        playMedia();
+        backGroundMedia.stop();
+        backGroundMedia = new MediaPlayer(new Media(new File(musicAddress).toURI().toString()));
+        playMedia();
     }
 
     int getId() {
@@ -163,6 +163,10 @@ public class Menu {
 
     public GraphicsView getView() {
         return view;
+    }
+
+    public void stopMedia() {
+        backGroundMedia.stop();
     }
 
     public static class Id {
@@ -435,9 +439,9 @@ public class Menu {
         scrollPane.setMinWidth(1240);
         Scene scene = new Scene(new Group(popUp.getScene().getRoot()), 1240, 720);
         popUp.setScene(scene);
-        scrollPane.setMaxWidth(1240);
-        popUpContent.setMinWidth(1240);
-        popUpContent.setMaxWidth(1240);
+        scrollPane.setMaxWidth(1230);
+        popUpContent.setMinWidth(1230);
+        popUpContent.setMaxWidth(1230);
         scrollPane.setMinHeight(720 - POP_UP_BUTTON_HEIGHT);
         scrollPane.setMaxHeight(720 - POP_UP_BUTTON_HEIGHT);
         popUpContent.setMinHeight(720 - POP_UP_BUTTON_HEIGHT - 2);
