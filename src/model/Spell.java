@@ -156,7 +156,7 @@ public class Spell {
 
     public enum TargetType {
         CELL,
-        UNIT
+        UNIT;
     }
 
     public enum TargetArea {

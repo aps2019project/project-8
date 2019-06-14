@@ -5,13 +5,21 @@ import graphicControllers.MenuManager;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
+import menus.Shop;
 import menus.UI;
+import model.Spell;
+import model.UnitType;
 import view.GUIButton;
 import view.NodeWrapper;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MainMenu extends Menu {
     public MainMenu() {
@@ -107,6 +115,89 @@ public class MainMenu extends Menu {
         });
         addComponent(save);
 
+        GUIButton createCard = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
+                / 2 - 50.0 / 2 + 3 * 10 + 3 * 50, 170, 50);
+        try {
+            createCard.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+            createCard.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+            createCard.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+        } catch (FileNotFoundException ignored) {
+        }
+        createCard.setText("Create Card");
+        createCard.setOnMouseClicked(e -> {
+            popUpGetText("Name", "Next").ifPresent(name -> {
+                if (Shop.getCollectionItemByName(name) != null) {
+                    showPopUp("A card with this name already exists.");
+                    return;
+                }
+                popUpGetText("Description", "Next").orElse("");
+                Optional<String> price = popUpGetText("Price", "Next");
+                if (!price.isPresent())
+                    return;
+                if (!price.get().matches("\\d+")) {
+                    showPopUp("Please enter a number.");
+                    return;
+                }
+                //Card
+                popUpGetList(Arrays.asList("Spell", "Minion", "Hero"), "Next", "Type").ifPresent(type -> {
+                    if (type.equals("Spell")) {
+                        Optional<String> mana = popUpGetText("Price", "Next");
+                        if (!mana.isPresent())
+                            return;
+                        if (!mana.get().matches("\\d+")) {
+                            showPopUp("Please enter a number.");
+                            return;
+                        }
+                        Optional<String> targetType = popUpGetList(Arrays.stream(Spell.TargetType.values()).map(Enum::toString).map(this::fixCase).collect(Collectors.toList()), "Next", "Target type");
+                        if (!targetType.isPresent())
+                            return;
+                        System.err.println("here");
+                        System.err.println(Arrays.asList(Arrays.stream(Spell.TargetType.values()).map(Enum::toString)).indexOf(revertCase(targetType.get())));
+                        System.err.println("aftre");
+                        Spell.TargetArea.values();
+                        Arrays.asList("Yes", "No");
+                        popUpGetText("Number of random picks", "Next");
+                        popUpGetText("Number of buffs", "Next");
+                    } else {
+                        if (type.equals("Minion")) {
+                            Optional<String> mana = popUpGetText("Price", "Next");
+                            if (!mana.isPresent())
+                                return;
+                            if (!mana.get().matches("\\d+")) {
+                                showPopUp("Please enter a number.");
+                                return;
+                            }
+                        }
+                        Optional<String> ap = popUpGetText("AP", "Next");
+                        if (!ap.isPresent())
+                            return;
+                        if (!ap.get().matches("\\d+")) {
+                            showPopUp("Please enter a number.");
+                            return;
+                        }
+                        Optional<String> hp = popUpGetText("HP", "Next");
+                        if (!hp.isPresent())
+                            return;
+                        if (!hp.get().matches("\\d+")) {
+                            showPopUp("Please enter a number.");
+                            return;
+                        }
+                        Optional<String> attackType = popUpGetList(Arrays.asList(UnitType.values()), "Next", "Attack type");
+                        if (!attackType.isPresent())
+                            return;
+                        Optional<String> range = popUpGetText("HP", "Next");
+                        if (!range.isPresent())
+                            return;
+                        if (!range.get().matches("\\d+")) {
+                            showPopUp("Please enter a number.");
+                            return;
+                        }
+                    }
+                });
+            });
+        });
+        addComponent(createCard);
+
         GUIButton exit = new GUIButton(windowWidth - 100, windowHeight - 50, 100, 50);
         try {
             exit.setImage(new Image(new FileInputStream("./images/buttons/button_cancel@2x.png")));
@@ -117,5 +208,15 @@ public class MainMenu extends Menu {
         exit.setText("Exit");
         addComponent(exit);
         exit.setOnMouseClicked(e -> System.exit(0));
+    }
+
+    private String revertCase(String s) {
+        return s.replaceAll(" ", "_").toUpperCase();
+    }
+
+    private String fixCase(String enumConst) {
+        enumConst = enumConst.replaceAll("_", " ").toLowerCase();
+        enumConst = enumConst.substring(0, 1).toUpperCase() + enumConst.substring(1);
+        return enumConst;
     }
 }
