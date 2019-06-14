@@ -56,7 +56,7 @@ public class Menu {
     private Media sound = new Media(new File("./sfx/sfx_ui_menu_hover.m4a").toURI().toString());
 
     private Optional[] gameMode = new Optional[]{Optional.empty(), Optional.empty()};
-    private MediaPlayer backGroundMedia = new MediaPlayer(new Media(new File("music/mainmenu_v2c_looping.m4a").toURI().toString()));
+//    private MediaPlayer backGroundMedia = new MediaPlayer(new Media(new File("music/mainmenu_v2c_looping.m4a").toURI().toString()));
     private ComboBox<String> choiceBox;
     private Stage getListItem;
     private Label getListButton;
@@ -66,8 +66,8 @@ public class Menu {
     private ImageView popUpButtonImage;
 
     private void playMedia() {
-        backGroundMedia.play();
-        backGroundMedia.setOnEndOfMedia(() -> backGroundMedia.seek(Duration.ZERO));
+//        backGroundMedia.play();
+//        backGroundMedia.setOnEndOfMedia(() -> backGroundMedia.seek(Duration.ZERO));
     }
 
     public Menu() {
@@ -94,9 +94,9 @@ public class Menu {
     }
 
     protected void setSound(String musicAddress) {
-        backGroundMedia.stop();
-        backGroundMedia = new MediaPlayer(new Media(new File(musicAddress).toURI().toString()));
-        playMedia();
+//        backGroundMedia.stop();
+//        backGroundMedia = new MediaPlayer(new Media(new File(musicAddress).toURI().toString()));
+//        playMedia();
     }
 
     int getId() {

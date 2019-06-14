@@ -354,8 +354,24 @@ public class GameMenu extends Menu {
         int turnNumber = 0;
 
         String[] shengdeShow = getUIOutputAsString("shengdebao").split("\\n");
+
+
+
+        System.err.println("sheng de show koofti");
+        for (int i = 0; i < shengdeShow.length; i++)
+            System.err.println(i + " : " + shengdeShow[i]);
+        System.err.println("out shenggdeshow ended");
+
         for (int i = 0; i < shengdeShow.length; i++) {
             if (i == 0) {
+                System.err.println("ye chize salem");
+                System.err.println("c" + shengdeShow[i]);
+                System.err.println("c" + shengdeShow[i] + "C");
+                System.err.println("c" + shengdeShow[i]);
+                System.err.println("!!" + shengdeShow[i] + "!!");
+                System.err.println("out put kardam lashi ro");
+                String ttt = shengdeShow[i].substring(13);
+                System.err.println("!!" + ttt + "!!");
                 turnNumber = Integer.parseInt(shengdeShow[i].replaceFirst("Turn number: ", ""));
             } else if (i == 1) {
                 Pattern pattern = Pattern.compile("(.+) Mana\\((\\d+)\\) deck\\((\\d+)\\) hand:.*");
