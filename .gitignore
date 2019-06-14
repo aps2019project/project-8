@@ -88,3 +88,9 @@ fabric.properties
 project-8.iml
 /src/UITest.java
 src/UITest.java
+export/
+gameData/ManualFeatureInputLogs/namae.txt
+gameData/SpellCards/namae.json
+src/Test.java
+tmp.txt
+useless/
