@@ -17,6 +17,8 @@ public class Collection {
     }
 
     public void addCollectionItem(CollectionItem collectionItem) {
+        if (collectionItem == null)
+            return;
         collectionItems.put(getNewID(), collectionItem);
     }
 

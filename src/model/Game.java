@@ -119,7 +119,7 @@ public class Game extends InGameMenu {
             if (isPathEmpty(selectedUnit.getX(), selectedUnit.getY(), x, y, getCurrentPlayer())) {
                 Cell currentCell = map.getGrid()[selectedUnit.getX()][selectedUnit.getY()];
                 Cell destinationCell = map.getGrid()[x][y];
-                if (destinationCell.getContent() != null && destinationCell.getContent() instanceof Collectible) {
+                if (destinationCell.getContent() instanceof Collectible) {
                     Collectible collectible = (Collectible) destinationCell.getContent();
                     collectible.setCollectionItemID(getNewID(collectible));
                     getCurrentPlayer().addCollectible(collectible);
@@ -176,16 +176,6 @@ public class Game extends InGameMenu {
         }
         for (Buff buff : unit.getBuffs()) {
             unit.receiveDamage(buff.getPoison());
-        }
-        if (unit.calculateHP() <= 0) {
-            checkOnDeath(unit);
-        }
-    }
-
-    private void handleFireCell(Unit unit) {
-        Cell cell = map.getCell(unit.getX(), unit.getY());
-        for (Buff buff : cell.getEffects()) {
-            unit.addBuff(Buff.newFireBuff(buff.getEffectHp()));
         }
         if (unit.calculateHP() <= 0) {
             checkOnDeath(unit);
@@ -570,15 +560,20 @@ public class Game extends InGameMenu {
                 for (Buff buff : spell.getBuffs()) {
                     if (!buff.isPositiveBuff() && isSpellImmune)
                         continue;
-                    unit.addBuff(new Buff(buff));
+                    if (buff.getAllegiance() == Buff.Allegiance.FRIENDLY && unit.getPlayer() == player)
+                        unit.addBuff(new Buff(buff));
+                    else if (buff.getAllegiance() == Buff.Allegiance.ENEMY && unit.getPlayer() != player)
+                        unit.addBuff(new Buff(buff));
+                    else if (buff.getAllegiance() == Buff.Allegiance.NONE)
+                        unit.addBuff(new Buff(buff));
                 }
             }
         }
     }
 
-    private void castSpellOnCell(Spell spell, Cell cell) {
+    private void castSpellOnCell(Spell spell, Cell cell, Player player) {
         for (Buff buff : spell.getBuffs()) {
-            cell.addEffect(new Buff(buff));
+            cell.addEffect(new Buff(buff), player);
         }
     }
 
@@ -588,7 +583,7 @@ public class Game extends InGameMenu {
                 castSpellOnCellUnit(castingUnit, spell, cell, player);
                 break;
             case CELL:
-                castSpellOnCell(spell, cell);
+                castSpellOnCell(spell, cell, player);
                 break;
         }
     }
@@ -1088,8 +1083,10 @@ public class Game extends InGameMenu {
                 }
                 cell.getEffects().forEach(Buff::decrementDuration);
                 for (int k = cell.getEffects().size() - 1; k >= 0; k--)
-                    if (cell.getEffects().get(k).getDuration() <= 0)
+                    if (cell.getEffects().get(k).getDuration() <= 0) {
                         cell.getEffects().remove(cell.getEffects().get(k));
+                        cell.getCasters().remove(cell.getCasters().get(k));
+                    }
             }
 
         // can move and can attack for all units
@@ -1117,17 +1114,33 @@ public class Game extends InGameMenu {
     }
 
     private void addFire(Cell cell, Unit unit) {
-        cell.getEffects().forEach(o -> {
-            if (o.getEffectHp() != 0)
-                unit.addBuff(Buff.newFireBuff(o.getEffectHp()));
-        });
+        for (int i = 0; i < cell.getEffects().size(); i++) {
+            Buff o = cell.getEffects().get(i);
+            Player caster = cell.getCasters().get(i);
+            if (o.getEffectHp() != 0) {
+                if (o.getAllegiance() == Buff.Allegiance.FRIENDLY && unit.getPlayer() == caster)
+                    unit.addBuff(Buff.newFireBuff(o.getEffectHp()));
+                else if (o.getAllegiance() == Buff.Allegiance.ENEMY && unit.getPlayer() != caster)
+                    unit.addBuff(Buff.newFireBuff(o.getEffectHp()));
+                else if (o.getAllegiance() == Buff.Allegiance.NONE)
+                    unit.addBuff(Buff.newFireBuff(o.getEffectHp()));
+            }
+        }
     }
 
     private void addPoison(Cell cell, Unit unit) {
-        cell.getEffects().forEach(o -> {
-            if (o.getPoison() != 0)
-                unit.addBuff(Buff.newPoisonBuff(o.getPoison()));
-        });
+        for (int i = 0; i < cell.getEffects().size(); i++) {
+            Buff o = cell.getEffects().get(i);
+            Player caster = cell.getCasters().get(i);
+            if (o.getPoison() != 0) {
+                if (o.getAllegiance() == Buff.Allegiance.FRIENDLY && unit.getPlayer() == caster)
+                    unit.addBuff(Buff.newPoisonBuff(o.getPoison()));
+                else if (o.getAllegiance() == Buff.Allegiance.ENEMY && unit.getPlayer() != caster)
+                    unit.addBuff(Buff.newPoisonBuff(o.getPoison()));
+                else if (o.getAllegiance() == Buff.Allegiance.NONE)
+                    unit.addBuff(Buff.newPoisonBuff(o.getPoison()));
+            }
+        }
     }
 
     public boolean selectCollectible(String collectibleID) {

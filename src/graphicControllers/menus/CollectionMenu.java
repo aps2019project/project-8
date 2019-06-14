@@ -20,6 +20,19 @@ import java.util.stream.Collectors;
 
 public class CollectionMenu extends Menu {
     private static final String DASH = " - ";
+    private final GUIButton show;
+    private final GUIButton search;
+    private final GUIButton importButton;
+    private final GUIButton save;
+    private final GUIButton exportButton;
+    private final GUIButton createDeck;
+    private final GUIButton deleteDeck;
+    private final GUIButton addCard;
+    private final GUIButton removeCard;
+    private final GUIButton validateDeck;
+    private final GUIButton select;
+    private final GUIButton showAllDecks;
+    private final GUIButton showDeck;
 
     public CollectionMenu() {
         super(Id.COLLECTION_MENU, "Collection Menu", windowDefaultWidth, windowDefaultHeight);
@@ -39,7 +52,7 @@ public class CollectionMenu extends Menu {
         } catch (FileNotFoundException ignored) {
         }
 
-        GUIButton show = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
+        show = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
                 / 2 - 50.0 / 2 - 2 * 10 - 2 * 50, 170, 50);
         try {
             show.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
@@ -48,6 +61,163 @@ public class CollectionMenu extends Menu {
         } catch (FileNotFoundException ignored) {
         }
         show.setText("Show");
+        addComponent(show);
+
+        search = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
+                / 2 - 50.0 / 2 - 10 - 50, 170, 50);
+        try {
+            search.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+            search.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+            search.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+        } catch (FileNotFoundException ignored) {
+        }
+        search.setText("Search");
+        addComponent(search);
+
+        save = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
+                / 2 - 50.0 / 2, 170, 50);
+        try {
+            save.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+            save.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+            save.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+        } catch (FileNotFoundException ignored) {
+        }
+        save.setText("Save");
+        addComponent(save);
+
+        importButton = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
+                / 2 - 50.0 / 2 + 10 + 50, 170, 50);
+        try {
+            importButton.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+            importButton.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+            importButton.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+        } catch (FileNotFoundException ignored) {
+        }
+        importButton.setText("Import");
+        addComponent(importButton);
+
+        exportButton = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
+                / 2 - 50.0 / 2 + 2 * 10 + 2 * 50, 170, 50);
+        try {
+            exportButton.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+            exportButton.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+            exportButton.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+        } catch (FileNotFoundException ignored) {
+        }
+        exportButton.setText("Export");
+        addComponent(exportButton);
+
+        createDeck = new GUIButton(windowWidth / 2 - 170.0 / 2 + windowWidth / 3, windowHeight
+                / 2 - 50.0 / 2 - 2 * 10 - 2 * 50, 170, 50);
+        try {
+            createDeck.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+            createDeck.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+            createDeck.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+        } catch (FileNotFoundException ignored) {
+        }
+        createDeck.setText("Create");
+        addComponent(createDeck);
+
+        deleteDeck = new GUIButton(windowWidth / 2 - 170.0 / 2 + windowWidth / 3, windowHeight
+                / 2 - 50.0 / 2 - 10 - 50, 170, 50);
+        try {
+            deleteDeck.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+            deleteDeck.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+            deleteDeck.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+        } catch (FileNotFoundException ignored) {
+        }
+        deleteDeck.setText("Delete");
+        addComponent(deleteDeck);
+
+        addCard = new GUIButton(windowWidth / 2 - 170.0 / 2 + windowWidth / 3, windowHeight
+                / 2 - 50.0 / 2, 170, 50);
+        try {
+            addCard.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+            addCard.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+            addCard.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+        } catch (FileNotFoundException ignored) {
+        }
+        addCard.setText("Add");
+        addComponent(addCard);
+
+        removeCard = new GUIButton(windowWidth / 2 - 170.0 / 2 + windowWidth / 3, windowHeight
+                / 2 - 50.0 / 2 + 10 + 50, 170, 50);
+        try {
+            removeCard.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+            removeCard.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+            removeCard.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+        } catch (FileNotFoundException ignored) {
+        }
+        removeCard.setText("Remove");
+        addComponent(removeCard);
+
+        validateDeck = new GUIButton(windowWidth / 2 - 170.0 / 2 - windowWidth / 3, windowHeight
+                / 2 - 50.0 / 2 - 10 - 50, 170, 50);
+        try {
+            validateDeck.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+            validateDeck.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+            validateDeck.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+        } catch (FileNotFoundException ignored) {
+        }
+        validateDeck.setText("Validate");
+        addComponent(validateDeck);
+
+        select = new GUIButton(windowWidth / 2 - 170.0 / 2 - windowWidth / 3, windowHeight
+                / 2 - 50.0 / 2, 170, 50);
+        try {
+            select.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+            select.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+            select.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+        } catch (FileNotFoundException ignored) {
+        }
+        select.setText("Select");
+        addComponent(select);
+
+        showAllDecks = new GUIButton(windowWidth / 2 - 170.0 / 2 - windowWidth / 3, windowHeight
+                / 2 - 50.0 / 2 + 10 + 50, 170, 50);
+        try {
+            showAllDecks.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+            showAllDecks.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+            showAllDecks.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+        } catch (FileNotFoundException ignored) {
+        }
+        showAllDecks.setText("Show All");
+        addComponent(showAllDecks);
+
+        showDeck = new GUIButton(windowWidth / 2 - 170.0 / 2 - windowWidth / 3, windowHeight
+                / 2 - 50.0 / 2 + 2 * 10 + 2 * 50, 170, 50);
+        try {
+            showDeck.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+            showDeck.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+            showDeck.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+        } catch (FileNotFoundException ignored) {
+        }
+        showDeck.setText("Show Deck");
+        addComponent(showDeck);
+
+        GUIButton back = new GUIButton(windowWidth / 2 - 100.0 / 2, windowHeight - 50,
+                100, 50);
+        try {
+            back.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+            back.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+            back.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+        } catch (FileNotFoundException ignored) {
+        }
+        back.setText("Back");
+        back.setOnMouseClicked(e -> {
+            UI.decide("exit");
+            MenuManager.getInstance().setCurrentMenu(Id.MAIN_MENU);
+        });
+        addComponent(back);
+    }
+
+    private int showIndexedCollectionItemWithPrice(int index, CollectionItem collectionItem, String tradeKind, StringBuilder stringBuilder) {
+        stringBuilder.append(index++ + " : " + collectionItem + DASH + tradeKind + " Cost : " + collectionItem.getPrice() + "\n");
+        return index;
+    }
+
+    @Override
+    public void refresh() {
         show.setOnMouseClicked(e -> {
             UI.decide("show");
             Collection<CollectionItem> collectionItems = UI.getAccount().getCollectionItems().values();
@@ -77,17 +247,7 @@ public class CollectionMenu extends Menu {
             }
             showWidePopUp(stringBuilder.toString());
         });
-        addComponent(show);
 
-        GUIButton search = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
-                / 2 - 50.0 / 2 - 10 - 50, 170, 50);
-        try {
-            search.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
-            search.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            search.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
-        } catch (FileNotFoundException ignored) {
-        }
-        search.setText("Search");
         search.setOnMouseClicked(e -> {
             Optional<String> name = popUpGetList(UI.getAccount().getCollectionItems().values().stream().map(CollectionItem::getName).distinct().sorted().collect(Collectors.toList()), "Search", "Card name | item name");
             if (name.isPresent()) {
@@ -97,32 +257,7 @@ public class CollectionMenu extends Menu {
                 showPopUp(stringBuilder.toString());
             }
         });
-        addComponent(search);
 
-        GUIButton save = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
-                / 2 - 50.0 / 2, 170, 50);
-        try {
-            save.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
-            save.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            save.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
-        } catch (FileNotFoundException ignored) {
-        }
-        save.setText("Save");
-        save.setOnMouseClicked(e -> {
-            showPopUp("Successfully saved account.");
-            UI.decide("save");
-        });
-        addComponent(save);
-
-        GUIButton importButton = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
-                / 2 - 50.0 / 2 + 10 + 50, 170, 50);
-        try {
-            importButton.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
-            importButton.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            importButton.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
-        } catch (FileNotFoundException ignored) {
-        }
-        importButton.setText("Import");
         importButton.setOnMouseClicked(e -> {
             ArrayList<Object> fileNames = new ArrayList<>();
             for (File file : new File("./export").listFiles())
@@ -133,17 +268,12 @@ public class CollectionMenu extends Menu {
                 showPopUp("Deck successfully imported.");
             });
         });
-        addComponent(importButton);
 
-        GUIButton exportButton = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
-                / 2 - 50.0 / 2 + 2 * 10 + 2 * 50, 170, 50);
-        try {
-            exportButton.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
-            exportButton.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            exportButton.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
-        } catch (FileNotFoundException ignored) {
-        }
-        exportButton.setText("Export");
+        save.setOnMouseClicked(e -> {
+            showPopUp("Successfully saved account.");
+            UI.decide("save");
+        });
+
         exportButton.setOnMouseClicked(e -> {
             if (UI.getAccount().getMainDeck() == null) {
                 showPopUp("You have no main deck.");
@@ -159,17 +289,7 @@ public class CollectionMenu extends Menu {
                         showPopUp("Deck successfully exported to " + file.getName().split("\\.")[0]);
             }
         });
-        addComponent(exportButton);
 
-        GUIButton createDeck = new GUIButton(windowWidth / 2 - 170.0 / 2 + windowWidth / 3, windowHeight
-                / 2 - 50.0 / 2 - 2 * 10 - 2 * 50, 170, 50);
-        try {
-            createDeck.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
-            createDeck.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            createDeck.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
-        } catch (FileNotFoundException ignored) {
-        }
-        createDeck.setText("Create");
         createDeck.setOnMouseClicked(e -> {
             Optional<String> deckName = popUpGetText("Deck name", "Create");
             if (deckName.isPresent()) {
@@ -180,17 +300,7 @@ public class CollectionMenu extends Menu {
                 UI.decide("create deck " + deckName.orElse(""));
             }
         });
-        addComponent(createDeck);
 
-        GUIButton deleteDeck = new GUIButton(windowWidth / 2 - 170.0 / 2 + windowWidth / 3, windowHeight
-                / 2 - 50.0 / 2 - 10 - 50, 170, 50);
-        try {
-            deleteDeck.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
-            deleteDeck.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            deleteDeck.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
-        } catch (FileNotFoundException ignored) {
-        }
-        deleteDeck.setText("Delete");
         deleteDeck.setOnMouseClicked(e -> {
             Optional<String> getList = popUpGetList(UI.getAccount().getDecks().stream().map(Deck::getDeckName).sorted().collect(Collectors.toList()), "Delete", "Deck name");
             getList.ifPresent(s -> {
@@ -198,64 +308,33 @@ public class CollectionMenu extends Menu {
                 showPopUp("Deck successfully deleted.");
             });
         });
-        addComponent(deleteDeck);
 
-        GUIButton addCard = new GUIButton(windowWidth / 2 - 170.0 / 2 + windowWidth / 3, windowHeight
-                / 2 - 50.0 / 2, 170, 50);
-        try {
-            addCard.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
-            addCard.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            addCard.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
-        } catch (FileNotFoundException ignored) {
-        }
-        addCard.setText("Add");
         addCard.setOnMouseClicked(e -> {
-            popUpGetList(UI.getAccount().getCollection().getCollectionItems().keySet().stream().mapToInt(Integer::parseInt).sorted().mapToObj(String::valueOf).collect(Collectors.toList()), "Select Card", "Card ID | Hero ID").ifPresent(s -> {
-                popUpGetList(UI.getAccount().getDecks().stream().filter(d -> {
-                    CollectionItem collectionItem = UI.getAccount().getCollectionItems().get(s);
-                    if (d.hasCollectionItem(s))
-                        return false;
-                    if (collectionItem instanceof Hero && d.hasHero())
-                        return false;
-                    if (collectionItem instanceof Usable && d.hasItem())
-                        return false;
-                    return !d.isFull();
-                }).map(Deck::getDeckName).sorted().collect(Collectors.toList()), "Select Deck", "Deck name").ifPresent(d -> {
-                    UI.decide("add " + s + " to deck " + d);
-                    showPopUp("Collection item successfully added to deck");
-                });
-            });
+            popUpGetList(UI.getAccount().getCollection().getCollectionItems().keySet().stream().mapToInt(Integer::parseInt).sorted().mapToObj(String::valueOf).collect(Collectors.toList()), "Select Card", "Card ID | Hero ID").ifPresent(s ->
+                    popUpGetList(UI.getAccount().getDecks().stream().filter(d -> {
+                        CollectionItem collectionItem = UI.getAccount().getCollectionItems().get(s);
+                        if (d.hasCollectionItem(s))
+                            return false;
+                        if (collectionItem instanceof Hero && d.hasHero())
+                            return false;
+                        if (collectionItem instanceof Usable && d.hasItem())
+                            return false;
+                        return !d.isFull();
+                    }).map(Deck::getDeckName).sorted().collect(Collectors.toList()), "Select Deck", "Deck name").ifPresent(d -> {
+                        UI.decide("add " + s + " to deck " + d);
+                        showPopUp("Collection item successfully added to deck");
+                    }));
         });
-        addComponent(addCard);
 
-        GUIButton removeCard = new GUIButton(windowWidth / 2 - 170.0 / 2 + windowWidth / 3, windowHeight
-                / 2 - 50.0 / 2 + 10 + 50, 170, 50);
-        try {
-            removeCard.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
-            removeCard.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            removeCard.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
-        } catch (FileNotFoundException ignored) {
-        }
-        removeCard.setText("Remove");
         removeCard.setOnMouseClicked(e -> {
             popUpGetList(UI.getAccount().getCollection().getCollectionItems().keySet().stream().mapToInt(Integer::parseInt).sorted().mapToObj(String::valueOf).collect(Collectors.toList()), "Select Card", "Card ID | Hero ID").ifPresent(s -> {
                 popUpGetList(UI.getAccount().getDecks().stream().filter(d -> d.hasCollectionItem(s)).map(Deck::getDeckName).sorted().collect(Collectors.toList()), "Select Deck", "Deck name").ifPresent(d -> {
                     UI.decide("remove " + s + " from deck " + d);
-                    showPopUp("Collection item successfully added to deck");
+                    showPopUp("Collection item successfully removed to deck");
                 });
             });
         });
-        addComponent(removeCard);
 
-        GUIButton validateDeck = new GUIButton(windowWidth / 2 - 170.0 / 2 - windowWidth / 3, windowHeight
-                / 2 - 50.0 / 2 - 10 - 50, 170, 50);
-        try {
-            validateDeck.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
-            validateDeck.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            validateDeck.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
-        } catch (FileNotFoundException ignored) {
-        }
-        validateDeck.setText("Validate");
         validateDeck.setOnMouseClicked(e -> {
             popUpGetList(UI.getAccount().getDecks().stream().map(Deck::getDeckName).collect(Collectors.toList()), "Validate", "Deck name").ifPresent(s -> {
                 if (UI.getAccount().getDeck(s).isValid())
@@ -265,17 +344,7 @@ public class CollectionMenu extends Menu {
                 UI.decide("validate deck " + s);
             });
         });
-        addComponent(validateDeck);
 
-        GUIButton select = new GUIButton(windowWidth / 2 - 170.0 / 2 - windowWidth / 3, windowHeight
-                / 2 - 50.0 / 2, 170, 50);
-        try {
-            select.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
-            select.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            select.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
-        } catch (FileNotFoundException ignored) {
-        }
-        select.setText("Select");
         select.setOnMouseClicked(e -> popUpGetList(UI.getAccount().getDecks().stream().map(Deck::getDeckName).collect(Collectors.toList()), "Select", "Deck name").ifPresent(s -> {
             if (UI.getAccount().getDeck(s).isValid()) {
                 showPopUp("Main deck successfully changed.");
@@ -283,17 +352,7 @@ public class CollectionMenu extends Menu {
                 showPopUp("The deck is invalid.");
             UI.decide("select deck " + s);
         }));
-        addComponent(select);
 
-        GUIButton showAllDecks = new GUIButton(windowWidth / 2 - 170.0 / 2 - windowWidth / 3, windowHeight
-                / 2 - 50.0 / 2 + 10 + 50, 170, 50);
-        try {
-            showAllDecks.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
-            showAllDecks.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            showAllDecks.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
-        } catch (FileNotFoundException ignored) {
-        }
-        showAllDecks.setText("Show All");
         showAllDecks.setOnMouseClicked(e -> {
             ArrayList<Deck> decks = UI.getAccount().getDecks();
             if (decks.isEmpty()) {
@@ -309,43 +368,12 @@ public class CollectionMenu extends Menu {
             showWidePopUp(stringBuilder.toString());
             UI.decide("show all decks");
         });
-        addComponent(showAllDecks);
 
-        GUIButton showDeck = new GUIButton(windowWidth / 2 - 170.0 / 2 - windowWidth / 3, windowHeight
-                / 2 - 50.0 / 2 + 2 * 10 + 2 * 50, 170, 50);
-        try {
-            showDeck.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
-            showDeck.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            showDeck.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
-        } catch (FileNotFoundException ignored) {
-        }
-        showDeck.setText("Show Deck");
         showDeck.setOnMouseClicked(e -> {
             popUpGetList(UI.getAccount().getDecks().stream().map(Deck::getDeckName).collect(Collectors.toList()), "Select", "Deck name").ifPresent(s -> {
                 showWidePopUp(UI.getAccount().getDeck(s).toString());
                 UI.decide("show deck " + s);
             });
         });
-        addComponent(showDeck);
-
-        GUIButton back = new GUIButton(windowWidth / 2 - 100.0 / 2, windowHeight - 50,
-                100, 50);
-        try {
-            back.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
-            back.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
-            back.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
-        } catch (FileNotFoundException ignored) {
-        }
-        back.setText("Back");
-        back.setOnMouseClicked(e -> {
-            UI.decide("exit");
-            MenuManager.getInstance().setCurrentMenu(Id.MAIN_MENU);
-        });
-        addComponent(back);
-    }
-
-    private int showIndexedCollectionItemWithPrice(int index, CollectionItem collectionItem, String tradeKind, StringBuilder stringBuilder) {
-        stringBuilder.append(index++ + " : " + collectionItem + DASH + tradeKind + " Cost : " + collectionItem.getPrice() + "\n");
-        return index;
     }
 }

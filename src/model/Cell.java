@@ -7,20 +7,20 @@ public class Cell {
     private Object content;
     private Player objectOwner;
     private ArrayList<Buff> effects;
+    private ArrayList<Player> casters;
     private int numberOfFlags;
 
     public Cell() {
         content = null;
         objectOwner = null;
         effects = new ArrayList<>();
+        casters = new ArrayList<>();
         numberOfFlags = 0;
     }
 
-    void addEffect(Buff buff) {
+    void addEffect(Buff buff, Player player) {
         effects.add(buff);
-    }
-
-    void passTurn() {
+        casters.add(player);
     }
 
     Object getContent() {
@@ -33,10 +33,6 @@ public class Cell {
 
     public boolean hasContent() {
         return content != null;
-    }
-
-    void modifyFlags(int number) {
-
     }
 
     ArrayList<Buff> getEffects() {
@@ -56,7 +52,6 @@ public class Cell {
         objectOwner = player;
     }
 
-
     @Override
     public String toString() {
         return (content == null ? "NONE" : "FULL");
@@ -75,5 +70,9 @@ public class Cell {
         if (numberOfFlags < 0) {
             numberOfFlags = 0;
         }
+    }
+
+    public ArrayList<Player> getCasters() {
+        return casters;
     }
 }

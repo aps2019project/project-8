@@ -117,6 +117,8 @@ public class Shop extends Menu {
     }
 
     public static void load() {
+        collectibles.clear();
+        collectionItems.clear();
         try {
             for (File file : new File("./gameData/Collectibles/").listFiles()) {
                 YaGson yaGson = new YaGson();

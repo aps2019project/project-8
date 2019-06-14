@@ -184,9 +184,10 @@ public class Menu {
 
     public void refresh() {}
 
-    private void setUpGetText() {
+    private void setUpGetText(String prompt) {
         textField = new TextField();
         getText = new Stage();
+        getText.setTitle(prompt);
         Group group = new Group();
         VBox vBox = new VBox();
         vBox.setFillWidth(true);
@@ -206,7 +207,9 @@ public class Menu {
                 new MediaPlayer(sound).play();
             });
             button.setOnMouseClicked(e -> {
-                text = Optional.of(textField.getText());
+                if (!textField.getText().isEmpty()) {
+                    text = Optional.of(textField.getText());
+                }
                 textField.clear();
                 getText.close();
             });
@@ -456,7 +459,7 @@ public class Menu {
     }
 
     protected Optional<String> popUpGetText(String prompt, String buttonText) {
-        setUpGetText();
+        setUpGetText(prompt);
         text = Optional.empty();
         textField.setPromptText(prompt);
         button.setText(buttonText);

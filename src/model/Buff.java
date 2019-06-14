@@ -9,6 +9,8 @@ public class Buff {
     private boolean stun;
     private boolean disarm;
     private boolean dispellable;
+    private int delay = 0;
+    private Allegiance allegiance = Allegiance.NONE;
 
     // Constructor for BuffBuilder
     public Buff(int duration, int holy, int poison, int effectHp, int effectAp,
@@ -33,6 +35,7 @@ public class Buff {
         this.stun = buff.stun;
         this.disarm = buff.disarm;
         this.dispellable = buff.dispellable;
+        this.delay = buff.delay;
     }
 
     public static Buff newPoisonBuff(int poison) {
@@ -44,6 +47,7 @@ public class Buff {
     }
 
     public void decrementDuration() {
+        delay--;
         duration--;
     }
 
@@ -52,26 +56,38 @@ public class Buff {
     }
 
     int getHoly() {
+        if (delay > 0)
+            return 0;
         return holy;
     }
 
     int getPoison() {
+        if (delay > 0)
+            return 0;
         return poison;
     }
 
     int getEffectHp() {
+        if (delay > 0)
+            return 0;
         return effectHp;
     }
 
     int getEffectAp() {
+        if (delay > 0)
+            return 0;
         return effectAp;
     }
 
     public boolean canStun() {
+        if (delay > 0)
+            return false;
         return stun;
     }
 
     public boolean canDisarm() {
+        if (delay > 0)
+            return false;
         return disarm;
     }
 
@@ -83,6 +99,55 @@ public class Buff {
         if (stun || disarm)
             return false;
         return holy + effectHp + effectAp - poison > 0;
+    }
+
+    public void setDelay(int delay) {
+        this.delay = delay;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("\tbuff duration: ");
+        stringBuilder.append(duration);
+        stringBuilder.append("\n");
+        stringBuilder.append("\tbuff holy: ");
+        stringBuilder.append(holy);
+        stringBuilder.append("\n");
+        stringBuilder.append("\tbuff effect hp: ");
+        stringBuilder.append(effectHp);
+        stringBuilder.append("\n");
+        stringBuilder.append("\tbuff effect ap: ");
+        stringBuilder.append(effectAp);
+        stringBuilder.append("\n");
+        stringBuilder.append("\tbuff poison: ");
+        stringBuilder.append(poison);
+        stringBuilder.append("\n");
+        stringBuilder.append("\tbuff disarm: ");
+        stringBuilder.append(disarm);
+        stringBuilder.append("\n");
+        stringBuilder.append("\tbuff stun: ");
+        stringBuilder.append(stun);
+        stringBuilder.append("\n");
+        return stringBuilder.toString();
+    }
+
+    public void setFriendly() {
+        allegiance = Allegiance.FRIENDLY;
+    }
+
+    public void setEnemy() {
+        allegiance = Allegiance.ENEMY;
+    }
+
+    public Allegiance getAllegiance() {
+        return allegiance;
+    }
+
+    enum Allegiance {
+        NONE,
+        FRIENDLY,
+        ENEMY
     }
 
     public static class BuffBuilder {
@@ -138,32 +203,5 @@ public class Buff {
         public Buff build() {
             return new Buff(duration, holy, poison, effectHp, effectAp, stun, disarm, dispellable);
         }
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("\tbuff duration: " );
-        stringBuilder.append(duration);
-        stringBuilder.append("\n");
-        stringBuilder.append("\tbuff holy: ");
-        stringBuilder.append(holy);
-        stringBuilder.append("\n");
-        stringBuilder.append("\tbuff effect hp: ");
-        stringBuilder.append(effectHp);
-        stringBuilder.append("\n");
-        stringBuilder.append("\tbuff effect ap: ");
-        stringBuilder.append(effectAp);
-        stringBuilder.append("\n");
-        stringBuilder.append("\tbuff poison: ");
-        stringBuilder.append(poison);
-        stringBuilder.append("\n");
-        stringBuilder.append("\tbuff disarm: ");
-        stringBuilder.append(disarm);
-        stringBuilder.append("\n");
-        stringBuilder.append("\tbuff stun: ");
-        stringBuilder.append(stun);
-        stringBuilder.append("\n");
-        return stringBuilder.toString();
     }
 }

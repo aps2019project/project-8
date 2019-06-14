@@ -83,16 +83,8 @@ class ManualFeatureAdder {
             dispellable = feedBack.equals("yes");
         }
 
-        ShengdeBaoPrinter.println("Add extra features to buff \"none\" to end!");
-        String command = getInput();
-        while (!command.matches("none")) {
-            command = getInput();
-        }
-
-        ShengdeBaoPrinter.println("buff created");
-
         ShengdeBaoPrinter.undo();
-        return new Buff.BuffBuilder()
+        Buff buff = new Buff.BuffBuilder()
                 .setDuration(duration)
                 .setHoly(holy)
                 .setPoison(poison)
@@ -102,6 +94,21 @@ class ManualFeatureAdder {
                 .setDisarm(disarm)
                 .setDispellable(dispellable)
                 .build();
+
+        ShengdeBaoPrinter.println("Add extra features to buff \"none\" to end!");
+        String command = getInput();
+        while (!command.matches("none")) {
+            command = getInput();
+            if (command.matches("friendly")) {
+                buff.setFriendly();
+            } else if (command.matches("enemy")) {
+                buff.setEnemy();
+            } else if (command.matches("\\d+")) {
+                buff.setDelay(Integer.parseInt(command));
+            }
+        }
+        ShengdeBaoPrinter.println("buff created");
+        return buff;
     }
 
     private static Spell addSpell() throws Exception {
