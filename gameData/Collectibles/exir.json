@@ -16,7 +16,9 @@
         "effectAp": 0,
         "stun": false,
         "disarm": false,
-        "dispellable": false
+        "dispellable": false,
+        "delay": 0,
+        "allegiance": "NONE"
       },
       {
         "duration": 1000000,
@@ -26,7 +28,9 @@
         "effectAp": 3,
         "stun": false,
         "disarm": false,
-        "dispellable": true
+        "dispellable": true,
+        "delay": 0,
+        "allegiance": "NONE"
       }
     ],
     "canDispel": false,

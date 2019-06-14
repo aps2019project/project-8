@@ -23,7 +23,9 @@
           "effectAp": 1,
           "stun": false,
           "disarm": false,
-          "dispellable": true
+          "dispellable": true,
+          "delay": 0,
+          "allegiance": "NONE"
         }
       ],
       "canDispel": false,
