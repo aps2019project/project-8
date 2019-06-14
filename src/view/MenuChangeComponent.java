@@ -3,6 +3,7 @@ package view;
 import javafx.event.EventHandler;
 
 public interface MenuChangeComponent extends MenuComponent {
+
     int getGoalMenuID();
 
     void setGoalMenuID(int menuID);

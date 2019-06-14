@@ -2,7 +2,7 @@
   "name": "aa",
   "password": "aa",
   "wins": 0,
-  "money": 825750,
+  "money": 825250,
   "collection": {
     "newID": 206,
     "collectionItems": {
@@ -394,16 +394,6 @@
             "ON_ATTACK",
             "ON_ATTACK",
             "ON_ATTACK",
-            "ON_ATTACK",
-            "ON_ATTACK",
-            "ON_ATTACK",
-            "ON_ATTACK",
-            "ON_ATTACK",
-            "ON_ATTACK",
-            "ON_ATTACK",
-            "ON_ATTACK",
-            "ON_ATTACK",
-            "ON_ATTACK",
             "ON_ATTACK"
           ],
           "specialPowers": [
@@ -435,16 +425,6 @@
               "multiplied": false,
               "ignoreHoly": false
             },
-            "@.0",
-            "@.0",
-            "@.0",
-            "@.0",
-            "@.0",
-            "@.0",
-            "@.0",
-            "@.0",
-            "@.0",
-            "@.0",
             "@.0",
             "@.0",
             "@.0",
@@ -3170,11 +3150,9 @@
           "attackPoint": 7,
           "specialPowerTypes": [
             "ON_ATTACK",
-            "ON_ATTACK",
             "ON_ATTACK"
           ],
           "specialPowers": [
-            "@root.collection.collectionItems.10-val.specialPowers.0",
             "@root.collection.collectionItems.10-val.specialPowers.0",
             "@root.collection.collectionItems.10-val.specialPowers.0"
           ],
@@ -5850,9 +5828,18 @@
           "89",
           "175"
         ]
+      },
+      "empty": {
+        "cards": {
+          "@type": "java.util.ArrayDeque",
+          "@val": []
+        },
+        "deckName": "empty",
+        "numberOfTabsOnToString": 0,
+        "collectionItemsIDs": []
       }
     }
   },
-  "mainDeck": "@root.collection.decks.3-val",
+  "mainDeck": "@root.collection.decks.6-val",
   "matchHistory": []
 }

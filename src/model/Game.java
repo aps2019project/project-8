@@ -1325,7 +1325,7 @@ public class Game extends InGameMenu {
         } else {
             System.out.println(players[1].getDeck().getDeckUsableItem().getName());
         }
-
+        System.err.println("done printing this shit");
     }
 
     public int getPrize() {

@@ -8,10 +8,10 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.ColorInput;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import sun.awt.image.ImageAccessException;
 
 
 public class NodeWrapper implements MenuComponent {
+
     private Node value;
 
     public NodeWrapper(Node node) {this.value = node;}
@@ -52,6 +52,7 @@ public class NodeWrapper implements MenuComponent {
         value.setOnMouseEntered(e -> {});
         value.setOnMouseExited(e -> {});
     }
+
     @Override
     public boolean equals(Object object) {
         if (object instanceof NodeWrapper)

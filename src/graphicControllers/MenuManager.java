@@ -88,7 +88,6 @@ public class MenuManager {
         setCurrentMenu(this.currentMenu.getParentMenu());
     }
 
-
     public Menu getCurrentMenu() {
         return currentMenu;
     }
@@ -113,6 +112,4 @@ public class MenuManager {
         stage.setResizable(false);
         stage.show();
     }
-
-
 }

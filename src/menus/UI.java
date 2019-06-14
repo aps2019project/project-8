@@ -411,8 +411,10 @@ public class UI {
                 GameMenu.useCollectible(coordinates[0], coordinates[1]);
             } else if (command.matches(SHOW_NEXT_CARD))
                 GameMenu.showNextCard();
-            else if (command.matches(SHENGDEBAO))
+            else if (command.matches(SHENGDEBAO)) {
+                System.err.println("gayid in sheng de bao maro valla");
                 GameMenu.shengdeShow();
+            }
             else if (command.matches(KILL))
                 GameMenu.kill(command.split(" ")[1]);
             else

@@ -5,8 +5,7 @@ import model.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public interface
-View {
+public interface View {
     void showAccountCreationError();
 
     void showNoSuchAccountError();
