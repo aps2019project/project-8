@@ -1,6 +1,7 @@
 package graphicControllers.menus;
 
 import graphicControllers.Menu;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
@@ -90,27 +91,24 @@ public class AccountMenu extends Menu {
     }
 
     private void setUpQuickStart() {
-        new Thread(() -> {
-            GUIChangeMenuButton guiButton = new GUIChangeMenuButton(windowWidth / 2 - 150, windowHeight - 150, 300, 100);
-            guiButton.setText("QUICK START");
-            try {
-                guiButton.setImage(new Image(new FileInputStream("images/buttons/button_cancel@2x.png")));
-                guiButton.setActiveImage(new Image(new FileInputStream("images/buttons/button_cancel_glow@2x.png")));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            guiButton.setOnMouseClicked(e -> {
-                UI.decide("login aa");
-                UI.decide("aa");
-                UI.decide("battle");
-                UI.decide("singleplayer");
-                UI.decide("story");
-                UI.decide("1");
-                GameMenu.getInstance().refresh();
-            });
-            guiButton.setGoalMenuID(Id.IN_GAME_MENU);
-            addComponent(guiButton);
-        }).start();
+        GUIChangeMenuButton guiButton = new GUIChangeMenuButton(windowWidth / 2 - 150, windowHeight - 150, 300, 100);
+        guiButton.setText("QUICK START");
+        try {
+            guiButton.setImage(new Image(new FileInputStream("images/buttons/button_cancel@2x.png")));
+            guiButton.setActiveImage(new Image(new FileInputStream("images/buttons/button_cancel_glow@2x.png")));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        guiButton.setOnMouseClicked(e -> {
+            UI.decide("login aa");
+            UI.decide("aa");
+            UI.decide("battle");
+            UI.decide("singleplayer");
+            UI.decide("story");
+            UI.decide("1");
+            GameMenu.getInstance().refresh();
+        });
+        guiButton.setGoalMenuID(Id.IN_GAME_MENU);
+        addComponent(guiButton);
     }
-
 }

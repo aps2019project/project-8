@@ -59,7 +59,7 @@ public class Game extends InGameMenu {
         return players[1];
     }
 
-    Player getCurrentPlayer() {
+    public Player getCurrentPlayer() {
         if (turn % 2 == 0) {
             return players[0];
         } else {

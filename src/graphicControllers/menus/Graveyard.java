@@ -3,6 +3,8 @@ package graphicControllers.menus;
 import graphicControllers.Menu;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
+import menus.UI;
+import view.CardView;
 import view.GUIChangeMenuButton;
 
 import java.io.File;
@@ -29,5 +31,10 @@ public class Graveyard extends Menu {
             back.setGoalMenuID(Id.IN_GAME_MENU);
             addComponent(back);
         }).start();
+    }
+
+    @Override
+    public void refresh() {
+        addComponent(new CardView(UI.getAccount().getMainDeck().getHero()).relocate(400, 400));
     }
 }

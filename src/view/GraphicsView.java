@@ -1,14 +1,11 @@
 package view;
 
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.ImagePattern;
 import menus.UI;
 
@@ -59,6 +56,8 @@ public class GraphicsView {
             group.getChildren().add(((NodeWrapper) menuComponent).getValue());
         if (menuComponent instanceof GUIButton)
             ((GUIButton) menuComponent).addInGroup(group);
+        if (menuComponent instanceof CardView)
+            ((CardView) menuComponent).addInGroup(group);
         /**
          * you can add new menu components here
          */
