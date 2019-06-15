@@ -1,8 +1,16 @@
 package view;
 
+import gen.NamesAndTypes;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import model.CollectionItem;
 import model.SpellCard;
 import model.Unit;
@@ -18,34 +26,101 @@ public class CardView implements MenuComponent {
     private static final double BACKGROUND_WIDTH = 201;
     private static final double BACKGROUND_HEIGHT = 268;
 
-    private static final double IMAGE_WIDTH = 50;
-    private static final double IMAGE_HEIGHT = 50;
+    private static final double SYMBOL_WIDTH = 100.5;
+    private static final double SYMBOL_HEIGHT = 134;
 
     private static final double GLOWLINE_WIDTH = 225;
-    private static final double GLOWLINE_HEIGHT = 292;
+    private static final double GLOWLINE_HEIGHT = 290;
 
-    private ArrayList<ImageView> components = new ArrayList();
+    private final StackPane stackPane = new StackPane();
+    private ArrayList<ImageView> components = new ArrayList<>();
 
     public CardView(CollectionItem collectionItem) {
+        stackPane.setMinWidth(SHADOW_WIDTH + 100);
+        stackPane.setPrefWidth(SHADOW_WIDTH + 100);
+        stackPane.setMaxWidth(SHADOW_WIDTH + 100);
+        stackPane.setMinHeight(SHADOW_HEIGHT);
+        stackPane.setPrefHeight(SHADOW_HEIGHT);
+        stackPane.setMaxHeight(SHADOW_HEIGHT);
+        stackPane.setAlignment(Pos.CENTER);
         try {
-            fixComponent(new ImageView(new Image(new FileInputStream("images/cards/card_shadow_map.png"))), SHADOW_WIDTH, SHADOW_HEIGHT);
+            ImageView shadow = new ImageView(new Image(new FileInputStream("images/cards/card_shadow_map.png")));
+            fixComponent(shadow, SHADOW_WIDTH, SHADOW_HEIGHT);
             ImageView background = new ImageView();
-            if (collectionItem instanceof Unit)
-                background.setImage(new Image(new FileInputStream("images/cards/unusable_prismatic_unit@2x.png")));
-            else if (collectionItem instanceof SpellCard)
-                background.setImage(new Image(new FileInputStream("images/cards/unusable_prismatic_spell@2x.png")));
-            else
-                background.setImage(new Image(new FileInputStream("images/cards/unusable_prismatic_artifact@2x.png")));
+            ImageView symbol = new ImageView();
+            setCard(collectionItem, background, symbol);
             fixComponent(background, BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
-            fixComponent(new ImageView(new Image(new FileInputStream("images/gameIcons/gifs/" + collectionItem.getName() + "/breathing.gif"))), IMAGE_WIDTH, IMAGE_HEIGHT);
-            fixComponent(new ImageView(new Image(new FileInputStream("images/cards/card_glow_line_new@2x.png"))), GLOWLINE_WIDTH, GLOWLINE_HEIGHT);
+            fixComponent(symbol, SYMBOL_WIDTH, SYMBOL_HEIGHT);
+            Label name = new Label(fixCase(collectionItem.getName()));
+            name.setTextFill(Color.BLANCHEDALMOND);
+            name.setFont(Font.loadFont(new FileInputStream("./fonts/averta-black-webfont.ttf"), 15));
+            Label type = new Label(fixCase(NamesAndTypes.getType(collectionItem.getName())));
+            type.setTextFill(Color.AQUAMARINE);
+            type.setFont(Font.loadFont(new FileInputStream("./fonts/averta-extrathin-webfont.ttf"), 15));
+            Label description = new Label(collectionItem.getDescription());
+            description.setWrapText(true);
+            description.setTextFill(Color.AQUA);
+            description.setFont(Font.loadFont(new FileInputStream("./fonts/averta-extrathin-webfont.ttf"), 10));
+            description.setMaxWidth(180);
+            description.setAlignment(Pos.CENTER);
+            description.setTextAlignment(TextAlignment.CENTER);
+            ImageView glowLine = new ImageView(new Image(new FileInputStream("images/cards/card_glow_line_new@2x.png")));
+            fixComponent(glowLine, GLOWLINE_WIDTH, GLOWLINE_HEIGHT);
+            stackPane.getChildren().add(shadow);
+            stackPane.getChildren().add(background);
+            stackPane.getChildren().add(symbol);
+            StackPane.setMargin(symbol, new Insets(0, 0, SHADOW_HEIGHT / 2, 0));
+            stackPane.getChildren().add(name);
+            StackPane.setMargin(name, new Insets(0, 0, 30, 0));
+            stackPane.getChildren().add(type);
+            stackPane.getChildren().add(description);
+            StackPane.setMargin(description, new Insets(160, 0, 0, 0));
+            stackPane.getChildren().add(glowLine);
+            StackPane.setMargin(glowLine, new Insets(0, 0, 2, 0));
+            if (collectionItem instanceof Unit) {
+                Label hp = new Label(String.valueOf(((Unit) collectionItem).getHitPoint()));
+                hp.setFont(Font.loadFont(new FileInputStream("./fonts/averta-black-webfont.ttf"), 15));
+                hp.setTextFill(Color.CRIMSON);
+                stackPane.getChildren().add(hp);
+                StackPane.setMargin(hp, new Insets(55, 0, 0, 105));
+                Label ap = new Label(String.valueOf(((Unit) collectionItem).getAttackPoint()));
+                ap.setFont(Font.loadFont(new FileInputStream("./fonts/averta-black-webfont.ttf"), 15));
+                ap.setTextFill(Color.GOLD);
+                stackPane.getChildren().add(ap);
+                StackPane.setMargin(ap, new Insets(55, 105, 0, 0));
+            }
         } catch (FileNotFoundException ignored) {
         }
     }
 
-    private void fixComponent(ImageView shadow, double width, double height) {
-        components.add(shadow);
-        setDimensions(shadow, width, height);
+    public StackPane getStackPane() {
+        return stackPane;
+    }
+
+    private String fixCase(String name) {
+        String string = name.replaceAll("([A-Za-z][a-z]*)", "$1 ").trim();
+        return string.substring(0, 1).toUpperCase() + string.substring(1);
+    }
+
+    private void setCard(CollectionItem collectionItem, ImageView background, ImageView symbol) throws FileNotFoundException {
+        String collectionItemName = collectionItem.getName();
+        String directory = "images/gameIcons/gifs/" + NamesAndTypes.getType(collectionItemName) + "/" + collectionItemName;
+        if (collectionItem instanceof Unit) {
+            background.setImage(new Image(new FileInputStream("images/cards/neutral_prismatic_unit@2x.png")));
+            symbol.setImage(new Image(new FileInputStream(directory + "/breathing.gif")));
+
+        } else if (collectionItem instanceof SpellCard) {
+            background.setImage(new Image(new FileInputStream("images/cards/neutral_prismatic_spell@2x.png")));
+            symbol.setImage(new Image(new FileInputStream(directory + "/actionbar.gif")));
+        } else {
+            background.setImage(new Image(new FileInputStream("images/cards/neutral_prismatic_artifact@2x.png")));
+            symbol.setImage(new Image(new FileInputStream(directory + "/actionbar.gif")));
+        }
+    }
+
+    private void fixComponent(ImageView imageView, double width, double height) {
+        components.add(imageView);
+        setDimensions(imageView, width, height);
     }
 
     private void setDimensions(ImageView glowLine, double width, double height) {
@@ -54,11 +129,15 @@ public class CardView implements MenuComponent {
     }
 
     public CardView relocate(double x, double y) {
-        components.forEach(o -> o.relocate(x - o.getFitWidth() / 2, y - o.getFitHeight() / 2));
+        stackPane.relocate(x, y);
         return this;
     }
 
     public void addInGroup(Group group) {
-        components.forEach(o -> group.getChildren().add(o));
+        group.getChildren().add(stackPane);
+    }
+
+    public void removeFromGroup(Group group) {
+        group.getChildren().remove(stackPane);
     }
 }

@@ -15,6 +15,9 @@ public class Game extends InGameMenu {
     private static final int[] HERO_INITIAL_COLUMN = {0, 8};
     private static final int NUMBER_OF_FLAG_TURNS = 6;
     private static final int NUMBER_OF_COLLECTIBLES = 10;
+    private static final String FRIENDLY = "friendly";
+    private static final String ENEMY = "enemy";
+    private static final String NEITHER = "neither";
 
     private HashMap<Player, ArrayList<Item>> currentItems = new HashMap<>();
     private HashMap<Player, HashMap<Item, Integer>> itemCastingTurns = new HashMap<>();
@@ -560,11 +563,11 @@ public class Game extends InGameMenu {
                 for (Buff buff : spell.getBuffs()) {
                     if (!buff.isPositiveBuff() && isSpellImmune)
                         continue;
-                    if (buff.getAllegiance() == Buff.Allegiance.FRIENDLY && unit.getPlayer() == player)
-                        unit.addBuff(new Buff(buff));
-                    else if (buff.getAllegiance() == Buff.Allegiance.ENEMY && unit.getPlayer() != player)
-                        unit.addBuff(new Buff(buff));
-                    else if (buff.getAllegiance() == Buff.Allegiance.NONE)
+//                    if (buff.getAllegiance().equals(FRIENDLY) && unit.getPlayer() == player)
+//                        unit.addBuff(new Buff(buff));
+//                    else if (buff.getAllegiance().equals(ENEMY) && unit.getPlayer() != player)
+//                        unit.addBuff(new Buff(buff));
+//                    else if (buff.getAllegiance().equals(NEITHER))
                         unit.addBuff(new Buff(buff));
                 }
             }
@@ -1118,11 +1121,11 @@ public class Game extends InGameMenu {
             Buff o = cell.getEffects().get(i);
             Player caster = cell.getCasters().get(i);
             if (o.getEffectHp() != 0) {
-                if (o.getAllegiance() == Buff.Allegiance.FRIENDLY && unit.getPlayer() == caster)
-                    unit.addBuff(Buff.newFireBuff(o.getEffectHp()));
-                else if (o.getAllegiance() == Buff.Allegiance.ENEMY && unit.getPlayer() != caster)
-                    unit.addBuff(Buff.newFireBuff(o.getEffectHp()));
-                else if (o.getAllegiance() == Buff.Allegiance.NONE)
+//                if (o.getAllegiance().equals(FRIENDLY) && unit.getPlayer() == caster)
+//                    unit.addBuff(Buff.newFireBuff(o.getEffectHp()));
+//                else if (o.getAllegiance().equals(ENEMY) && unit.getPlayer() != caster)
+//                    unit.addBuff(Buff.newFireBuff(o.getEffectHp()));
+//                else if (o.getAllegiance().equals(NEITHER))
                     unit.addBuff(Buff.newFireBuff(o.getEffectHp()));
             }
         }
@@ -1133,11 +1136,11 @@ public class Game extends InGameMenu {
             Buff o = cell.getEffects().get(i);
             Player caster = cell.getCasters().get(i);
             if (o.getPoison() != 0) {
-                if (o.getAllegiance() == Buff.Allegiance.FRIENDLY && unit.getPlayer() == caster)
-                    unit.addBuff(Buff.newPoisonBuff(o.getPoison()));
-                else if (o.getAllegiance() == Buff.Allegiance.ENEMY && unit.getPlayer() != caster)
-                    unit.addBuff(Buff.newPoisonBuff(o.getPoison()));
-                else if (o.getAllegiance() == Buff.Allegiance.NONE)
+//                if (o.getAllegiance().equals(FRIENDLY) && unit.getPlayer() == caster)
+//                    unit.addBuff(Buff.newPoisonBuff(o.getPoison()));
+//                else if (o.getAllegiance().equals(ENEMY) && unit.getPlayer() != caster)
+//                    unit.addBuff(Buff.newPoisonBuff(o.getPoison()));
+//                else if (o.getAllegiance().equals(NEITHER))
                     unit.addBuff(Buff.newPoisonBuff(o.getPoison()));
             }
         }
@@ -1155,7 +1158,6 @@ public class Game extends InGameMenu {
             view.showUncastableItemError();
             return;
         }
-        //return null;
         castItem(selectedCollectible, getCurrentPlayer(), row, column, turn);
         checkForDeath();
     }
@@ -1221,19 +1223,11 @@ public class Game extends InGameMenu {
         for (Player player : players)
             if (player != getCurrentPlayer()) {
                 player.getUnits().forEach(view::showUnit);
-//                System.err.println("SDFSD");
-                for (Unit unit : player.getUnits()) {
-//                    System.err.println(unit.getBuffs());
-//                    System.err.println(unit);
-                }
             }
     }
 
     public void showMyMinions() {
         getCurrentPlayer().getUnits().forEach(view::showUnit);
-        for (Unit unit : getCurrentPlayer().getUnits()) {
-//            printSpells(unit);
-        }
     }
 
     public void showCardInfo(String cardID) {

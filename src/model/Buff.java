@@ -1,6 +1,7 @@
 package model;
 
 public class Buff {
+    private String allegiance = new String();
     private int duration;
     private int holy;
     private int poison;
@@ -10,7 +11,6 @@ public class Buff {
     private boolean disarm;
     private boolean dispellable;
     private int delay = 0;
-    private Allegiance allegiance = Allegiance.NONE;
 
     // Constructor for BuffBuilder
     public Buff(int duration, int holy, int poison, int effectHp, int effectAp,
@@ -23,6 +23,7 @@ public class Buff {
         this.stun = stun;
         this.disarm = disarm;
         this.dispellable = dispellable;
+        this.allegiance = "neither";
     }
 
     // Copy constructor
@@ -36,6 +37,7 @@ public class Buff {
         this.disarm = buff.disarm;
         this.dispellable = buff.dispellable;
         this.delay = buff.delay;
+        this.allegiance = buff.allegiance;
     }
 
     public static Buff newPoisonBuff(int poison) {
@@ -133,21 +135,15 @@ public class Buff {
     }
 
     public void setFriendly() {
-        allegiance = Allegiance.FRIENDLY;
+        allegiance = "friendly";
     }
 
     public void setEnemy() {
-        allegiance = Allegiance.ENEMY;
+        allegiance = "enemy";
     }
 
-    public Allegiance getAllegiance() {
+    public String getAllegiance() {
         return allegiance;
-    }
-
-    enum Allegiance {
-        NONE,
-        FRIENDLY,
-        ENEMY
     }
 
     public static class BuffBuilder {
