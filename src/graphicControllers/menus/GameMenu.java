@@ -2,6 +2,7 @@ package graphicControllers.menus;
 
 import gen.NamesAndTypes;
 import graphicControllers.Menu;
+import graphicControllers.MenuManager;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -133,13 +134,13 @@ public class GameMenu extends Menu {
         });
         menuButtons.addMenuComponent(endTurnButton);
 
-        GUIChangeMenuButton mainMenu = new GUIChangeMenuButton(-50 + 20, 100 - 20, 150, 70);
+        GUIButton mainMenu = new GUIButton(-50 + 20, 100 - 20, 150, 70);
         setOnEnterAndExitEffect(mainMenu, "Main Menu", "images/gameIcons/menuButtons/ui_left_glowing.png",
                 "images/gameIcons/menuButtons/ui_left_normal.png");
         mainMenu.setOnMouseClicked(e -> {
             UI.decide("exit");
+            MenuManager.getInstance().setCurrentMenu(Id.MAIN_MENU);
         });
-        mainMenu.setGoalMenuID(Id.MAIN_MENU);
         menuButtons.addMenuComponent(mainMenu);
 
         GUIChangeMenuButton graveyard = new GUIChangeMenuButton(-50 + 150 - 20, 100 - 20, 150, 70);

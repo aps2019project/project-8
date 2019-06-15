@@ -54,7 +54,7 @@ public class Cell {
 
     @Override
     public String toString() {
-        return (content == null ? "NONE" : "FULL");
+        return (content == null ? "NEITHER" : "FULL");
     }
 
     public int getNumberOfFlags() {

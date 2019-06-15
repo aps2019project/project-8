@@ -68,6 +68,8 @@ public class GraphicsView {
             group.getChildren().remove(((NodeWrapper) menuComponent).getValue());
         if (menuComponent instanceof GUIButton)
             ((GUIButton) menuComponent).removeFromGroup(group);
+        if (menuComponent instanceof CardView)
+            ((CardView) menuComponent).removeFromGroup(group);
         /**
          * you can remove menu components here
          */

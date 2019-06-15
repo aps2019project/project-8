@@ -131,7 +131,7 @@ public class Spell {
         return targetType;
     }
 
-    Buff[] getBuffs() {
+    public Buff[] getBuffs() {
         return buffs;
     }
 

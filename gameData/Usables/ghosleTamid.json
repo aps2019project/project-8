@@ -16,6 +16,7 @@
       "gridY": 1,
       "buffs": [
         {
+          "allegiance": "neither",
           "duration": 2,
           "holy": 1,
           "poison": 0,
@@ -24,8 +25,7 @@
           "stun": false,
           "disarm": false,
           "dispellable": true,
-          "delay": 0,
-          "allegiance": "NONE"
+          "delay": 0
         }
       ],
       "canDispel": false,
