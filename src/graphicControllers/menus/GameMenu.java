@@ -585,7 +585,6 @@ public class GameMenu extends Menu {
     }
 
     private ComponentSet makeGridCells(String[][] gridStrings) {
-        //    boolean dragDetect = false;
         ComponentSet grid = new ComponentSet();
         for (int i = 0; i < gridStrings.length; i++)
             for (int j = 0; j < gridStrings[i].length; j++) {
@@ -608,9 +607,16 @@ public class GameMenu extends Menu {
                 ComponentSet cell_content = makeCellContent(i, j, isFriendly, isEnemy, contentCardName, numberOfFlags, poisonEffect, hpEffect);
                 grid.addMenuComponent(cell_content, i + "," + j);
             }
+
+
+        for (int i = 0; i < Map.NUMBER_OF_ROWS; i++) {
+            for (int j = 0; j < Map.NUMBER_OF_COLUMNS; j++) {
+                addCellInteractor(i, j, (ComponentSet) grid.getComponentByID(i + "," + j));
+            }
+        }
+
         grid.relocate(210, 200);
         grid.resize(1.8, 2);
-
 
         getView().getScene().setOnDragDetected(event -> {
             getView().getScene().startFullDrag();
@@ -670,12 +676,16 @@ public class GameMenu extends Menu {
 
         if (contentCardName != null && !contentCardName.equals(".")) {
             ImageView card = getImageViewByCardName(contentCardName, "idle", "gif");
-            card.setFitHeight(30);
-            card.setFitWidth(50);
-            card.relocate(j * 50, i * 30);
+            card.setFitHeight(50);
+            card.setFitWidth(70);
+            card.relocate(j * 50 - 10, i * 30 - 20);
             cell.addMenuComponent(new NodeWrapper(card), "card_content");
         }
 
+        return cell;
+    }
+
+    private void addCellInteractor(int i, int j, ComponentSet cell) {
         try {
             ImageView interactor = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/active_cell.png")));
 
@@ -707,7 +717,11 @@ public class GameMenu extends Menu {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return cell;
+
+    }
+
+    private ComponentSet getCell(int row, int column) {
+        return (ComponentSet) gridCells.getComponentByID(row + "," + column);
     }
 
     private void comboGridChange() {
