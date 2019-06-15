@@ -721,6 +721,21 @@ public class GameMenu extends Menu {
 
         }
 
+        if (numberOfFlags != 0) {
+            try {
+                ImageView flag = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/flag.gif")));
+                flag.setFitHeight(30);
+                flag.setFitWidth(50);
+                flag.relocate(j * 50, i * 30);
+                cell.addMenuComponent(new NodeWrapper(flag));
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            }
+            Label label = new Label(numberOfFlags + "");
+            label.relocate(j * 50 + 20, i * 30 + 5);
+            label.setFont(new Font(12));
+            cell.addMenuComponent(new NodeWrapper(label));
+        }
         try {
             ImageView background = null;
             if (isFriendly) {
