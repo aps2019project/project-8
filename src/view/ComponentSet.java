@@ -17,7 +17,6 @@ import java.util.Map;
 
 public class ComponentSet implements MenuComponent {
     private double x, y;
-    private double lazyX, lazyY;
 
     private transient ArrayList<MenuComponent> components = new ArrayList<>();
 
@@ -72,8 +71,6 @@ public class ComponentSet implements MenuComponent {
     }
 
     public void relocate(double x, double y) {
-        x += lazyX;
-        y += lazyY;
         for (MenuComponent component : components) {
             if (component instanceof NodeWrapper) {
                 Node node = ((NodeWrapper) component).getValue();
@@ -241,6 +238,7 @@ public class ComponentSet implements MenuComponent {
             }
         }
     }
+
 
     public MenuComponent getComponentByID(String id) {
         if (!map.containsKey(id))

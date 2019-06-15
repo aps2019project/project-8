@@ -3,7 +3,9 @@ package graphicControllers.menus;
 import gen.NamesAndTypes;
 import graphicControllers.Menu;
 import graphicControllers.MenuManager;
+import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -340,6 +342,7 @@ public class GameMenu extends Menu {
         if (UI.getGame() == null)
             return;
 
+        stopAnimations();
         if (collectibleComponents != null) {
             removeComponent(collectibleComponents);
             collectibleComponents = null;
@@ -356,7 +359,6 @@ public class GameMenu extends Menu {
         int turnNumber = 0;
 
         String[] shengdeShow = getUIOutputAsString("shengdebao").split("\\n");
-
 
 
         System.err.println("sheng de show koofti");
@@ -446,6 +448,13 @@ public class GameMenu extends Menu {
 
         addComponent(everyThing);
 
+    }
+
+    private void stopAnimations() {
+        for (AnimationTimer animation : animations) {
+            animation.stop();
+        }
+        animations.clear();
     }
 
     private String getFriendlyHeroName() {
@@ -590,7 +599,7 @@ public class GameMenu extends Menu {
         for (int i = 0; i < gridStrings.length; i++)
             for (int j = 0; j < gridStrings[i].length; j++) {
 
-                Pattern pattern = Pattern.compile("(\\[?)((\\+|-|\\()?)(.*)((\\+|-|\\))?)(]?):(\\d+)\\!(\\d+)\\?(\\d+)");
+                Pattern pattern = Pattern.compile("(\\[?)((\\+|-|\\()?)(.*)((\\+|-|\\))?)(]?):(-?\\d+)\\!(-?\\d+)\\?(-?\\d+)");
                 Matcher matcher = pattern.matcher(gridStrings[i][j]);
 
                 boolean isFriendly = false, isEnemy = false;
@@ -648,13 +657,14 @@ public class GameMenu extends Menu {
 
     private ComponentSet makeCellContent(int i, int j, boolean isFriendly, boolean isEnemy, String contentCardName, int numberOfFlags, int poisonEffect, int hpEffect) {
         ComponentSet cell = new ComponentSet();
+        ImageView tile = null;
         try {
-            ImageView imageView = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/tile_normal.png")));
-            imageView.setFitWidth(50);
-            imageView.setFitHeight(30);
-            imageView.relocate(j * 50, i * 30);
-            imageView.setOpacity(0.1);
-            cell.addMenuComponent(new NodeWrapper(imageView), "tile");
+            tile = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/tile_normal.png")));
+            tile.setFitWidth(50);
+            tile.setFitHeight(30);
+            tile.relocate(j * 50, i * 30);
+            tile.setOpacity(0.1);
+            cell.addMenuComponent(new NodeWrapper(tile), "tile");
 
             ImageView background = null;
             if (isFriendly) {
@@ -675,6 +685,48 @@ public class GameMenu extends Menu {
             e.printStackTrace();
         }
 
+
+        if (poisonEffect != 0 && tile != null) {
+
+            try {
+                ImageView effect = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/poison_cell.gif")));
+                effect.setFitWidth(50);
+                effect.setFitHeight(30);
+                effect.relocate(j*50 , i * 30);
+                cell.addMenuComponent(new NodeWrapper(effect));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            Label label = new Label(poisonEffect + "");
+            label.setTextFill(Color.GREENYELLOW);
+            label.relocate(j * 50, i * 30);
+            cell.addMenuComponent(new NodeWrapper(label));
+            startEffectCellAnimation(label);
+
+
+        }
+
+        if (hpEffect != 0 && tile != null) {
+
+            try {
+                ImageView effect = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/hp_cell.gif")));
+                effect.setFitWidth(50);
+                effect.setFitHeight(30);
+                effect.relocate(j*50 , i * 30);
+                cell.addMenuComponent(new NodeWrapper(effect));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            Label label = new Label(hpEffect + "");
+            label.setTextFill(Color.RED);
+            label.relocate(j * 50 + 30, i * 30);
+            cell.addMenuComponent(new NodeWrapper(label));
+            startEffectCellAnimation(label);
+
+        }
+
         if (contentCardName != null && !contentCardName.equals(".")) {
             ImageView card = getImageViewByCardName(contentCardName, "idle", "gif");
             card.setFitHeight(50);
@@ -684,6 +736,48 @@ public class GameMenu extends Menu {
         }
 
         return cell;
+    }
+
+    private void startEffectCellAnimation(Node node) {
+        AnimationTimer animationTimer = new AnimationTimer() {
+            long maxAnimationTime = Long.MAX_VALUE - 1000;
+            long first = -1;
+            long previous;
+            double goalUpY = 60.0;
+            long maxGoUpTime = 1000L * 1000 * 1000 * 3;
+            double movedUp = 0;
+
+            @Override
+            public void handle(long now) {
+                if (first == -1)
+                    first = now;
+                long delta = now - previous;
+                previous = now;
+                now -= first;
+
+                if (now > maxAnimationTime)
+                    stop();
+
+                if (now <= maxGoUpTime) {
+                    node.relocate(node.getLayoutX(), node.getLayoutY() - goalUpY * delta / maxGoUpTime);
+                    movedUp += goalUpY * delta / maxGoUpTime;
+                    node.setOpacity(node.getOpacity() - 0.0005);
+                } else {
+                    first += now;
+                    node.relocate(node.getLayoutX(), node.getLayoutY() + movedUp);
+                    movedUp = 0;
+                    node.setOpacity(1);
+                }
+            }
+        };
+        addAnimation(animationTimer);
+    }
+
+    ArrayList<AnimationTimer> animations = new ArrayList<>();
+
+    private void addAnimation(AnimationTimer animationTimer) {
+        animations.add(animationTimer);
+        animationTimer.start();
     }
 
     private void addCellInteractor(int i, int j, ComponentSet cell) {
