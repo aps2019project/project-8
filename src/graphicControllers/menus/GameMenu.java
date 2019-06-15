@@ -484,14 +484,21 @@ public class GameMenu extends Menu {
     }
 
 
-    private String getCardIDByLocation(int row, int column, String command) {
+    private String getDescriptionByLocation(int row, int column, String command) {
         String[] output = getUIOutputAsString(command).split("\\n");
         for (int i = 0; i < output.length; i++) {
             if (output[i].contains("location: (" + (row + 1) + ", " + (column + 1) + ")")) {
-                return output[i].replaceAll(":.*", "").trim();
+                return output[i];
             }
         }
         return null;
+    }
+
+    private String getCardIDByLocation(int row, int column, String command) {
+        String s = getDescriptionByLocation(row, column, command);
+        if (s == null)
+            return null;
+        return s.replaceAll(":.*", "").trim();
     }
 
     private boolean hasFriendly(int row, int column) {
@@ -666,21 +673,7 @@ public class GameMenu extends Menu {
             tile.setOpacity(0.1);
             cell.addMenuComponent(new NodeWrapper(tile), "tile");
 
-            ImageView background = null;
-            if (isFriendly) {
-                background = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/friendly_background.png")));
-            }
 
-            if (isEnemy) {
-                background = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/opponent_background.png")));
-            }
-
-            if (background != null) {
-                background.setFitWidth(50);
-                background.setFitHeight(30);
-                background.relocate(j * 50, i * 30);
-                cell.addMenuComponent(new NodeWrapper(background), "friendliness");
-            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -692,7 +685,8 @@ public class GameMenu extends Menu {
                 ImageView effect = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/poison_cell.gif")));
                 effect.setFitWidth(50);
                 effect.setFitHeight(30);
-                effect.relocate(j*50 , i * 30);
+                effect.setOpacity(0.5);
+                effect.relocate(j * 50, i * 30);
                 cell.addMenuComponent(new NodeWrapper(effect));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -713,7 +707,7 @@ public class GameMenu extends Menu {
                 ImageView effect = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/hp_cell.gif")));
                 effect.setFitWidth(50);
                 effect.setFitHeight(30);
-                effect.relocate(j*50 , i * 30);
+                effect.relocate(j * 50, i * 30);
                 cell.addMenuComponent(new NodeWrapper(effect));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -725,6 +719,26 @@ public class GameMenu extends Menu {
             cell.addMenuComponent(new NodeWrapper(label));
             startEffectCellAnimation(label);
 
+        }
+
+        try {
+            ImageView background = null;
+            if (isFriendly) {
+                background = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/friendly_background.png")));
+            }
+
+            if (isEnemy) {
+                background = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/opponent_background.png")));
+            }
+
+            if (background != null) {
+                background.setFitWidth(50);
+                background.setFitHeight(30);
+                background.relocate(j * 50, i * 30);
+                cell.addMenuComponent(new NodeWrapper(background), "friendliness");
+            }
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
         }
 
         if (contentCardName != null && !contentCardName.equals(".")) {
@@ -792,6 +806,13 @@ public class GameMenu extends Menu {
             interactor.setOnMouseEntered(e -> ((ImageView) ((NodeWrapper) cell.getComponentByID("tile")).getValue()).setOpacity(0.5));
             interactor.setOnMouseExited(e -> ((ImageView) ((NodeWrapper) cell.getComponentByID("tile")).getValue()).setOpacity(0.1));
             interactor.setOnMouseClicked(mouseEvent -> {
+                if (mouseEvent.getButton() == MouseButton.MIDDLE) {
+                    String s = getInfoOfUnit(i, j);
+                    if (s != null) {
+                        showPopUp(s);
+                    }
+                    return;
+                }
                 String cardID = getFriendlyCardID(i, j);
                 if (cardID != null) {
                     if (mouseEvent.getButton() == MouseButton.PRIMARY) {
@@ -805,6 +826,7 @@ public class GameMenu extends Menu {
                         getTile(i, j).setOpacity(1);
                         comboGridChange();
                     }
+
                 }
             });
 
@@ -813,6 +835,14 @@ public class GameMenu extends Menu {
             e.printStackTrace();
         }
 
+    }
+
+    private String getInfoOfUnit(int row, int column) {
+        String s;
+        s = getDescriptionByLocation(row, column, "show my minions");
+        if (s != null)
+            return s;
+        return getDescriptionByLocation(row, column, "show opponent minions");
     }
 
     private ComponentSet getCell(int row, int column) {
