@@ -11,9 +11,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import model.CollectionItem;
-import model.SpellCard;
-import model.Unit;
+import model.*;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -78,6 +76,11 @@ public class CardView implements MenuComponent {
             stackPane.getChildren().add(glowLine);
             StackPane.setMargin(glowLine, new Insets(0, 0, 2, 0));
             if (collectionItem instanceof Unit) {
+                Label unitClass = new Label(((Unit) collectionItem).getUnitType().toString());
+                unitClass.setFont(Font.loadFont(new FileInputStream("./fonts/averta-black-webfont.ttf"), 15));
+                unitClass.setTextFill(Color.ORANGE);
+                stackPane.getChildren().add(unitClass);
+                StackPane.setMargin(unitClass, new Insets(30, 0, 0, 0));
                 Label hp = new Label(String.valueOf(((Unit) collectionItem).getHitPoint()));
                 hp.setFont(Font.loadFont(new FileInputStream("./fonts/averta-black-webfont.ttf"), 15));
                 hp.setTextFill(Color.CRIMSON);
@@ -88,6 +91,28 @@ public class CardView implements MenuComponent {
                 ap.setTextFill(Color.GOLD);
                 stackPane.getChildren().add(ap);
                 StackPane.setMargin(ap, new Insets(55, 105, 0, 0));
+            }
+            if (collectionItem instanceof Minion || collectionItem instanceof SpellCard || (collectionItem instanceof Hero && ((Hero) collectionItem).getSpecialPowerTypes().stream().anyMatch(o -> o == SpecialPowerType.ON_USE))) {
+                ImageView mana = new ImageView(new Image(new FileInputStream("images/cards/icon_mana@2x.png")));
+                fixComponent(mana, 40, 40);
+                stackPane.getChildren().add(mana);
+                StackPane.setMargin(mana, new Insets(0, 170, 250, 0));
+                Label mp = new Label(String.valueOf(((Card) collectionItem).getManaCost()));
+                mp.setFont(Font.loadFont(new FileInputStream("./fonts/averta-black-webfont.ttf"), 15));
+                mp.setTextFill(Color.BLACK);
+                stackPane.getChildren().add(mp);
+                StackPane.setMargin(mp, new Insets(0, 170, 250, 0));
+            }
+            if (collectionItem instanceof Hero && ((Hero) collectionItem).getSpecialPowerTypes().stream().anyMatch(o -> o == SpecialPowerType.ON_USE)) {
+                ImageView cooldown = new ImageView(new Image(new FileInputStream("images/cards/icon_cooldown_counter@2x.png")));
+                fixComponent(cooldown, 60, 40);
+                stackPane.getChildren().add(cooldown);
+                StackPane.setMargin(cooldown, new Insets(0, 0, 250, 170));
+                Label cd = new Label(String.valueOf(((Hero) collectionItem).getOriginalCooldown()));
+                cd.setFont(Font.loadFont(new FileInputStream("./fonts/averta-black-webfont.ttf"), 15));
+                cd.setTextFill(Color.BLACK);
+                stackPane.getChildren().add(cd);
+                StackPane.setMargin(cd, new Insets(0, 0, 250, 170));
             }
         } catch (FileNotFoundException ignored) {
         }

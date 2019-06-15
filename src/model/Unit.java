@@ -109,10 +109,6 @@ public class Unit extends Card {
         return unitType;
     }
 
-//    public void addRange(int amount) {
-//        attackRange += amount; // ?
-//    }
-
     public int getX() {
         return x;
     }

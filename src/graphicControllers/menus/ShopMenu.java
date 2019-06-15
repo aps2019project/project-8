@@ -142,9 +142,6 @@ public class ShopMenu extends Menu {
                         showPopUp("Cannot have 4 items in collection.");
                         return;
                     }
-                    CollectionItem collectionItem = Shop.getCollectionItemByName(s);
-                    UI.getAccount().payMoney(collectionItem.getPrice());
-                    UI.getAccount().getCollection().addCollectionItem(Shop.getCopy(collectionItem));
                     showPopUp("Successfully bought the collection item.");
                     UI.decide("buy " + s);
                 });
@@ -161,9 +158,6 @@ public class ShopMenu extends Menu {
             }
             sell.setText("Sell");
             sell.setOnMouseClicked(e -> popUpGetList(UI.getAccount().getCollectionItems().keySet().stream().mapToInt(Integer::parseInt).sorted().mapToObj(String::valueOf).collect(Collectors.toList()), "Sell", "Card ID").ifPresent(s -> {
-                CollectionItem collectionItem = UI.getAccount().getCollection().getCollectionItemByID(s);
-                UI.getAccount().receiveMoney(collectionItem.getPrice());
-                UI.getAccount().getCollection().removeCollectionItem(s);
                 UI.decide("sell " + s);
                 showPopUp("Successfully sold the collection item.");
             }));
