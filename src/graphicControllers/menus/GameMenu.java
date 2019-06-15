@@ -367,7 +367,9 @@ public class GameMenu extends Menu {
             if (i == 0) {
                 System.err.println("ye chize salem");
                 System.err.println("c" + shengdeShow[i]);
+                System.err.flush();
                 System.err.println("c" + shengdeShow[i] + "C");
+                System.err.flush();
                 System.err.println("c" + shengdeShow[i]);
                 System.err.println("!!" + shengdeShow[i] + "!!");
                 System.err.println("out put kardam lashi ro");
