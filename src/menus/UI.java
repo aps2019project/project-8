@@ -100,8 +100,10 @@ public class UI {
     }
 
     public static void initiate() {
-        JsonMaker.main(new String[]{"java", "JsonMaker"});
-        load();
+        new Thread(() -> {
+            JsonMaker.main(new String[]{"java", "JsonMaker"});
+            load();
+        }).start();
         Menu.setView(view);
         help();
     }

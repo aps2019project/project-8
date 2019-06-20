@@ -378,7 +378,7 @@ public class GameMenu extends Menu {
                 System.err.println("out put kardam lashi ro");
                 String ttt = shengdeShow[i].substring(13);
                 System.err.println("!!" + ttt + "!!");
-                turnNumber = Integer.parseInt(shengdeShow[i].replaceFirst("Turn number: ", ""));
+                turnNumber = Integer.parseInt(shengdeShow[i].replaceFirst("Turn number: ", "").trim());
             } else if (i == 1) {
                 Pattern pattern = Pattern.compile("(.+) Mana\\((\\d+)\\) deck\\((\\d+)\\) hand:.*");
                 Matcher matcher = pattern.matcher(shengdeShow[i]);
