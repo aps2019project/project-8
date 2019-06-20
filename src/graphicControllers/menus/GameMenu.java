@@ -632,6 +632,11 @@ public class GameMenu extends Menu {
             e.printStackTrace();
         }
 
+        {
+//            Label label = new Label("N");
+//            label.relocate(0, 57);
+//            statBar.addMenuComponent(new NodeWrapper(label));
+        }
         ComponentSet manaBar = makeManaBar(Integer.parseInt(mana), manaCapacity);
         manaBar.resize(0.85, 0.85);
         statBar.addMenuComponent(manaBar, "ManaBar");
