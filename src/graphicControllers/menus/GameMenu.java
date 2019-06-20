@@ -620,11 +620,14 @@ public class GameMenu extends Menu {
             usableBackground.relocate(45, 57);
             statBar.addMenuComponent(new NodeWrapper(usableBackground));
 
-            ImageView usable = getImageViewByCardName(usableItemName, "idle", "format");
-            usable.setFitHeight(35);
-            usable.setFitWidth(35);
-            usable.relocate(45, 57);
-            statBar.addMenuComponent(new NodeWrapper(usable));
+            if (usableItemName != null) {
+                ImageView usable = getImageViewByCardName(usableItemName, "idle", "format");
+                usable.setOnMouseClicked(e -> showCardInfo(usableItemName));
+                usable.setFitHeight(35);
+                usable.setFitWidth(35);
+                usable.relocate(45, 57);
+                statBar.addMenuComponent(new NodeWrapper(usable));
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -913,6 +916,9 @@ public class GameMenu extends Menu {
         cardView.relocate(windowWidth - 220 - 70, windowHeight - 500);
         selectedCardInfo = cardView;
         addComponent(cardView);
+        moveComponentToFront(gridCells);
+        moveComponentToFront(firstPlayerBar);
+        moveComponentToFront(secondPlayerBar);
     }
 
 

@@ -138,6 +138,22 @@ public class Menu {
             menuChangeComponents.remove(component);
     }
 
+    protected void moveComponentToFront(MenuComponent component) {
+        if (component instanceof ComponentSet) {
+            for (MenuComponent c : ((ComponentSet) component).getComponents()) {
+                moveComponentToFront(c);
+            }
+            return;
+        }
+        view.moveComponentToFront(component);
+        menuComponents.remove(component);
+        menuComponents.add(component);
+        if (component instanceof MenuChangeComponent) {
+            menuChangeComponents.remove(component);
+            menuChangeComponents.add((MenuChangeComponent) component);
+        }
+    }
+
     protected void setKeyPressEvent(EventHandler<KeyEvent> eventHandler) {
         getView().getScene().setOnKeyPressed(eventHandler);
     }

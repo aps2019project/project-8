@@ -78,4 +78,11 @@ public class GraphicsView {
     public Scene getScene() {
         return scene;
     }
+
+    public void moveComponentToFront(MenuComponent component) {
+        if (component instanceof NodeWrapper) {
+            group.getChildren().remove(((NodeWrapper) component).getValue());
+            group.getChildren().add(((NodeWrapper) component).getValue());
+        }
+    }
 }
