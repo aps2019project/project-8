@@ -666,6 +666,7 @@ class ManualFeatureAdder {
                 ShengdeBaoPrinter.println("INSTANCE OF NOTHING");
                 throw new IOException();
             }
+            NamesAndTypes.addCollectionItem(collectionItem);
             out.flush();
         } catch (IOException ignored) {
             ShengdeBaoPrinter.println("Can't Read file for some reason: ");

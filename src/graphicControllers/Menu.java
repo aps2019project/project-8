@@ -121,6 +121,10 @@ public class Menu {
         }
     }
 
+    protected String popUpGetCard(List<CardView> cardViews) {
+        return "not implemented";
+    }
+
     protected void removeComponent(MenuComponent component) {
         if (component instanceof ComponentSet) {
             for (MenuComponent c : ((ComponentSet) component).getComponents()) {
@@ -479,5 +483,14 @@ public class Menu {
         choiceBox.setItems(FXCollections.observableArrayList(list));
         getListItem.showAndWait();
         return listItem;
+    }
+
+    protected void showPopUpCardView(CardView cardView) {
+        Stage stage = new Stage();
+        Group group = new Group();
+        Scene scene = new Scene(group, 900, 800);
+        cardView.addInGroup(group);
+        stage.setScene(scene);
+        stage.showAndWait();
     }
 }

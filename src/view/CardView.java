@@ -90,6 +90,7 @@ public class CardView implements MenuComponent {
                 StackPane.setMargin(ap, new Insets(55, 105, 0, 0));
             }
         } catch (FileNotFoundException ignored) {
+            ignored.printStackTrace();
         }
     }
 
@@ -111,10 +112,18 @@ public class CardView implements MenuComponent {
 
         } else if (collectionItem instanceof SpellCard) {
             background.setImage(new Image(new FileInputStream("images/cards/neutral_prismatic_spell@2x.png")));
-            symbol.setImage(new Image(new FileInputStream(directory + "/actionbar.gif")));
+            try {
+                symbol.setImage(new Image(new FileInputStream(directory + "/actionbar.gif")));
+            } catch (FileNotFoundException ex) {
+                symbol.setImage(new Image(new FileInputStream("images/gameIcons/gifs/test_idle.gif")));
+            }
         } else {
             background.setImage(new Image(new FileInputStream("images/cards/neutral_prismatic_artifact@2x.png")));
-            symbol.setImage(new Image(new FileInputStream(directory + "/actionbar.gif")));
+            try {
+                symbol.setImage(new Image(new FileInputStream(directory + "/actionbar.gif")));
+            } catch (FileNotFoundException ex) {
+                symbol.setImage(new Image(new FileInputStream("images/gameIcons/gifs/test_idle.gif")));
+            }
         }
     }
 
@@ -140,4 +149,9 @@ public class CardView implements MenuComponent {
     public void removeFromGroup(Group group) {
         group.getChildren().remove(stackPane);
     }
+
+    public void relocateCentre(double x, double y) {
+        relocate(x - SHADOW_WIDTH / 2, y - SHADOW_HEIGHT / 2);
+    }
+
 }
