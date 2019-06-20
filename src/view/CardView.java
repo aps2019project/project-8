@@ -32,6 +32,7 @@ public class CardView implements MenuComponent {
 
     private final StackPane stackPane = new StackPane();
     private ArrayList<ImageView> components = new ArrayList<>();
+    Label hp, ap;
 
     public CardView(CollectionItem collectionItem) {
         stackPane.setMinWidth(SHADOW_WIDTH + 100);
@@ -81,12 +82,12 @@ public class CardView implements MenuComponent {
                 unitClass.setTextFill(Color.ORANGE);
                 stackPane.getChildren().add(unitClass);
                 StackPane.setMargin(unitClass, new Insets(30, 0, 0, 0));
-                Label hp = new Label(String.valueOf(((Unit) collectionItem).getHitPoint()));
+                hp = new Label(String.valueOf(((Unit) collectionItem).getHitPoint()));
                 hp.setFont(Font.loadFont(new FileInputStream("./fonts/averta-black-webfont.ttf"), 15));
                 hp.setTextFill(Color.CRIMSON);
                 stackPane.getChildren().add(hp);
                 StackPane.setMargin(hp, new Insets(55, 0, 0, 105));
-                Label ap = new Label(String.valueOf(((Unit) collectionItem).getAttackPoint()));
+                ap = new Label(String.valueOf(((Unit) collectionItem).getAttackPoint()));
                 ap.setFont(Font.loadFont(new FileInputStream("./fonts/averta-black-webfont.ttf"), 15));
                 ap.setTextFill(Color.GOLD);
                 stackPane.getChildren().add(ap);
@@ -117,6 +118,18 @@ public class CardView implements MenuComponent {
         } catch (FileNotFoundException ignored) {
             ignored.printStackTrace();
         }
+    }
+
+    public void setAp(int ap) {
+        if (this.ap == null)
+            return;
+        this.ap.setText(ap + "");
+    }
+
+    public void setHp(int hp) {
+        if (this.hp == null)
+            return;
+        this.hp.setText(hp + "");
     }
 
     public StackPane getStackPane() {

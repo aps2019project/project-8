@@ -513,6 +513,23 @@ public class GameMenu extends Menu {
     }
 
 
+    private String getDescriptionByName(String cardName, String command) {
+        String[] output = getUIOutputAsString(command).split("\\n");
+        for (int i = 0; i < output.length; i++) {
+            if (output[i].contains(cardName)) {
+                return output[i];
+            }
+        }
+        return null;
+    }
+
+    private String getDescriptionByName(String cardName) {
+        String s = getDescriptionByName(cardName, "show my minions");
+        if (s == null)
+            s = getDescriptionByName(cardName, "show opponent minions");
+        return s;
+    }
+
     private String getDescriptionByLocation(int row, int column, String command) {
         String[] output = getUIOutputAsString(command).split("\\n");
         for (int i = 0; i < output.length; i++) {
@@ -885,6 +902,14 @@ public class GameMenu extends Menu {
             selectedCardInfo = null;
         }
         CardView cardView = new CardView(NamesAndTypes.getCollectionItem(cardName));
+        if (getDescriptionByName(cardName) != null) {
+            Pattern pattern = Pattern.compile(".*health *: *(\\d+).*power *: *(\\d+).*");
+            Matcher matcher = pattern.matcher(getDescriptionByName(cardName));
+            if (matcher.find()) {
+                cardView.setHp(Integer.parseInt(matcher.group(1)));
+                cardView.setAp(Integer.parseInt(matcher.group(2)));
+            }
+        }
         cardView.relocate(windowWidth - 220 - 70, windowHeight - 500);
         selectedCardInfo = cardView;
         addComponent(cardView);
