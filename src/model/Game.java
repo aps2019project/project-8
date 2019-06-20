@@ -995,7 +995,7 @@ public class Game extends InGameMenu {
     private Cell getRandomEmptyCell() {
         Random random = new Random();
         Cell cell = map.getCell(random.nextInt(5), random.nextInt(9));
-        while (cell.hasContent())
+        while (cell.hasContent() && cell.getNumberOfFlags() == 0)
             cell = map.getCell(random.nextInt(5), random.nextInt(9));
         return cell;
     }

@@ -136,10 +136,10 @@ public class CardView implements MenuComponent {
 
         } else if (collectionItem instanceof SpellCard) {
             background.setImage(new Image(new FileInputStream("images/cards/neutral_prismatic_spell@2x.png")));
-            symbol.setImage(new Image(new FileInputStream(directory + "/actionbar.gif")));
+            symbol.setImage(new Image(new FileInputStream(directory + "/idle.gif")));
         } else {
             background.setImage(new Image(new FileInputStream("images/cards/neutral_prismatic_artifact@2x.png")));
-            symbol.setImage(new Image(new FileInputStream(directory + "/actionbar.gif")));
+            symbol.setImage(new Image(new FileInputStream(directory + "/idle.gif")));
         }
     }
 
