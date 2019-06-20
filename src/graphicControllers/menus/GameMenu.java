@@ -880,6 +880,10 @@ public class GameMenu extends Menu {
     }
 
     private void showCardInfo(String cardName) {
+        if (selectedCardInfo != null) {
+            removeComponent(selectedCardInfo);
+            selectedCardInfo = null;
+        }
         CardView cardView = new CardView(NamesAndTypes.getCollectionItem(cardName));
         cardView.relocate(windowWidth - 220 - 70, windowHeight - 500);
         selectedCardInfo = cardView;
