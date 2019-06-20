@@ -317,10 +317,10 @@ public class CollectionMenu extends Menu {
                             CollectionItem collectionItem = UI.getAccount().getCollectionItems().get(s);
                             if (d.hasCollectionItem(s))
                                 return false;
-                            if (collectionItem instanceof Hero && d.hasHero())
-                                return false;
-                            if (collectionItem instanceof Usable && d.hasItem())
-                                return false;
+                            if (collectionItem instanceof Hero)
+                                return !d.hasHero();
+                            if (collectionItem instanceof Usable)
+                                return !d.hasItem();
                             return !d.isFull();
                         }).map(Deck::getDeckName).sorted().collect(Collectors.toList()), "Select Deck", "Deck name").ifPresent(d -> {
                             UI.decide("add " + s + " to deck " + d);

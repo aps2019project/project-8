@@ -6,6 +6,8 @@ import graphicControllers.MenuManager;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
+import javafx.stage.FileChooser;
+import javafx.stage.Popup;
 import menus.Shop;
 import menus.UI;
 import model.SpecialPowerType;
@@ -15,6 +17,9 @@ import view.GUIButton;
 import view.NodeWrapper;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,6 +27,7 @@ import java.util.stream.Collectors;
 public class MainMenu extends Menu {
 
     private static final String MINION = "Minion";
+    private static final String GIFS = "./images/gameIcons/gifs/";
 
     public MainMenu() {
         super(Id.MAIN_MENU, "Main Menu", windowDefaultWidth, windowDefaultHeight);
@@ -182,7 +188,8 @@ public class MainMenu extends Menu {
                                 spActivationIndex = Arrays.stream(SpecialPowerType.values()).map(Enum::toString).map(this::fixCase).collect(Collectors.toList()).indexOf(spActivation.get()) + 1;
                                 unit.append(spActivationIndex).append("\n");
                             }
-                            getSpell(unit);
+                            if (!getSpell(unit))
+                                return;
                             if (type.get().equals("Hero") && spActivationIndex == 8) {
                                 coolDown = getNumber("Cooldown");
                                 if (!coolDown.isPresent()) return;
@@ -208,7 +215,8 @@ public class MainMenu extends Menu {
                         Optional<Integer> mana = getNumber("Mana");
                         if (!mana.isPresent()) return;
                         stringBuilder.append(mana.get()).append("\n").append("SpellCard").append("\n");
-                        getSpell(stringBuilder);
+                        if (!getSpell(stringBuilder))
+                            return;
                     }
                     try {
                         FileWriter fileWriter = new FileWriter(new File("gameData/ManualFeatureInputLogs/" + name + ".txt"), false);
@@ -221,6 +229,45 @@ public class MainMenu extends Menu {
                             UI.getAccount().getCollection().addCollectionItem(Shop.getCollectionItemByName(name));
                         }).start();
                     } catch (IOException ignored) {
+                    }
+                    new File(GIFS + getType(type.get()) + "/" + name).mkdir();
+                    if (type.get().equals("Spell")) {
+                        try {
+                            Files.copy(Paths.get("images/gameIcons/gifs/spell.gif"), Paths.get(GIFS + getType(type.get()) + "/" + name + "/idle.gif"), StandardCopyOption.REPLACE_EXISTING);
+                        } catch (IOException ignored) {
+                        }
+//                        FileChooser fileChooser = new FileChooser();
+//                        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Sprite", "*.gif"));
+//                        fileChooser.setInitialDirectory(new File("./"));
+//                        File file = fileChooser.showOpenDialog(new Popup());
+//                        if (file != null)
+//                            try {
+//                                Files.copy(file.toPath(), Paths.get(GIFS + getType(type.get()) + "/" + name + "/idle.gif"), StandardCopyOption.REPLACE_EXISTING);
+//                            } catch (IOException ignored) {
+//                            }
+                        getGIF(GIFS + getType(type.get()) + "/" + name + "/idle.gif");
+                    } else {
+                        try {
+                            Files.copy(Paths.get("images/gameIcons/gifs/attack.gif"), Paths.get(GIFS + getType(type.get()) + "/" + name + "/attack.gif"), StandardCopyOption.REPLACE_EXISTING);
+                            Files.copy(Paths.get("images/gameIcons/gifs/breathing.gif"), Paths.get(GIFS + getType(type.get()) + "/" + name + "/breating.gif"), StandardCopyOption.REPLACE_EXISTING);
+                            Files.copy(Paths.get("images/gameIcons/gifs/castloop.gif"), Paths.get(GIFS + getType(type.get()) + "/" + name + "/castloop.gif"), StandardCopyOption.REPLACE_EXISTING);
+                            Files.copy(Paths.get("images/gameIcons/gifs/death.gif"), Paths.get(GIFS + getType(type.get()) + "/" + name + "/death.gif"), StandardCopyOption.REPLACE_EXISTING);
+                            Files.copy(Paths.get("images/gameIcons/gifs/idle.gif"), Paths.get(GIFS + getType(type.get()) + "/" + name + "/idle.gif"), StandardCopyOption.REPLACE_EXISTING);
+                            Files.copy(Paths.get("images/gameIcons/gifs/run.gif"), Paths.get(GIFS + getType(type.get()) + "/" + name + "/run.gif"), StandardCopyOption.REPLACE_EXISTING);
+                        } catch (IOException ignored) {
+                        }
+                        showPopUp("Choose attack sprite");
+                        getGIF(GIFS + getType(type.get()) + "/" + name + "/attack.gif");
+                        showPopUp("Choose breathing sprite");
+                        getGIF(GIFS + getType(type.get()) + "/" + name + "/breathing.gif");
+                        showPopUp("Choose castloop sprite");
+                        getGIF(GIFS + getType(type.get()) + "/" + name + "/castloop.gif");
+                        showPopUp("Choose death sprite");
+                        getGIF(GIFS + getType(type.get()) + "/" + name + "/death.gif");
+                        showPopUp("Choose idle sprite");
+                        getGIF(GIFS + getType(type.get()) + "/" + name + "/idle.gif");
+                        showPopUp("Choose run sprite");
+                        getGIF(GIFS + getType(type.get()) + "/" + name + "/run.gif");
                     }
                 });
             });
@@ -239,6 +286,26 @@ public class MainMenu extends Menu {
         }).start();
     }
 
+    private void getGIF(String destination) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sprite", "*.gif"));
+        fileChooser.setInitialDirectory(new File("./"));
+        File file = fileChooser.showOpenDialog(new Popup());
+        if (file != null)
+            try {
+                Files.copy(file.toPath(), Paths.get(destination), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException ignored) {
+            }
+    }
+
+    private static String getType(String type) {
+        if (type.equals("Hero"))
+            return "hero";
+        if (type.equals(MINION))
+            return "minion";
+        return "spellCard";
+    }
+
     private Optional<Integer> getNumber(String prompt) {
         Optional<String> numberText = popUpGetText(prompt, "Next");
         if (!numberText.isPresent())
@@ -250,58 +317,59 @@ public class MainMenu extends Menu {
         return Optional.of(Integer.parseInt(numberText.get()));
     }
 
-    private void getSpell(StringBuilder stringBuilder) {
+    private boolean getSpell(StringBuilder stringBuilder) {
         Optional<String> targetType = popUpGetList(Arrays.stream(Spell.TargetType.values()).map(Enum::toString).map(this::fixCase).collect(Collectors.toList()), "Next", "Target type");
         if (!targetType.isPresent())
-            return;
+            return false;
         int targetTypeIndex = Arrays.stream(Spell.TargetType.values()).map(Enum::toString).map(this::fixCase).collect(Collectors.toList()).indexOf(targetType.get()) + 1;
         stringBuilder.append(targetTypeIndex).append("\n");
         if (targetTypeIndex == 2) {
             Optional<String> targetUnit = popUpGetList(Arrays.stream(Arrays.copyOfRange(Spell.TargetUnit.values(), 0, Spell.TargetUnit.values().length - 1)).map(Enum::toString).map(this::fixCase).collect(Collectors.toList()), "Next", "Target type");
             if (!targetUnit.isPresent())
-                return;
+                return false;
             int targetUnitIndex = Arrays.stream(Spell.TargetType.values()).map(Enum::toString).map(this::fixCase).collect(Collectors.toList()).indexOf(targetType.get()) + 1;
             stringBuilder.append(targetUnitIndex).append("\n");
             Optional<String> targetUnitType = popUpGetList(Arrays.stream(Spell.TargetUnitType.values()).map(Enum::toString).map(this::fixCase).collect(Collectors.toList()), "Next", "Target unit type");
             if (!targetUnitType.isPresent())
-                return;
+                return false;
             int targetUnitTypeIndex = Arrays.stream(Spell.TargetUnitType.values()).map(Enum::toString).map(this::fixCase).collect(Collectors.toList()).indexOf(targetUnitType.get()) + 1;
             stringBuilder.append(targetUnitTypeIndex).append("\n");
         }
         Optional<String> targetArea = popUpGetList(Arrays.stream(Spell.TargetArea.values()).map(Enum::toString).map(this::fixCase).collect(Collectors.toList()), "Next", "Target area");
         if (!targetArea.isPresent())
-            return;
+            return false;
         int targetAreaIndex = Arrays.stream(Spell.TargetArea.values()).map(Enum::toString).map(this::fixCase).collect(Collectors.toList()).indexOf(targetArea.get()) + 1;
         stringBuilder.append(targetAreaIndex).append("\n");
         if (targetAreaIndex == 2) {
             Optional<Integer> numberOfRows = getNumber("Number of rows");
             if (!numberOfRows.isPresent())
-                return;
+                return false;
             stringBuilder.append(numberOfRows.get()).append("\n");
             Optional<Integer> numberOfColumns = getNumber("Number of columns");
             if (!numberOfColumns.isPresent())
-                return;
+                return false;
             stringBuilder.append(numberOfColumns.get()).append("\n");
         }
         Optional<String> random = popUpGetList(Arrays.asList("Yes", "No"), "Next", "Random spell");
         if (!random.isPresent())
-            return;
+            return false;
         stringBuilder.append(random.get().toLowerCase()).append("\n");
         if (random.get().equals("Yes")) {
             Optional<Integer> randomNum = getNumber("Number of random picks");
-            if (!randomNum.isPresent()) return;
+            if (!randomNum.isPresent()) return false;
             stringBuilder.append(randomNum.get()).append("\n");
         }
         Optional<Integer> buffNumber = getNumber("Number of buffs");
-        if (!buffNumber.isPresent()) return;
+        if (!buffNumber.isPresent()) return false;
         stringBuilder.append(buffNumber.get()).append("\n");
         for (int i = 0; i < buffNumber.get(); i++)
             getBuff(stringBuilder);
         Optional<String> dispel = popUpGetList(Arrays.asList("Yes", "No"), "Next", "Dispel");
         if (!dispel.isPresent())
-            return;
+            return false;
         stringBuilder.append(dispel.get().toLowerCase()).append("\n");
         stringBuilder.append("none").append("\n");
+        return true;
     }
 
     private void getBuff(StringBuilder stringBuilder) {

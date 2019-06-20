@@ -1,7 +1,5 @@
 package model;
 
-import javafx.application.Platform;
-
 import java.util.ArrayList;
 
 public class Player {
