@@ -1,5 +1,6 @@
 package graphicControllers;
 
+import graphicControllers.menus.GameMenu;
 import javafx.stage.Stage;
 import view.MenuChangeComponent;
 
@@ -71,6 +72,8 @@ public class MenuManager {
     }
 
     public void setCurrentMenu(Menu currentMenu) {
+        if (currentMenu instanceof GameMenu)
+            currentMenu = new GameMenu();
         currentMenu.refresh();
         currentMenu.stopMedia();
         this.currentMenu = currentMenu;

@@ -84,5 +84,13 @@ public class GraphicsView {
             group.getChildren().remove(((NodeWrapper) component).getValue());
             group.getChildren().add(((NodeWrapper) component).getValue());
         }
+        if (component instanceof GUIButton) {
+            ((GUIButton) component).removeFromGroup(group);
+            ((GUIButton) component).addInGroup(group);
+        }
+        if (component instanceof CardView) {
+            ((CardView) component).removeFromGroup(group);
+            ((CardView) component).addInGroup(group);
+        }
     }
 }

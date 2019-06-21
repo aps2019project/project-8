@@ -5,6 +5,7 @@ import graphicControllers.Menu;
 import graphicControllers.MenuManager;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -12,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import menus.UI;
 import model.CollectionItem;
@@ -24,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.*;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -98,19 +101,27 @@ public class GameMenu extends Menu {
 
     private void handleSelectCollectible(String s) {
         selectedCollectibleID = s;
-        showPopUp(getUIOutputAsString("select " + s));
-        setGridOnCollectibleSelected();
+        String out = getUIOutputAsString("select " + s);
+        if (!gameEnded(out)) {
+            showPopUp(out);
+            setGridOnCollectibleSelected();
+        }
     }
 
     private void handleEndTurn() {
-        UI.decide("end turn");
-        showPopUp("Turn Ended!");
-        refresh();
+        String out = getUIOutputAsString("end turn");
+        if (!gameEnded(out)) {
+            showPopUp("Turn Ended!");
+            refresh();
+        }
     }
 
     private void handleUseCollectible(int row, int column) {
-        showPopUp(getUIOutputAsString("use (" + (row + 1) + ", " + (column + 1) + ")"));
-        refresh();
+        String out = getUIOutputAsString("use (" + (row + 1) + ", " + (column + 1) + ")");
+        if (!gameEnded(out)) {
+            showPopUp(out);
+            refresh();
+        }
     }
 
     private void handleShowCollectibleinfo() {
@@ -121,12 +132,14 @@ public class GameMenu extends Menu {
         String cordinate = "(" + (row + 1) + ", " + (column + 1) + ")";
         if (draggedCardName != null) {
             String output = getUIOutputAsString("insert " + draggedCardName + " in " + cordinate);
-            if (output.contains("inserted")) {
+            if (!gameEnded(output)) {
+                if (output.contains("inserted")) {
+                    refresh();
+                } else {
+                    showPopUp(output);
+                }
                 refresh();
-            } else {
-                showPopUp(output);
             }
-            refresh();
         }
     }
 
@@ -136,18 +149,27 @@ public class GameMenu extends Menu {
     }
 
     private void handleUseSpecialPower(int row, int column) {
-        showPopUp(getUIOutputAsString("use special power (" + row + ", " + column + ")"));
-        refresh();
+        String out = getUIOutputAsString("use special power (" + row + ", " + column + ")");
+        if (!gameEnded(out)) {
+            showPopUp(out);
+            refresh();
+        }
     }
 
     private void handleAttackUnit(String enemyCardID) {
-        showPopUp(getUIOutputAsString("attack " + enemyCardID));
-        refresh();
+        String out = getUIOutputAsString("attack " + enemyCardID);
+        if (!gameEnded(out)) {
+            showPopUp(out);
+            refresh();
+        }
     }
 
     private void handleMoveCard(int row, int column) {
-        showPopUp(getUIOutputAsString("move to (" + (row + 1) + ", " + (column + 1) + ")"));
-        refresh();
+        String out = getUIOutputAsString("move to (" + (row + 1) + ", " + (column + 1) + ")");
+        if (!gameEnded(out)) {
+            showPopUp(out);
+            refresh();
+        }
     }
 
     private void handleAttackCombo(String enemyCardID) {
@@ -158,8 +180,42 @@ public class GameMenu extends Menu {
             stringBuilder.append(s);
         }
         selectedComboCardIds.clear();
-        showPopUp(getUIOutputAsString(stringBuilder.toString()));
-        refresh();
+        String out = getUIOutputAsString(stringBuilder.toString());
+        if (!gameEnded(out)) {
+            showPopUp(out);
+            refresh();
+        }
+    }
+
+    private boolean gameEnded(String output) {
+        if (output.contains("winner is:") || output.contains("HAHA!")) {
+            try {
+                UI.decide("end game");
+                Rectangle rectangle = new Rectangle(0, 0, windowWidth, windowHeight);
+                rectangle.setFill(Color.RED);
+                rectangle.setOpacity(0.1);
+                addComponent(new NodeWrapper(rectangle));
+                ImageView imageView = new ImageView(new Image(new FileInputStream("images/gameIcons/notification.png")));
+                imageView.setFitWidth(windowWidth);
+                imageView.setFitHeight(windowHeight - 300);
+                imageView.relocate(0, 150);
+                addComponent(new NodeWrapper(imageView));
+                Label label = new Label(output);
+                label.relocate(0, windowHeight / 2 - 50);
+                label.setFont(Font.loadFont(new FileInputStream("fonts/averta-black-webfont.ttf"), 20));
+                label.setAlignment(Pos.CENTER);
+                label.setMinSize(windowWidth, 100);
+                label.setMaxSize(windowWidth, 100);
+                label.setTextFill(Color.rgb(158, 79, 124));
+                addComponent(new NodeWrapper(label));
+                MenuComponent component = menuButtons.getComponentByID("main_menu");
+                moveComponentToFront(component);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            return true;
+        }
+        return false;
     }
 
 
@@ -210,7 +266,7 @@ public class GameMenu extends Menu {
             UI.decide("exit");
             MenuManager.getInstance().setCurrentMenu(Id.MAIN_MENU);
         });
-        menuButtons.addMenuComponent(mainMenu);
+        menuButtons.addMenuComponent(mainMenu, "main_menu");
 
         GUIChangeMenuButton graveyard = new GUIChangeMenuButton(-50 + 150 - 20, 100 - 20, 150, 70);
         setOnEnterAndExitEffect(graveyard, "Graveyard", "images/gameIcons/menuButtons/ui_right_glowing.png",
@@ -218,7 +274,7 @@ public class GameMenu extends Menu {
         graveyard.setGoalMenuID(Id.GRAVE_YARD_MENU);
         menuButtons.addMenuComponent(graveyard);
 
-        GUIButton collectibles = new GUIButton(140 - 10 + 20, -100 + 10 - 5, 100 , 100);
+        GUIButton collectibles = new GUIButton(140 - 10 + 20, -100 + 10 - 5, 100, 100);
         setOnEnterAndExitEffect(collectibles, "", "images/gameIcons/menuButtons/select_collectible_hovered.png",
                 "images/gameIcons/menuButtons/select_collectible.png");
         collectibles.setOnMouseClicked(e -> {
@@ -227,9 +283,9 @@ public class GameMenu extends Menu {
             for (int i = 0; i < list.size(); i++) {
                 String s = list.get(i);
                 map.put(getNameFromID(s), s);
-                list.set(i , getNameFromID(s));
+                list.set(i, getNameFromID(s));
             }
-            Optional<String>s = popUpGetList(list, "Select", "Select collectible");
+            Optional<String> s = popUpGetList(list, "Select", "Select collectible");
             s.ifPresent(s1 -> handleSelectCollectible(map.get(s1)));
         });
         menuButtons.addMenuComponent(collectibles);
