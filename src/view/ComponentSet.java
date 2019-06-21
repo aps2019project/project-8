@@ -9,6 +9,8 @@ import javafx.scene.effect.Effect;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -54,6 +56,20 @@ public class ComponentSet implements MenuComponent {
 
     public void relocateUpRight(double x, double y) {
         relocate(x - (getMaxWidth() - getMinWidth()), y);
+    }
+
+    public void setLabelFromLocalDir(String directory) throws FileNotFoundException {
+        for (MenuComponent component : components) {
+            if (component instanceof NodeWrapper) {
+                Node node = ((NodeWrapper) component).getValue();
+                if (node instanceof Label) {
+                    ((Label) node).setFont(Font.loadFont(new FileInputStream(directory), ((Label) node).getFont().getSize()));
+                }
+            }
+            if (component instanceof ComponentSet) {
+                ((ComponentSet) component).setLabelFromLocalDir(directory);
+            }
+        }
     }
 
     public void setLabelFontStyle(String family) {

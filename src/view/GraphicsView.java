@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import menus.UI;
 
 
@@ -64,8 +65,9 @@ public class GraphicsView {
     }
 
     public void removeComponent(MenuComponent menuComponent) {
-        if (menuComponent instanceof NodeWrapper)
+        if (menuComponent instanceof NodeWrapper) {
             group.getChildren().remove(((NodeWrapper) menuComponent).getValue());
+        }
         if (menuComponent instanceof GUIButton)
             ((GUIButton) menuComponent).removeFromGroup(group);
         if (menuComponent instanceof CardView)
