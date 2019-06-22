@@ -431,6 +431,25 @@ public class CommandLineView implements View {
     public void showUnit(Unit unit) {
         System.out.println(unit.getCollectionItemID() + ": " + unit.getName() + ", health: " + unit.calculateHP() +
                 ", location: (" + (unit.getX() + 1) + ", " + (unit.getY() + 1) + "), power: " + unit.calculateAP());
+        if (unit.getBuffs().stream().anyMatch(buff -> buff.getHoly() > 0)) {
+            System.out.println("holy");
+        } else if (unit.getBuffs().stream().anyMatch(buff -> buff.getHoly() < 0)) {
+            System.out.println("unholy");
+        }
+        if (unit.getBuffs().stream().anyMatch(buff -> buff.getPoison() != 0)) {
+            System.out.println("poison");
+        }
+        if (unit.getBuffs().stream().anyMatch(buff -> buff.getEffectHp() > 0 || buff.getEffectAp() > 0)) {
+            System.out.println("power");
+        } else if (unit.getBuffs().stream().anyMatch(buff -> buff.getEffectHp() < 0 || buff.getEffectAp() < 0)) {
+            System.out.println("weakness");
+        }
+        if (unit.getBuffs().stream().anyMatch(Buff::canStun)) {
+            System.out.println("stun");
+        }
+        if (unit.getBuffs().stream().anyMatch(Buff::canDisarm)) {
+            System.out.println("disarm");
+        }
     }
 
     @Override

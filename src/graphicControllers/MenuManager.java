@@ -82,6 +82,8 @@ public class MenuManager {
 
     public void setCurrentMenu(int menuID) {
         currentMenu = menusIDs.get(menuID);
+        if (currentMenu instanceof GameMenu)
+            currentMenu = new GameMenu();
         currentMenu.refresh();
         listenForMenuChange();
     }

@@ -480,7 +480,7 @@ public class GameMenu extends Menu {
         setOnEnterAndExitEffect(refresh, "", "images/gameIcons/menuButtons/cancel.png",
                 "images/gameIcons/menuButtons/cancel.png");
         refresh.setOnMouseClicked(e -> refresh());
-        menuButtons.addMenuComponent(refresh);
+        menuButtons.addMenuComponent(refresh, "refresh_button");
 
         GUIButton endTurnButton = new GUIButton(-50, 0, 300, 100);
         setOnEnterAndExitEffect(endTurnButton, "END TURN", "images/gameIcons/menuButtons/end_turn_glow.png"

@@ -57,25 +57,25 @@ public class Buff {
         return duration;
     }
 
-    int getHoly() {
+    public int getHoly() {
         if (delay > 0)
             return 0;
         return holy;
     }
 
-    int getPoison() {
+    public int getPoison() {
         if (delay > 0)
             return 0;
         return poison;
     }
 
-    int getEffectHp() {
+    public int getEffectHp() {
         if (delay > 0)
             return 0;
         return effectHp;
     }
 
-    int getEffectAp() {
+    public int getEffectAp() {
         if (delay > 0)
             return 0;
         return effectAp;

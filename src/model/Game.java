@@ -1301,7 +1301,10 @@ public class Game extends InGameMenu {
                         output = "(" + output + ")";
                     }
                 }
-                output += ":" + cell.getNumberOfFlags();
+                int numberOfFlags = cell.getNumberOfFlags();
+                if (cell.getContent() instanceof Unit)
+                    numberOfFlags += ((Unit) cell.getContent()).getNumberOfFlags();
+                output += ":" + numberOfFlags;
                 output += "!" + (cell.getEffects().stream().map(Buff::getPoison).reduce(Integer::sum).orElse(0));
                 output += "?" + (cell.getEffects().stream().map(Buff::getEffectHp).reduce(Integer::sum).orElse(0));
                 System.out.format("%-40s", output);
