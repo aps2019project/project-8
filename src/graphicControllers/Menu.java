@@ -66,6 +66,8 @@ public class Menu {
     private ImageView popUpButtonImage;
 
     public void playMedia() {
+        if (1 == 1)
+            return;
         backGroundMedia.play();
         backGroundMedia.setOnEndOfMedia(() -> backGroundMedia.seek(Duration.ZERO));
     }

@@ -106,6 +106,19 @@ public class Game extends InGameMenu {
         }
     }
 
+    public boolean canMoveSelectedUnit(int x, int y) {
+        if (selectedUnit == null)
+            return false;
+        if (!selectedUnit.getCanMove())
+            return false;
+        if (getDistance(selectedUnit.getX(), selectedUnit.getY(), x, y) <= 2) {
+            if (isPathEmpty(selectedUnit.getX(), selectedUnit.getY(), x, y, getCurrentPlayer())) {
+
+            }
+        }
+
+    }
+
     public boolean moveSelectedUnit(int x, int y) { // returns true if successful
         // can fly has got to do something in here
         if (selectedUnit == null) {
@@ -1319,7 +1332,6 @@ public class Game extends InGameMenu {
         } else {
             System.out.println(players[1].getDeck().getDeckUsableItem().getName());
         }
-        System.err.println("done printing this shit");
     }
 
     public int getPrize() {

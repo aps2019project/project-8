@@ -148,12 +148,15 @@ public class GameMenu extends Menu {
         }
     }
 
+    private void endTurnRefresh() {
+    }
+
     private void handleEndTurn() {
-        String out = getUIOutputAsString("end turn");
-        if (!gameEnded(out)) {
-            showPopUp("Turn Ended!");
-            refresh();
-        }
+//        String out = getUIOutputAsString("end turn");
+//        if (!gameEnded(out)) {
+//            showPopUp("Turn Ended!");
+//            refresh();
+//        }
     }
 
     private void handleUseCollectible(int row, int column) {
@@ -704,6 +707,7 @@ public class GameMenu extends Menu {
                 String[] shengdeShow = getUIOutputAsString("shengdebao").split("\\n");
 
                 for (int i = 0; i < shengdeShow.length; i++) {
+                    shengdeShow[i] = shengdeShow[i].trim();
                     if (i == 0) {
                         turnNumber = Integer.parseInt(shengdeShow[i].replaceFirst("Turn number: ", ""));
                     } else if (i == 1) {
