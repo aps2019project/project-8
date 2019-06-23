@@ -3,11 +3,10 @@ package graphicControllers.menus;
 import gen.NamesAndTypes;
 import graphicControllers.Menu;
 import graphicControllers.MenuManager;
-import javafx.animation.AnimationTimer;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -16,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
@@ -148,15 +148,28 @@ public class GameMenu extends Menu {
         }
     }
 
-    private void endTurnRefresh() {
-    }
-
     private void handleEndTurn() {
-//        String out = getUIOutputAsString("end turn");
-//        if (!gameEnded(out)) {
-//            showPopUp("Turn Ended!");
-//            refresh();
-//        }
+        String out = getUIOutputAsString("end turn");
+        out = out.trim();
+        if (!gameEnded(out)) {
+            showPopUp("Turn Ended!");
+            refresh();
+            String[] commands = out.split("\\n");
+            for (String s : commands) {
+                s = s.trim();
+                Pattern pattern = Pattern.compile("(\\w+) moved from (\\d+) (\\d+) to (\\d+) (\\d+)");
+                Matcher matcher = pattern.matcher(s);
+                if (matcher.find()) {
+                    System.err.println(s);
+                    selectedCardID = matcher.group(1);
+                    int sx = Integer.parseInt(matcher.group(2)) - 1;
+                    int sy = Integer.parseInt(matcher.group(3)) - 1;
+                    int dx = Integer.parseInt(matcher.group(4)) - 1;
+                    int dy = Integer.parseInt(matcher.group(5)) - 1;
+                    handleGraphicallMove(sx, sy, dx, dy, true);
+                }
+            }
+        }
     }
 
     private void handleUseCollectible(int row, int column) {
@@ -322,15 +335,101 @@ public class GameMenu extends Menu {
 
     }
 
-    private void handleMoveCard(int row, int column) {
-        disableEvents();
-        ImageView source = getImageViewInGrid(selectedCardID);
-        int sourceRow = getRowFromUnitID(selectedCardID);
-        int sourceColumn = getColumnFromUnitID(selectedCardID);
+    //
+    //
+    //
+    //
 
-        String out = getUIOutputAsString("move to (" + (row + 1) + ", " + (column + 1) + ")");
-        if (!gameEnded(out)) {
-            if (!out.contains("moved")) {
+
+    private void toggleCellActive(int row, int column, boolean active, boolean attack) {
+        ComponentSet cell = (ComponentSet) gridCells.getComponentByID(row + "," + column);
+        double opacity = active ? 1 : 0;
+        MenuComponent temp;
+        temp = cell.getComponentByID("friendliness");
+        if (temp != null) {
+            ImageView friendliness = (ImageView) ((NodeWrapper) temp).getValue();
+            friendliness.setOpacity(opacity);
+        }
+        temp = cell.getComponentByID("card_content");
+        if (temp != null) {
+            System.err.println("fading " + row + " " + column + "     card content to " + active);
+            ImageView cardContent = (ImageView) ((NodeWrapper) temp).getValue();
+            cardContent.setOpacity(opacity);
+            if (attack)
+                cardContent = null;
+        }
+    }
+
+    private void moveUnit(String cardID, int dRow, int dColumn) {
+        int sRow = getRowFromUnitID(cardID);
+        int sColumn = getColumnFromUnitID(cardID);
+
+        ImageView imageView = getImageViewByCardName(getNameFromID(cardID), "run", "gif");
+        if (sColumn > dColumn)
+            imageView.setScaleY(-1);
+
+        int CellWidth = 50;
+        int CellHeight = 50;
+
+        int width = (int) CellWidth;
+        int height = (int) CellHeight;
+        int lx = (int) gridCells.getX();
+        int ly = (int) gridCells.getY();
+        int sx = (int) (lx + sColumn * width + width / 2.0);
+        int sy = (int) (ly + sRow * height + height / 2.0);
+        int dx = (int) (lx + dColumn * width + width / 2.0);
+        int dy = (int) (ly + dRow * height + height / 2.0);
+        Line orthogonal = new Line(sx, sy, dx, dy);
+        imageView.setFitWidth(CellWidth);
+        imageView.setFitHeight(CellHeight);
+        orthogonal.setFill(Color.BLACK);
+
+        PathTransition pathTransition = new PathTransition();
+        pathTransition.setNode(imageView);
+        pathTransition.setDuration(Duration.millis(500));
+        pathTransition.setPath(orthogonal);
+        pathTransition.setCycleCount(1);
+        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+        toggleCellActive(dRow, dColumn, false, false);
+
+
+        System.err.println("dfasdfasdfadf moving " + (sRow + 1) + " " + (sColumn + 1) + "   " + (dRow + 1) + "  " + (dColumn + 1));
+
+
+        pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                imageView.setOpacity(0);
+                toggleCellActive(dRow, dColumn, true, false);
+            }
+        });
+        addComponent(new NodeWrapper(imageView));
+        addComponent(new NodeWrapper(orthogonal));
+        pathTransition.play();
+    }
+
+
+    //
+    //
+    //
+    //
+    //
+
+
+    private void handleGraphicallMove(int sourceRow, int sourceColumn, int row, int column, boolean ai) {
+        disableEvents();
+        System.err.println("moving " + sourceRow + " " + sourceColumn + " " + row + " " + column);
+
+        ImageView source;
+        if (!ai)
+            source = getImageViewInGrid(selectedCardID);
+        else source = getCellContent(sourceRow, sourceColumn);
+
+        String out = "";
+        if (!ai)
+            out = getUIOutputAsString("move to (" + (row + 1) + ", " + (column + 1) + ")");
+        if (ai || !gameEnded(out)) {
+            if (!ai && !out.contains("moved")) {
                 showPopUp(out);
                 selectedCardID = null;
                 forceRefresh();
@@ -361,6 +460,12 @@ public class GameMenu extends Menu {
         } else {
             forceRefresh();
         }
+    }
+
+    private void handleMoveCard(int row, int column, boolean ai) {
+        int sourceRow = getRowFromUnitID(selectedCardID);
+        int sourceColumn = getColumnFromUnitID(selectedCardID);
+        handleGraphicallMove(sourceRow, sourceColumn, row, column, ai);
     }
 
     private void forceRefresh() {
@@ -424,6 +529,16 @@ public class GameMenu extends Menu {
 
     private ImageView getCellContent(int row, int column) {
         ComponentSet cell = (ComponentSet) gridCells.getComponentByID(row + "," + column);
+        if (cell == null) {
+            System.err.println("NUll cell");
+        }
+        if (cell.getComponentByID("card_content") == null) {
+            System.err.println(row + " " + column);
+            System.err.println("content null");
+        }
+        if (((NodeWrapper) cell.getComponentByID("card_content")).getValue() == null) {
+            System.err.println("value null");
+        }
         return (ImageView) ((NodeWrapper) cell.getComponentByID("card_content")).getValue();
     }
 
@@ -1328,7 +1443,14 @@ public class GameMenu extends Menu {
                 interactor.setOnMouseClicked(e -> {
                     if (e.getButton() == MouseButton.PRIMARY) {
                         if (!hasFriendly(finalRow, finalColumn) && !hasEnemy(finalRow, finalColumn)) {
-                            handleMoveCard(finalRow, finalColumn);
+
+//                            if (Objects.equals(getCardIDByLocation(finalRow, finalColumn, "show my minions"), selectedCardID)) {
+//                                refresh();
+//                                moveUnit(selectedCardID, coordinations[0] - 1, coordinations[1] - 1, finalRow, finalColumn);
+//                            } else {
+//                                showPopUp(verdict);
+//                            }
+                            handleMoveCard(finalRow, finalColumn, false);
                         }
                         if (hasEnemy(finalRow, finalColumn)) {
                             handleAttackUnit(getEnemyCardID(finalRow, finalColumn));
