@@ -138,8 +138,7 @@ public class Game extends InGameMenu {
 
                 if (!hasAI[turn % 2])
                     view.logMessage(selectedUnit.getID() + " moved to " + (x + 1) + " " + (y + 1));
-                else
-                    view.logMessage(selectedUnit.getID() + " moved from " +  (selectedUnit.getX() + 1) + " " + (selectedUnit.getY() + 1) + " to " + (x + 1) + " " + (y + 1));
+                else view.logMessage(selectedUnit.getID() + " moved from " +  (selectedUnit.getX() + 1) + " " + (selectedUnit.getY() + 1) + " to " + (x + 1) + " " + (y + 1));
 
                 selectedUnit.setX(x);
                 selectedUnit.setY(y);
@@ -330,7 +329,8 @@ public class Game extends InGameMenu {
         if (state == 1) {
             return false;
         }
-        view.logMessage("successful attack");
+        if (hasAI[turn % 2])
+            view.logMessage("attack from " + selectedUnit.getX() + " " + selectedUnit.getY() + " to " + targetUnit.getX() + " " + targetUnit.getY());
         checkForDeath();
         return true;
     }
@@ -862,7 +862,7 @@ public class Game extends InGameMenu {
             if (!hasAI[turn % 2])
                 view.logMessage(cardName + " with " + card.getID() + " inserted to " + "(" + (x + 1) + "," + (y + 1) + ")");
             else
-                view.logMessage(cardName + " with " + card.getID() + " inserted to " + "(" + (x + 1) + "," + (y + 1) + ")");
+                view.logMessage("a new card inserted to " + (x + 1) + " " + (y + 1));
             // log success message
             player.decreaseMana(card.getManaCost());
             player.getHand().getCards().remove(card);

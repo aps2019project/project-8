@@ -155,12 +155,6 @@ public class AI {
             } while (!game.insertCard(player.getHand().getCards().get(index).getName(), r, c) && counter < LIMIT_ON_WHILE);
         }
 
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         // select random unit and attack with it
         {
             Player defender;

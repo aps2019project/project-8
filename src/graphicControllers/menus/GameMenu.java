@@ -168,6 +168,15 @@ public class GameMenu extends Menu {
                     int dy = Integer.parseInt(matcher.group(5)) - 1;
                     handleGraphicallMove(sx, sy, dx, dy, true);
                 }
+
+                pattern = Pattern.compile("a new card inserted to (\\d+) (\\d+)");
+                matcher = pattern.matcher(s);
+                if (matcher.find()) {
+                    int x = Integer.parseInt(matcher.group(1));
+                    int y = Integer.parseInt(matcher.group(2));
+                    ComponentSet cell = (ComponentSet) gridCells.getComponentByID(row + "," + column);
+                    cell = makeCellContent(x, y, )
+                }
             }
         }
     }
