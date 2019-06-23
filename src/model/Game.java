@@ -330,7 +330,7 @@ public class Game extends InGameMenu {
             return false;
         }
         if (hasAI[turn % 2])
-            view.logMessage("attack from " + selectedUnit.getX() + " " + selectedUnit.getY() + " to " + targetUnit.getX() + " " + targetUnit.getY());
+            view.logMessage("attack from " + selectedUnit.getID() + " to " + targetCardID);
         checkForDeath();
         return true;
     }
@@ -1167,6 +1167,8 @@ public class Game extends InGameMenu {
             return;
         }
         castItem(selectedCollectible, getCurrentPlayer(), row, column, turn);
+        if (hasAI[turn % 2])
+            view.logMessage("apply collectible " + row + " " + column);
         checkForDeath();
     }
 

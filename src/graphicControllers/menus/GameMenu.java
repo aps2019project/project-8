@@ -62,6 +62,8 @@ public class GameMenu extends Menu {
     private String selectedCollectibleID;
     private static final Color textColor = Color.rgb(176, 42, 226);
 
+    private String[][] gridStrings;
+
 
     private boolean showCutSceneMode = false;
 
@@ -152,8 +154,11 @@ public class GameMenu extends Menu {
         String out = getUIOutputAsString("end turn");
         out = out.trim();
         if (!gameEnded(out)) {
-            showPopUp("Turn Ended!");
+//            showPopUp("Turn Ended!");
             refresh();
+//            for(int i = 0; i < gridStrings.length; i++)
+//                for (int j = 0; j < gridStrings[i].length; j++)
+//                    System.err.println(i + " " + j + " " + gridStrings[i][j]);
             String[] commands = out.split("\\n");
             for (String s : commands) {
                 s = s.trim();
@@ -172,21 +177,39 @@ public class GameMenu extends Menu {
                 pattern = Pattern.compile("a new card inserted to (\\d+) (\\d+)");
                 matcher = pattern.matcher(s);
                 if (matcher.find()) {
-                    int x = Integer.parseInt(matcher.group(1));
-                    int y = Integer.parseInt(matcher.group(2));
-                    ComponentSet cell = (ComponentSet) gridCells.getComponentByID(row + "," + column);
-                    cell = makeCellContent(x, y, )
+                    int x = Integer.parseInt(matcher.group(1)) - 1;
+                    int y = Integer.parseInt(matcher.group(2)) - 1;
+//                    handleGraphicallMove(x, y, x, y, true);
+//                    handleCellSpawn(x, y);
+                }
+
+                pattern = Pattern.compile("attack from (\\w+) to (\\w+)");
+                matcher = pattern.matcher(s);
+                if (matcher.find()) {
+                    System.err.println("attacking " + matcher.group(1) + " " + matcher.group(2));
+                    selectedCardID = (matcher.group(1));
+                    handleAttackUnit(matcher.group(2));
+                }
+
+                pattern = Pattern.compile("apply collectible (\\d+) to (\\d+)");
+                matcher = pattern.matcher(s);
+                if (matcher.find()) {
+                    System.err.println("collectible apllying" + matcher.group(1) + " " + matcher.group(2));
+                    int x = Integer.parseInt(matcher.group(1)) - 1;
+                    int y = Integer.parseInt(matcher.group(2)) - 1;
+                    handleUseCollectible(x, y, true);
                 }
             }
         }
     }
 
-    private void handleUseCollectible(int row, int column) {
+    private void handleUseCollectible(int row, int column, boolean ai) {
         disableEvents();
-        String out = getUIOutputAsString("use (" + (row + 1) + ", " + (column + 1) + ")");
-        if (!gameEnded(out)) {
-
-            if (!out.equals("Successful!")) {
+        String out = "";
+        if (!ai)
+            out = getUIOutputAsString("use (" + (row + 1) + ", " + (column + 1) + ")");
+        if (ai || !gameEnded(out)) {
+            if (!ai && !out.equals("Successful!")) {
                 showPopUp(out);
                 enableEvents();
                 refresh();
@@ -424,11 +447,37 @@ public class GameMenu extends Menu {
     //
     //
 
+    private void handleCellSpawn(int x, int y) {
+        disableEvents();
+        ComponentSet cell = (ComponentSet) gridCells.getComponentByID(x + "," + y);
+        cell = makeCellFromString(gridStrings, x, y);
+        System.err.println(gridStrings[x][y]);
+        ImageView source = (ImageView) ((NodeWrapper) cell.getComponentByID("card_content")).getValue();
+        new Thread(() -> {
+            Platform.runLater(() -> {
+                source.setImage(getImageByCardName(getNameFromID(selectedCardID), "breathing", "gif"));
+                KeyValue xValue = new KeyValue(source.xProperty(), 0);
+                KeyValue yValue = new KeyValue(source.yProperty(), 0);
+                KeyValue rValue = new KeyValue(source.rotateProperty(), 0);
+                KeyFrame keyFrame = new KeyFrame(Duration.millis(1000), xValue, yValue, rValue);
+                Timeline timeline = new Timeline(keyFrame);
+                timeline.play();
+            });
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Platform.runLater(() -> {
+                enableEvents();
+                refresh();
+            });
+        }).start();
+    }
+
 
     private void handleGraphicallMove(int sourceRow, int sourceColumn, int row, int column, boolean ai) {
         disableEvents();
-        System.err.println("moving " + sourceRow + " " + sourceColumn + " " + row + " " + column);
-
         ImageView source;
         if (!ai)
             source = getImageViewInGrid(selectedCardID);
@@ -670,7 +719,7 @@ public class GameMenu extends Menu {
             for (int column = 0; column < Map.NUMBER_OF_COLUMNS; column++) {
                 ImageView interactor = getInteractor(row, column);
                 int finalRow = row, finalColumn = column;
-                interactor.setOnMouseClicked(e -> handleUseCollectible(finalRow, finalColumn));
+                interactor.setOnMouseClicked(e -> handleUseCollectible(finalRow, finalColumn, false));
 
             }
         }
@@ -825,7 +874,7 @@ public class GameMenu extends Menu {
                 ArrayList<String> handCardNames = new ArrayList<>();
                 ArrayList<String> handCardManaCosts = new ArrayList<>();
                 String playerOneUsableItemName = null, playerTwoUsableItemName = null;
-                String[][] gridStrings = new String[Map.NUMBER_OF_ROWS][Map.NUMBER_OF_COLUMNS];
+                gridStrings = new String[Map.NUMBER_OF_ROWS][Map.NUMBER_OF_COLUMNS];
                 int turnNumber = 0;
 
                 String[] shengdeShow = getUIOutputAsString("shengdebao").split("\\n");
@@ -1110,27 +1159,30 @@ public class GameMenu extends Menu {
         return imageView;
     }
 
+    private ComponentSet makeCellFromString(String[][] gridStrings, int i, int j) {
+        Pattern pattern = Pattern.compile("(\\[?)((\\+|-|\\()?)(.*)((\\+|-|\\))?)(]?):(-?\\d+)\\!(-?\\d+)\\?(-?\\d+)");
+        Matcher matcher = pattern.matcher(gridStrings[i][j]);
+
+        boolean isFriendly = false, isEnemy = false;
+        String contentCardName = ".";
+        int numberOfFlags = 0, poisonEffect = 0, hpEffect = 0;
+        if (matcher.find()) {
+            isFriendly = matcher.group(2).equals("+");
+            isEnemy = matcher.group(2).equals("-");
+            contentCardName = matcher.group(4);
+            numberOfFlags = Integer.parseInt(matcher.group(8));
+            poisonEffect = Integer.parseInt(matcher.group(9));
+            hpEffect = Integer.parseInt(matcher.group(10));
+        }
+        contentCardName = contentCardName.replaceAll("(\\[|]|-|\\+|\\(|\\))", "");
+        return makeCellContent(i, j, isFriendly, isEnemy, contentCardName, numberOfFlags, poisonEffect, hpEffect);
+    }
+
     private ComponentSet makeGridCells(String[][] gridStrings) {
         ComponentSet grid = new ComponentSet();
         for (int i = 0; i < gridStrings.length; i++)
             for (int j = 0; j < gridStrings[i].length; j++) {
-
-                Pattern pattern = Pattern.compile("(\\[?)((\\+|-|\\()?)(.*)((\\+|-|\\))?)(]?):(-?\\d+)\\!(-?\\d+)\\?(-?\\d+)");
-                Matcher matcher = pattern.matcher(gridStrings[i][j]);
-
-                boolean isFriendly = false, isEnemy = false;
-                String contentCardName = ".";
-                int numberOfFlags = 0, poisonEffect = 0, hpEffect = 0;
-                if (matcher.find()) {
-                    isFriendly = matcher.group(2).equals("+");
-                    isEnemy = matcher.group(2).equals("-");
-                    contentCardName = matcher.group(4);
-                    numberOfFlags = Integer.parseInt(matcher.group(8));
-                    poisonEffect = Integer.parseInt(matcher.group(9));
-                    hpEffect = Integer.parseInt(matcher.group(10));
-                }
-                contentCardName = contentCardName.replaceAll("(\\[|]|-|\\+|\\(|\\))", "");
-                ComponentSet cell_content = makeCellContent(i, j, isFriendly, isEnemy, contentCardName, numberOfFlags, poisonEffect, hpEffect);
+                ComponentSet cell_content = makeCellFromString(gridStrings, i, j);
                 grid.addMenuComponent(cell_content, i + "," + j);
             }
 
