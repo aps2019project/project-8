@@ -1369,6 +1369,8 @@ public class Game extends InGameMenu {
             if (unit.getSpecialPowerTypes().stream().anyMatch(e -> e == SpecialPowerType.ON_DEATH)) {
                 System.out.println(" onDeath");
             }
+            else
+                System.out.println();
         });
         dead.clear();
     }
