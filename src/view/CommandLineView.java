@@ -450,6 +450,21 @@ public class CommandLineView implements View {
         if (unit.getBuffs().stream().anyMatch(Buff::canDisarm)) {
             System.out.print(" disarm");
         }
+        if (unit.getSpecialPowerTypes().stream().anyMatch(e -> e == SpecialPowerType.ON_ATTACK)) {
+            System.out.print(" onAttack");
+        }
+        if (unit.getSpecialPowerTypes().stream().anyMatch(e -> e == SpecialPowerType.ON_SPAWN)) {
+            System.out.print(" onSpawn");
+        }
+        if (unit.getSpecialPowerTypes().stream().anyMatch(e -> e == SpecialPowerType.ON_DEATH)) {
+            System.out.print(" onDeath");
+        }
+        if (unit.getSpecialPowerTypes().stream().anyMatch(e -> e == SpecialPowerType.PASSIVE)) {
+            System.out.print(" passive");
+        }
+        if (unit.getSpecialPowerTypes().stream().anyMatch(e -> e == SpecialPowerType.ON_DEFEND)) {
+            System.out.print(" onDefend");
+        }
         System.out.print("\n");
     }
 

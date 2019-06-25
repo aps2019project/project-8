@@ -372,9 +372,9 @@ public class GameMenu extends Menu {
                                     hit.setFitWidth(tile.getFitWidth());
                                     hit.setFitHeight(tile.getFitHeight());
                                     hit.relocate(tile.getLayoutX(), tile.getLayoutY());
+                                    addComponent(new NodeWrapper(hit));
                                 } else
                                     hit.setImage(getImageByCardName(getNameFromID(enemyCardID), "attack", "gif"));
-                                addComponent(new NodeWrapper(hit));
 //                                try {
 //                                    getRowFromUnitID(enemyCardID);
 //                                } catch (NullPointerException ex) {
@@ -389,7 +389,8 @@ public class GameMenu extends Menu {
                                 e.printStackTrace();
                             }
                             Platform.runLater(() -> {
-                                removeComponent(new NodeWrapper(hit));
+                                if (!counterAttack)
+                                    removeComponent(new NodeWrapper(hit));
                                 enableEvents();
                                 refresh();
                             });
@@ -980,7 +981,7 @@ public class GameMenu extends Menu {
                 String opponentHeroName = getOpponentHeroName();
 
                 if (turnNumber % 2 == 0) {
-                    firstPlayerBar = makePlayerStat(firstPlayerName, friendlyHeroName, playerOneUsableItemName, firstPlayerMana, Math.max(Integer.parseInt(firstPlayerMana), (turnNumber + 1) / 2 + 2));
+                    firstPlayerBar = makePlayerStat(firstPlayerName, friendlyHeroName, playerOneUsableItemName, firstPlayerMana, Math.max(Integer.parseInt(firstPlayerMana), Math.min(9, (turnNumber + 1) / 2 + 2)));
                     secondPlayerBar = makeReverseEmptyPlayerStat(secondPlayerName, opponentHeroName, playerTwoUsableItemName);
                 } else {
                     firstPlayerBar = makeEmptyPlayerStat(firstPlayerName, opponentHeroName, playerOneUsableItemName);
