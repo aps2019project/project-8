@@ -1023,7 +1023,7 @@ public class Game extends InGameMenu {
 
     public void initiateTurn() {
         // mana processes
-        getCurrentPlayer().setMana((turn + 1) / 2 + 2);
+        getCurrentPlayer().setMana(Math.min(9, (turn + 1) / 2 + 2));
         getCurrentPlayer().refillHand();
 
         // item processes
@@ -1363,7 +1363,7 @@ public class Game extends InGameMenu {
     }
 
     public void getDead() {
-        dead.forEach(unit -> System.out.println("death " + unit.getID()));
+        dead.forEach(unit -> System.out.println("death " + unit.getName() + " " + unit.getX() + " " + unit.getY()));
         dead.clear();
     }
 

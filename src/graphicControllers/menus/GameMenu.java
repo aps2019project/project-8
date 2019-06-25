@@ -577,6 +577,9 @@ public class GameMenu extends Menu {
             stringBuilder.append(s);
         }
         selectedComboCardIds.clear();
+
+        System.err.println(stringBuilder);
+
         String out = getUIOutputAsString(stringBuilder.toString());
         if (!gameEnded(out)) {
             showPopUp(out);
@@ -813,9 +816,13 @@ public class GameMenu extends Menu {
                 clickedOnShowNextCard = true;
                 String s = getUIOutputAsString("show next card");
                 s = s.replaceFirst(".*Name : ", "");
-                s = s.replaceAll(" - Class :.*", "").trim();
-
-                ImageView imageView = getImageViewByCardName(s, "idle", "gif");
+                s = s.replaceAll(" -.*", "").trim();
+                String type = NamesAndTypes.getType(s);
+                String state = "idle";
+                if (type.equals("spellCard") || type.equals("usable") || type.equals("collectible")) {
+                    state = "actionbar";
+                }
+                ImageView imageView = getImageViewByCardName(s, state, "gif");
                 imageView.setFitWidth(150);
                 imageView.setFitHeight(170);
                 imageView.relocate(50 - 17, windowHeight - 200 - 10);
@@ -976,7 +983,7 @@ public class GameMenu extends Menu {
                 String opponentHeroName = getOpponentHeroName();
 
                 if (turnNumber % 2 == 0) {
-                    firstPlayerBar = makePlayerStat(firstPlayerName, friendlyHeroName, playerOneUsableItemName, firstPlayerMana, Math.min(9, (turnNumber + 1) / 2 + 2));
+                    firstPlayerBar = makePlayerStat(firstPlayerName, friendlyHeroName, playerOneUsableItemName, firstPlayerMana, Math.max(Integer.parseInt(firstPlayerMana), (turnNumber + 1) / 2 + 2));
                     secondPlayerBar = makeReverseEmptyPlayerStat(secondPlayerName, opponentHeroName, playerTwoUsableItemName);
                 } else {
                     firstPlayerBar = makeEmptyPlayerStat(firstPlayerName, opponentHeroName, playerOneUsableItemName);
@@ -1152,7 +1159,7 @@ public class GameMenu extends Menu {
             statBar.addMenuComponent(new NodeWrapper(usableBackground));
 
             if (usableItemName != null) {
-                ImageView usable = getImageViewByCardName(usableItemName, "idle", "format");
+                ImageView usable = getImageViewByCardName(usableItemName, "actionbar", "gif");
                 usable.setOnMouseClicked(e -> showCardInfo(usableItemName));
                 usable.setFitHeight(35);
                 usable.setFitWidth(35);
@@ -1358,7 +1365,12 @@ public class GameMenu extends Menu {
         }
 
         if (contentCardName != null && !contentCardName.equals(".")) {
-            ImageView card = getImageViewByCardName(contentCardName, "idle", "gif");
+            String type = NamesAndTypes.getType(contentCardName);
+            String state = "idle";
+            if (type.equals("spellCard") || type.equals("usable") || type.equals("collectible")) {
+                state = "actionbar";
+            }
+            ImageView card = getImageViewByCardName(contentCardName, state, "gif");
             double height = CELL_CONTENT_HEIGHT, width = CELL_CONTENT_WIDTH;
 
             if (!(NamesAndTypes.getCollectionItem(contentCardName) instanceof Unit)) {
@@ -1672,8 +1684,12 @@ public class GameMenu extends Menu {
                     });
 
                     handCard.addMenuComponent(new NodeWrapper(innerGlow));
-
-                    ImageView cardContent = getImageViewByCardName(handCardNames.get(i), "idle", "gif");
+                    String type = NamesAndTypes.getType(handCardNames.get(i));
+                    String state = "idle";
+                    if (type.equals("spellCard") || type.equals("usable") || type.equals("collectible")) {
+                        state = "actionbar";
+                    }
+                    ImageView cardContent = getImageViewByCardName(handCardNames.get(i), state, "gif");
                     cardContent.setFitWidth(55);
                     cardContent.setFitHeight(55);
                     cardContent.relocate(i * 55, 0);
@@ -1705,7 +1721,12 @@ public class GameMenu extends Menu {
 
                 background.setOnMousePressed(mouseEvent -> {
                     removeComponent(new NodeWrapper(content));
-                    draggedComponenet = new NodeWrapper(getImageViewByCardName(cardName, "idle", "gif"));
+                    String type = NamesAndTypes.getType(cardName);
+                    String state = "idle";
+                    if (type.equals("spellCard") || type.equals("usable") || type.equals("collectible")) {
+                        state = "actionbar";
+                    }
+                    draggedComponenet = new NodeWrapper(getImageViewByCardName(cardName, state, "gif"));
                     ((NodeWrapper) draggedComponenet).getValue().relocate(mouseEvent.getSceneX() - 50,
                             mouseEvent.getSceneY() - 50);
                     ((ImageView) ((NodeWrapper) draggedComponenet).getValue()).setFitWidth(100);
