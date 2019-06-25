@@ -143,29 +143,50 @@ public class GameMenu extends Menu {
         String out = getUIOutputAsString("get dead");
         if (!gameEnded(out)) {
             new Thread(() -> {
-                String[] output = out.split("\\n");
-                ArrayList<String> deathIDs = new ArrayList<>();
-                for (String s : output)
-                    if (s.contains("death")) {
-                        deathIDs.add(s.split(" ")[1]);
-                    }
-                Platform.runLater(() -> {
-                    for (String s : output) {
-                        if (s.split(" ")[0].equalsIgnoreCase("death")) {
-                            ImageView imageView = getCellContent(Integer.parseInt(s.split(" ")[2]),
-                                    Integer.parseInt(s.split(" ")[3]));
-                            imageView.setImage(getImageByCardName(s.split(" ")[1], "death", "gif"));
-                        }
-                    }
-                });
                 try {
-                    if (!deathIDs.isEmpty())
-                        Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                Platform.runLater(this::enableEvents);
+                    ArrayList<NodeWrapper> effects = new ArrayList<>();
+                    String[] output = out.split("\\n");
+                    ArrayList<String> deathIDs = new ArrayList<>();
+                    System.err.println(out);
+                    for (String s : output)
+                        if (s.contains("death")) {
+                            deathIDs.add(s.split(" ")[1]);
+                        }
+                    ImageView castSpellEffect = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/stun_buff.png")));
+                    Platform.runLater(() -> {
+                        for (String s : output) {
+                            if (s.split(" ")[0].equalsIgnoreCase("death")) {
+                                int row = Integer.parseInt(s.split(" ")[2]);
+                                int column = Integer.parseInt(s.split(" ")[3]);
+                                ImageView imageView = getCellContent(row, column);
+                                imageView.setImage(getImageByCardName(s.split(" ")[1], "death", "gif"));
+                                ImageView tile = getTile(row, column);
+                                if (s.contains("onDeath")) {
+                                    castSpellEffect.relocate(tile.getLayoutX(), tile.getLayoutY() - 20);
+                                    castSpellEffect.setFitHeight(tile.getFitHeight() + 20);
+                                    castSpellEffect.setFitWidth(tile.getFitWidth());
+                                    addComponent(new NodeWrapper(castSpellEffect));
+                                    effects.add(new NodeWrapper(castSpellEffect));
+                                }
+                            }
+                        }
+                    });
+                    try {
+                        if (!deathIDs.isEmpty())
+                            Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Platform.runLater(() -> {
+                        enableEvents();
+                        for (NodeWrapper n : effects)
+                            removeComponent(n);
+                        effects.clear();
+                    });
 //                }
+                } catch (FileNotFoundException ex) {
+                    ex.printStackTrace();
+                }
             }).start();
         } else {
             enableEvents();
@@ -1374,7 +1395,7 @@ public class GameMenu extends Menu {
             if (!(NamesAndTypes.getCollectionItem(contentCardName) instanceof Unit)) {
                 height -= 40;
                 width -= 40;
-                y += 2;
+                y += 2 + TILE_HEIGHT;
                 x += 17;
             }
             card.setFitHeight(height);
