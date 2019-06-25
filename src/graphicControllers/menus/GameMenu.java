@@ -222,7 +222,7 @@ public class GameMenu extends Menu {
                 if (matcher.find()) {
                     System.err.println("attacking " + matcher.group(1) + " " + matcher.group(2));
                     selectedCardID = (matcher.group(1));
-                    handleAttackUnit(matcher.group(2));
+                    handleAttackUnit(matcher.group(2), true);
                 }
 
                 pattern = Pattern.compile("hero power on (\\d+) (\\d+)");
@@ -346,7 +346,7 @@ public class GameMenu extends Menu {
         }
     }
 
-    private synchronized void handleAttackUnit(String enemyCardID) {
+    private synchronized void handleAttackUnit(String enemyCardID, boolean ai) {
         disableEvents();
         if (enemyCardID != null) {
             int sourceRow = getRowFromUnitID(selectedCardID);
@@ -356,9 +356,12 @@ public class GameMenu extends Menu {
             Unit selectedUnit = UI.getGame().getCurrentPlayer().getUnit(selectedCardID);
             Unit enemyUnit = UI.getGame().getOtherPlayer().getUnit(enemyCardID);
 
-            String out = getUIOutputAsString("attack " + enemyCardID);
-            if (!gameEnded(out)) {
-                if (!out.equals("Successful!")) {
+            String out = "";
+            if (!ai) {
+                out = getUIOutputAsString("attack " + enemyCardID);
+            }
+            if (ai || !gameEnded(out)) {
+                if (!ai && !out.equals("Successful!")) {
                     showPopUp(out);
                     enableEvents();
                     refresh();
@@ -1615,7 +1618,7 @@ public class GameMenu extends Menu {
                             handleMoveCard(finalRow, finalColumn, false);
                         }
                         if (hasEnemy(finalRow, finalColumn)) {
-                            handleAttackUnit(getEnemyCardID(finalRow, finalColumn));
+                            handleAttackUnit(getEnemyCardID(finalRow, finalColumn), false);
                         }
                     }
                     if (e.getButton() == MouseButton.MIDDLE) {
