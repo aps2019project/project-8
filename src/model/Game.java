@@ -1364,7 +1364,14 @@ public class Game extends InGameMenu {
     }
 
     public void getDead() {
-        dead.forEach(unit -> System.out.println("death " + unit.getName() + " " + unit.getX() + " " + unit.getY()));
+        dead.forEach(unit -> {
+            System.out.print("death " + unit.getName() + " " + unit.getX() + " " + unit.getY());
+            if (unit.getSpecialPowerTypes().stream().anyMatch(e -> e == SpecialPowerType.ON_DEATH)) {
+                System.out.println(" onDeath");
+            }
+            else
+                System.out.println();
+        });
         dead.clear();
     }
 
