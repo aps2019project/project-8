@@ -34,6 +34,7 @@ public class Game extends InGameMenu {
     private ArrayList<HashMap<String, Integer>> numberOfPlayedCollectionItems = new ArrayList<>(2);
     private AI ai;
     private ArrayList<Collectible> collectibles = new ArrayList<>();
+    private ArrayList<Unit> dead = new ArrayList<>();
 
     public Game(Account firstPlayer, Account secondPlayer, GameType gameType, int numberOfFlags) {
         accounts = new Account[]{firstPlayer, secondPlayer};
@@ -171,6 +172,7 @@ public class Game extends InGameMenu {
         moveCardToGraveYard(unit);
         map.getCell(unit.getX(), unit.getY()).addFlag(unit.getNumberOfFlags());
         unit.getPlayer().removeFromUnits(unit);
+        dead.add(unit);
     }
 
     private void handlePoison(Unit unit) {
@@ -211,6 +213,11 @@ public class Game extends InGameMenu {
         if (!attacker.getCanAttack() || attacker.isStunned())
             return -1;
         int distance = getDistance(attacker.getX(), attacker.getY(), defender.getX(), defender.getY());
+        boolean can = canAttack(attacker, defender, distance);
+        return can ? 0 : -2;
+    }
+
+    public boolean canAttack(Unit attacker, Unit defender, int distance) {
         boolean isAdjacent = isAdjacent(attacker.getX(), attacker.getY(), defender.getX(), defender.getY());
         boolean can = false;
         switch (attacker.getUnitType()) {
@@ -224,7 +231,7 @@ public class Game extends InGameMenu {
                 can = attacker.getAttackRange() >= distance;
                 break;
         }
-        return can ? 0 : -2;
+        return can;
     }
 
 
@@ -1344,6 +1351,19 @@ public class Game extends InGameMenu {
         }
         unit.receiveDamage(1000000);
         checkOnDeath(unit);
+    }
+
+    public void getDead() {
+        dead.forEach(unit -> System.out.println("death " + unit.getID()));
+        dead.clear();
+    }
+
+    public Player getOtherPlayer() {
+        if (turn % 2 == 0) {
+            return players[1];
+        } else {
+            return players[0];
+        }
     }
 
     public enum GameState {

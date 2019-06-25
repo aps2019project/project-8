@@ -312,4 +312,10 @@ public class Unit extends Card {
             return new Unit(card, hitPoint, attackPoint, unitType, specialPowerType, specialPower, canFly, attackRange);
         }
     }
+
+    public boolean canCounterAttack() {
+        if (buffs.isEmpty())
+            return true;
+        return buffs.stream().noneMatch(Buff::canDisarm);
+    }
 }

@@ -247,4 +247,10 @@ public class GameMenu extends InGameMenu {
     public static Game getGame() {
         return game;
     }
+
+    public static void getDead() {
+        if (getGame() == null)
+            return;
+        game.getDead();
+    }
 }

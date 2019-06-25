@@ -20,20 +20,15 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import menus.UI;
-import model.CollectionItem;
 import model.Map;
-import model.Match;
 import model.Unit;
-import sun.security.krb5.internal.crypto.NullEType;
 import view.*;
-import view.MenuComponent;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.*;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,7 +41,10 @@ public class GameMenu extends Menu {
     private static final String SHOW_CARD_INFO = "show card info [^ ]+";
     private static final String SELECT_CARD = "select [^ ]+";
     private static final String MOVE_UNIT = "move to (\\d+, \\d+)";
-
+    private static final Color textColor = Color.rgb(176, 42, 226);
+    private static transient GameMenu instance = null;
+    Rectangle disableEventRectangle;
+    ArrayList<AnimationTimer> animations = new ArrayList<>();
     private ComponentSet firstPlayerBar, secondPlayerBar;
     private ComponentSet gridCells;
     private ComponentSet cardBar;
@@ -54,20 +52,20 @@ public class GameMenu extends Menu {
     private ComponentSet everyThing;
     private ComponentSet collectibleComponents;
     private CardView selectedCardInfo;
-
     private String draggedCardName;
     private MenuComponent draggedComponenet;
     private ArrayList<String> selectedComboCardIds = new ArrayList<>();
     private boolean clickedOnShowNextCard = false;
     private String selectedCollectibleID;
-    private static final Color textColor = Color.rgb(176, 42, 226);
-
-
     private boolean showCutSceneMode = false;
-
     private String selectedCardID;
 
-    private static transient GameMenu instance = null;
+    public GameMenu() {
+        super(Id.IN_GAME_MENU, "Game Menu", windowDefaultWidth, windowDefaultHeight);
+        setUpBackGround();
+        setUpMenuButtons();
+        instance = this;
+    }
 
     public static GameMenu getInstance() {
         return instance;
@@ -107,16 +105,6 @@ public class GameMenu extends Menu {
         } catch (FileNotFoundException ignored) {
         }
     }
-
-
-    public GameMenu() {
-        super(Id.IN_GAME_MENU, "Game Menu", windowDefaultWidth, windowDefaultHeight);
-        setUpBackGround();
-        setUpMenuButtons();
-        instance = this;
-    }
-
-    Rectangle disableEventRectangle;
 
     private synchronized void disableEvents() {
         showCutSceneMode = true;
@@ -248,7 +236,6 @@ public class GameMenu extends Menu {
         cardSelectedGridChangePrimary();
     }
 
-
     private void handleUseSpecialPower(int row, int column) {
         String out = getUIOutputAsString("use special power (" + row + ", " + column + ")");
         if (!gameEnded(out)) {
@@ -264,6 +251,8 @@ public class GameMenu extends Menu {
             int sourceColumn = getColumnFromUnitID(selectedCardID);
             int row = getRowFromUnitID(enemyCardID);
             int column = getColumnFromUnitID(enemyCardID);
+            Unit selectedUnit = UI.getGame().getCurrentPlayer().getUnit(selectedCardID);
+            Unit enemyUnit = UI.getGame().getOtherPlayer().getUnit(enemyCardID);
 
             String out = getUIOutputAsString("attack " + enemyCardID);
             if (!gameEnded(out)) {
@@ -276,14 +265,21 @@ public class GameMenu extends Menu {
                         try {
                             ImageView imageView = getCellContent(sourceRow, sourceColumn);
                             ImageView tile = getTile(row, column);
-                            ImageView hit = new ImageView(new Image(new FileInputStream("images/gameIcons/hit.gif")));
-
+                            ImageView hit;
+                            boolean counterAttack = enemyUnit.canCounterAttack() && UI.getGame().canAttack(enemyUnit, selectedUnit, Math.abs(row - sourceRow) + Math.abs(column - sourceColumn));
+                            if (counterAttack)
+                                hit = getCellContent(row, column);
+                            else
+                                hit = new ImageView(new Image(new FileInputStream("images/gameIcons/hit.gif")));
 
                             Platform.runLater(() -> {
                                 imageView.setImage(getImageByCardName(getNameFromID(selectedCardID), "attack", "gif"));
-                                hit.setFitWidth(tile.getFitWidth());
-                                hit.setFitHeight(tile.getFitHeight());
-                                hit.relocate(tile.getLayoutX(), tile.getLayoutY());
+                                if (!counterAttack) {
+                                    hit.setFitWidth(tile.getFitWidth());
+                                    hit.setFitHeight(tile.getFitHeight());
+                                    hit.relocate(tile.getLayoutX(), tile.getLayoutY());
+                                } else
+                                    hit.setImage(getImageByCardName(getNameFromID(enemyCardID), "attack", "gif"));
                                 addComponent(new NodeWrapper(hit));
                                 try {
                                     getRowFromUnitID(enemyCardID);
@@ -365,7 +361,6 @@ public class GameMenu extends Menu {
         refresh();
     }
 
-
     private void handleAttackCombo(String enemyCardID) {
         StringBuilder stringBuilder = new StringBuilder("attack combo ");
         stringBuilder.append(enemyCardID);
@@ -380,7 +375,6 @@ public class GameMenu extends Menu {
             refresh();
         }
     }
-
 
     private boolean gameEnded(String output) {
         if (output.contains("winner is:") || output.contains("HAHA!")) {
@@ -425,24 +419,24 @@ public class GameMenu extends Menu {
     }
 
     private int getRowFromUnitID(String cardID) {
-        String description = getDescriptionByName(getNameFromID(cardID));
+//        String description = getDescriptionByName(getNameFromID(cardID));
+        String description = getDescriptionByName(cardID);
         Pattern pattern = Pattern.compile(".*location: \\((\\d+), (\\d+)\\).*");
         Matcher matcher = pattern.matcher(description);
         if (matcher.find()) {
-            int row = Integer.parseInt(matcher.group(1)) - 1;
-            return row;
+            return Integer.parseInt(matcher.group(1)) - 1;
         } else {
             throw new NullPointerException();
         }
     }
 
     private int getColumnFromUnitID(String cardID) {
-        String description = getDescriptionByName(getNameFromID(cardID));
+//        String description = getDescriptionByName(getNameFromID(cardID));
+        String description = getDescriptionByName(cardID);
         Pattern pattern = Pattern.compile(".*location: \\((\\d+), (\\d+)\\).*");
         Matcher matcher = pattern.matcher(description);
         if (matcher.find()) {
-            int column = Integer.parseInt(matcher.group(2)) - 1;
-            return column;
+            return Integer.parseInt(matcher.group(2)) - 1;
         } else {
             throw new NullPointerException();
         }
@@ -548,7 +542,6 @@ public class GameMenu extends Menu {
             }
         }
     }
-
 
     private List<String> getCollectibles() {
         ArrayList<String> list = new ArrayList<>();
@@ -816,7 +809,6 @@ public class GameMenu extends Menu {
         return null;
     }
 
-
     private String getDescriptionByName(String cardName, String command) {
         String[] output = getUIOutputAsString(command).split("\\n");
         for (int i = 0; i < output.length; i++) {
@@ -887,7 +879,6 @@ public class GameMenu extends Menu {
         statBar.relocateUpRight(windowWidth - 290, 30);
         return statBar;
     }
-
 
     private ComponentSet makeEmptyPlayerStat(String playerName, String heroName, String usableItemName) {
         ComponentSet statBar = makePlayerStat(playerName, heroName, usableItemName, "1", 1);
@@ -1034,7 +1025,6 @@ public class GameMenu extends Menu {
         return grid;
     }
 
-
     private ComponentSet makeCellContent(int i, int j, boolean isFriendly, boolean isEnemy, String contentCardName, int numberOfFlags, int poisonEffect, int hpEffect) {
         ComponentSet cell = new ComponentSet();
         ImageView tile = null;
@@ -1179,8 +1169,6 @@ public class GameMenu extends Menu {
         };
         addAnimation(animationTimer);
     }
-
-    ArrayList<AnimationTimer> animations = new ArrayList<>();
 
     private void addAnimation(AnimationTimer animationTimer) {
         animations.add(animationTimer);

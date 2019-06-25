@@ -76,6 +76,7 @@ public class UI {
     private static final String SHOW_MENU = "(?i:show menu)";
     private static final String EXPORT = "(?i:export)";
     private static final String IMPORT = "(?i:import) " + NAME;
+    private static final String DEAD = "(?i:get dead)";
 
     private static final String SHENGDEBAO = "(?i:shengdebao)";
     private static final String KILL = "(?i:kill) " + ID;
@@ -419,6 +420,8 @@ public class UI {
             }
             else if (command.matches(KILL))
                 GameMenu.kill(command.split(" ")[1]);
+            else if (command.matches(DEAD))
+                GameMenu.getDead();
             else
                 view.showInvalidCommandError();
             GameMenu.checkGameCondition();
