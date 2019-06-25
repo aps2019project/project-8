@@ -107,6 +107,10 @@ public class Game extends InGameMenu {
         }
     }
 
+    public Unit getSelectedUnit() {
+        return selectedUnit;
+    }
+
     public boolean moveSelectedUnit(int x, int y) { // returns true if successful
         // can fly has got to do something in here
         if (selectedUnit == null) {
@@ -139,8 +143,6 @@ public class Game extends InGameMenu {
 
                 if (!hasAI[turn % 2])
                     view.logMessage(selectedUnit.getID() + " moved to " + (x + 1) + " " + (y + 1));
-                else view.logMessage(selectedUnit.getID() + " moved from " +  (selectedUnit.getX() + 1) + " " + (selectedUnit.getY() + 1) + " to " + (x + 1) + " " + (y + 1));
-
                 selectedUnit.setX(x);
                 selectedUnit.setY(y);
 
@@ -336,8 +338,8 @@ public class Game extends InGameMenu {
         if (state == 1) {
             return false;
         }
-        if (hasAI[turn % 2])
-            view.logMessage("attack from " + selectedUnit.getID() + " to " + targetCardID);
+//        if (hasAI[turn % 2])
+//            view.logMessage("attack from " + selectedUnit.getID() + " to " + targetCardID);
         checkForDeath();
         return true;
     }
@@ -404,7 +406,8 @@ public class Game extends InGameMenu {
             i++;
         }
         checkForDeath();
-        view.logMessage("hero power successfully used");
+        if (!hasAI[turn % 2])
+            view.logMessage("hero power successfully used");
         return true;
     }
 
@@ -868,8 +871,8 @@ public class Game extends InGameMenu {
         if (inserted) {
             if (!hasAI[turn % 2])
                 view.logMessage(cardName + " with " + card.getID() + " inserted to " + "(" + (x + 1) + "," + (y + 1) + ")");
-            else
-                view.logMessage("a new card inserted to " + (x + 1) + " " + (y + 1));
+//            else
+//                view.logMessage("a new card inserted to " + (x + 1) + " " + (y + 1));
             // log success message
             player.decreaseMana(card.getManaCost());
             player.getHand().getCards().remove(card);
@@ -1174,8 +1177,6 @@ public class Game extends InGameMenu {
             return;
         }
         castItem(selectedCollectible, getCurrentPlayer(), row, column, turn);
-        if (hasAI[turn % 2])
-            view.logMessage("apply collectible " + row + " " + column);
         checkForDeath();
     }
 

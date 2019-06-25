@@ -123,10 +123,12 @@ public class AI {
         return new Player(deck);
     }
 
-    public void selectRandomUnit() {
+    public Unit selectRandomUnit() {
         Player player = game.getCurrentPlayer();
         int index = rand.nextInt(player.getUnits().size());
+        Unit unit = player.getUnits().get(index);
         game.selectCard(player.getUnits().get(index).getID());
+        return unit;
     }
 
     public void makeMove() {
@@ -134,13 +136,17 @@ public class AI {
         // select random unit and move with it
         final int LIMIT_ON_WHILE = 20;
         {
-            selectRandomUnit();
+            Unit unit = selectRandomUnit();
             int r, c, counter = 0;
             do {
                 r = rand.nextInt(game.getMap().getNumberOfRows());
                 c = rand.nextInt(game.getMap().getNumberOfColumns());
                 counter++;
             } while (!game.moveSelectedUnit(r, c) && counter < LIMIT_ON_WHILE);
+
+            if (counter < LIMIT_ON_WHILE) {
+                System.out.println(unit.getID() + " moved from " +  (unit.getX() + 1) + " " + (unit.getY() + 1) + " to " + (r + 1) + " " + (c + 1));
+            }
         }
 
         // put a random card in map
@@ -153,6 +159,9 @@ public class AI {
                 c = rand.nextInt(game.getMap().getNumberOfColumns());
                 counter++;
             } while (!game.insertCard(player.getHand().getCards().get(index).getName(), r, c) && counter < LIMIT_ON_WHILE);
+            if (counter < LIMIT_ON_WHILE) {
+                System.out.println("a new card inserted to " + (r + 1) + " " + (c + 1));
+            }
         }
 
         // select random unit and attack with it
@@ -165,10 +174,16 @@ public class AI {
             }
 
             int index, counter = 0;
+            String defenderID;
+            Unit unit = selectRandomUnit();
             do {
                 index = rand.nextInt(defender.getUnits().size());
                 counter++;
-            } while (!game.attackTargetCardWithSelectedUnit(defender.getUnits().get(index).getID()) && counter < LIMIT_ON_WHILE);
+                defenderID = defender.getUnits().get(index).getID();
+            } while (!game.attackTargetCardWithSelectedUnit(defenderID) && counter < LIMIT_ON_WHILE);
+            if (counter < LIMIT_ON_WHILE) {
+                System.out.println("attack from " + unit.getID() + " to " + defenderID);
+            }
         }
 
         // cast special power with a random unit if any unit has
@@ -179,6 +194,9 @@ public class AI {
                 c = rand.nextInt(game.getMap().getNumberOfColumns());
                 counter++;
             } while (!game.useHeroSpecialPower(r, c) && counter < LIMIT_ON_WHILE);
+            if (counter < LIMIT_ON_WHILE) {
+                System.out.println("hero power on " + (r + 1) + " " + (c + 1));
+            }
         }
 
         // cast collectible if it has any
@@ -192,6 +210,7 @@ public class AI {
                     r = rand.nextInt(game.getMap().getNumberOfRows());
                     c = rand.nextInt(game.getMap().getNumberOfColumns());
                     game.applyCollectible(r, c);
+                    System.out.println("apply collectible " + (r + 1) + " " + (c + 1));
                 }
             }
         }
