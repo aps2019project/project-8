@@ -66,6 +66,7 @@ public class GameMenu extends Menu {
 
     private boolean showCutSceneMode = false;
     private String selectedCardID;
+    private int numberOfDisable = 0;
 
     public GameMenu() {
         super(Id.IN_GAME_MENU, "Game Menu", windowDefaultWidth, windowDefaultHeight);
@@ -112,8 +113,6 @@ public class GameMenu extends Menu {
         } catch (FileNotFoundException ignored) {
         }
     }
-
-    private int numberOfDisable = 0;
 
     private synchronized void disableEvents() {
         numberOfDisable++;
@@ -190,7 +189,7 @@ public class GameMenu extends Menu {
         if (!gameEnded(out)) {
 //            showPopUp("Turn Ended!");
             refresh();
-            for(int i = 0; i < gridStrings.length; i++)
+            for (int i = 0; i < gridStrings.length; i++)
                 for (int j = 0; j < gridStrings[i].length; j++)
                     System.err.println(i + " " + j + " " + gridStrings[i][j]);
             String[] commands = out.split("\\n");
@@ -243,6 +242,38 @@ public class GameMenu extends Menu {
                     handleUseCollectible(x, y, true);
                 }
             }
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 5; j++) {
+                    if (getDescriptionByLocation(j, i) != null && getDescriptionByLocation(j, i).contains("passive")) {
+                        System.err.println("hlo");
+                        int finalJ = j;
+                        int finalI = i;
+                        new Thread(() -> {
+                            try {
+                                ImageView tile = getTile(finalJ, finalI);
+                                ImageView passive = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/passive.gif")));
+                                Platform.runLater(() -> {
+                                    passive.setFitWidth(tile.getFitWidth());
+                                    passive.setFitHeight(tile.getFitHeight());
+                                    passive.relocate(tile.getLayoutX(), tile.getLayoutY());
+                                    addComponent(new NodeWrapper(passive));
+                                });
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                Platform.runLater(() -> {
+                                    removeComponent(new NodeWrapper(passive));
+                                    enableEvents();
+                                    refresh();
+                                });
+                            } catch (FileNotFoundException ignored) {
+                            }
+                        }).start();
+                    }
+                }
+            }
         }
     }
 
@@ -279,6 +310,7 @@ public class GameMenu extends Menu {
         } else {
             enableEvents();
             refresh();
+
         }
     }
 
@@ -1285,7 +1317,8 @@ public class GameMenu extends Menu {
             getView().getScene().startFullDrag();
         });
 
-        getView().getScene().setOnMouseDragReleased(event -> {});
+        getView().getScene().setOnMouseDragReleased(event -> {
+        });
 
         for (int i = 0; i < gridStrings.length; i++)
             for (int j = 0; j < gridStrings[i].length; j++) {
