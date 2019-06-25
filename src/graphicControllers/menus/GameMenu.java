@@ -222,7 +222,7 @@ public class GameMenu extends Menu {
                 if (matcher.find()) {
                     System.err.println("attacking " + matcher.group(1) + " " + matcher.group(2));
                     selectedCardID = (matcher.group(1));
-                    handleAttackUnit(matcher.group(2));
+//                    handleAttackUnit(matcher.group(2));
                 }
 
                 pattern = Pattern.compile("hero power on (\\d+) (\\d+)");
@@ -374,11 +374,7 @@ public class GameMenu extends Menu {
                             else
                                 hit = new ImageView(new Image(new FileInputStream("images/gameIcons/hit.gif")));
                             ImageView onAttack = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/onAttack.gif")));
-
-                            //
-                            System.err.println(getDescriptionByLocation(sourceRow, sourceColumn));
-                            //
-
+                            ImageView onDefend = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/onDefend.gif")));
                             Platform.runLater(() -> {
                                 imageView.setImage(getImageByCardName(getNameFromID(selectedCardID), "attack", "gif"));
                                 if (!counterAttack) {
@@ -392,6 +388,12 @@ public class GameMenu extends Menu {
                                     onAttack.setFitWidth(tile.getFitWidth());
                                     onAttack.setFitHeight(tile.getFitHeight());
                                     onAttack.relocate(tile.getLayoutX(), tile.getLayoutY());
+                                    addComponent(new NodeWrapper(onAttack));
+                                }
+                                if (getDescriptionByLocation(row, column).contains("onDefend")) {
+                                    onDefend.setFitWidth(tile.getFitWidth());
+                                    onDefend.setFitHeight(tile.getFitHeight());
+                                    onDefend.relocate(tile.getLayoutX(), tile.getLayoutY());
                                     addComponent(new NodeWrapper(onAttack));
                                 }
 //                                try {
@@ -412,6 +414,8 @@ public class GameMenu extends Menu {
                                     removeComponent(new NodeWrapper(hit));
                                 if (getDescriptionByLocation(sourceRow, sourceColumn).contains("onAttack"))
                                     removeComponent(new NodeWrapper(onAttack));
+                                if (getDescriptionByLocation(row, column).contains("onDefend"))
+                                    removeComponent(new NodeWrapper(onDefend));
                                 enableEvents();
                                 refresh();
                             });
