@@ -113,9 +113,12 @@ public class GameMenu extends Menu {
         }
     }
 
+    private int numberOfDisable = 0;
+
     private synchronized void disableEvents() {
-        showCutSceneMode = true;
-        if (disableEventRectangle == null) {
+        numberOfDisable++;
+        if (numberOfDisable == 1) {
+            showCutSceneMode = true;
             disableEventRectangle = new Rectangle(0, 0, windowWidth, windowHeight);
             disableEventRectangle.setOpacity(0);
             addComponent(new NodeWrapper(disableEventRectangle));
@@ -126,15 +129,16 @@ public class GameMenu extends Menu {
     }
 
     private synchronized void enableEvents() {
-        showCutSceneMode = false;
-        if (disableEventRectangle != null) {
+        numberOfDisable--;
+        if (numberOfDisable == 0) {
+            showCutSceneMode = false;
             removeComponent(new NodeWrapper(disableEventRectangle));
             disableEventRectangle = null;
+            notify();
         }
-        notify();
     }
 
-    private void handleDeathAnimation() {
+    private synchronized void handleDeathAnimation() {
         disableEvents();
         String out = getUIOutputAsString("get dead");
         if (!gameEnded(out)) {
@@ -150,9 +154,9 @@ public class GameMenu extends Menu {
                 Platform.runLater(() -> {
                     for (String s : output) {
                         if (s.split(" ")[0].equalsIgnoreCase("death")) {
-                            String p = s.split(" ")[1];
-                            ImageView imageView = getCellContent(getRowFromUnitID(p), getColumnFromUnitID(p));
-                            imageView.setImage(getImageByCardName(getNameFromID(p), "death", "gif"));
+                            ImageView imageView = getCellContent(Integer.parseInt(s.split(" ")[2]),
+                                    Integer.parseInt(s.split(" ")[3]));
+                            imageView.setImage(getImageByCardName(s.split(" ")[1], "death", "gif"));
                         }
                     }
                 });
@@ -171,7 +175,7 @@ public class GameMenu extends Menu {
 
     }
 
-    private void handleSelectCollectible(String s) {
+    private synchronized void handleSelectCollectible(String s) {
         selectedCollectibleID = s;
         String out = getUIOutputAsString("select " + s);
         if (!gameEnded(out)) {
@@ -180,7 +184,7 @@ public class GameMenu extends Menu {
         }
     }
 
-    private void handleEndTurn() {
+    private synchronized void handleEndTurn() {
         String out = getUIOutputAsString("end turn");
         out = out.trim();
         if (!gameEnded(out)) {
@@ -189,51 +193,51 @@ public class GameMenu extends Menu {
 //            for(int i = 0; i < gridStrings.length; i++)
 //                for (int j = 0; j < gridStrings[i].length; j++)
 //                    System.err.println(i + " " + j + " " + gridStrings[i][j]);
-            String[] commands = out.split("\\n");
-            for (String s : commands) {
-                s = s.trim();
-                Pattern pattern = Pattern.compile("(\\w+) moved from (\\d+) (\\d+) to (\\d+) (\\d+)");
-                Matcher matcher = pattern.matcher(s);
-                if (matcher.find()) {
-                    System.err.println(s);
-                    selectedCardID = matcher.group(1);
-                    int sx = Integer.parseInt(matcher.group(2)) - 1;
-                    int sy = Integer.parseInt(matcher.group(3)) - 1;
-                    int dx = Integer.parseInt(matcher.group(4)) - 1;
-                    int dy = Integer.parseInt(matcher.group(5)) - 1;
-                    handleGraphicallMove(sx, sy, dx, dy, true);
-                }
-
-                pattern = Pattern.compile("a new card inserted to (\\d+) (\\d+)");
-                matcher = pattern.matcher(s);
-                if (matcher.find()) {
-                    int x = Integer.parseInt(matcher.group(1)) - 1;
-                    int y = Integer.parseInt(matcher.group(2)) - 1;
-//                    handleGraphicallMove(x, y, x, y, true);
-//                    handleCellSpawn(x, y);
-                }
-
-                pattern = Pattern.compile("attack from (\\w+) to (\\w+)");
-                matcher = pattern.matcher(s);
-                if (matcher.find()) {
-                    System.err.println("attacking " + matcher.group(1) + " " + matcher.group(2));
-                    selectedCardID = (matcher.group(1));
-                    handleAttackUnit(matcher.group(2));
-                }
-
-                pattern = Pattern.compile("apply collectible (\\d+) to (\\d+)");
-                matcher = pattern.matcher(s);
-                if (matcher.find()) {
-                    System.err.println("collectible apllying" + matcher.group(1) + " " + matcher.group(2));
-                    int x = Integer.parseInt(matcher.group(1)) - 1;
-                    int y = Integer.parseInt(matcher.group(2)) - 1;
-                    handleUseCollectible(x, y, true);
-                }
-            }
+//            String[] commands = out.split("\\n");
+//            for (String s : commands) {
+//                s = s.trim();
+//                Pattern pattern = Pattern.compile("(\\w+) moved from (\\d+) (\\d+) to (\\d+) (\\d+)");
+//                Matcher matcher = pattern.matcher(s);
+//                if (matcher.find()) {
+//                    System.err.println(s);
+//                    selectedCardID = matcher.group(1);
+//                    int sx = Integer.parseInt(matcher.group(2)) - 1;
+//                    int sy = Integer.parseInt(matcher.group(3)) - 1;
+//                    int dx = Integer.parseInt(matcher.group(4)) - 1;
+//                    int dy = Integer.parseInt(matcher.group(5)) - 1;
+//                    handleGraphicallMove(sx, sy, dx, dy, true);
+//                }
+//
+//                pattern = Pattern.compile("a new card inserted to (\\d+) (\\d+)");
+//                matcher = pattern.matcher(s);
+//                if (matcher.find()) {
+//                    int x = Integer.parseInt(matcher.group(1)) - 1;
+//                    int y = Integer.parseInt(matcher.group(2)) - 1;
+////                    handleGraphicallMove(x, y, x, y, true);
+////                    handleCellSpawn(x, y);
+//                }
+//
+//                pattern = Pattern.compile("attack from (\\w+) to (\\w+)");
+//                matcher = pattern.matcher(s);
+//                if (matcher.find()) {
+//                    System.err.println("attacking " + matcher.group(1) + " " + matcher.group(2));
+//                    selectedCardID = (matcher.group(1));
+//                    handleAttackUnit(matcher.group(2));
+//                }
+//
+//                pattern = Pattern.compile("apply collectible (\\d+) to (\\d+)");
+//                matcher = pattern.matcher(s);
+//                if (matcher.find()) {
+//                    System.err.println("collectible apllying" + matcher.group(1) + " " + matcher.group(2));
+//                    int x = Integer.parseInt(matcher.group(1)) - 1;
+//                    int y = Integer.parseInt(matcher.group(2)) - 1;
+//                    handleUseCollectible(x, y, true);
+//                }
+//            }
         }
     }
 
-    private void handleUseCollectible(int row, int column, boolean ai) {
+    private synchronized void handleUseCollectible(int row, int column, boolean ai) {
         disableEvents();
         String out = "";
         if (!ai)
@@ -269,17 +273,18 @@ public class GameMenu extends Menu {
         }
     }
 
-    private void handleShowCollectibleinfo() {
+    private synchronized void handleShowCollectibleinfo() {
         showPopUp(getUIOutputAsString("show info"));
     }
 
-    private void handleInsertCard(int row, int column) {
+    private synchronized void handleInsertCard(int row, int column) {
         disableEvents();
         String cordinate = "(" + (row + 1) + ", " + (column + 1) + ")";
         if (draggedCardName != null) {
             String output = getUIOutputAsString("insert " + draggedCardName + " in " + cordinate);
             if (!gameEnded(output)) {
                 if (output.contains("inserted")) {
+                    System.err.println(showCutSceneMode);
                     new Thread(() -> {
                         try {
                             ImageView tile = getTile(row, column);
@@ -288,28 +293,25 @@ public class GameMenu extends Menu {
                             strike.setFitWidth(tile.getFitWidth());
                             strike.relocate(tile.getLayoutX(), tile.getLayoutY());
 
-                            new Thread(() -> {
-                                Platform.runLater(() -> {
-                                    addComponent(new NodeWrapper(strike));
-                                });
-                            }).start();
+                            Platform.runLater(() -> {
+                                addComponent(new NodeWrapper(strike));
+                            });
                             try {
                                 Thread.sleep(2000);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
 
-                            new Thread(() -> {
-                                Platform.runLater(() -> {
-                                    removeComponent(new NodeWrapper(strike));
-                                    enableEvents();
-                                    refresh();
-                                });
-                            }).start();
+                            Platform.runLater(() -> {
+                                removeComponent(new NodeWrapper(strike));
+                                enableEvents();
+                                refresh();
+                            });
 
                         } catch (FileNotFoundException ex) {
                             ex.printStackTrace();
                         }
+
                     }).start();
                 } else {
                     showPopUp(output);
@@ -317,16 +319,18 @@ public class GameMenu extends Menu {
                     refresh();
                 }
             }
+        } else {
+            enableEvents();
         }
     }
 
-    private void handleSelectCard(String cardID) {
+    private synchronized void handleSelectCard(String cardID) {
         selectedCardID = cardID;
         showPopUp(getUIOutputAsString("select " + cardID));
         cardSelectedGridChangePrimary();
     }
 
-    private void handleUseSpecialPower(int row, int column) {
+    private synchronized void handleUseSpecialPower(int row, int column) {
         String out = getUIOutputAsString("use special power (" + row + ", " + column + ")");
         if (!gameEnded(out)) {
             showPopUp(out);
@@ -334,7 +338,7 @@ public class GameMenu extends Menu {
         }
     }
 
-    private void handleAttackUnit(String enemyCardID) {
+    private synchronized void handleAttackUnit(String enemyCardID) {
         disableEvents();
         if (enemyCardID != null) {
             int sourceRow = getRowFromUnitID(selectedCardID);
@@ -422,7 +426,6 @@ public class GameMenu extends Menu {
         }
         temp = cell.getComponentByID("card_content");
         if (temp != null) {
-            System.err.println("fading " + row + " " + column + "     card content to " + active);
             ImageView cardContent = (ImageView) ((NodeWrapper) temp).getValue();
             cardContent.setOpacity(opacity);
             if (attack)
@@ -463,9 +466,6 @@ public class GameMenu extends Menu {
         toggleCellActive(dRow, dColumn, false, false);
 
 
-        System.err.println("dfasdfasdfadf moving " + (sRow + 1) + " " + (sColumn + 1) + "   " + (dRow + 1) + "  " + (dColumn + 1));
-
-
         pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -489,7 +489,6 @@ public class GameMenu extends Menu {
         disableEvents();
         ComponentSet cell = (ComponentSet) gridCells.getComponentByID(x + "," + y);
         cell = makeCellFromString(gridStrings, x, y);
-        System.err.println(gridStrings[x][y]);
         ImageView source = (ImageView) ((NodeWrapper) cell.getComponentByID("card_content")).getValue();
         new Thread(() -> {
             Platform.runLater(() -> {
@@ -578,7 +577,6 @@ public class GameMenu extends Menu {
         }
         selectedComboCardIds.clear();
 
-        System.err.println(stringBuilder);
 
         String out = getUIOutputAsString(stringBuilder.toString());
         if (!gameEnded(out)) {
@@ -657,7 +655,6 @@ public class GameMenu extends Menu {
     }
 
     private int getColumnFromUnitID(String cardID) {
-//        String description = getDescriptionByName(getNameFromID(cardID));
         String description = getDescriptionByName(cardID);
         Pattern pattern = Pattern.compile(".*location: \\((\\d+), (\\d+)\\).*");
         Matcher matcher = pattern.matcher(description);
@@ -1256,6 +1253,8 @@ public class GameMenu extends Menu {
             getView().getScene().startFullDrag();
         });
 
+        getView().getScene().setOnMouseDragReleased(event -> {});
+
         for (int i = 0; i < gridStrings.length; i++)
             for (int j = 0; j < gridStrings[i].length; j++) {
                 ComponentSet cell = (ComponentSet) grid.getComponentByID(i + "," + j);
@@ -1393,7 +1392,7 @@ public class GameMenu extends Menu {
         double left = column * TILE_WITDH - 5;
         double centreY = row * TILE_HEIGHT + TILE_HEIGHT / 2;
         double centreX = column * TILE_WITDH + TILE_WITDH / 2;
-        double radius = 30;
+        double radius = 15;
         double angleRange = Math.PI;
         double angleForOne = Math.PI / buffNamesInDescription.length;
 
@@ -1409,7 +1408,6 @@ public class GameMenu extends Menu {
                     buffView.setFitHeight(BUFF_HEIGHT);
                     buffView.relocate(centreX + Math.cos(angleForOne * cnt) * radius,
                             centreY - Math.sin(angleForOne * cnt) * radius);
-                    System.err.println(buffView.getLayoutX() + " " + buffView.getLayoutY());
                     cell.addMenuComponent(new NodeWrapper(buffView));
                     cnt++;
                 } catch (FileNotFoundException e) {
