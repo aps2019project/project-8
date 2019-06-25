@@ -21,6 +21,7 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 import menus.UI;
 import model.Map;
+import model.Match;
 import model.Unit;
 import view.*;
 
@@ -129,7 +130,7 @@ public class GameMenu extends Menu {
     }
 
     private synchronized void enableEvents() {
-        numberOfDisable--;
+        numberOfDisable = Math.max(0, numberOfDisable - 1);
         if (numberOfDisable == 0) {
             showCutSceneMode = false;
             removeComponent(new NodeWrapper(disableEventRectangle));
@@ -171,6 +172,7 @@ public class GameMenu extends Menu {
                                 }
                             }
                         } catch (Throwable ex) {
+                            forceRefresh();
                             System.out.println("GOOOD!");
                         }
                     });
@@ -467,37 +469,42 @@ public class GameMenu extends Menu {
                 } else {
                     new Thread(() -> {
                         try {
-                            ImageView imageView = getCellContent(sourceRow, sourceColumn);
-                            ImageView tile = getTile(row, column);
-                            ImageView hit;
-                            boolean counterAttack = enemyUnit.canCounterAttack() && UI.getGame().canAttack(enemyUnit, selectedUnit, Math.abs(row - sourceRow) + Math.abs(column - sourceColumn));
-                            if (counterAttack)
-                                hit = getCellContent(row, column);
-                            else
-                                hit = new ImageView(new Image(new FileInputStream("images/gameIcons/hit.gif")));
-                            ImageView onAttack = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/onAttack.gif")));
-                            ImageView onDefend = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/onDefend.gif")));
-                            Platform.runLater(() -> {
-                                imageView.setImage(getImageByCardName(getNameFromID(selectedCardID), "attack", "gif"));
-                                if (!counterAttack) {
-                                    hit.setFitWidth(tile.getFitWidth());
-                                    hit.setFitHeight(tile.getFitHeight());
-                                    hit.relocate(tile.getLayoutX(), tile.getLayoutY());
-                                    addComponent(new NodeWrapper(hit));
-                                } else
-                                    hit.setImage(getImageByCardName(getNameFromID(enemyCardID), "attack", "gif"));
-                                if (getDescriptionByLocation(sourceRow, sourceColumn).contains("onAttack")) {
-                                    onAttack.setFitWidth(tile.getFitWidth());
-                                    onAttack.setFitHeight(tile.getFitHeight());
-                                    onAttack.relocate(tile.getLayoutX(), tile.getLayoutY());
-                                    addComponent(new NodeWrapper(onAttack));
-                                }
-                                if (getDescriptionByLocation(row, column).contains("onDefend")) {
-                                    onDefend.setFitWidth(tile.getFitWidth());
-                                    onDefend.setFitHeight(tile.getFitHeight());
-                                    onDefend.relocate(tile.getLayoutX(), tile.getLayoutY());
-                                    addComponent(new NodeWrapper(onAttack));
-                                }
+                            try {
+                                ImageView imageView = getCellContent(sourceRow, sourceColumn);
+                                ImageView tile = getTile(row, column);
+                                ImageView hit;
+                                boolean counterAttack = enemyUnit.canCounterAttack() && UI.getGame().canAttack(enemyUnit, selectedUnit, Math.abs(row - sourceRow) + Math.abs(column - sourceColumn));
+                                if (counterAttack)
+                                    hit = getCellContent(row, column);
+                                else
+                                    hit = new ImageView(new Image(new FileInputStream("images/gameIcons/hit.gif")));
+                                ImageView onAttack = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/onAttack.gif")));
+                                ImageView onDefend = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/onDefend.gif")));
+                                Platform.runLater(() -> {
+                                    try {
+                                        imageView.setImage(getImageByCardName(getNameFromID(selectedCardID), "attack", "gif"));
+                                        if (!counterAttack) {
+                                            hit.setFitWidth(tile.getFitWidth());
+                                            hit.setFitHeight(tile.getFitHeight());
+                                            hit.relocate(tile.getLayoutX(), tile.getLayoutY());
+                                            addComponent(new NodeWrapper(hit));
+                                        } else
+                                            hit.setImage(getImageByCardName(getNameFromID(enemyCardID), "attack", "gif"));
+                                        if (getDescriptionByLocation(sourceRow, sourceColumn).contains("onAttack")) {
+                                            onAttack.setFitWidth(tile.getFitWidth());
+                                            onAttack.setFitHeight(tile.getFitHeight());
+                                            onAttack.relocate(tile.getLayoutX(), tile.getLayoutY());
+                                            addComponent(new NodeWrapper(onAttack));
+                                        }
+                                        if (getDescriptionByLocation(row, column).contains("onDefend")) {
+                                            onDefend.setFitWidth(tile.getFitWidth());
+                                            onDefend.setFitHeight(tile.getFitHeight());
+                                            onDefend.relocate(tile.getLayoutX(), tile.getLayoutY());
+                                            addComponent(new NodeWrapper(onAttack));
+                                        }
+                                    } catch (Throwable ex) {
+                                        forceRefresh();
+                                    }
 //                                try {
 //                                    getRowFromUnitID(enemyCardID);
 //                                } catch (NullPointerException ex) {
@@ -505,24 +512,29 @@ public class GameMenu extends Menu {
 //                                    hit.setOpacity(0);
 //                                    getCellContent(row, column).setImage(getImageByCardName(getNameFromID(enemyCardID), "death", "gif"));
 //                                }
-                            });
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            Platform.runLater(() -> {
-                                if (!counterAttack)
-                                    removeComponent(new NodeWrapper(hit));
-                                if (getDescriptionByLocation(sourceRow, sourceColumn).contains("onAttack"))
-                                    removeComponent(new NodeWrapper(onAttack));
-                                if (getDescriptionByLocation(row, column).contains("onDefend"))
-                                    removeComponent(new NodeWrapper(onDefend));
+                                });
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                Platform.runLater(() -> {
+                                    if (!counterAttack)
+                                        removeComponent(new NodeWrapper(hit));
+                                    if (getDescriptionByLocation(sourceRow, sourceColumn).contains("onAttack"))
+                                        removeComponent(new NodeWrapper(onAttack));
+                                    if (getDescriptionByLocation(row, column).contains("onDefend"))
+                                        removeComponent(new NodeWrapper(onDefend));
+                                    enableEvents();
+                                    refresh();
+                                });
+                            } catch (FileNotFoundException ex) {
                                 enableEvents();
-                                refresh();
-                            });
-                        } catch (FileNotFoundException ex) {
-                            ex.printStackTrace();
+                                ex.printStackTrace();
+                            }
+                        } catch (Throwable ex) {
+                            forceRefresh();
+                            System.out.println("GOOOD");
                         }
                     }).start();
                 }
