@@ -456,9 +456,6 @@ public class CommandLineView implements View {
         if (unit.getSpecialPowerTypes().stream().anyMatch(e -> e == SpecialPowerType.ON_SPAWN)) {
             System.out.print(" onSpawn");
         }
-        if (unit.getSpecialPowerTypes().stream().anyMatch(e -> e == SpecialPowerType.ON_DEATH)) {
-            System.out.print(" onDeath");
-        }
         if (unit.getSpecialPowerTypes().stream().anyMatch(e -> e == SpecialPowerType.PASSIVE)) {
             System.out.print(" passive");
         }
