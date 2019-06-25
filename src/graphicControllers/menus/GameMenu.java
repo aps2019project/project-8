@@ -222,6 +222,7 @@ public class GameMenu extends Menu {
                 if (matcher.find()) {
                     System.err.println("attacking " + matcher.group(1) + " " + matcher.group(2));
                     selectedCardID = (matcher.group(1));
+                    handleAttackUnit(matcher.group(2), true);
 //                    handleAttackUnit(matcher.group(2));
                 }
 
@@ -230,7 +231,7 @@ public class GameMenu extends Menu {
                 if (matcher.find()) {
                     int x = Integer.parseInt(matcher.group(1)) - 1;
                     int y = Integer.parseInt(matcher.group(2)) - 1;
-                    handleUseSpecialPower(x, y);
+                    handleUseSpecialPower(x, y, true);
                 }
 
                 pattern = Pattern.compile("apply collectible (\\d+) to (\\d+)");
@@ -338,7 +339,9 @@ public class GameMenu extends Menu {
         cardSelectedGridChangePrimary();
     }
 
-    private synchronized void handleUseSpecialPower(int row, int column) {
+    private synchronized void handleUseSpecialPower(int row, int column, boolean ai) {
+        if (ai)
+            return;
         String out = getUIOutputAsString("use special power (" + row + ", " + column + ")");
         if (!gameEnded(out)) {
             showPopUp(out);
@@ -346,7 +349,7 @@ public class GameMenu extends Menu {
         }
     }
 
-    private synchronized void handleAttackUnit(String enemyCardID) {
+    private synchronized void handleAttackUnit(String enemyCardID, boolean ai) {
         disableEvents();
         if (enemyCardID != null) {
             int sourceRow = getRowFromUnitID(selectedCardID);
@@ -356,9 +359,12 @@ public class GameMenu extends Menu {
             Unit selectedUnit = UI.getGame().getCurrentPlayer().getUnit(selectedCardID);
             Unit enemyUnit = UI.getGame().getOtherPlayer().getUnit(enemyCardID);
 
-            String out = getUIOutputAsString("attack " + enemyCardID);
-            if (!gameEnded(out)) {
-                if (!out.equals("Successful!")) {
+            String out = "";
+            if (!ai) {
+                out = getUIOutputAsString("attack " + enemyCardID);
+            }
+            if (ai || !gameEnded(out)) {
+                if (!ai && !out.equals("Successful!")) {
                     showPopUp(out);
                     enableEvents();
                     refresh();
@@ -1632,12 +1638,12 @@ public class GameMenu extends Menu {
                             handleMoveCard(finalRow, finalColumn, false);
                         }
                         if (hasEnemy(finalRow, finalColumn)) {
-                            handleAttackUnit(getEnemyCardID(finalRow, finalColumn));
+                            handleAttackUnit(getEnemyCardID(finalRow, finalColumn), false);
                         }
                     }
                     if (e.getButton() == MouseButton.MIDDLE) {
                         if (hasEnemy(finalRow, finalColumn)) {
-                            handleUseSpecialPower(finalRow, finalColumn);
+                            handleUseSpecialPower(finalRow, finalColumn, false);
                         }
                     }
                 });
