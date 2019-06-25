@@ -190,50 +190,58 @@ public class GameMenu extends Menu {
         if (!gameEnded(out)) {
 //            showPopUp("Turn Ended!");
             refresh();
-//            for(int i = 0; i < gridStrings.length; i++)
-//                for (int j = 0; j < gridStrings[i].length; j++)
-//                    System.err.println(i + " " + j + " " + gridStrings[i][j]);
-//            String[] commands = out.split("\\n");
-//            for (String s : commands) {
-//                s = s.trim();
-//                Pattern pattern = Pattern.compile("(\\w+) moved from (\\d+) (\\d+) to (\\d+) (\\d+)");
-//                Matcher matcher = pattern.matcher(s);
-//                if (matcher.find()) {
-//                    System.err.println(s);
-//                    selectedCardID = matcher.group(1);
-//                    int sx = Integer.parseInt(matcher.group(2)) - 1;
-//                    int sy = Integer.parseInt(matcher.group(3)) - 1;
-//                    int dx = Integer.parseInt(matcher.group(4)) - 1;
-//                    int dy = Integer.parseInt(matcher.group(5)) - 1;
-//                    handleGraphicallMove(sx, sy, dx, dy, true);
-//                }
-//
-//                pattern = Pattern.compile("a new card inserted to (\\d+) (\\d+)");
-//                matcher = pattern.matcher(s);
-//                if (matcher.find()) {
-//                    int x = Integer.parseInt(matcher.group(1)) - 1;
-//                    int y = Integer.parseInt(matcher.group(2)) - 1;
-////                    handleGraphicallMove(x, y, x, y, true);
-////                    handleCellSpawn(x, y);
-//                }
-//
-//                pattern = Pattern.compile("attack from (\\w+) to (\\w+)");
-//                matcher = pattern.matcher(s);
-//                if (matcher.find()) {
-//                    System.err.println("attacking " + matcher.group(1) + " " + matcher.group(2));
-//                    selectedCardID = (matcher.group(1));
-//                    handleAttackUnit(matcher.group(2));
-//                }
-//
-//                pattern = Pattern.compile("apply collectible (\\d+) to (\\d+)");
-//                matcher = pattern.matcher(s);
-//                if (matcher.find()) {
-//                    System.err.println("collectible apllying" + matcher.group(1) + " " + matcher.group(2));
-//                    int x = Integer.parseInt(matcher.group(1)) - 1;
-//                    int y = Integer.parseInt(matcher.group(2)) - 1;
-//                    handleUseCollectible(x, y, true);
-//                }
-//            }
+            for(int i = 0; i < gridStrings.length; i++)
+                for (int j = 0; j < gridStrings[i].length; j++)
+                    System.err.println(i + " " + j + " " + gridStrings[i][j]);
+            String[] commands = out.split("\\n");
+            for (String s : commands) {
+                s = s.trim();
+                Pattern pattern = Pattern.compile("(\\w+) moved from (\\d+) (\\d+) to (\\d+) (\\d+)");
+                Matcher matcher = pattern.matcher(s);
+                if (matcher.find()) {
+                    System.err.println(s);
+                    selectedCardID = matcher.group(1);
+                    int sx = Integer.parseInt(matcher.group(2)) - 1;
+                    int sy = Integer.parseInt(matcher.group(3)) - 1;
+                    int dx = Integer.parseInt(matcher.group(4)) - 1;
+                    int dy = Integer.parseInt(matcher.group(5)) - 1;
+                    handleGraphicallMove(sx, sy, dx, dy, true);
+                }
+
+                pattern = Pattern.compile("a new card inserted to (\\d+) (\\d+)");
+                matcher = pattern.matcher(s);
+                if (matcher.find()) {
+                    int x = Integer.parseInt(matcher.group(1)) - 1;
+                    int y = Integer.parseInt(matcher.group(2)) - 1;
+//                    handleGraphicallMove(x, y, x, y, true);
+//                    handleCellSpawn(x, y);
+                }
+
+                pattern = Pattern.compile("attack from (\\w+) to (\\w+)");
+                matcher = pattern.matcher(s);
+                if (matcher.find()) {
+                    System.err.println("attacking " + matcher.group(1) + " " + matcher.group(2));
+                    selectedCardID = (matcher.group(1));
+                    handleAttackUnit(matcher.group(2));
+                }
+
+                pattern = Pattern.compile("hero power on (\\d+) (\\d+)");
+                matcher = pattern.matcher(s);
+                if (matcher.find()) {
+                    int x = Integer.parseInt(matcher.group(1)) - 1;
+                    int y = Integer.parseInt(matcher.group(2)) - 1;
+                    handleUseSpecialPower(x, y);
+                }
+
+                pattern = Pattern.compile("apply collectible (\\d+) to (\\d+)");
+                matcher = pattern.matcher(s);
+                if (matcher.find()) {
+                    System.err.println("collectible apllying" + matcher.group(1) + " " + matcher.group(2));
+                    int x = Integer.parseInt(matcher.group(1)) - 1;
+                    int y = Integer.parseInt(matcher.group(2)) - 1;
+                    handleUseCollectible(x, y, true);
+                }
+            }
         }
     }
 
