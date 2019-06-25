@@ -137,6 +137,8 @@ public class AI {
         final int LIMIT_ON_WHILE = 20;
         {
             Unit unit = selectRandomUnit();
+            int lastX = unit.getX();
+            int lastY = unit.getY();
             int r, c, counter = 0;
             do {
                 r = rand.nextInt(game.getMap().getNumberOfRows());
@@ -145,7 +147,7 @@ public class AI {
             } while (!game.moveSelectedUnit(r, c) && counter < LIMIT_ON_WHILE);
 
             if (counter < LIMIT_ON_WHILE) {
-                System.out.println(unit.getID() + " moved from " +  (unit.getX() + 1) + " " + (unit.getY() + 1) + " to " + (r + 1) + " " + (c + 1));
+                System.out.println(unit.getID() + " moved from " +  (lastX + 1) + " " + (lastY + 1) + " to " + (r + 1) + " " + (c + 1));
             }
         }
 
