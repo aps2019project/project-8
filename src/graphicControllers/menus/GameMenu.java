@@ -213,6 +213,8 @@ public class GameMenu extends Menu {
                 if (matcher.find()) {
                     int x = Integer.parseInt(matcher.group(1)) - 1;
                     int y = Integer.parseInt(matcher.group(2)) - 1;
+                    handleInsertCard(x, y, true);
+                    System.err.println("dsfaksdjfkladjfklajsdflkjasdlfkjasdlkfjasdklfjaslkdfjalskdjfk");;
 //                    handleGraphicallMove(x, y, x, y, true);
 //                    handleCellSpawn(x, y);
                 }
@@ -286,12 +288,15 @@ public class GameMenu extends Menu {
         showPopUp(getUIOutputAsString("show info"));
     }
 
-    private synchronized void handleInsertCard(int row, int column) {
+    private synchronized void handleInsertCard(int row, int column, boolean ai) {
         disableEvents();
         String cordinate = "(" + (row + 1) + ", " + (column + 1) + ")";
         if (draggedCardName != null) {
-            String output = getUIOutputAsString("insert " + draggedCardName + " in " + cordinate);
-            if (!gameEnded(output)) {
+            String output = "";
+            if (!ai) {
+                output = getUIOutputAsString("insert " + draggedCardName + " in " + cordinate);
+            }
+            if (ai || !gameEnded(output)) {
                 if (output.contains("inserted")) {
                     System.err.println(showCutSceneMode);
                     new Thread(() -> {
@@ -1302,7 +1307,7 @@ public class GameMenu extends Menu {
                 interactor.setOnMouseDragEntered(e -> tile.setOpacity(1));
                 interactor.setOnMouseDragExited(e -> tile.setOpacity(0.1));
                 int finalRow = i, finalColumn = j;
-                interactor.setOnMouseDragReleased(e -> handleInsertCard(finalRow, finalColumn));
+                interactor.setOnMouseDragReleased(e -> handleInsertCard(finalRow, finalColumn, false));
 
             }
         return grid;
