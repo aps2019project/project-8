@@ -149,8 +149,6 @@ public class GameMenu extends Menu {
                     if (s.contains("death")) {
                         deathIDs.add(s.split(" ")[1]);
                     }
-//                System.err.println(deathIDs.size());
-//                if (!deathIDs?.isEmpty()) {
                 Platform.runLater(() -> {
                     for (String s : output) {
                         if (s.split(" ")[0].equalsIgnoreCase("death")) {
@@ -1371,14 +1369,16 @@ public class GameMenu extends Menu {
             }
             ImageView card = getImageViewByCardName(contentCardName, state, "gif");
             double height = CELL_CONTENT_HEIGHT, width = CELL_CONTENT_WIDTH;
-
+            double x = j * 50 + TILE_WITDH / 2 - width / 2, y = i * 30 + TILE_HEIGHT / 2 - height / 2 - height / 5;
             if (!(NamesAndTypes.getCollectionItem(contentCardName) instanceof Unit)) {
                 height -= 40;
                 width -= 40;
+                y += 2;
+                x += 17;
             }
             card.setFitHeight(height);
             card.setFitWidth(width);
-            card.relocate(j * 50 + TILE_WITDH / 2 - width / 2, i * 30 + TILE_HEIGHT / 2 - height / 2 - height / 5);
+            card.relocate(x, y);
             cell.addMenuComponent(new NodeWrapper(card), "card_content");
             addUnitBuffsToCell(i, j, cell);
         }
@@ -1388,8 +1388,6 @@ public class GameMenu extends Menu {
 
     private void addUnitBuffsToCell(int row, int column, ComponentSet cell) {
         String[] buffNamesInDescription = {"holy", "unholy", "powerBuff", "weaknessBuff", "stun", "disarm"};
-        double up = row * TILE_HEIGHT - 5;
-        double left = column * TILE_WITDH - 5;
         double centreY = row * TILE_HEIGHT + TILE_HEIGHT / 2;
         double centreX = column * TILE_WITDH + TILE_WITDH / 2;
         double radius = 15;
