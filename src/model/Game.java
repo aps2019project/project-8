@@ -136,10 +136,14 @@ public class Game extends InGameMenu {
                 map.getCell(x, y).decreaseNumberOfFlags();
                 currentCell.setContent(null);
                 map.getGrid()[x][y].setContent(selectedUnit);
-                selectedUnit.setX(x);
-                selectedUnit.setY(y);
+
                 if (!hasAI[turn % 2])
                     view.logMessage(selectedUnit.getID() + " moved to " + (x + 1) + " " + (y + 1));
+                else view.logMessage(selectedUnit.getID() + " moved from " +  (selectedUnit.getX() + 1) + " " + (selectedUnit.getY() + 1) + " to " + (x + 1) + " " + (y + 1));
+
+                selectedUnit.setX(x);
+                selectedUnit.setY(y);
+
                 selectedUnit.setCanMove(false);
                 return true;
             } else {
@@ -317,7 +321,6 @@ public class Game extends InGameMenu {
             return false;
         }
 
-
         int state = attackUnitByUnit(selectedUnit, targetUnit, false);
         if (state == -1) { // has already attacked before or is stunned
             if (!hasAI[turn % 2])
@@ -333,6 +336,8 @@ public class Game extends InGameMenu {
         if (state == 1) {
             return false;
         }
+        if (hasAI[turn % 2])
+            view.logMessage("attack from " + selectedUnit.getID() + " to " + targetCardID);
         checkForDeath();
         return true;
     }
@@ -399,6 +404,7 @@ public class Game extends InGameMenu {
             i++;
         }
         checkForDeath();
+        view.logMessage("hero power successfully used");
         return true;
     }
 
@@ -862,6 +868,8 @@ public class Game extends InGameMenu {
         if (inserted) {
             if (!hasAI[turn % 2])
                 view.logMessage(cardName + " with " + card.getID() + " inserted to " + "(" + (x + 1) + "," + (y + 1) + ")");
+            else
+                view.logMessage("a new card inserted to " + (x + 1) + " " + (y + 1));
             // log success message
             player.decreaseMana(card.getManaCost());
             player.getHand().getCards().remove(card);
@@ -1166,6 +1174,8 @@ public class Game extends InGameMenu {
             return;
         }
         castItem(selectedCollectible, getCurrentPlayer(), row, column, turn);
+        if (hasAI[turn % 2])
+            view.logMessage("apply collectible " + row + " " + column);
         checkForDeath();
     }
 
@@ -1329,7 +1339,6 @@ public class Game extends InGameMenu {
         } else {
             System.out.println(players[1].getDeck().getDeckUsableItem().getName());
         }
-        System.err.println("done printing this shit");
     }
 
     public int getPrize() {

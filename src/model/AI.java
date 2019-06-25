@@ -130,6 +130,7 @@ public class AI {
     }
 
     public void makeMove() {
+
         // select random unit and move with it
         final int LIMIT_ON_WHILE = 20;
         {
@@ -141,6 +142,7 @@ public class AI {
                 counter++;
             } while (!game.moveSelectedUnit(r, c) && counter < LIMIT_ON_WHILE);
         }
+
         // put a random card in map
         {
             Player player = game.getCurrentPlayer();
@@ -152,6 +154,7 @@ public class AI {
                 counter++;
             } while (!game.insertCard(player.getHand().getCards().get(index).getName(), r, c) && counter < LIMIT_ON_WHILE);
         }
+
         // select random unit and attack with it
         {
             Player defender;
@@ -167,6 +170,7 @@ public class AI {
                 counter++;
             } while (!game.attackTargetCardWithSelectedUnit(defender.getUnits().get(index).getID()) && counter < LIMIT_ON_WHILE);
         }
+
         // cast special power with a random unit if any unit has
         {
             int r, c, counter = 0;
@@ -176,6 +180,7 @@ public class AI {
                 counter++;
             } while (!game.useHeroSpecialPower(r, c) && counter < LIMIT_ON_WHILE);
         }
+
         // cast collectible if it has any
         {
             Player player = game.getCurrentPlayer();

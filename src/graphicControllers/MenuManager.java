@@ -77,7 +77,7 @@ public class MenuManager {
         currentMenu.refresh();
         currentMenu.stopMedia();
         this.currentMenu = currentMenu;
-        currentMenu.playMedia();
+//        currentMenu.playMedia();
     }
 
     public void setCurrentMenu(int menuID) {

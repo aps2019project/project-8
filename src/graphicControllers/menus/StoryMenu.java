@@ -46,7 +46,6 @@ public class StoryMenu extends Menu {
             diveSefid.setText("Div e Sefid");
             diveSefid.setOnMouseClicked(e -> {
                 UI.decide("1");
-                System.err.println("ta in ja oomadam");
                 if (UI.getMenu() == Menus.GAME_MENU)
                     MenuManager.getInstance().setCurrentMenu(Id.IN_GAME_MENU);
                 else

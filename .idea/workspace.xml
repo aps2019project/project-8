@@ -1,100 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2549cda8-0ddf-4406-8710-6410b0291f4a" name="Default Changelist" comment="attack and move">
+    <list default="true" id="2549cda8-0ddf-4406-8710-6410b0291f4a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Collectibles/bladesOfAgility.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Collectibles/bladesOfAgility.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Collectibles/exir.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Collectibles/exir.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Collectibles/majooneMana.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Collectibles/majooneMana.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Collectibles/majooneRooyinTani.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Collectibles/majooneRooyinTani.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Collectibles/nefrineMarg.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Collectibles/nefrineMarg.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Collectibles/nooshDaroo.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Collectibles/nooshDaroo.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Collectibles/randomDamage.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Collectibles/randomDamage.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Collectibles/shamshireChini.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Collectibles/shamshireChini.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Collectibles/tireDoShaakh.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Collectibles/tireDoShaakh.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Heroes/7headedDragon.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Heroes/7headedDragon.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Heroes/aarash.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Heroes/aarash.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Heroes/afsaane.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Heroes/afsaane.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Heroes/diveSefid.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Heroes/diveSefid.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Heroes/esfandiaar.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Heroes/esfandiaar.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Heroes/kaave.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Heroes/kaave.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Heroes/rakhsh.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Heroes/rakhsh.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Heroes/rostam.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Heroes/rostam.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Heroes/simorgh.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Heroes/simorgh.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Heroes/zahhaak.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Heroes/zahhaak.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/arzhangDiv.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/arzhangDiv.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/ashkBoos.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/ashkBoos.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/bahman.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/bahman.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/blackDiv.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/blackDiv.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/boarriderDiv.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/boarriderDiv.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/divSlinger.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/divSlinger.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/eagle.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/eagle.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/flamethrowerDragon.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/flamethrowerDragon.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/fooladZereh.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/fooladZereh.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/ghoulDoSar.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/ghoulDoSar.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/ghouleBozorg.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/ghouleBozorg.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/giganticSerpent.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/giganticSerpent.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/giv.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/giv.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/gorazeVahshi.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/gorazeVahshi.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/gorg.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/gorg.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/gorgeSefid.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/gorgeSefid.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/iraj.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/iraj.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/jadoogar.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/jadoogar.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/jadoogareAzam.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/jadoogareAzam.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/jen.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/jen.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/naneSarma.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/naneSarma.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/oneeyedGhoul.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/oneeyedGhoul.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/palang.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/palang.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/persianArcher.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/persianArcher.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/persianCavalry.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/persianCavalry.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/persianChampion.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/persianChampion.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/persianCommander.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/persianCommander.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/persianPikeman.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/persianPikeman.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/persianSwordsman.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/persianSwordsman.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/piran.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/piran.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/shahGhoul.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/shahGhoul.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/shireDarrande.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/shireDarrande.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/siaavosh.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/siaavosh.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/siavash.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/siavash.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/tooraaniMaceman.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/tooraaniMaceman.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/tooraaniPikeman.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/tooraaniPikeman.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/tooraaniPrince.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/tooraaniPrince.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/tooraaniSlinger.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/tooraaniSlinger.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/tooraaniSpy.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/tooraaniSpy.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/tooraniArcher.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/tooraniArcher.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Minions/venomousSerpent.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Minions/venomousSerpent.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/SpellCards/allAttack.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/SpellCards/allAttack.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/SpellCards/allDisarm.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/SpellCards/allDisarm.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/SpellCards/allPoison.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/SpellCards/allPoison.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/SpellCards/allPower.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/SpellCards/allPower.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/SpellCards/areaDispel.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/SpellCards/areaDispel.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/SpellCards/dispel.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/SpellCards/dispel.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/SpellCards/empower.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/SpellCards/empower.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/SpellCards/fireball.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/SpellCards/fireball.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/SpellCards/godStrength.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/SpellCards/godStrength.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/SpellCards/healthWithProfit.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/SpellCards/healthWithProfit.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/SpellCards/hellFire.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/SpellCards/hellFire.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/SpellCards/kingsGuard.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/SpellCards/kingsGuard.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/SpellCards/lightningBolt.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/SpellCards/lightningBolt.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/SpellCards/madness.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/SpellCards/madness.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/SpellCards/poisonLake.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/SpellCards/poisonLake.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/SpellCards/powerUp.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/SpellCards/powerUp.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/SpellCards/sacrifice.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/SpellCards/sacrifice.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/SpellCards/shock.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/SpellCards/shock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/SpellCards/totalDisarm.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/SpellCards/totalDisarm.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/SpellCards/weakening.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/SpellCards/weakening.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Usables/asssassinationDagger.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Usables/asssassinationDagger.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Usables/ghosleTamid.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Usables/ghosleTamid.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Usables/kamaneDamool.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Usables/kamaneDamool.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Usables/kingWisdom.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Usables/kingWisdom.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Usables/namooseSepar.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Usables/namooseSepar.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Usables/pareSimorgh.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Usables/pareSimorgh.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Usables/poisonousDagger.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Usables/poisonousDagger.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Usables/shockHammer.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Usables/shockHammer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Usables/soulEater.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Usables/soulEater.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Usables/taajeDanayi.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Usables/taajeDanayi.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gameData/Usables/terrorHood.json" beforeDir="false" afterPath="$PROJECT_DIR$/gameData/Usables/terrorHood.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/graphicControllers/menus/GameMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphicControllers/menus/GameMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Game.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -112,79 +22,38 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/graphicControllers/menus/GameMenu.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="380" column="21" selection-start-line="380" selection-start-column="21" selection-end-line="380" selection-end-column="21" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/menus/UI.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6800">
-              <caret line="417" column="30" selection-start-line="417" selection-start-column="30" selection-end-line="417" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/menus/Story.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="5" column="23" selection-start-line="5" selection-start-column="23" selection-end-line="5" selection-end-column="23" />
+            <state relative-caret-position="225">
+              <caret line="193" lean-forward="true" selection-start-line="193" selection-end-line="193" />
               <folding>
-                <element signature="e#98#99#0" expanded="true" />
-                <element signature="e#166#167#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#2324#2325#0" expanded="true" />
+                <element signature="e#2355#2356#0" expanded="true" />
+                <element signature="e#9466#9467#0" expanded="true" />
+                <element signature="e#43627#43628#0" expanded="true" />
+                <element signature="e#43738#43739#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/view/View.java">
+        <entry file="file://$PROJECT_DIR$/src/model/Deck.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="11" selection-start-line="11" selection-end-line="11" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/menus/GameMenu.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3434">
-              <caret line="232" column="18" selection-start-line="232" selection-start-column="18" selection-end-line="232" selection-end-column="18" />
+            <state relative-caret-position="239">
+              <caret line="55" column="17" selection-start-line="55" selection-start-column="17" selection-end-line="55" selection-end-column="17" />
               <folding>
-                <element signature="e#7420#7421#0" expanded="true" />
-                <element signature="e#7454#7455#0" expanded="true" />
+                <element signature="e#1793#1794#0" expanded="true" />
+                <element signature="e#1823#1824#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/model/Game.java">
+        <entry file="file://$PROJECT_DIR$/src/view/GraphicsView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="20859">
-              <caret line="1260" column="31" selection-start-line="1260" selection-start-column="31" selection-end-line="1260" selection-end-column="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/graphicControllers/Menu.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2346">
-              <caret line="184" column="16" selection-start-line="184" selection-start-column="16" selection-end-line="184" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/graphicControllers/MenuManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1326">
-              <caret line="91" selection-start-line="91" selection-end-line="91" />
+            <state relative-caret-position="145">
+              <caret line="56" selection-start-line="56" selection-end-line="56" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -193,10 +62,77 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/graphicControllers/menus/StoryMenu.java">
+        <entry file="file://$PROJECT_DIR$/src/view/ComponentSet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="629">
-              <caret line="50" selection-start-line="50" selection-end-line="50" />
+            <state relative-caret-position="378">
+              <caret line="88" column="46" selection-start-line="88" selection-start-column="46" selection-end-line="88" selection-end-column="46" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#resize#0;class#ComponentSet#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/model/Game.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="256">
+              <caret line="1170" column="69" selection-start-line="1170" selection-start-column="69" selection-end-line="1170" selection-end-column="69" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#16248#16249#0" expanded="true" />
+                <element signature="e#33654#33655#0" expanded="true" />
+                <element signature="e#33778#33779#0" expanded="true" />
+                <element signature="e#46500#46501#0" expanded="true" />
+                <element signature="e#46589#46590#0" expanded="true" />
+                <element signature="e#46838#46839#0" expanded="true" />
+                <element signature="e#49053#49054#0" expanded="true" />
+                <element signature="e#49406#49407#0" expanded="true" />
+                <element signature="e#49504#49505#0" expanded="true" />
+                <element signature="e#53224#53225#0" expanded="true" />
+                <element signature="e#53297#53298#0" expanded="true" />
+                <element signature="e#53378#53379#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/menus/UI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="257">
+              <caret line="405" column="29" selection-start-line="405" selection-start-column="29" selection-end-line="405" selection-end-column="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/model/AI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="276">
+              <caret line="193" column="33" selection-start-line="193" selection-start-column="33" selection-end-line="193" selection-end-column="33" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/model/Player.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="191">
+              <caret line="156" selection-start-line="156" selection-end-line="156" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/graphicControllers/Menu.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="137">
+              <caret line="432" selection-start-line="432" selection-end-line="432" />
             </state>
           </provider>
         </entry>
@@ -212,36 +148,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>cardBar</find>
-      <find>setOnDrag</find>
-      <find>MANA</find>
-      <find>System.out</find>
-      <find>System.err</find>
-      <find>shengdeShow</find>
-      <find>show my</find>
-      <find>showUnit</find>
-      <find>show</find>
-      <find>err</find>
-      <find>addSpel</find>
-      <find>INITIATE</find>
-      <find>DECIDE</find>
-      <find>help</find>
-      <find>main</find>
-      <find>initiate</find>
-      <find>shengede</find>
-      <find>sheng</find>
-      <find>STORY</find>
-      <find>Story.help</find>
-      <find>startGame</find>
-      <find>actst</find>
-      <find>act</find>
-      <find>decide</find>
-      <find>actstory</find>
-      <find>switchto(Menus.Game</find>
-      <find>shengdeshow</find>
-      <find>shengde</find>
-      <find>.gif</find>
-      <find>refresh</find>
+      <find>sleep</find>
+      <find>card_content</find>
+      <find>graphicall</find>
+      <find>get</find>
+      <find>remove</find>
+      <find>gridcell</find>
+      <find>gridcells</find>
+      <find>makeGridcell</find>
+      <find>a new card inserted to</find>
+      <find>gridStrings</find>
+      <find>makeGridCells</find>
+      <find>special</find>
+      <find>handleATtackUnit</find>
+      <find>commans</find>
+      <find>command</find>
+      <find>handleCel</find>
+      <find>handleCell</find>
+      <find>a new card</find>
+      <find>deep</find>
+      <find>handleat</find>
+      <find>selected</find>
+      <find>spawn</find>
+      <find>selectedC</find>
+      <find>selectedUnit</find>
+      <find>attack fr</find>
+      <find>handle</find>
+      <find>specialPower</find>
+      <find>collectible</find>
+      <find>new Thread</find>
+      <find>commands</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -258,7 +194,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/view/SimpleNode.java" />
         <option value="$PROJECT_DIR$/src/view/GUIButtonWithMenuChange.java" />
         <option value="$PROJECT_DIR$/src/GraphicControllers/MenuAlreadyCreatedException.java" />
         <option value="$PROJECT_DIR$/src/GraphicControllers/MenuDoesNotExistException.java" />
@@ -297,7 +232,6 @@
         <option value="$PROJECT_DIR$/src/gen/NamesAndTypes.java" />
         <option value="$PROJECT_DIR$/src/UITest.java" />
         <option value="$PROJECT_DIR$/Archive 2/src/graphicControllers/Menu.java" />
-        <option value="$PROJECT_DIR$/src/graphicControllers/Menu.java" />
         <option value="$PROJECT_DIR$/src/graphicControllers/GUI.java" />
         <option value="$PROJECT_DIR$/src/gen/JsonMaker.java" />
         <option value="$PROJECT_DIR$/src/view/MenuComponent.java" />
@@ -305,18 +239,20 @@
         <option value="$PROJECT_DIR$/src/view/NodeWrapper.java" />
         <option value="$PROJECT_DIR$/src/view/View.java" />
         <option value="$PROJECT_DIR$/src/graphicControllers/MenuManager.java" />
+        <option value="$PROJECT_DIR$/src/graphicControllers/Menu.java" />
         <option value="$PROJECT_DIR$/src/graphicControllers/menus/StoryMenu.java" />
         <option value="$PROJECT_DIR$/src/menus/UI.java" />
+        <option value="$PROJECT_DIR$/src/model/AI.java" />
         <option value="$PROJECT_DIR$/src/model/Game.java" />
         <option value="$PROJECT_DIR$/src/graphicControllers/menus/GameMenu.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="66" />
-    <option name="y" value="26" />
-    <option name="width" value="1613" />
-    <option name="height" value="877" />
+    <option name="x" value="65" />
+    <option name="y" value="25" />
+    <option name="width" value="1615" />
+    <option name="height" value="880" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -341,6 +277,18 @@
               <item name="project-8" type="b2602c69:ProjectViewProjectNode" />
               <item name="project-8" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="project-8" type="b2602c69:ProjectViewProjectNode" />
+              <item name="project-8" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="gen" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="project-8" type="b2602c69:ProjectViewProjectNode" />
+              <item name="project-8" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="graphicControllers" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -349,18 +297,6 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="graphicControllers" type="462c0819:PsiDirectoryNode" />
               <item name="menus" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="project-8" type="b2602c69:ProjectViewProjectNode" />
-              <item name="project-8" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="menus" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="project-8" type="b2602c69:ProjectViewProjectNode" />
-              <item name="project-8" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="view" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -375,10 +311,11 @@
     <property name="Repository.Attach.Sources" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1560524130392" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ChatRoom" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1561261908377" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../DoozFX/DoozFX/DoozFX - Client1" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -409,7 +346,7 @@
     </option>
   </component>
   <component name="RunManager" selected="Application.GUI">
-    <configuration name="GUI" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
+    <configuration name="GUI" type="Application" factoryName="Application" singleton="true" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="graphicControllers.GUI" />
       <module name="project-8" />
       <extension name="coverage">
@@ -486,6 +423,8 @@
       <workItem from="1560490156311" duration="5632000" />
       <workItem from="1560515293418" duration="8819000" />
       <workItem from="1560559975866" duration="567000" />
+      <workItem from="1561257923988" duration="3683000" />
+      <workItem from="1561268031619" duration="14700000" />
     </task>
     <task id="LOCAL-00001" summary="refactor">
       <created>1560233012973</created>
@@ -599,17 +538,38 @@
       <option name="project" value="LOCAL" />
       <updated>1560433661358</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="??">
+      <created>1561268725787</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1561268725788</updated>
+    </task>
+    <task id="LOCAL-00018" summary="ai moves">
+      <created>1561280221375</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1561280221375</updated>
+    </task>
+    <task id="LOCAL-00019" summary="ai moves">
+      <created>1561281131339</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1561281131339</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="160772000" />
+    <option name="totallyTimeSpent" value="179155000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19530201" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.20067114" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -617,14 +577,14 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info id="Learn" order="7" />
-      <window_info anchor="bottom" id="Messages" order="0" weight="0.3267974" />
+      <window_info anchor="bottom" id="Messages" order="0" weight="0.32577905" />
       <window_info anchor="bottom" id="Message" order="1" />
-      <window_info anchor="bottom" id="Find" order="2" weight="0.32843137" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.4997233" visible="true" weight="0.34844193" />
-      <window_info anchor="bottom" id="Debug" order="4" weight="0.4" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4997233" visible="true" weight="0.34844193" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Find" order="4" weight="0.32843137" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="7" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Inspection" order="7" weight="0.4" />
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32843137" />
       <window_info anchor="bottom" id="Database Changes" order="10" />
@@ -658,28 +618,11 @@
     <MESSAGE value="drag issue fixed" />
     <MESSAGE value="attack" />
     <MESSAGE value="attack and move" />
-    <option name="LAST_COMMIT_MESSAGE" value="attack and move" />
+    <MESSAGE value="??" />
+    <MESSAGE value="ai moves" />
+    <option name="LAST_COMMIT_MESSAGE" value="ai moves" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/images/gameIcons/gifs/Minions/bahman/breathing.gif" />
-    <entry file="file://$PROJECT_DIR$/images/gameIcons/gifs/Minions/bahman/death.gif" />
-    <entry file="file://$PROJECT_DIR$/images/gameIcons/gifs/Minions/bahman/run.gif" />
-    <entry file="file://$PROJECT_DIR$/images/gameIcons/gifs/Minions/ashkBoos/breathing.gif" />
-    <entry file="file://$PROJECT_DIR$/images/gameIcons/gifs/Minions/ashkBoos/death.gif" />
-    <entry file="file://$PROJECT_DIR$/src/gen/NamesAndTypes.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="54" selection-start-line="54" selection-end-line="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/menus/InGameMenu.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="28" selection-start-line="5" selection-start-column="20" selection-end-line="5" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/images/gameIcons/gifs/Heros/aarash/attack.gif" />
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_212/javafx-src.zip!/com/sun/javafx/event/EventUtil.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -688,16 +631,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Test.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Test.java" />
     <entry file="file://$PROJECT_DIR$/save/aa.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1649">
@@ -712,20 +646,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/UITest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" selection-start-line="23" selection-end-line="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Archive 2/src/graphicControllers/Menu.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="285" column="39" lean-forward="true" selection-start-line="285" selection-start-column="39" selection-end-line="285" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/UITest.java" />
+    <entry file="file://$PROJECT_DIR$/Archive 2/src/graphicControllers/Menu.java" />
     <entry file="file://$PROJECT_DIR$/src/menus/Battle.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -781,31 +703,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/view/GraphicsView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1109">
-          <caret line="66" column="16" selection-start-line="66" selection-start-column="16" selection-end-line="66" selection-end-column="16" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1714#1715#0" expanded="true" />
-            <element signature="e#1768#1769#0" expanded="true" />
-            <element signature="e#1810#1811#0" expanded="true" />
-            <element signature="e#1865#1866#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/view/ComponentSet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2907">
-          <caret line="282" column="38" selection-start-line="282" selection-start-column="38" selection-end-line="282" selection-end-column="38" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#resize#0;class#ComponentSet#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/gen/ManualFeatureAdder.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="751">
@@ -852,16 +749,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="21" column="23" selection-start-line="21" selection-start-column="23" selection-end-line="21" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/graphicControllers/GUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="51" column="22" selection-start-line="51" selection-start-column="22" selection-end-line="51" selection-end-column="22" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -921,28 +808,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/AI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="112" column="41" selection-start-line="112" selection-start-column="41" selection-end-line="112" selection-end-column="41" />
-          <folding>
-            <element signature="e#4395#4396#0" expanded="true" />
-            <element signature="e#4430#4431#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/view/CommandLineView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="352" column="16" selection-start-line="352" selection-start-column="16" selection-end-line="352" selection-end-column="16" />
-          <folding>
-            <element signature="e#436#437#0" expanded="true" />
-            <element signature="e#515#516#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/menus/Menus.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -964,20 +829,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/graphicControllers/menus/GameMenu.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="380" column="21" selection-start-line="380" selection-start-column="21" selection-end-line="380" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/menus/UI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6800">
-          <caret line="417" column="30" selection-start-line="417" selection-start-column="30" selection-end-line="417" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/menus/Story.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -989,42 +840,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/view/View.java">
+    <entry file="file://$PROJECT_DIR$/src/graphicControllers/GUI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/menus/GameMenu.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3434">
-          <caret line="232" column="18" selection-start-line="232" selection-start-column="18" selection-end-line="232" selection-end-column="18" />
+        <state relative-caret-position="208">
+          <caret line="55" column="24" selection-start-line="55" selection-start-column="24" selection-end-line="55" selection-end-column="24" />
           <folding>
-            <element signature="e#7420#7421#0" expanded="true" />
-            <element signature="e#7454#7455#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/model/Game.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="20859">
-          <caret line="1260" column="31" selection-start-line="1260" selection-start-column="31" selection-end-line="1260" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/graphicControllers/Menu.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2346">
-          <caret line="184" column="16" selection-start-line="184" selection-start-column="16" selection-end-line="184" selection-end-column="16" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/graphicControllers/MenuManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1326">
-          <caret line="91" selection-start-line="91" selection-end-line="91" />
+        <state relative-caret-position="17">
+          <caret line="52" column="21" selection-start-line="52" selection-start-column="21" selection-end-line="52" selection-end-column="21" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1033,8 +862,182 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/graphicControllers/menus/StoryMenu.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="629">
-          <caret line="50" selection-start-line="50" selection-end-line="50" />
+        <state relative-caret-position="-506">
+          <caret line="47" column="31" selection-start-line="47" selection-start-column="31" selection-end-line="47" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/CollectionItem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="11" selection-start-line="2" selection-start-column="11" selection-end-line="2" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/Item.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="36" selection-start-line="4" selection-start-column="36" selection-end-line="4" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/Collectible.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="55">
+          <caret line="4" column="36" selection-start-line="4" selection-start-column="36" selection-end-line="4" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/view/CommandLineView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="137">
+          <caret line="466" column="16" selection-start-line="466" selection-start-column="16" selection-end-line="466" selection-end-column="16" />
+          <folding>
+            <element signature="e#436#437#0" expanded="true" />
+            <element signature="e#515#516#0" expanded="true" />
+            <element signature="e#13745#13746#0" expanded="true" />
+            <element signature="e#13809#13810#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/view/View.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="137">
+          <caret line="152" column="9" selection-start-line="152" selection-start-column="9" selection-end-line="152" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/Unit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="158">
+          <caret line="115" column="20" selection-start-line="115" selection-start-column="16" selection-end-line="115" selection-end-column="20" />
+          <folding>
+            <element signature="e#2893#2894#0" expanded="true" />
+            <element signature="e#2917#2918#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/menus/GameMenu.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="236">
+          <caret line="87" column="18" selection-start-line="87" selection-start-column="18" selection-end-line="87" selection-end-column="18" />
+          <folding>
+            <element signature="e#1471#1472#0" expanded="true" />
+            <element signature="e#1506#1507#0" expanded="true" />
+            <element signature="e#2441#2442#0" expanded="true" />
+            <element signature="e#2471#2472#0" expanded="true" />
+            <element signature="e#7420#7421#0" expanded="true" />
+            <element signature="e#7454#7455#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/graphicControllers/Menu.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="137">
+          <caret line="432" selection-start-line="432" selection-end-line="432" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/Player.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="191">
+          <caret line="156" selection-start-line="156" selection-end-line="156" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_212/src.zip!/java/util/Queue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="145">
+          <caret line="190" column="6" selection-start-line="190" selection-start-column="6" selection-end-line="190" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/Deck.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="239">
+          <caret line="55" column="17" selection-start-line="55" selection-start-column="17" selection-end-line="55" selection-end-column="17" />
+          <folding>
+            <element signature="e#1793#1794#0" expanded="true" />
+            <element signature="e#1823#1824#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/view/GraphicsView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="145">
+          <caret line="56" selection-start-line="56" selection-end-line="56" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/view/ComponentSet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="88" column="46" selection-start-line="88" selection-start-column="46" selection-end-line="88" selection-end-column="46" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#resize#0;class#ComponentSet#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/menus/UI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="257">
+          <caret line="405" column="29" selection-start-line="405" selection-start-column="29" selection-end-line="405" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/AI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="193" column="33" selection-start-line="193" selection-start-column="33" selection-end-line="193" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/model/Game.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="1170" column="69" selection-start-line="1170" selection-start-column="69" selection-end-line="1170" selection-end-column="69" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#16248#16249#0" expanded="true" />
+            <element signature="e#33654#33655#0" expanded="true" />
+            <element signature="e#33778#33779#0" expanded="true" />
+            <element signature="e#46500#46501#0" expanded="true" />
+            <element signature="e#46589#46590#0" expanded="true" />
+            <element signature="e#46838#46839#0" expanded="true" />
+            <element signature="e#49053#49054#0" expanded="true" />
+            <element signature="e#49406#49407#0" expanded="true" />
+            <element signature="e#49504#49505#0" expanded="true" />
+            <element signature="e#53224#53225#0" expanded="true" />
+            <element signature="e#53297#53298#0" expanded="true" />
+            <element signature="e#53378#53379#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/graphicControllers/menus/GameMenu.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="193" lean-forward="true" selection-start-line="193" selection-end-line="193" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2324#2325#0" expanded="true" />
+            <element signature="e#2355#2356#0" expanded="true" />
+            <element signature="e#9466#9467#0" expanded="true" />
+            <element signature="e#43627#43628#0" expanded="true" />
+            <element signature="e#43738#43739#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

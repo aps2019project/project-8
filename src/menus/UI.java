@@ -415,7 +415,6 @@ public class UI {
             } else if (command.matches(SHOW_NEXT_CARD))
                 GameMenu.showNextCard();
             else if (command.matches(SHENGDEBAO)) {
-                System.err.println("gayid in sheng de bao maro valla");
                 GameMenu.shengdeShow();
             }
             else if (command.matches(KILL))
