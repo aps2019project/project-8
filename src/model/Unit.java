@@ -256,6 +256,11 @@ public class Unit extends Card {
         }
     }
 
+    public boolean canCombo() {
+        return specialPowerTypes.stream().anyMatch(e -> e == SpecialPowerType.COMBO);
+    }
+
+
     // Builder
     public static class UnitBuilder {
         private int hitPoint = 0;

@@ -370,9 +370,9 @@ public class GameMenu extends Menu {
                                     hit.setFitWidth(tile.getFitWidth());
                                     hit.setFitHeight(tile.getFitHeight());
                                     hit.relocate(tile.getLayoutX(), tile.getLayoutY());
+                                    addComponent(new NodeWrapper(hit));
                                 } else
                                     hit.setImage(getImageByCardName(getNameFromID(enemyCardID), "attack", "gif"));
-                                addComponent(new NodeWrapper(hit));
 //                                try {
 //                                    getRowFromUnitID(enemyCardID);
 //                                } catch (NullPointerException ex) {
@@ -387,7 +387,8 @@ public class GameMenu extends Menu {
                                 e.printStackTrace();
                             }
                             Platform.runLater(() -> {
-                                removeComponent(new NodeWrapper(hit));
+                                if (!counterAttack)
+                                    removeComponent(new NodeWrapper(hit));
                                 enableEvents();
                                 refresh();
                             });
@@ -442,8 +443,8 @@ public class GameMenu extends Menu {
         int CellWidth = 50;
         int CellHeight = 50;
 
-        int width = (int) CellWidth;
-        int height = (int) CellHeight;
+        int width = CellWidth;
+        int height = CellHeight;
         int lx = (int) gridCells.getX();
         int ly = (int) gridCells.getY();
         int sx = (int) (lx + sColumn * width + width / 2.0);
@@ -978,7 +979,7 @@ public class GameMenu extends Menu {
                 String opponentHeroName = getOpponentHeroName();
 
                 if (turnNumber % 2 == 0) {
-                    firstPlayerBar = makePlayerStat(firstPlayerName, friendlyHeroName, playerOneUsableItemName, firstPlayerMana, Math.max(Integer.parseInt(firstPlayerMana), (turnNumber + 1) / 2 + 2));
+                    firstPlayerBar = makePlayerStat(firstPlayerName, friendlyHeroName, playerOneUsableItemName, firstPlayerMana, Math.max(Integer.parseInt(firstPlayerMana), Math.min(9, (turnNumber + 1) / 2 + 2)));
                     secondPlayerBar = makeReverseEmptyPlayerStat(secondPlayerName, opponentHeroName, playerTwoUsableItemName);
                 } else {
                     firstPlayerBar = makeEmptyPlayerStat(firstPlayerName, opponentHeroName, playerOneUsableItemName);
@@ -1464,8 +1465,8 @@ public class GameMenu extends Menu {
             interactor.relocate(j * 50, i * 30);
             interactor.setOpacity(0);
 
-            interactor.setOnMouseEntered(e -> ((ImageView) ((NodeWrapper) cell.getComponentByID("tile")).getValue()).setOpacity(0.5));
-            interactor.setOnMouseExited(e -> ((ImageView) ((NodeWrapper) cell.getComponentByID("tile")).getValue()).setOpacity(0.1));
+            interactor.setOnMouseEntered(e -> ((NodeWrapper) cell.getComponentByID("tile")).getValue().setOpacity(0.5));
+            interactor.setOnMouseExited(e -> ((NodeWrapper) cell.getComponentByID("tile")).getValue().setOpacity(0.1));
             interactor.setOnMouseClicked(mouseEvent -> {
                 if (mouseEvent.getButton() == MouseButton.MIDDLE) {
                     String cardName = getNameFromID(getCardIDByLocation(i, j));
@@ -1480,11 +1481,13 @@ public class GameMenu extends Menu {
                         handleSelectCard(cardID);
                     }
                     if (mouseEvent.getButton() == MouseButton.SECONDARY) {
-                        selectedComboCardIds.clear();
-                        selectedComboCardIds.add(cardID);
-                        (new NodeWrapper(getInteractor(i, j))).disableMouseEvents();
-                        getTile(i, j).setOpacity(1);
-                        comboGridChange();
+                        if (UI.getGame().getCurrentPlayer().getUnit(cardID).canCombo()) {
+                            selectedComboCardIds.clear();
+                            selectedComboCardIds.add(cardID);
+                            (new NodeWrapper(getInteractor(i, j))).disableMouseEvents();
+                            getTile(i, j).setOpacity(1);
+                            comboGridChange();
+                        }
                     }
 
                 }
