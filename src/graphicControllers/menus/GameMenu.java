@@ -205,6 +205,8 @@ public class GameMenu extends Menu {
                     int sy = Integer.parseInt(matcher.group(3)) - 1;
                     int dx = Integer.parseInt(matcher.group(4)) - 1;
                     int dy = Integer.parseInt(matcher.group(5)) - 1;
+
+                    System.err.println(s);
                     handleGraphicallMove(sx, sy, dx, dy, true);
                 }
 
@@ -557,6 +559,9 @@ public class GameMenu extends Menu {
 
 
     private void handleGraphicallMove(int sourceRow, int sourceColumn, int row, int column, boolean ai) {
+
+        System.err.println("fasdfadfasf " + sourceRow + " " + sourceColumn + " " + row + " " + column);
+
         disableEvents();
         ImageView source;
         if (!ai)

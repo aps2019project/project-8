@@ -147,7 +147,8 @@ public class AI {
             } while (!game.moveSelectedUnit(r, c) && counter < LIMIT_ON_WHILE);
 
             if (counter < LIMIT_ON_WHILE) {
-                System.out.println(unit.getID() + " moved from " +  (lastX + 1) + " " + (lastY + 1) + " to " + (r + 1) + " " + (c + 1));
+//                System.err.println(" moved from " +  (lastX + 1) + " " + (lastY + 1) + " to " + (r + 1) + " " + (c + 1));
+//                System.out.println(unit.getID() + " moved from " +  (lastX + 1) + " " + (lastY + 1) + " to " + (r + 1) + " " + (c + 1));
             }
         }
 

@@ -143,6 +143,7 @@ public class Game extends InGameMenu {
 
                 if (!hasAI[turn % 2])
                     view.logMessage(selectedUnit.getID() + " moved to " + (x + 1) + " " + (y + 1));
+                else view.logMessage(selectedUnit.getID() + " moved from " +  (selectedUnit.getX() + 1) + " " + (selectedUnit.getY() + 1) + " to " + (x + 1) + " " + (y + 1));
                 selectedUnit.setX(x);
                 selectedUnit.setY(y);
 
