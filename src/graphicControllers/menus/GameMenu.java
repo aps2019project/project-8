@@ -230,7 +230,7 @@ public class GameMenu extends Menu {
                 if (matcher.find()) {
                     int x = Integer.parseInt(matcher.group(1)) - 1;
                     int y = Integer.parseInt(matcher.group(2)) - 1;
-                    handleUseSpecialPower(x, y);
+                    handleUseSpecialPower(x, y, true);
                 }
 
                 pattern = Pattern.compile("apply collectible (\\d+) to (\\d+)");
@@ -338,7 +338,9 @@ public class GameMenu extends Menu {
         cardSelectedGridChangePrimary();
     }
 
-    private synchronized void handleUseSpecialPower(int row, int column) {
+    private synchronized void handleUseSpecialPower(int row, int column, boolean ai) {
+        if (ai)
+            return;
         String out = getUIOutputAsString("use special power (" + row + ", " + column + ")");
         if (!gameEnded(out)) {
             showPopUp(out);
@@ -1623,7 +1625,7 @@ public class GameMenu extends Menu {
                     }
                     if (e.getButton() == MouseButton.MIDDLE) {
                         if (hasEnemy(finalRow, finalColumn)) {
-                            handleUseSpecialPower(finalRow, finalColumn);
+                            handleUseSpecialPower(finalRow, finalColumn, false);
                         }
                     }
                 });
