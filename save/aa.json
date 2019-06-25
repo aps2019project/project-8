@@ -2,7 +2,7 @@
   "name": "aa",
   "password": "aa",
   "wins": 1,
-  "money": 827250,
+  "money": 827750,
   "collection": {
     "newID": 206,
     "collectionItems": {
@@ -5875,7 +5875,7 @@
       }
     }
   },
-  "mainDeck": "@root.collection.decks.1-val",
+  "mainDeck": "@root.collection.decks.4-val",
   "matchHistory": [
     {
       "win": false,
