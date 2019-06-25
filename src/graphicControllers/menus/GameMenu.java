@@ -42,6 +42,9 @@ public class GameMenu extends Menu {
     private static final String SELECT_CARD = "select [^ ]+";
     private static final String MOVE_UNIT = "move to (\\d+, \\d+)";
     private static final Color textColor = Color.rgb(176, 42, 226);
+    private static final double BUFF_WIDTH = 10;
+    private static final double BUFF_HEIGHT = 10;
+
     private static transient GameMenu instance = null;
     Rectangle disableEventRectangle;
     ArrayList<AnimationTimer> animations = new ArrayList<>();
@@ -129,6 +132,43 @@ public class GameMenu extends Menu {
             disableEventRectangle = null;
         }
         notify();
+    }
+
+    private void handleDeathAnimation() {
+        disableEvents();
+        String out = getUIOutputAsString("get dead");
+        if (!gameEnded(out)) {
+            new Thread(() -> {
+                String[] output = out.split("\\n");
+                ArrayList<String> deathIDs = new ArrayList<>();
+                for (String s : output)
+                    if (s.contains("death")) {
+                        deathIDs.add(s.split(" ")[1]);
+                    }
+//                System.err.println(deathIDs.size());
+//                if (!deathIDs?.isEmpty()) {
+                Platform.runLater(() -> {
+                    for (String s : output) {
+                        if (s.split(" ")[0].equalsIgnoreCase("death")) {
+                            String p = s.split(" ")[1];
+                            ImageView imageView = getCellContent(getRowFromUnitID(p), getColumnFromUnitID(p));
+                            imageView.setImage(getImageByCardName(getNameFromID(p), "death", "gif"));
+                        }
+                    }
+                });
+                try {
+                    if (!deathIDs.isEmpty())
+                        Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Platform.runLater(this::enableEvents);
+//                }
+            }).start();
+        } else {
+            enableEvents();
+        }
+
     }
 
     private void handleSelectCollectible(String s) {
@@ -331,13 +371,13 @@ public class GameMenu extends Menu {
                                 } else
                                     hit.setImage(getImageByCardName(getNameFromID(enemyCardID), "attack", "gif"));
                                 addComponent(new NodeWrapper(hit));
-                                try {
-                                    getRowFromUnitID(enemyCardID);
-                                } catch (NullPointerException ex) {
-                                    // died:
-                                    hit.setOpacity(0);
-                                    getCellContent(row, column).setImage(getImageByCardName(getNameFromID(enemyCardID), "death", "gif"));
-                                }
+//                                try {
+//                                    getRowFromUnitID(enemyCardID);
+//                                } catch (NullPointerException ex) {
+//                                    // died:
+//                                    hit.setOpacity(0);
+//                                    getCellContent(row, column).setImage(getImageByCardName(getNameFromID(enemyCardID), "death", "gif"));
+//                                }
                             });
                             try {
                                 Thread.sleep(1000);
@@ -546,6 +586,12 @@ public class GameMenu extends Menu {
 
     private boolean gameEnded(String output) {
         if (output.contains("winner is:") || output.contains("HAHA!")) {
+            String[] parts = output.split("\\n");
+            output = "";
+            for (int i = 0; i < parts.length; i++)
+                if (parts[i].contains("winner is:") || parts[i].contains("HAHA!") || parts[i].contains("$$$")) {
+                    output += parts[i] + "\n";
+                }
             try {
                 UI.decide("end game");
                 Rectangle rectangle = new Rectangle(0, 0, windowWidth, windowHeight);
@@ -597,7 +643,6 @@ public class GameMenu extends Menu {
     }
 
     private int getRowFromUnitID(String cardID) {
-//        String description = getDescriptionByName(getNameFromID(cardID));
         String description = getDescriptionByName(cardID);
         Pattern pattern = Pattern.compile(".*location: \\((\\d+), (\\d+)\\).*");
         Matcher matcher = pattern.matcher(description);
@@ -843,6 +888,7 @@ public class GameMenu extends Menu {
         if (UI.getGame() == null)
             return;
 
+
         new Thread(() -> {
             synchronized (this) {
                 if (showCutSceneMode) {
@@ -953,6 +999,9 @@ public class GameMenu extends Menu {
 
             });
         }).start();
+
+
+        handleDeathAnimation();
     }
 
     private void stopAnimations() {
@@ -1013,6 +1062,13 @@ public class GameMenu extends Menu {
             }
         }
         return null;
+    }
+
+    private String getDescriptionByLocation(int row, int column) {
+        String s = getDescriptionByLocation(row, column, "show my minions");
+        if (s == null)
+            s = getDescriptionByLocation(row, column, "show opponent minions");
+        return s;
     }
 
     private String getCardIDByLocation(int row, int column, String command) {
@@ -1304,6 +1360,7 @@ public class GameMenu extends Menu {
         if (contentCardName != null && !contentCardName.equals(".")) {
             ImageView card = getImageViewByCardName(contentCardName, "idle", "gif");
             double height = CELL_CONTENT_HEIGHT, width = CELL_CONTENT_WIDTH;
+
             if (!(NamesAndTypes.getCollectionItem(contentCardName) instanceof Unit)) {
                 height -= 40;
                 width -= 40;
@@ -1312,9 +1369,42 @@ public class GameMenu extends Menu {
             card.setFitWidth(width);
             card.relocate(j * 50 + TILE_WITDH / 2 - width / 2, i * 30 + TILE_HEIGHT / 2 - height / 2 - height / 5);
             cell.addMenuComponent(new NodeWrapper(card), "card_content");
+            addUnitBuffsToCell(i, j, cell);
         }
 
         return cell;
+    }
+
+    private void addUnitBuffsToCell(int row, int column, ComponentSet cell) {
+        String[] buffNamesInDescription = {"holy", "unholy", "powerBuff", "weaknessBuff", "stun", "disarm"};
+        double up = row * TILE_HEIGHT - 5;
+        double left = column * TILE_WITDH - 5;
+        double centreY = row * TILE_HEIGHT + TILE_HEIGHT / 2;
+        double centreX = column * TILE_WITDH + TILE_WITDH / 2;
+        double radius = 30;
+        double angleRange = Math.PI;
+        double angleForOne = Math.PI / buffNamesInDescription.length;
+
+        String desc = getDescriptionByLocation(row, column);
+        if (desc == null)
+            return;
+        int cnt = 0;
+        for (String buffName : buffNamesInDescription) {
+            if (desc.contains(buffName)) {
+                try {
+                    ImageView buffView = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/" + buffName + "_buff.png")));
+                    buffView.setFitWidth(BUFF_WIDTH);
+                    buffView.setFitHeight(BUFF_HEIGHT);
+                    buffView.relocate(centreX + Math.cos(angleForOne * cnt) * radius,
+                            centreY - Math.sin(angleForOne * cnt) * radius);
+                    System.err.println(buffView.getLayoutX() + " " + buffView.getLayoutY());
+                    cell.addMenuComponent(new NodeWrapper(buffView));
+                    cnt++;
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     private void startEffectCellAnimation(Node node) {

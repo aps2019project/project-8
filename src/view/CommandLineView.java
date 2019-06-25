@@ -429,27 +429,28 @@ public class CommandLineView implements View {
 
     @Override
     public void showUnit(Unit unit) {
-        System.out.println(unit.getCollectionItemID() + ": " + unit.getName() + ", health: " + unit.calculateHP() +
+        System.out.print(unit.getCollectionItemID() + ": " + unit.getName() + ", health: " + unit.calculateHP() +
                 ", location: (" + (unit.getX() + 1) + ", " + (unit.getY() + 1) + "), power: " + unit.calculateAP());
         if (unit.getBuffs().stream().anyMatch(buff -> buff.getHoly() > 0)) {
-            System.out.println("holy");
+            System.out.print(" holy");
         } else if (unit.getBuffs().stream().anyMatch(buff -> buff.getHoly() < 0)) {
-            System.out.println("unholy");
+            System.out.print(" unholy");
         }
         if (unit.getBuffs().stream().anyMatch(buff -> buff.getPoison() != 0)) {
-            System.out.println("poison");
+            System.out.print(" poison");
         }
         if (unit.getBuffs().stream().anyMatch(buff -> buff.getEffectHp() > 0 || buff.getEffectAp() > 0)) {
-            System.out.println("power");
+            System.out.print(" powerBuff");
         } else if (unit.getBuffs().stream().anyMatch(buff -> buff.getEffectHp() < 0 || buff.getEffectAp() < 0)) {
-            System.out.println("weakness");
+            System.out.print(" weaknessBuff");
         }
         if (unit.getBuffs().stream().anyMatch(Buff::canStun)) {
-            System.out.println("stun");
+            System.out.print(" stun");
         }
         if (unit.getBuffs().stream().anyMatch(Buff::canDisarm)) {
-            System.out.println("disarm");
+            System.out.print(" disarm");
         }
+        System.out.print("\n");
     }
 
     @Override
