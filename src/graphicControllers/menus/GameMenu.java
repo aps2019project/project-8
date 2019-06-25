@@ -373,6 +373,7 @@ public class GameMenu extends Menu {
                                 hit = getCellContent(row, column);
                             else
                                 hit = new ImageView(new Image(new FileInputStream("images/gameIcons/hit.gif")));
+                            ImageView onAttack = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/onAttack.gif")));
 
                             Platform.runLater(() -> {
                                 imageView.setImage(getImageByCardName(getNameFromID(selectedCardID), "attack", "gif"));
@@ -383,6 +384,12 @@ public class GameMenu extends Menu {
                                     addComponent(new NodeWrapper(hit));
                                 } else
                                     hit.setImage(getImageByCardName(getNameFromID(enemyCardID), "attack", "gif"));
+                                if (getDescriptionByLocation(sourceRow, sourceColumn).contains("onAttack")) {
+                                    onAttack.setFitWidth(tile.getFitWidth());
+                                    onAttack.setFitHeight(tile.getFitHeight());
+                                    onAttack.relocate(tile.getLayoutX(), tile.getLayoutY());
+                                    addComponent(new NodeWrapper(onAttack));
+                                }
 //                                try {
 //                                    getRowFromUnitID(enemyCardID);
 //                                } catch (NullPointerException ex) {
@@ -399,6 +406,8 @@ public class GameMenu extends Menu {
                             Platform.runLater(() -> {
                                 if (!counterAttack)
                                     removeComponent(new NodeWrapper(hit));
+                                if (getDescriptionByLocation(sourceRow, sourceColumn).contains("onAttack"))
+                                    removeComponent(new NodeWrapper(onAttack));
                                 enableEvents();
                                 refresh();
                             });
