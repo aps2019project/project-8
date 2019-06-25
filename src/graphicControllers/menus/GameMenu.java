@@ -355,8 +355,15 @@ public class GameMenu extends Menu {
             int sourceColumn = getColumnFromUnitID(selectedCardID);
             int row = getRowFromUnitID(enemyCardID);
             int column = getColumnFromUnitID(enemyCardID);
-            Unit selectedUnit = UI.getGame().getCurrentPlayer().getUnit(selectedCardID);
-            Unit enemyUnit = UI.getGame().getOtherPlayer().getUnit(enemyCardID);
+            Unit selectedUnit;
+            Unit enemyUnit;
+            if (!ai) {
+                selectedUnit = UI.getGame().getCurrentPlayer().getUnit(selectedCardID);
+                enemyUnit = UI.getGame().getOtherPlayer().getUnit(enemyCardID);
+            } else {
+                selectedUnit = UI.getGame().getOtherPlayer().getUnit(selectedCardID);
+                enemyUnit = UI.getGame().getCurrentPlayer().getUnit(enemyCardID);
+            }
 
             String out = "";
             if (!ai) {
