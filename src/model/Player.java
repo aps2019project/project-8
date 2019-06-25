@@ -154,7 +154,8 @@ public class Player {
         if (hand.isFull())
             return;
         hand.addCard(deck.getNextCard());
-        deck.deleteNextCard();
+        if (deck.getCards().size() > 0)
+            deck.deleteNextCard();
     }
 
     public void removeCollectible(Item item) {
