@@ -289,6 +289,8 @@ public class GameMenu extends Menu {
                 if (matcher.find()) {
                     int x = Integer.parseInt(matcher.group(1)) - 1;
                     int y = Integer.parseInt(matcher.group(2)) - 1;
+                    handleInsertCard(x, y, true);
+                    System.err.println("iinnnnnnnnnnnnnnnnnsertinggggg" + x + " " + y);;
 //                    handleGraphicallMove(x, y, x, y, true);
 //                    handleCellSpawn(x, y);
                 }
@@ -298,8 +300,7 @@ public class GameMenu extends Menu {
                 if (matcher.find()) {
                     System.err.println("attacking " + matcher.group(1) + " " + matcher.group(2));
                     selectedCardID = (matcher.group(1));
-                    handleAttackUnit(matcher.group(2), true);
-//                    handleAttackUnit(matcher.group(2));
+//                    handleAttackUnit(matcher.group(2), true);
                 }
 
                 pattern = Pattern.compile("hero power on (\\d+) (\\d+)");
@@ -307,7 +308,7 @@ public class GameMenu extends Menu {
                 if (matcher.find()) {
                     int x = Integer.parseInt(matcher.group(1)) - 1;
                     int y = Integer.parseInt(matcher.group(2)) - 1;
-                    handleUseSpecialPower(x, y, true);
+//                    handleUseSpecialPower(x, y, true);
                 }
 
                 pattern = Pattern.compile("apply collectible (\\d+) to (\\d+)");
@@ -316,7 +317,7 @@ public class GameMenu extends Menu {
                     System.err.println("collectible apllying" + matcher.group(1) + " " + matcher.group(2));
                     int x = Integer.parseInt(matcher.group(1)) - 1;
                     int y = Integer.parseInt(matcher.group(2)) - 1;
-                    handleUseCollectible(x, y, true);
+//                    handleUseCollectible(x, y, true);
                 }
             }
         }
@@ -362,12 +363,15 @@ public class GameMenu extends Menu {
         showPopUp(getUIOutputAsString("show info"));
     }
 
-    private synchronized void handleInsertCard(int row, int column) {
+    private synchronized void handleInsertCard(int row, int column, boolean ai) {
         disableEvents();
         String cordinate = "(" + (row + 1) + ", " + (column + 1) + ")";
         if (draggedCardName != null) {
-            String output = getUIOutputAsString("insert " + draggedCardName + " in " + cordinate);
-            if (!gameEnded(output)) {
+            String output = "";
+            if (!ai) {
+                output = getUIOutputAsString("insert " + draggedCardName + " in " + cordinate);
+            }
+            if (ai || !gameEnded(output)) {
                 if (output.contains("inserted")) {
                     new Thread(() -> {
                         try {
@@ -454,8 +458,15 @@ public class GameMenu extends Menu {
             int sourceColumn = getColumnFromUnitID(selectedCardID);
             int row = getRowFromUnitID(enemyCardID);
             int column = getColumnFromUnitID(enemyCardID);
-            Unit selectedUnit = UI.getGame().getCurrentPlayer().getUnit(selectedCardID);
-            Unit enemyUnit = UI.getGame().getOtherPlayer().getUnit(enemyCardID);
+            Unit selectedUnit;
+            Unit enemyUnit;
+            if (!ai) {
+                selectedUnit = UI.getGame().getCurrentPlayer().getUnit(selectedCardID);
+                enemyUnit = UI.getGame().getOtherPlayer().getUnit(enemyCardID);
+            } else {
+                selectedUnit = UI.getGame().getOtherPlayer().getUnit(selectedCardID);
+                enemyUnit = UI.getGame().getCurrentPlayer().getUnit(enemyCardID);
+            }
 
             String out = "";
             if (!ai) {
@@ -1403,7 +1414,7 @@ public class GameMenu extends Menu {
                 interactor.setOnMouseDragEntered(e -> tile.setOpacity(1));
                 interactor.setOnMouseDragExited(e -> tile.setOpacity(0.1));
                 int finalRow = i, finalColumn = j;
-                interactor.setOnMouseDragReleased(e -> handleInsertCard(finalRow, finalColumn));
+                interactor.setOnMouseDragReleased(e -> handleInsertCard(finalRow, finalColumn, false));
 
             }
         return grid;
