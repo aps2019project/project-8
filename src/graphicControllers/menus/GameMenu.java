@@ -214,7 +214,7 @@ public class GameMenu extends Menu {
                     int x = Integer.parseInt(matcher.group(1)) - 1;
                     int y = Integer.parseInt(matcher.group(2)) - 1;
                     handleInsertCard(x, y, true);
-                    System.err.println("dsfaksdjfkladjfklajsdflkjasdlfkjasdlkfjasdklfjaslkdfjalskdjfk");;
+                    System.err.println("iinnnnnnnnnnnnnnnnnsertinggggg" + x + " " + y);;
 //                    handleGraphicallMove(x, y, x, y, true);
 //                    handleCellSpawn(x, y);
                 }
@@ -224,8 +224,7 @@ public class GameMenu extends Menu {
                 if (matcher.find()) {
                     System.err.println("attacking " + matcher.group(1) + " " + matcher.group(2));
                     selectedCardID = (matcher.group(1));
-                    handleAttackUnit(matcher.group(2), true);
-//                    handleAttackUnit(matcher.group(2));
+//                    handleAttackUnit(matcher.group(2), true);
                 }
 
                 pattern = Pattern.compile("hero power on (\\d+) (\\d+)");
@@ -233,7 +232,7 @@ public class GameMenu extends Menu {
                 if (matcher.find()) {
                     int x = Integer.parseInt(matcher.group(1)) - 1;
                     int y = Integer.parseInt(matcher.group(2)) - 1;
-                    handleUseSpecialPower(x, y, true);
+//                    handleUseSpecialPower(x, y, true);
                 }
 
                 pattern = Pattern.compile("apply collectible (\\d+) to (\\d+)");
@@ -242,7 +241,7 @@ public class GameMenu extends Menu {
                     System.err.println("collectible apllying" + matcher.group(1) + " " + matcher.group(2));
                     int x = Integer.parseInt(matcher.group(1)) - 1;
                     int y = Integer.parseInt(matcher.group(2)) - 1;
-                    handleUseCollectible(x, y, true);
+//                    handleUseCollectible(x, y, true);
                 }
             }
         }
