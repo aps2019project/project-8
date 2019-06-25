@@ -314,7 +314,6 @@ public class GameMenu extends Menu {
             String output = getUIOutputAsString("insert " + draggedCardName + " in " + cordinate);
             if (!gameEnded(output)) {
                 if (output.contains("inserted")) {
-                    System.err.println(showCutSceneMode);
                     new Thread(() -> {
                         try {
                             ImageView onSpawnEffect = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/onSpawn.gif")));
