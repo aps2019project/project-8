@@ -375,6 +375,10 @@ public class GameMenu extends Menu {
                                 hit = new ImageView(new Image(new FileInputStream("images/gameIcons/hit.gif")));
                             ImageView onAttack = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/onAttack.gif")));
 
+                            //
+                            System.err.println(getDescriptionByLocation(sourceRow, sourceColumn));
+                            //
+
                             Platform.runLater(() -> {
                                 imageView.setImage(getImageByCardName(getNameFromID(selectedCardID), "attack", "gif"));
                                 if (!counterAttack) {
