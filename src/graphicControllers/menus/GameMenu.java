@@ -213,7 +213,7 @@ public class GameMenu extends Menu {
         if (!gameEnded(out)) {
 //            showPopUp("Turn Ended!");
             refresh();
-            for (int i = 0; i < gridStrings.length; i++)
+//            for (int i = 0; i < gridStrings.length; i++)
 //            for(int i = 0; i < gridStrings.length; i++)
 //                for (int j = 0; j < gridStrings[i].length; j++)
 //                    System.err.println(i + " " + j + " " + gridStrings[i][j]);
