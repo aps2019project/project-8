@@ -2,19 +2,21 @@ package client;
 
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
+import com.gilecode.yagson.com.google.gson.JsonElement;
 import com.gilecode.yagson.com.google.gson.JsonObject;
 import model.Hero;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class Client {
-    private static int port = 6666; // read from config
+    private static int port = 8000; // read from config
     private static Socket socket;
     private static PrintWriter out;
-    private static InputStreamReader in;
+    private static BufferedReader in;
 
     private static void establishConnection() {
         try {
@@ -25,10 +27,11 @@ public class Client {
         }
 
         try {
-            OutputStream socketOutputStream = socket.getOutputStream();
-//            out = new OutputStreamWriter(socket.getOutputStream()   );
+//            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8);
 //            in = new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8);
-            out = new PrintWriter(socket.getOutputStream(), true);
+//            out = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println(e.getMessage());
@@ -36,7 +39,9 @@ public class Client {
     }
 
     private static void sendJSON(JsonObject jsonObject) {
+        out.println(jsonObject.toString());
         out.write(jsonObject.toString());
+//        out.flush();
     }
 
     private static void closeConnection() {
@@ -50,10 +55,11 @@ public class Client {
         }
     }
 
-    public static void test() {
+    public static void test(JsonObject obj) {
         establishConnection();
-        out.write("hello server");
-        //        sendJSON(obj);
+//        out.write("hello");
+//        out.println("hello server");
+        sendJSON(obj);
     }
 
     public static void main(String[] args) throws IOException {
@@ -62,13 +68,19 @@ public class Client {
 //        loginRequest.setHandle(scanner.next());
 //        loginRequest.setPassword(scanner.next());
 
-        test();
-        if (1 == 1)
-            return;
 
         JsonObject obj = new JsonObject();
         obj.addProperty("isCat", "false");
         obj.addProperty("age", 3);
+//        obj.addProperty("array", int[]{1, 1, 1, 1});
+
+        test(obj);
+
+        JsonElement jsonElement;
+        System.out.println(obj.get("age"));
+
+        if (1 == 1)
+            return;
 
         System.out.println(obj);
 

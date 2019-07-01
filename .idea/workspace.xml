@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2549cda8-0ddf-4406-8710-6410b0291f4a" name="Default Changelist" comment="aiiii">
-      <change afterPath="$PROJECT_DIR$/src/client/Client.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/client/LoginRequest.java" afterDir="false" />
+    <list default="true" id="2549cda8-0ddf-4406-8710-6410b0291f4a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/GreetClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/GreetClient.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,24 +41,6 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/gen/JsonMaker.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="646">
-              <caret line="38" column="38" selection-start-line="38" selection-start-column="38" selection-end-line="38" selection-end-column="38" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/gen/ManualFeatureAdder.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="11169">
-              <caret line="669" column="24" selection-start-line="669" selection-start-column="24" selection-end-line="669" selection-end-column="24" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/client/LoginRequest.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="391">
@@ -80,12 +62,31 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/client/Client.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1033">
-              <caret line="79" column="37" lean-forward="true" selection-start-line="79" selection-start-column="37" selection-end-line="79" selection-end-column="37" />
+            <state relative-caret-position="204">
+              <caret line="15" column="34" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1215#1216#0" expanded="true" />
-                <element signature="e#1263#1264#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/myFirstJson.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="1" lean-forward="true" selection-start-column="1" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/client/GreetClient.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="14" column="6" lean-forward="true" selection-start-line="14" selection-start-column="6" selection-end-line="16" selection-end-column="86" />
+              <folding>
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -148,7 +149,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/GraphicControllers/Menus/AccountMenu.java" />
         <option value="$PROJECT_DIR$/src/GraphicControllers/GUI.java" />
         <option value="$PROJECT_DIR$/src/GraphicControllers/MenuManager.java" />
         <option value="$PROJECT_DIR$/src/GraphicControllers/Menu.java" />
@@ -198,11 +198,12 @@
         <option value="$PROJECT_DIR$/src/model/Game.java" />
         <option value="$PROJECT_DIR$/src/client/LoginRequest.java" />
         <option value="$PROJECT_DIR$/test/myFirstJson.json" />
+        <option value="$PROJECT_DIR$/src/client/GreetClient.java" />
         <option value="$PROJECT_DIR$/src/client/Client.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="952" />
     <option name="width" value="977" />
     <option name="height" value="1038" />
@@ -229,6 +230,12 @@
             <path>
               <item name="project-8" type="b2602c69:ProjectViewProjectNode" />
               <item name="project-8" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="project-8" type="b2602c69:ProjectViewProjectNode" />
+              <item name="project-8" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -245,12 +252,12 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1561946616599" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1561949607431" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../project-8 Server" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
@@ -306,6 +313,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="GreetClient" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="client.GreetClient" />
+      <module name="project-8" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="client.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ManualFeatureAdder" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="gen.ManualFeatureAdder" />
       <module name="project-8" />
@@ -337,10 +357,12 @@
       <item itemvalue="Application.UI" />
       <item itemvalue="Application.ManualFeatureAdder" />
       <item itemvalue="Application.Client" />
+      <item itemvalue="Application.GreetClient" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Client" />
+        <item itemvalue="Application.GreetClient" />
         <item itemvalue="Application.GUI" />
         <item itemvalue="Application.ManualFeatureAdder" />
         <item itemvalue="Application.UI" />
@@ -377,7 +399,7 @@
       <workItem from="1561346561342" duration="3091000" />
       <workItem from="1561458357482" duration="3957000" />
       <workItem from="1561899293051" duration="339000" />
-      <workItem from="1561941437310" duration="4750000" />
+      <workItem from="1561941437310" duration="7797000" />
     </task>
     <task id="LOCAL-00001" summary="refactor">
       <created>1560233012973</created>
@@ -575,14 +597,21 @@
       <option name="project" value="LOCAL" />
       <updated>1561462270148</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="first commit :(">
+      <created>1561946656561</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1561946656561</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="191542000" />
+    <option name="totallyTimeSpent" value="194589000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="762" y="0" width="781" height="830" extended-state="0" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.42024964" />
@@ -595,7 +624,7 @@
       <window_info id="Learn" order="7" />
       <window_info anchor="bottom" id="Messages" order="0" weight="0.32577905" />
       <window_info anchor="bottom" id="Message" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4997233" visible="true" weight="0.35243553" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4997233" visible="true" weight="0.34844193" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39943343" />
       <window_info anchor="bottom" id="Find" order="4" weight="0.32843137" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
@@ -671,23 +700,10 @@
     <MESSAGE value="ai moves" />
     <MESSAGE value="hhhh" />
     <MESSAGE value="aiiii" />
-    <option name="LAST_COMMIT_MESSAGE" value="aiiii" />
+    <MESSAGE value="first commit :(" />
+    <option name="LAST_COMMIT_MESSAGE" value="first commit :(" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/save/aa.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1649">
-          <caret line="97" column="24" selection-start-line="97" selection-start-column="24" selection-end-line="97" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/graphicControllers/menus/CustomGameMenu.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="799">
-          <caret line="66" selection-start-line="66" selection-end-line="66" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/UITest.java" />
     <entry file="file://$PROJECT_DIR$/Archive 2/src/graphicControllers/Menu.java" />
     <entry file="file://$PROJECT_DIR$/src/menus/Battle.java">
@@ -1083,21 +1099,40 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/client/GreetClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="14" column="6" lean-forward="true" selection-start-line="14" selection-start-column="6" selection-end-line="16" selection-end-column="86" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_212/src.zip!/java/io/PrintWriter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="134">
+          <caret line="451" column="16" selection-start-line="451" selection-start-column="16" selection-end-line="451" selection-end-column="16" />
+          <folding>
+            <element signature="e#15583#15584#0" expanded="true" />
+            <element signature="e#15622#15623#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/test/myFirstJson.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="1" lean-forward="true" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
+        <state>
+          <caret column="1" lean-forward="true" selection-start-column="1" selection-end-column="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/client/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1033">
-          <caret line="79" column="37" lean-forward="true" selection-start-line="79" selection-start-column="37" selection-end-line="79" selection-end-column="37" />
+        <state relative-caret-position="204">
+          <caret line="15" column="34" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1215#1216#0" expanded="true" />
-            <element signature="e#1263#1264#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1160,6 +1195,7 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>
