@@ -31,7 +31,7 @@ public class CommandLineView implements View {
     }
 
     @Override
-    public void showLeaderboard(ArrayList<Account> accounts) {
+    public void showLeaderboard(ArrayList<AccountUser> accounts) {
         Collections.sort(accounts);
         for (int i = 0; i < accounts.size(); i++)
             System.out.println((i + 1) + accounts.get(i).toString());
@@ -275,7 +275,7 @@ public class CommandLineView implements View {
     }
 
     @Override
-    public void showAccount(Account account) {
+    public void showAccount(AccountUser account) {
         System.out.println(account.getName());
     }
 
@@ -519,7 +519,7 @@ public class CommandLineView implements View {
     }
 
     @Override
-    public void showWinner(Account account, int prize) {
+    public void showWinner(AccountUser account, int prize) {
         System.out.println("The winner is: " + account.getName());
         System.out.println(prize + "$$$");
     }

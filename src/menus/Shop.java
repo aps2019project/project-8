@@ -56,9 +56,9 @@ public class Shop extends Menu {
 
     public static void sellCollectionItem(String collectionItemID) {
         if (CollectionMenu.hasCollectionItem(collectionItemID)) {
-            CollectionItem collectionItem = account.getCollection().getCollectionItemByID(collectionItemID);
+            CollectionItem collectionItem = account.getData().getCollection().getCollectionItemByID(collectionItemID);
             account.receiveMoney(collectionItem.getPrice());
-            account.getCollection().removeCollectionItem(collectionItemID);
+            account.getData().getCollection().removeCollectionItem(collectionItemID);
             view.alertSell();
             return;
         }
@@ -90,13 +90,13 @@ public class Shop extends Menu {
             view.showNotEnoughMoneyError();
             return;
         }
-        if (getAccount().hasThreeItems() && isItem(collectionItemName)) {
+        if (getAccount().getData().hasThreeItems() && isItem(collectionItemName)) {
             view.showFourthItemError();
             return;
         }
         CollectionItem collectionItem = getCollectionItemByName(collectionItemName);
         account.payMoney(collectionItem.getPrice());
-        getAccount().getCollection().addCollectionItem(getCopy(collectionItem));
+        getAccount().getData().getCollection().addCollectionItem(getCopy(collectionItem));
         view.alertBuy();
     }
 
@@ -149,6 +149,6 @@ public class Shop extends Menu {
     }
 
     public static void showCollection() {
-        view.showShopCollection(getAccount().getCollectionItems());
+        view.showShopCollection(getAccount().getData().getCollectionItems());
     }
 }

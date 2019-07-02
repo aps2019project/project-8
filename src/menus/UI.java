@@ -6,7 +6,7 @@ import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import gen.JsonMaker;
 import model.AI;
-import model.Account;
+import model.AccountUser;
 import model.Game;
 import view.CommandLineView;
 import view.View;
@@ -189,26 +189,26 @@ public class UI {
 
     private static void actLoginAccount(String password) {
 
-//        Connector connector = new Connector();
-//        Connection connection = connector.connect(name, password, true);
-//        if (connection == null) {
-//            switchTo(Menus.LOGIN_MENU);
-//        } else {
-//            switchTo(Menus.MAIN_MENU);
-//            Menu.setConnection(connection);
-//            Menu.setAccount(;);
-//        }
-//        view.logMessage(connector.getLog());
-
-        Account account = Account.getAccount(name);
-        if (account.isPasswordValid(password)) {
-            view.alertLogin();
-            Menu.setAccount(account);
+        Connector connector = new Connector();
+        Connection connection = connector.connect(name, password, true);
+        if (connection == null) {
+            switchTo(Menus.LOGIN_MENU);
+        } else {
             switchTo(Menus.MAIN_MENU);
-            return;
+            Menu.setConnection(connection);
+
         }
-        view.showIncorrectPasswordError();
-        switchTo(Menus.LOGIN_MENU);
+        view.logMessage(connector.getLog());
+
+//        Account account = Account.getAccount(name);
+//        if (account.isPasswordValid(password)) {
+//            view.alertLogin();
+//            Menu.setAccount(account);
+//            switchTo(Menus.MAIN_MENU);
+//            return;
+//        }
+//        view.showIncorrectPasswordError();
+//        switchTo(Menus.LOGIN_MENU);
     }
 
     private static boolean actLoginMenu(String command) {
@@ -506,7 +506,7 @@ public class UI {
     }
 
     private static void showLeaderboard() {
-        view.showLeaderboard(Account.getAccounts());
+        view.showLeaderboard(AccountUser.getAccounts());
     }
 
     private static void help() {
@@ -560,7 +560,7 @@ public class UI {
         try {
             for (File file : new File("./save").listFiles()) {
                 YaGson yaGson = new YaGson();
-                new Account(yaGson.fromJson(new BufferedReader(new FileReader(file)), Account.class));
+                new AccountUser(yaGson.fromJson(new BufferedReader(new FileReader(file)), AccountUser.class));
             }
             Shop.load();
             AI.load();
@@ -574,14 +574,14 @@ public class UI {
         try {
             FileWriter out = new FileWriter("./save/" + Menu.getAccount().getName() + ".json", false);
             YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
-            out.write(yaGson.toJson(Menu.getAccount(), Account.class));
+            out.write(yaGson.toJson(Menu.getAccount(), AccountUser.class));
             out.flush();
             view.alertSave();
         } catch (IOException ignored) {
         }
     }
 
-    public static Account getAccount() {
+    public static AccountUser getAccount() {
         return Menu.getAccount();
     }
 

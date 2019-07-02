@@ -31,45 +31,45 @@ public class CollectionMenu extends Menu {
     }
 
     public static void show() {
-        view.showCollection(getAccount().getCollectionItems());
+        view.showCollection(getAccount().getData().getCollectionItems());
     }
 
     public static void search(String collectionItemName) {
-        view.showID(account.getCollection().getCollectionItemIDs(collectionItemName));
+        view.showID(account.getData().getCollection().getCollectionItemIDs(collectionItemName));
     }
 
     public static void createDeck(String name) {
-        if (getAccount().getCollection().hasDeck(name)) {
+        if (getAccount().getData().getCollection().hasDeck(name)) {
             view.showAlreadyExistingDeckError();
             return;
         }
-        getAccount().getCollection().createDeck(name);
+        getAccount().getData().getCollection().createDeck(name);
         view.alertDeckCreation();
     }
 
     public static void deleteDeck(String name) {
-        if (!getAccount().getCollection().hasDeck(name)) {
+        if (!getAccount().getData().getCollection().hasDeck(name)) {
             view.showDeckDoesNotExistError();
             return;
         }
-        getAccount().getCollection().deleteDeck(name);
+        getAccount().getData().getCollection().deleteDeck(name);
         view.alertDeckDeletion();
     }
 
     private static Deck getDeck(String deckName) { // if successful returns false
-        if (!getAccount().getCollection().hasDeck(deckName)) {
+        if (!getAccount().getData().getCollection().hasDeck(deckName)) {
             view.showDeckDoesNotExistError();
             return null;
         }
-        return getAccount().getCollection().getDeck(deckName);
+        return getAccount().getData().getCollection().getDeck(deckName);
     }
 
     private static CollectionItem getCollectionItem(String collectionItemID) {
-        if (!getAccount().getCollection().hasCollectionItem(collectionItemID)) {
+        if (!getAccount().getData().getCollection().hasCollectionItem(collectionItemID)) {
             view.showNoSuchCollectionItemError();
             return null;
         }
-        return getAccount().getCollection().getCollectionItem(collectionItemID);
+        return getAccount().getData().getCollection().getCollectionItem(collectionItemID);
     }
 
     public static void addCollectionItem(String deckName, String collectionItemID) {
@@ -129,7 +129,7 @@ public class CollectionMenu extends Menu {
     }
 
     public static void showAllDecks() {
-        view.showDecks(getAccount().getCollection().getDecks());
+        view.showDecks(getAccount().getData().getCollection().getDecks());
     }
 
     public static void showDeck(String deckName) {
@@ -144,7 +144,7 @@ public class CollectionMenu extends Menu {
     }
 
     public static boolean hasCollectionItem(String collectionItemID) {
-        return account.getCollection().getCollectionItemByID(collectionItemID) != null;
+        return account.getData().getCollection().getCollectionItemByID(collectionItemID) != null;
     }
 
     public static boolean isCollectionItemInDeck(String deckName, String collectionItemID) {
@@ -167,24 +167,24 @@ public class CollectionMenu extends Menu {
             view.showInvalidDeckError();
             return;
         }
-        getAccount().setMainDeck(deck);
+        getAccount().getData().setMainDeck(deck);
         view.alertDeckSelection();
     }
 
     public static void exportDeck() {
-        if (getAccount().getMainDeck() == null) {
+        if (getAccount().getData().getMainDeck() == null) {
             view.showNoMainDeckError();
             return;
         }
         try {
-            String fileName = getAccount().getName() + "_" + getAccount().getMainDeck().getDeckName();
+            String fileName = getAccount().getName() + "_" + getAccount().getData().getMainDeck().getDeckName();
             int index = 0;
             while (new File("./export/" + fileName + index + ".json").exists())
                 index++;
             fileName = fileName + index;
             FileWriter out = new FileWriter("./export/" + fileName + ".json", false);
             YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
-            out.write(yaGson.toJson(getAccount().getMainDeck(), Deck.class));
+            out.write(yaGson.toJson(getAccount().getData().getMainDeck(), Deck.class));
             out.flush();
             view.alertExport(fileName);
         } catch (IOException ignored) {
@@ -194,7 +194,7 @@ public class CollectionMenu extends Menu {
     public static void importDeck(String deckPath) {
         File file = new File("./export/" + deckPath + ".json");
         try {
-            getAccount().importDeck(new Deck(new YaGson().fromJson(new BufferedReader(new FileReader(file)), Deck.class)
+            getAccount().getData().importDeck(new Deck(new YaGson().fromJson(new BufferedReader(new FileReader(file)), Deck.class)
             ));
         } catch (FileNotFoundException ignored) {
             view.showNoSuchFileError();

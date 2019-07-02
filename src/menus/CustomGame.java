@@ -7,7 +7,7 @@ public class CustomGame extends Menu {
 
     public static void help() {
         view.showHelp(commands);
-        getAccount().getDecks().forEach(o -> {
+        getAccount().getData().getDecks().forEach(o -> {
             if (o.isValid())
                 view.showDeckInformation(o);
         });

@@ -3,6 +3,7 @@ package model;
 import java.util.Map;
 import java.util.*;
 
+/*
 public class Account implements Comparable {
     private static ArrayList<Account> accounts = new ArrayList<>();
     private String name;
@@ -157,3 +158,4 @@ public class Account implements Comparable {
         return wins;
     }
 }
+*/

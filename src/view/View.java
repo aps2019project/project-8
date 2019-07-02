@@ -12,7 +12,7 @@ public interface View {
 
     void showIncorrectPasswordError();
 
-    void showLeaderboard(ArrayList<Account> accounts);
+    void showLeaderboard(ArrayList<AccountUser> accounts);
 
     void showInvalidCommandError();
 
@@ -88,7 +88,7 @@ public interface View {
 
     void showAIDeckInformation(AI ai);
 
-    void showAccount(Account account);
+    void showAccount(AccountUser account);
 
     void alertSecondAccountSelection();
 
@@ -158,7 +158,7 @@ public interface View {
 
     void showCardsReadyToBePlayed(ArrayList<Card> availableOptions);
 
-    void showWinner(Account account, int prize);
+    void showWinner(AccountUser account, int prize);
 
     void alertCPUWin();
 

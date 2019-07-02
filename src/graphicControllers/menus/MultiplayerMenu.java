@@ -14,7 +14,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import menus.UI;
-import model.Account;
+import model.AccountUser;
 import view.NodeWrapper;
 
 import java.io.File;
@@ -67,9 +67,9 @@ public class MultiplayerMenu extends Menu {
     public void refresh() {
         new Thread(() -> Platform.runLater(() -> {
             vBox.getChildren().clear();
-            Account.getAccounts().forEach(o -> {
+            AccountUser.getAccounts().forEach(o -> {
                 if (o != UI.getAccount()) {
-                    if (o.getMainDeck() != null && o.getMainDeck().isValid()) {
+                    if (o.getData().getMainDeck() != null && o.getData().getMainDeck().isValid()) {
                         try {
                             Label label = new Label();
                             label.setMinWidth(labelWidth);
@@ -93,7 +93,7 @@ public class MultiplayerMenu extends Menu {
                             label.setOnMouseExited(e -> label.setBackground(inactive));
                             vBox.getChildren().add(label);
                             label.setOnMouseClicked(e -> {
-                                if (UI.getAccount().getMainDeck() == null || !UI.getAccount().getMainDeck().isValid())
+                                if (UI.getAccount().getData().getMainDeck() == null || !UI.getAccount().getData().getMainDeck().isValid())
                                     showPopUp("You have no main deck to play with.");
                                 else {
                                     Optional<Integer>[] gameType = popUpGetGameType();

@@ -1,7 +1,7 @@
 package menus;
 
 import model.AI;
-import model.Account;
+import model.AccountUser;
 
 public class Multiplayer extends Menu {
     private static final String[] selectingUserCommands = {
@@ -18,11 +18,11 @@ public class Multiplayer extends Menu {
             "Collect the flags"
     };
 
-    private static Account secondAccount = null;
+    private static AccountUser secondAccount = null;
 
     public static void help(boolean selectingUser) {
         if (selectingUser) {
-            Account.getAccounts().forEach(o -> {
+            AccountUser.getAccounts().forEach(o -> {
                 if (o != account)
                     view.showAccount(o);
             });
@@ -34,16 +34,16 @@ public class Multiplayer extends Menu {
     }
 
     public static boolean selectUser(String name) {
-        secondAccount = Account.getAccount(name);
+        secondAccount = AccountUser.getAccount(name);
         if (secondAccount == null || secondAccount == getAccount()) {
             view.showNoSuchAccountError();
             return false;
         }
-        if (secondAccount.getMainDeck() == null) {
+        if (secondAccount.getData().getMainDeck() == null) {
             view.showSecondPlayerHasNoMainDeckError();
             return false;
         }
-        if (!secondAccount.getMainDeck().isValid()) {
+        if (!secondAccount.getData().getMainDeck().isValid()) {
             view.showSecondPlayerInvalidMainDeckError();
             return false;
         }
@@ -51,7 +51,7 @@ public class Multiplayer extends Menu {
         return true;
     }
 
-    public static Account getSecondAccount() {
+    public static AccountUser getSecondAccount() {
         return secondAccount;
     }
 }

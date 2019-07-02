@@ -36,7 +36,7 @@ public class GameMenu extends InGameMenu {
     private static Player[] players = new Player[NUMBER_OF_PLAYERS];
     private static int numberOfFlags;
     private static Game game;
-    private static Account secondAccount = null;
+    private static AccountUser secondAccount = null;
 
     public static void help(boolean gameEnded) {
         if (!gameEnded)
@@ -126,11 +126,11 @@ public class GameMenu extends InGameMenu {
     }
 
     private static boolean checkAccount() {
-        if (getAccount().getMainDeck() == null) {
+        if (getAccount().getData().getMainDeck() == null) {
             view.showNoMainDeckError();
             return true;
         }
-        if (!getAccount().getMainDeck().isValid()) {
+        if (!getAccount().getData().getMainDeck().isValid()) {
             view.showInvalidMainDeckError();
             return true;
         }
@@ -140,16 +140,16 @@ public class GameMenu extends InGameMenu {
     //start a single player game with with an AI with a specific deck
     public static boolean startGame(String deckName, int mode, int numberOfFlags) {
         if (checkAccount()) return false;
-        if (getAccount().getDeck(deckName) == null) {
+        if (getAccount().getData().getDeck(deckName) == null) {
             view.showDeckDoesNotExistError();
             return false;
         }
-        if (!getAccount().getDeck(deckName).isValid()) {
+        if (!getAccount().getData().getDeck(deckName).isValid()) {
             view.showInvalidMainDeckError();
             return false;
         }
         if (checkGameParameters(mode, numberOfFlags)) return false;
-        AI ai = new AI(getAccount().getDeck(deckName));
+        AI ai = new AI(getAccount().getData().getDeck(deckName));
         game = new Game(getAccount(), ai, GameType.get(mode), numberOfFlags);
         ai.setGame(game);
         game.initiateGame();
@@ -159,7 +159,7 @@ public class GameMenu extends InGameMenu {
     }
 
     //start a multiplayer game with a selected account
-    public static boolean startGame(Account secondAccount, int mode, int numberOfFlags) {
+    public static boolean startGame(AccountUser secondAccount, int mode, int numberOfFlags) {
         if (checkAccount()) return false;
         if (checkGameParameters(mode, numberOfFlags)) return false;
         GameMenu.game = new Game(getAccount(), secondAccount, GameType.get(mode), numberOfFlags);
@@ -238,7 +238,7 @@ public class GameMenu extends InGameMenu {
     }
 
     public static void exit() {
-        Account account = game.getOtherAccount();
+        AccountUser account = game.getOtherAccount();
         if (account != null) {
             account.receiveMoney(game.getPrize());
         }

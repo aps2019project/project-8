@@ -26,7 +26,7 @@ public class Game extends InGameMenu {
     private Map map = new Map();
     private Player[] players;
     private boolean[] hasAI = new boolean[2];
-    private Account[] accounts;
+    private AccountUser[] accounts;
     private Unit selectedUnit;
     private Collectible selectedCollectible;
     private GameType gameType;
@@ -36,19 +36,19 @@ public class Game extends InGameMenu {
     private ArrayList<Collectible> collectibles = new ArrayList<>();
     private ArrayList<Unit> dead = new ArrayList<>();
 
-    public Game(Account firstPlayer, Account secondPlayer, GameType gameType, int numberOfFlags) {
-        accounts = new Account[]{firstPlayer, secondPlayer};
-        players = new Player[]{firstPlayer.getPlayer().setName(firstPlayer.getName()), secondPlayer.getPlayer().
+    public Game(AccountUser firstPlayer, AccountUser secondPlayer, GameType gameType, int numberOfFlags) {
+        accounts = new AccountUser[]{firstPlayer, secondPlayer};
+        players = new Player[]{firstPlayer.getData().getPlayer().setName(firstPlayer.getName()), secondPlayer.getData().getPlayer().
                 setName(secondPlayer.getName())};
         hasAI[0] = hasAI[1] = false;
         this.gameType = gameType;
         this.numberOfFlags = numberOfFlags;
     }
 
-    public Game(Account account, AI ai, GameType gameType, int numberOfFlags) {
+    public Game(AccountUser account, AI ai, GameType gameType, int numberOfFlags) {
         this.ai = ai;
-        accounts = new Account[]{account, null};
-        players = new Player[]{account.getPlayer().setName(account.getName()), ai.getPlayer().setName("COM")};
+        accounts = new AccountUser[]{account, null};
+        players = new Player[]{account.getData().getPlayer().setName(account.getName()), ai.getPlayer().setName("COM")};
         hasAI[0] = false;
         hasAI[1] = true;
         this.gameType = gameType;
@@ -1351,7 +1351,7 @@ public class Game extends InGameMenu {
         this.prize = prize;
     }
 
-    public Account getOtherAccount() {
+    public AccountUser getOtherAccount() {
         return accounts[turn % 2];
     }
 

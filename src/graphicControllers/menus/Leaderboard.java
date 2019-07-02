@@ -10,7 +10,7 @@ import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import model.Account;
+import model.AccountUser;
 import view.GUIChangeMenuButton;
 import view.NodeWrapper;
 
@@ -66,7 +66,7 @@ public class Leaderboard extends Menu {
     public void refresh() {
         new Thread(() -> Platform.runLater(() -> {
             vBox.getChildren().clear();
-            Account.getAccounts().stream().sorted().forEach(o -> {
+            AccountUser.getAccounts().stream().sorted().forEach(o -> {
                 try {
                     Label label = new Label();
                     label.setMinWidth(labelWidth);

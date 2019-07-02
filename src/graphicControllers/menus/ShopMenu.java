@@ -53,7 +53,7 @@ public class ShopMenu extends Menu {
             }
             showCollection.setText("Show Collection");
             showCollection.setOnMouseClicked(e -> {
-                Collection<CollectionItem> collectionItems = UI.getAccount().getCollectionItems().values();
+                Collection<CollectionItem> collectionItems = UI.getAccount().getData().getCollectionItems().values();
                 if (collectionItems.isEmpty()) {
                     showPopUp("Your collection is empty!");
                     return;
@@ -113,11 +113,11 @@ public class ShopMenu extends Menu {
             }
             searchCollection.setText("Search Collection");
             searchCollection.setOnMouseClicked(e -> {
-                Optional<String> name = popUpGetList(UI.getAccount().getCollectionItems().values().stream().map(CollectionItem::getName).distinct().sorted().collect(Collectors.toList()), "Search", "Card name | item name");
+                Optional<String> name = popUpGetList(UI.getAccount().getData().getCollectionItems().values().stream().map(CollectionItem::getName).distinct().sorted().collect(Collectors.toList()), "Search", "Card name | item name");
                 if (name.isPresent()) {
                     UI.decide("search collection " + name.get());
                     StringBuilder stringBuilder = new StringBuilder();
-                    UI.getAccount().getCollection().getCollectionItemIDs(name.get()).forEach(o -> stringBuilder.append(o + "\n"));
+                    UI.getAccount().getData().getCollection().getCollectionItemIDs(name.get()).forEach(o -> stringBuilder.append(o + "\n"));
                     showPopUp(stringBuilder.toString());
                 }
             });
@@ -138,7 +138,7 @@ public class ShopMenu extends Menu {
                         showPopUp("Not enough money.");
                         return;
                     }
-                    if (UI.getAccount().hasThreeItems() && Shop.isItem(s)) {
+                    if (UI.getAccount().getData().hasThreeItems() && Shop.isItem(s)) {
                         showPopUp("Cannot have 4 items in collection.");
                         return;
                     }
@@ -157,7 +157,7 @@ public class ShopMenu extends Menu {
             } catch (FileNotFoundException ignored) {
             }
             sell.setText("Sell");
-            sell.setOnMouseClicked(e -> popUpGetList(UI.getAccount().getCollectionItems().keySet().stream().mapToInt(Integer::parseInt).sorted().mapToObj(String::valueOf).collect(Collectors.toList()), "Sell", "Card ID").ifPresent(s -> {
+            sell.setOnMouseClicked(e -> popUpGetList(UI.getAccount().getData().getCollectionItems().keySet().stream().mapToInt(Integer::parseInt).sorted().mapToObj(String::valueOf).collect(Collectors.toList()), "Sell", "Card ID").ifPresent(s -> {
                 UI.decide("sell " + s);
                 showPopUp("Successfully sold the collection item.");
             }));

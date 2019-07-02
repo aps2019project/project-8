@@ -222,7 +222,7 @@ public class CollectionMenu extends Menu {
         new Thread(() -> {
             show.setOnMouseClicked(e -> {
                 UI.decide("show");
-                Collection<CollectionItem> collectionItems = UI.getAccount().getCollectionItems().values();
+                Collection<CollectionItem> collectionItems = UI.getAccount().getData().getCollectionItems().values();
                 if (collectionItems.isEmpty()) {
                     showPopUp("Your collection is empty!");
                     return;
@@ -251,11 +251,11 @@ public class CollectionMenu extends Menu {
             });
 
             search.setOnMouseClicked(e -> {
-                Optional<String> name = popUpGetList(UI.getAccount().getCollectionItems().values().stream().map(CollectionItem::getName).distinct().sorted().collect(Collectors.toList()), "Search", "Card name | item name");
+                Optional<String> name = popUpGetList(UI.getAccount().getData().getCollectionItems().values().stream().map(CollectionItem::getName).distinct().sorted().collect(Collectors.toList()), "Search", "Card name | item name");
                 if (name.isPresent()) {
                     UI.decide("search " + name.get());
                     StringBuilder stringBuilder = new StringBuilder();
-                    UI.getAccount().getCollection().getCollectionItemIDs(name.get()).forEach(o -> stringBuilder.append(o + "\n"));
+                    UI.getAccount().getData().getCollection().getCollectionItemIDs(name.get()).forEach(o -> stringBuilder.append(o + "\n"));
                     showPopUp(stringBuilder.toString());
                 }
             });
@@ -277,9 +277,9 @@ public class CollectionMenu extends Menu {
             });
 
             exportButton.setOnMouseClicked(e -> {
-                if (UI.getAccount().getMainDeck() == null) {
+                if (UI.getAccount().getData().getMainDeck() == null) {
                     showPopUp("You have no main deck.");
-                } else if (!UI.getAccount().getMainDeck().isValid()) {
+                } else if (!UI.getAccount().getData().getMainDeck().isValid()) {
                     showPopUp("Your main deck is not valid");
                 } else {
                     ArrayList<Object> fileNames = new ArrayList<>();
@@ -295,7 +295,7 @@ public class CollectionMenu extends Menu {
             createDeck.setOnMouseClicked(e -> {
                 Optional<String> deckName = popUpGetText("Deck name", "Create");
                 if (deckName.isPresent()) {
-                    if (UI.getAccount().getCollection().hasDeck(deckName.get()))
+                    if (UI.getAccount().getData().getCollection().hasDeck(deckName.get()))
                         showPopUp("A deck with this name already exists.");
                     else
                         showPopUp("Deck successfully created.");
@@ -304,7 +304,7 @@ public class CollectionMenu extends Menu {
             });
 
             deleteDeck.setOnMouseClicked(e -> {
-                Optional<String> getList = popUpGetList(UI.getAccount().getDecks().stream().map(Deck::getDeckName).sorted().collect(Collectors.toList()), "Delete", "Deck name");
+                Optional<String> getList = popUpGetList(UI.getAccount().getData().getDecks().stream().map(Deck::getDeckName).sorted().collect(Collectors.toList()), "Delete", "Deck name");
                 getList.ifPresent(s -> {
                     UI.decide("delete deck " + getList.get());
                     showPopUp("Deck successfully deleted.");
@@ -312,9 +312,9 @@ public class CollectionMenu extends Menu {
             });
 
             addCard.setOnMouseClicked(e -> {
-                popUpGetList(UI.getAccount().getCollection().getCollectionItems().keySet().stream().mapToInt(Integer::parseInt).sorted().mapToObj(String::valueOf).collect(Collectors.toList()), "Select Card", "Card ID | Hero ID").ifPresent(s ->
-                        popUpGetList(UI.getAccount().getDecks().stream().filter(d -> {
-                            CollectionItem collectionItem = UI.getAccount().getCollectionItems().get(s);
+                popUpGetList(UI.getAccount().getData().getCollection().getCollectionItems().keySet().stream().mapToInt(Integer::parseInt).sorted().mapToObj(String::valueOf).collect(Collectors.toList()), "Select Card", "Card ID | Hero ID").ifPresent(s ->
+                        popUpGetList(UI.getAccount().getData().getDecks().stream().filter(d -> {
+                            CollectionItem collectionItem = UI.getAccount().getData().getCollectionItems().get(s);
                             if (d.hasCollectionItem(s))
                                 return false;
                             if (collectionItem instanceof Hero)
@@ -329,8 +329,8 @@ public class CollectionMenu extends Menu {
             });
 
             removeCard.setOnMouseClicked(e -> {
-                popUpGetList(UI.getAccount().getCollection().getCollectionItems().keySet().stream().mapToInt(Integer::parseInt).sorted().mapToObj(String::valueOf).collect(Collectors.toList()), "Select Card", "Card ID | Hero ID").ifPresent(s -> {
-                    popUpGetList(UI.getAccount().getDecks().stream().filter(d -> d.hasCollectionItem(s)).map(Deck::getDeckName).sorted().collect(Collectors.toList()), "Select Deck", "Deck name").ifPresent(d -> {
+                popUpGetList(UI.getAccount().getData().getCollection().getCollectionItems().keySet().stream().mapToInt(Integer::parseInt).sorted().mapToObj(String::valueOf).collect(Collectors.toList()), "Select Card", "Card ID | Hero ID").ifPresent(s -> {
+                    popUpGetList(UI.getAccount().getData().getDecks().stream().filter(d -> d.hasCollectionItem(s)).map(Deck::getDeckName).sorted().collect(Collectors.toList()), "Select Deck", "Deck name").ifPresent(d -> {
                         UI.decide("remove " + s + " from deck " + d);
                         showPopUp("Collection item successfully removed to deck");
                     });
@@ -338,8 +338,8 @@ public class CollectionMenu extends Menu {
             });
 
             validateDeck.setOnMouseClicked(e -> {
-                popUpGetList(UI.getAccount().getDecks().stream().map(Deck::getDeckName).collect(Collectors.toList()), "Validate", "Deck name").ifPresent(s -> {
-                    if (UI.getAccount().getDeck(s).isValid())
+                popUpGetList(UI.getAccount().getData().getDecks().stream().map(Deck::getDeckName).collect(Collectors.toList()), "Validate", "Deck name").ifPresent(s -> {
+                    if (UI.getAccount().getData().getDeck(s).isValid())
                         showPopUp("The deck is valid.");
                     else
                         showPopUp("The deck is invalid.");
@@ -347,8 +347,8 @@ public class CollectionMenu extends Menu {
                 });
             });
 
-            select.setOnMouseClicked(e -> popUpGetList(UI.getAccount().getDecks().stream().map(Deck::getDeckName).collect(Collectors.toList()), "Select", "Deck name").ifPresent(s -> {
-                if (UI.getAccount().getDeck(s).isValid()) {
+            select.setOnMouseClicked(e -> popUpGetList(UI.getAccount().getData().getDecks().stream().map(Deck::getDeckName).collect(Collectors.toList()), "Select", "Deck name").ifPresent(s -> {
+                if (UI.getAccount().getData().getDeck(s).isValid()) {
                     showPopUp("Main deck successfully changed.");
                 } else
                     showPopUp("The deck is invalid.");
@@ -356,7 +356,7 @@ public class CollectionMenu extends Menu {
             }));
 
             showAllDecks.setOnMouseClicked(e -> {
-                ArrayList<Deck> decks = UI.getAccount().getDecks();
+                ArrayList<Deck> decks = UI.getAccount().getData().getDecks();
                 if (decks.isEmpty()) {
                     showPopUp("No deck.");
                     return;
@@ -372,8 +372,8 @@ public class CollectionMenu extends Menu {
             });
 
             showDeck.setOnMouseClicked(e -> {
-                popUpGetList(UI.getAccount().getDecks().stream().map(Deck::getDeckName).collect(Collectors.toList()), "Select", "Deck name").ifPresent(s -> {
-                    showWidePopUp(UI.getAccount().getDeck(s).toString());
+                popUpGetList(UI.getAccount().getData().getDecks().stream().map(Deck::getDeckName).collect(Collectors.toList()), "Select", "Deck name").ifPresent(s -> {
+                    showWidePopUp(UI.getAccount().getData().getDeck(s).toString());
                     UI.decide("show deck " + s);
                 });
             });

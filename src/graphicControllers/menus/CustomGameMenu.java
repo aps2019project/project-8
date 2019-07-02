@@ -67,7 +67,7 @@ public class CustomGameMenu extends Menu {
     public void refresh() {
         new Thread(() -> Platform.runLater(() -> {
             vBox.getChildren().clear();
-            UI.getAccount().getDecks().forEach(o -> {
+            UI.getAccount().getData().getDecks().forEach(o -> {
                 if (o.isValid()) {
                     try {
                         Label label = new Label();

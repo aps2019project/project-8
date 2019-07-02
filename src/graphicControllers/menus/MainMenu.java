@@ -226,7 +226,7 @@ public class MainMenu extends Menu {
                         new Thread(() -> {
                             JsonMaker.main(new String[]{"java", "JsonMaker"});
                             Shop.load();
-                            UI.getAccount().getCollection().addCollectionItem(Shop.getCollectionItemByName(name));
+                            UI.getAccount().getData().getCollection().addCollectionItem(Shop.getCollectionItemByName(name));
                         }).start();
                     } catch (IOException ignored) {
                     }

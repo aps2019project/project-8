@@ -3,12 +3,12 @@ package model;
 import java.time.LocalDateTime;
 
 public class Match {
-    private Account opponent;
+    private AccountUser opponent;
     boolean win;
     LocalDateTime date;
     Result result;
 
-    public Match(Account account, Result result, LocalDateTime date) {
+    public Match(AccountUser account, Result result, LocalDateTime date) {
         opponent = account;
         this.result = result;
         this.date = date;
