@@ -42,7 +42,6 @@ public class Connector {
         try {
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("unable to set data streams of connection");
@@ -71,9 +70,18 @@ public class Connector {
             log = "problem in server responding";
             return null;
         }
+        if (authenticationToken == null) {
 
-        if (authenticationToken == null)
+            try {
+                socket.close();
+                in.close();
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             return null;
+        }
         return new Connection(socket, out, in, authenticationToken);
     }
 

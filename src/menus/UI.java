@@ -189,25 +189,26 @@ public class UI {
 
     private static void actLoginAccount(String password) {
 
-        Connector connector = new Connector();
-        Connection connection = connector.connect(name, password, true);
-        if (connection == null) {
-            switchTo(Menus.LOGIN_MENU);
-        } else {
-            switchTo(Menus.MAIN_MENU);
-            Menu.setConnection(connection);
-        }
-        view.logMessage(connector.getLog());
-
-//        Account account = Account.getAccount(name);
-//        if (account.isPasswordValid(password)) {
-//            view.alertLogin();
-//            Menu.setAccount(account);
+//        Connector connector = new Connector();
+//        Connection connection = connector.connect(name, password, true);
+//        if (connection == null) {
+//            switchTo(Menus.LOGIN_MENU);
+//        } else {
 //            switchTo(Menus.MAIN_MENU);
-//            return;
+//            Menu.setConnection(connection);
+//            Menu.setAccount(;);
 //        }
-//        view.showIncorrectPasswordError();
-//        switchTo(Menus.LOGIN_MENU);
+//        view.logMessage(connector.getLog());
+
+        Account account = Account.getAccount(name);
+        if (account.isPasswordValid(password)) {
+            view.alertLogin();
+            Menu.setAccount(account);
+            switchTo(Menus.MAIN_MENU);
+            return;
+        }
+        view.showIncorrectPasswordError();
+        switchTo(Menus.LOGIN_MENU);
     }
 
     private static boolean actLoginMenu(String command) {
