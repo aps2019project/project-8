@@ -49,14 +49,14 @@ public class LoginMenu extends Menu {
                 if (!usernameField.getText().isEmpty()) {
                     if (!passwordField.getText().isEmpty()) {
                         UI.decide("login " + usernameField.getText());
-                        if (UI.getMenu() == Menus.LOGIN_ACCOUNT) {
+//                        if (UI.getMenu() == Menus.LOGIN_ACCOUNT) {
                             UI.decide(passwordField.getText());
                             if (UI.getMenu() == Menus.MAIN_MENU)
                                 MenuManager.getInstance().setCurrentMenu(Id.MAIN_MENU);
                             else
-                                showPopUp("Incorrect password entered");
-                        } else
-                            showPopUp("No account with this name exists.");
+                                showPopUp("Invalid user name or password.");
+//                        } else
+//                            showPopUp("No account with this name exists.");
                     } else
                         showPopUp("Please enter the password.");
                 } else

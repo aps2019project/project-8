@@ -49,12 +49,12 @@ public class SignInMenu extends Menu {
                 if (!usernameField.getText().isEmpty()) {
                     if (!passwordField.getText().isEmpty()) {
                         UI.decide("create account " + usernameField.getText());
-                        if (UI.getMenu() == Menus.CREATE_ACCOUNT) {
-                            showPopUp("Account successfully created.");
+//                        if (UI.getMenu() == Menus.CREATE_ACCOUNT) {
+//                            showPopUp("Account successfully created.");
                             UI.decide(passwordField.getText());
                             MenuManager.getInstance().setCurrentMenu(Id.ACCOUNT_MENU);
-                        } else
-                            showPopUp("An account with this name already exists.");
+//                        } else
+//                            showPopUp("An account with this name already exists.");
                     } else
                         showPopUp("Please enter the password.");
                 } else

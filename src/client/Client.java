@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class Client {
-    private static int port = 8000; // read from config
+    private static int port = 6666; // read from config
     private static Socket socket;
     private static PrintWriter out;
     private static BufferedReader in;
@@ -27,11 +27,8 @@ public class Client {
         }
 
         try {
-//            out = new PrintWriter(socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8);
-//            in = new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8);
-//            out = new PrintWriter(socket.getOutputStream(), true);
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println(e.getMessage());
@@ -39,8 +36,8 @@ public class Client {
     }
 
     private static void sendJSON(JsonObject jsonObject) {
-        out.println(jsonObject.toString());
-        out.write(jsonObject.toString());
+//        out.println(jsonObject.toString());
+//        out.write(jsonObject.toString());
 //        out.flush();
     }
 
@@ -62,6 +59,15 @@ public class Client {
         sendJSON(obj);
     }
 
+    public static void run() {
+        establishConnection();
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            String input = scanner.nextLine();
+            out.println(input);
+        }
+    }
+
     public static void main(String[] args) throws IOException {
 //        Scanner scanner = new Scanner(System.in);
 //        LoginRequest loginRequest = new LoginRequest();
@@ -73,6 +79,8 @@ public class Client {
         obj.addProperty("isCat", "false");
         obj.addProperty("age", 3);
 //        obj.addProperty("array", int[]{1, 1, 1, 1});
+
+        run();
 
         test(obj);
 

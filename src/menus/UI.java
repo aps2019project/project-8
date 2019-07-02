@@ -1,5 +1,7 @@
 package menus;
 
+import client.Connection;
+import client.Connector;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import gen.JsonMaker;
@@ -170,32 +172,52 @@ public class UI {
     }
 
     private static void actCreateAccount(String password) {
-        new Account(name, password);
-        view.alertAccountCreation();
+
+        Connector connector = new Connector();
+        Connection connection = connector.connect(name, password, false);
+        view.logMessage("**" + connector.getLog());
         name = null;
         switchTo(Menus.LOGIN_MENU);
+
+
+
+//        new Account(name, password);
+//        view.alertAccountCreation();
+//        name = null;
+//        switchTo(Menus.LOGIN_MENU);
     }
 
     private static void actLoginAccount(String password) {
-        Account account = Account.getAccount(name);
-        if (account.isPasswordValid(password)) {
-            view.alertLogin();
-            Menu.setAccount(account);
+
+        Connector connector = new Connector();
+        Connection connection = connector.connect(name, password, true);
+        if (connection == null) {
+            switchTo(Menus.LOGIN_MENU);
+        } else {
             switchTo(Menus.MAIN_MENU);
-            return;
+            Menu.setConnection(connection);
         }
-        view.showIncorrectPasswordError();
-        switchTo(Menus.LOGIN_MENU);
+        view.logMessage(connector.getLog());
+
+//        Account account = Account.getAccount(name);
+//        if (account.isPasswordValid(password)) {
+//            view.alertLogin();
+//            Menu.setAccount(account);
+//            switchTo(Menus.MAIN_MENU);
+//            return;
+//        }
+//        view.showIncorrectPasswordError();
+//        switchTo(Menus.LOGIN_MENU);
     }
 
     private static boolean actLoginMenu(String command) {
         if (command.matches(EXIT))
             return true;
-        else if (command.matches(CREATE_ACCOUNT))
+        else if (command.matches(CREATE_ACCOUNT)) //****
             createAccount(command.split(" ")[2]);
-        else if (command.matches(LOGIN))
+        else if (command.matches(LOGIN)) //****
             login(command.split(" ")[1]);
-        else if (command.matches(SHOW_LEADERBOARD))
+        else if (command.matches(SHOW_LEADERBOARD)) // ****
             showLeaderboard();
         else if (command.matches(HELP))
             help();
@@ -456,23 +478,30 @@ public class UI {
     }
 
     private static void createAccount(String name) {
-        if (Account.hasAccount(name)) {
-            view.showAccountCreationError();
-            return;
-        }
         UI.name = name;
-        view.promptPassword();
         switchTo(Menus.CREATE_ACCOUNT);
+
+//        if (Account.hasAccount(name)) {
+//            view.showAccountCreationError();
+//            return;
+//        }
+//        UI.name = name;
+//        view.promptPassword();
+//        switchTo(Menus.CREATE_ACCOUNT);
     }
 
     private static void login(String name) {
-        if (Account.getAccount(name) == null) {
-            view.showNoSuchAccountError();
-            return;
-        }
-        UI.name = name;
-        view.promptPassword();
         switchTo(Menus.LOGIN_ACCOUNT);
+        UI.name = name;
+
+
+//        if (Account.getAccount(name) == null) {
+//            view.showNoSuchAccountError();
+//            return;
+//        }
+//        UI.name = name;
+//        view.promptPassword();
+//        switchTo(Menus.LOGIN_ACCOUNT);
     }
 
     private static void showLeaderboard() {
@@ -523,6 +552,8 @@ public class UI {
                 break;
         }
     }
+
+    // ****
 
     private static void load() {
         try {
