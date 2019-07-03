@@ -64,6 +64,13 @@ public class Connection extends Thread {
         try {
             String response = in.readLine();
             jsonObject = getAsJson(response);
+
+            System.err.println();
+            System.err.println();
+            System.err.println("sent : " + jsonObject);
+            System.err.println();
+            System.err.println();
+
             System.err.println(jsonObject.get("log").getAsString());
         } catch (IOException e) {
             e.printStackTrace();
@@ -71,11 +78,11 @@ public class Connection extends Thread {
         }
     }
 
-    public String tradeCollectionItem(String collectionItemName, boolean sell) {
+    public String tradeCollectionItem(String s, boolean sell) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("requestType", sell ? "sell" : "buy" + "CollectionItem");
         jsonObject.addProperty("authenticationToken", authenticationToken);
-        jsonObject.addProperty("collectionItemName", collectionItemName);
+        jsonObject.addProperty(sell ? "collectionItemID" : "collectionItemName", s);
         out.println(jsonObject.toString());
         try {
             String response = in.readLine();
@@ -84,7 +91,7 @@ public class Connection extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("error occurred in fetching response from server");
-            return "error occured in fetching response from server";
+            return "error occurred in fetching response from server";
         }
     }
 

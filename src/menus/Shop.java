@@ -54,15 +54,10 @@ public class Shop extends Menu {
         view.showInfoOfCollectionItem(collectionItem);
     }
 
-    public static void sellCollectionItem(String collectionItemID) {
-        if (CollectionMenu.hasCollectionItem(collectionItemID)) {
-            CollectionItem collectionItem = account.getData().getCollection().getCollectionItemByID(collectionItemID);
-            account.receiveMoney(collectionItem.getPrice());
-            account.getData().getCollection().removeCollectionItem(collectionItemID);
-            view.alertSell();
-            return;
-        }
-        view.showNoSuchCollectionItemError();
+    public static String sellCollectionItem(String collectionItemID) {
+        String log = connection.tradeCollectionItem(collectionItemID, true);
+        account = connection.getAccount();
+        return log;
     }
 
     public static String getString() {
@@ -86,12 +81,12 @@ public class Shop extends Menu {
             view.showNoSuchCollectionItemError();
             return "no such collection item";
         }
-        String log = connection.tradeCollectionItem(collectionItemName);
+        String log = connection.tradeCollectionItem(collectionItemName, false);
         if (log.contains("successfully")) {
 //           getAccount().getData().getCollection().addCollectionItem(getCopy(getCollectionItemByName(collectionItemName)));
             Menu.setAccount(connection.getAccount());
         }
-
+        return log;
 //
 //        if (getAccount().getMoney() < getPrice(collectionItemName)) {
 //            view.showNotEnoughMoneyError();

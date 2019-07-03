@@ -162,8 +162,11 @@ public class ShopMenu extends Menu {
             }
             sell.setText("Sell");
             sell.setOnMouseClicked(e -> popUpGetList(UI.getAccount().getData().getCollectionItems().keySet().stream().mapToInt(Integer::parseInt).sorted().mapToObj(String::valueOf).collect(Collectors.toList()), "Sell", "Card ID").ifPresent(s -> {
-                UI.decide("sell " + s);
-                showPopUp("Successfully sold the collection item.");
+
+                showPopUp(UI.decide("sell " + s));
+
+//                UI.decide("sell " + s);
+//                showPopUp("Successfully sold the collection item.");
             }));
             addComponent(sell);
 
