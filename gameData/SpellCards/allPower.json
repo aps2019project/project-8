@@ -33,5 +33,6 @@
   "price": 2000,
   "collectionItemID": "1015",
   "name": "allPower",
-  "description": "Gives all friendly units a permanent 2AP power buff"
+  "description": "Gives all friendly units a permanent 2AP power buff",
+  "count": 0
 }

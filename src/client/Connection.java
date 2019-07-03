@@ -1,15 +1,18 @@
 package client;
 
+import com.gilecode.yagson.YaGson;
+import com.gilecode.yagson.YaGsonBuilder;
+import com.gilecode.yagson.com.google.gson.Gson;
+import com.gilecode.yagson.com.google.gson.JsonElement;
 import com.gilecode.yagson.com.google.gson.JsonObject;
 import com.gilecode.yagson.com.google.gson.JsonParser;
-import model.Buff;
+import model.AccountData;
+import model.AccountUser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 
 public class Connection extends Thread {
 
@@ -23,8 +26,66 @@ public class Connection extends Thread {
         this.out = out;
         this.in = in;
         this.authenticationToken = authenticationToken;
-
         System.err.println("made connection! :)) auth token : " + authenticationToken);
+    }
+
+    private JsonObject getAsJson(String message) {
+        JsonParser parser = new JsonParser();
+        return (JsonObject) parser.parse(message);
+    }
+
+    public AccountUser getAccount() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("requestType", "getAccount");
+        jsonObject.addProperty("authenticationToken", authenticationToken);
+        out.println(jsonObject.toString());
+        try {
+            String response = in.readLine();
+
+            jsonObject = getAsJson(response);
+            System.err.println(jsonObject.get("log").getAsString());
+//            System.err.println("got : " + response);
+            Gson gson = new Gson();
+            return gson.fromJson(jsonObject, AccountUser.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("error occurred in fetching response from server");
+            return null;
+        }
+    }
+
+    public void setAccountData(AccountData data) {
+        JsonObject jsonObject;
+        YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
+        jsonObject = (JsonObject) yaGson.toJsonTree(data, AccountData.class);
+        jsonObject.addProperty("requestType", "setAccountData");
+        jsonObject.addProperty("authenticationToken", authenticationToken);
+        out.println(jsonObject.toString());
+        try {
+            String response = in.readLine();
+            jsonObject = getAsJson(response);
+            System.err.println(jsonObject.get("log").getAsString());
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("error occurred in fetching response from server");
+        }
+    }
+
+    public String tradeCollectionItem(String collectionItemName, boolean sell) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("requestType", sell ? "sell" : "buy" + "CollectionItem");
+        jsonObject.addProperty("authenticationToken", authenticationToken);
+        jsonObject.addProperty("collectionItemName", collectionItemName);
+        out.println(jsonObject.toString());
+        try {
+            String response = in.readLine();
+            jsonObject = getAsJson(response);
+            return jsonObject.get("log").getAsString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("error occurred in fetching response from server");
+            return "error occured in fetching response from server";
+        }
     }
 
     public void closeConnection() {

@@ -81,23 +81,30 @@ public class Shop extends Menu {
         return getCollectionItemByName(collectionItemName) instanceof Item;
     }
 
-    public static void buy(String collectionItemName) {
+    public static String buy(String collectionItemName) {
         if (!hasCollectionItem(collectionItemName)) {
             view.showNoSuchCollectionItemError();
-            return;
+            return "no such collection item";
         }
-        if (getAccount().getMoney() < getPrice(collectionItemName)) {
-            view.showNotEnoughMoneyError();
-            return;
+        String log = connection.tradeCollectionItem(collectionItemName);
+        if (log.contains("successfully")) {
+//           getAccount().getData().getCollection().addCollectionItem(getCopy(getCollectionItemByName(collectionItemName)));
+            Menu.setAccount(connection.getAccount());
         }
-        if (getAccount().getData().hasThreeItems() && isItem(collectionItemName)) {
-            view.showFourthItemError();
-            return;
-        }
-        CollectionItem collectionItem = getCollectionItemByName(collectionItemName);
-        account.payMoney(collectionItem.getPrice());
-        getAccount().getData().getCollection().addCollectionItem(getCopy(collectionItem));
-        view.alertBuy();
+
+//
+//        if (getAccount().getMoney() < getPrice(collectionItemName)) {
+//            view.showNotEnoughMoneyError();
+//            return "not enough money";
+//        }
+//        if (getAccount().getData().hasThreeItems() && isItem(collectionItemName)) {
+//            view.showFourthItemError();
+//            return "you already have three items! you can't have more!";
+//        }
+//        CollectionItem collectionItem = getCollectionItemByName(collectionItemName);
+//        account.payMoney(collectionItem.getPrice());
+//        getAccount().getData().getCollection().addCollectionItem(getCopy(collectionItem));
+//        view.alertBuy();
     }
 
     public static CollectionItem getCopy(CollectionItem collectionItem) {
@@ -146,6 +153,10 @@ public class Shop extends Menu {
                         StandardCharsets.UTF_8), Usable.class));
             }
         } catch (Exception ignored) {}
+
+        for (CollectionItem collectionItem : collectionItems) {
+            System.err.println("shop loaded : " + collectionItem.getName() + " " + collectionItem.getID());
+        }
     }
 
     public static void showCollection() {

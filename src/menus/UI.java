@@ -117,7 +117,7 @@ public class UI {
         command = command.trim();
         while (true) {
             try {
-                if (decide(command)) {
+                if (decide(command).equals("true")) {
                     scanner.close();
                     return;
                 }
@@ -129,7 +129,7 @@ public class UI {
         }
     }
 
-    public static boolean decide(String command) {
+    public static String decide(String command) {
         switch (menu) {
             case LOGIN_MENU:
                 return actLoginMenu(command);
@@ -145,8 +145,7 @@ public class UI {
                 actCollection(command);
                 break;
             case SHOP:
-                actShop(command);
-                break;
+                return actShop(command);
             case BATTLE:
                 actBattle(command);
                 break;
@@ -168,11 +167,10 @@ public class UI {
             case GRAVEYARD_MENU:
                 actGraveyard(command);
         }
-        return false;
+        return "false";
     }
 
     private static void actCreateAccount(String password) {
-
         Connector connector = new Connector();
         Connection connection = connector.connect(name, password, false);
         view.logMessage("**" + connector.getLog());
@@ -180,8 +178,7 @@ public class UI {
         switchTo(Menus.LOGIN_MENU);
 
 
-
-//        new Account(name, password);
+//        new AccountUser(name, password);
 //        view.alertAccountCreation();
 //        name = null;
 //        switchTo(Menus.LOGIN_MENU);
@@ -200,7 +197,7 @@ public class UI {
         }
         view.logMessage(connector.getLog());
 
-//        Account account = Account.getAccount(name);
+//        AccountUser account = AccountUser.getAccount(name);
 //        if (account.isPasswordValid(password)) {
 //            view.alertLogin();
 //            Menu.setAccount(account);
@@ -211,9 +208,9 @@ public class UI {
 //        switchTo(Menus.LOGIN_MENU);
     }
 
-    private static boolean actLoginMenu(String command) {
+    private static String actLoginMenu(String command) {
         if (command.matches(EXIT))
-            return true;
+            return "true";
         else if (command.matches(CREATE_ACCOUNT)) //****
             createAccount(command.split(" ")[2]);
         else if (command.matches(LOGIN)) //****
@@ -224,12 +221,19 @@ public class UI {
             help();
         else
             view.showInvalidCommandError();
-        return false;
+        return "false";
     }
 
-    private static boolean actMainMenu(String command) {
+    private static void logout() {
+        Menu.getConnection().closeConnection();
+        Menu.setAccount(null);
+        Menu.setConnection(null);
+        switchTo(Menus.LOGIN_MENU);
+    }
+
+    private static String actMainMenu(String command) {
         if (command.matches(EXIT))
-            return true;
+            return "true";
         else if (command.matches(COLLECTION))
             switchTo(Menus.COLLECTION);
         else if (command.matches(SHOP))
@@ -240,11 +244,12 @@ public class UI {
             MainMenu.help();
         else if (command.matches(SAVE))
             save();
-        else if (command.matches(LOGOUT))
-            switchTo(Menus.LOGIN_MENU);
+        else if (command.matches(LOGOUT)) {
+            logout();
+        }
         else
             view.showInvalidCommandError();
-        return false;
+        return "false";
     }
 
     private static void actCollection(String command) {
@@ -287,7 +292,7 @@ public class UI {
             view.showInvalidCommandError();
     }
 
-    private static void actShop(String command) {
+    private static String actShop(String command) {
         String[] commandSplit = command.split(" ");
         if (command.matches(EXIT))
             switchTo(Menus.MAIN_MENU);
@@ -301,7 +306,7 @@ public class UI {
             Shop.search(commandSplit[1]);
         else if (command.matches(BUY)) {
             String collectionItemName = commandSplit[1];
-            Shop.buy(collectionItemName);
+            return Shop.buy(collectionItemName);
         } else if (command.matches(SELL)) {
             String collectionItemID = commandSplit[1];
             Shop.sellCollectionItem(collectionItemID);
@@ -309,6 +314,7 @@ public class UI {
             Shop.show();
         else
             view.showInvalidCommandError();
+        return "";
     }
 
     private static void actBattle(String command) {
@@ -482,7 +488,7 @@ public class UI {
         UI.name = name;
         switchTo(Menus.CREATE_ACCOUNT);
 
-//        if (Account.hasAccount(name)) {
+//        if (AccountUser.hasAccount(name)) {
 //            view.showAccountCreationError();
 //            return;
 //        }
@@ -571,14 +577,16 @@ public class UI {
     public static void save() {
         if (Menu.getAccount() == null)
             return;
-        try {
-            FileWriter out = new FileWriter("./save/" + Menu.getAccount().getName() + ".json", false);
-            YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
-            out.write(yaGson.toJson(Menu.getAccount(), AccountUser.class));
-            out.flush();
-            view.alertSave();
-        } catch (IOException ignored) {
-        }
+        Menu.getConnection().setAccountData(Menu.getAccount().getData());
+
+//        try {
+//            FileWriter out = new FileWriter("./save/" + Menu.getAccount().getName() + ".json", false);
+//            YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
+//            out.write(yaGson.toJson(Menu.getAccount(), AccountUser.class));
+//            out.flush();
+//            view.alertSave();
+//        } catch (IOException ignored) {
+//        }
     }
 
     public static AccountUser getAccount() {

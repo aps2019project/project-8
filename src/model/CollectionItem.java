@@ -7,6 +7,7 @@ public class CollectionItem {
     protected String collectionItemID;
     protected String name;
     protected String description;
+    int count = 0;
 
     // Main constructor
     public CollectionItem(int price, String collectionItemID, String name, String description) {
@@ -78,5 +79,13 @@ public class CollectionItem {
         if (!(obj instanceof CollectionItem))
             return false;
         return collectionItemID.equals(((CollectionItem) obj).collectionItemID);
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public int getCount() {
+        return count;
     }
 }

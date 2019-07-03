@@ -46,5 +46,6 @@
   "price": 25000,
   "collectionItemID": "4018",
   "name": "soulEater",
-  "description": "casts a power buff with one unit of increase attack power to a random friendly unit when some other unit dies"
+  "description": "casts a power buff with one unit of increase attack power to a random friendly unit when some other unit dies",
+  "count": 0
 }

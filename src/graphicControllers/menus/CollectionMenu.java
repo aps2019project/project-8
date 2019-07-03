@@ -356,6 +356,14 @@ public class CollectionMenu extends Menu {
             }));
 
             showAllDecks.setOnMouseClicked(e -> {
+                AccountUser accountUser = UI.getAccount();
+                if (accountUser == null) {
+                    System.err.println("account null");
+                } else if (accountUser.getData() == null) {
+                    System.err.println("data null");
+                } else if (accountUser.getData().getDecks() == null) {
+                    System.err.println("decks null");
+                }
                 ArrayList<Deck> decks = UI.getAccount().getData().getDecks();
                 if (decks.isEmpty()) {
                     showPopUp("No deck.");

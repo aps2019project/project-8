@@ -53,5 +53,6 @@
   "price": 300,
   "collectionItemID": "2018",
   "name": "venomousSerpent",
-  "description": "Poisons enemy with hit for 3 turns"
+  "description": "Poisons enemy with hit for 3 turns",
+  "count": 0
 }

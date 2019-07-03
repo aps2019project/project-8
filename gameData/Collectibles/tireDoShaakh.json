@@ -38,5 +38,6 @@
   "price": 0,
   "collectionItemID": "4005",
   "name": "tireDoShaakh",
-  "description": "adds attack point of a selected ranged or hybrid unit by 2"
+  "description": "adds attack point of a selected ranged or hybrid unit by 2",
+  "count": 0
 }

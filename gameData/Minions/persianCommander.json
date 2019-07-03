@@ -39,5 +39,6 @@
   "price": 800,
   "collectionItemID": "2006",
   "name": "persianCommander",
-  "description": "Combo"
+  "description": "Combo",
+  "count": 0
 }

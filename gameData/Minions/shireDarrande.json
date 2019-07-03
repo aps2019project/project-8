@@ -39,5 +39,6 @@
   "price": 600,
   "collectionItemID": "2020",
   "name": "shireDarrande",
-  "description": "Ignores holy buff"
+  "description": "Ignores holy buff",
+  "count": 0
 }

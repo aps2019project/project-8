@@ -38,5 +38,6 @@
   "price": 0,
   "collectionItemID": "4009",
   "name": "majooneRooyinTani",
-  "description": "adds 10 holy buffs to a random unit for 2 turns"
+  "description": "adds 10 holy buffs to a random unit for 2 turns",
+  "count": 0
 }

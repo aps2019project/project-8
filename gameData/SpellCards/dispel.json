@@ -19,5 +19,6 @@
   "price": 2100,
   "collectionItemID": "1012",
   "name": "dispel",
-  "description": "Purges the selcted unit"
+  "description": "Purges the selcted unit",
+  "count": 0
 }

@@ -20,5 +20,6 @@
   "price": 300,
   "collectionItemID": "2001",
   "name": "persianArcher",
-  "description": "none"
+  "description": "none",
+  "count": 0
 }

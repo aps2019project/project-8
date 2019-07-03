@@ -53,5 +53,6 @@
   "price": 400,
   "collectionItemID": "2023",
   "name": "palang",
-  "description": "when attacking a minion, the minion loses 8 health points in next turn"
+  "description": "when attacking a minion, the minion loses 8 health points in next turn",
+  "count": 0
 }

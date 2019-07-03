@@ -33,5 +33,6 @@
   "price": 1250,
   "collectionItemID": "1007",
   "name": "lightningBolt",
-  "description": "Hits the enemy hero with 8 APs"
+  "description": "Hits the enemy hero with 8 APs",
+  "count": 0
 }

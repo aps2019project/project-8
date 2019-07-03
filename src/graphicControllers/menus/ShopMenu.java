@@ -134,16 +134,20 @@ public class ShopMenu extends Menu {
             buy.setText("Buy");
             buy.setOnMouseClicked(e -> {
                 popUpGetList(Shop.getCollectionItems().stream().map(CollectionItem::getName).distinct().sorted().collect(Collectors.toList()), "Buy", "Card name | item name").ifPresent(s -> {
-                    if (UI.getAccount().getMoney() < Shop.getPrice(s)) {
-                        showPopUp("Not enough money.");
-                        return;
-                    }
-                    if (UI.getAccount().getData().hasThreeItems() && Shop.isItem(s)) {
-                        showPopUp("Cannot have 4 items in collection.");
-                        return;
-                    }
-                    showPopUp("Successfully bought the collection item.");
-                    UI.decide("buy " + s);
+
+//                    if (UI.getAccount().getMoney() < Shop.getPrice(s)) {
+//                        showPopUp("Not enough money.");
+//                        return;
+//                    }
+//                    if (UI.getAccount().getData().hasThreeItems() && Shop.isItem(s)) {
+//                        showPopUp("Cannot have 4 items in collection.");
+//                        return;
+//                    }
+//
+//                    showPopUp("Successfully bought the collection item.");
+
+                    String log = UI.decide("buy " + s);
+                    showPopUp(log);
                 });
             });
             addComponent(buy);

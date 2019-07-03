@@ -55,5 +55,6 @@
   "price": 10000,
   "collectionItemID": "3007",
   "name": "aarash",
-  "description": "Hits all enemies in his row with 4 APs"
+  "description": "Hits all enemies in his row with 4 APs",
+  "count": 0
 }

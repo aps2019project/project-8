@@ -33,5 +33,6 @@
   "price": 1200,
   "collectionItemID": "1020",
   "name": "shock",
-  "description": "Stuns an enemy for 2 turns"
+  "description": "Stuns an enemy for 2 turns",
+  "count": 0
 }

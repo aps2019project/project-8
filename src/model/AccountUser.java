@@ -13,7 +13,7 @@ public class AccountUser implements Comparable {
     private int wins = 0;
     private int money = 0;
     private ArrayList<Match> matchHistory = new ArrayList<>();
-    AccountData data;
+    private AccountData data = new AccountData();
 
 
 
@@ -46,7 +46,6 @@ public class AccountUser implements Comparable {
                 return true;
         return false;
     }
-
 
 
 

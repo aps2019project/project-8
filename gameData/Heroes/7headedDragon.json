@@ -55,5 +55,6 @@
   "price": 8000,
   "collectionItemID": "3003",
   "name": "7headedDragon",
-  "description": "Disarms an enemy"
+  "description": "Disarms an enemy",
+  "count": 0
 }

@@ -8,5 +8,6 @@
   "price": 300,
   "collectionItemID": "4001",
   "name": "taajeDanayi",
-  "description": "adds mana in first 3 turns"
+  "description": "adds mana in first 3 turns",
+  "count": 0
 }

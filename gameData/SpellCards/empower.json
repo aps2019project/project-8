@@ -33,5 +33,6 @@
   "price": 250,
   "collectionItemID": "1003",
   "name": "empower",
-  "description": "Adds 2 APs to a unit"
+  "description": "Adds 2 APs to a unit",
+  "count": 0
 }

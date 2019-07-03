@@ -55,5 +55,6 @@
   "price": 9000,
   "collectionItemID": "3002",
   "name": "simorgh",
-  "description": "Stuns all enemies for 1 turn"
+  "description": "Stuns all enemies for 1 turn",
+  "count": 0
 }

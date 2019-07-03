@@ -16,6 +16,13 @@ public abstract class Menu {
 
     public static void setConnection(Connection connection) {
         Menu.connection = connection;
+        account = connection.getAccount();
+
+        System.err.println("setting account : " + account.getData().getDecks());
+    }
+
+    public static Connection getConnection() {
+        return connection;
     }
 
     public static AccountUser getAccount() {
