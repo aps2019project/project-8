@@ -206,6 +206,7 @@ public class Menu {
         public static final int SIGN_IN_MENU = 768;
         public static final int LEADERBOARD = 9999;
         public static final int STORY_MODE = 8080;
+        public static final int CHAT_MENU = 8585;
     }
 
     public void refresh() {}
