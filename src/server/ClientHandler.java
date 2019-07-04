@@ -81,6 +81,9 @@ public class ClientHandler extends Thread {
             case "getNewMessages" :
                 response = server.getNewMessages(jsonObject);
                 break;
+            case "getOnlineUsers" :
+                response = server.getOnlineUsers();
+                break;
         }
         sendMessage(response.toString());
     }

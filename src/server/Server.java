@@ -5,6 +5,7 @@ import com.gilecode.yagson.YaGsonBuilder;
 import com.gilecode.yagson.com.google.gson.JsonArray;
 import com.gilecode.yagson.com.google.gson.JsonElement;
 import com.gilecode.yagson.com.google.gson.JsonObject;
+import com.oracle.webservices.internal.api.message.BasePropertySet;
 import interfaces.AccountInterface;
 import interfaces.ShopInterface;
 import model.AccountData;
@@ -249,6 +250,16 @@ public class Server {
             message.addProperty("log", "no authentication token sent");
         }
         return message;
+    }
+
+    public JsonObject getOnlineUsers() {
+        JsonObject jsonObject = new JsonObject();
+        JsonArray jsonArray = new JsonArray();
+        for (HashMap.Entry<String, AccountUser> entry : players.entrySet()) {
+            jsonArray.add(entry.getValue().getName());
+        }
+        jsonObject.add("users", jsonArray);
+        return jsonObject;
     }
 
     public static void main(String[] args) {
