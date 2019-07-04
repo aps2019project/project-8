@@ -5,7 +5,6 @@ import com.gilecode.yagson.YaGsonBuilder;
 import com.gilecode.yagson.com.google.gson.*;
 import model.AccountData;
 import model.AccountUser;
-import netscape.javascript.JSObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
