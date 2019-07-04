@@ -139,6 +139,7 @@ public class GameMenu extends InGameMenu {
 
     //start a single player game with with an AI with a specific deck
     public static boolean startGame(String deckName, int mode, int numberOfFlags) {
+
         if (checkAccount()) return false;
         if (getAccount().getData().getDeck(deckName) == null) {
             view.showDeckDoesNotExistError();
@@ -148,7 +149,8 @@ public class GameMenu extends InGameMenu {
             view.showInvalidMainDeckError();
             return false;
         }
-        if (checkGameParameters(mode, numberOfFlags)) return false;
+        if (checkGameParameters(mode, numberOfFlags))
+            return false;
         AI ai = new AI(getAccount().getData().getDeck(deckName));
         game = new Game(getAccount(), ai, GameType.get(mode), numberOfFlags);
         ai.setGame(game);
@@ -156,6 +158,7 @@ public class GameMenu extends InGameMenu {
         hasAI = true;
         GraveyardMenu.setGame(game);
         return true;
+
     }
 
     //start a multiplayer game with a selected account

@@ -138,6 +138,28 @@ public class Connection {
         }
     }
 
+    public String[] getOnlineUsers() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("requestType", "getOnlineUsers");
+        out.println(jsonObject.toString());
+        try {
+            String response = in.readLine();
+            jsonObject = getAsJson(response);
+            System.err.println(jsonObject.get("log").getAsString());
+            JsonArray jsonArray =  (JsonArray) jsonObject.get("users");
+            String[] users = new String[jsonArray.size()];
+            for (int i = 0; i < jsonArray.size(); i++) {
+                users[i] = jsonArray.get(i).getAsString();
+            }
+            return users;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("error occurred in fetching response from server");
+            return new String[]{};
+        }
+    }
+
     public void closeConnection() {
         try {
             in.close();
