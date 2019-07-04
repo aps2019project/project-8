@@ -273,6 +273,18 @@ public class MainMenu extends Menu {
             });
             addComponent(createCard);
 
+            GUIButton gotoChat = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
+                    / 2 - 50.0 / 2 + 4 * 10 + 4 * 50, 170, 50);
+            try {
+                gotoChat.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+                gotoChat.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+                gotoChat.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+            } catch (FileNotFoundException ignored) {
+            }
+            gotoChat.setText("Chat");
+            gotoChat.setOnMouseClicked(e -> MenuManager.getInstance().setCurrentMenu(Id.CHAT_MENU));
+            addComponent(gotoChat);
+
             GUIButton exit = new GUIButton(windowWidth - 100, windowHeight - 50, 100, 50);
             try {
                 exit.setImage(new Image(new FileInputStream("./images/buttons/button_cancel@2x.png")));

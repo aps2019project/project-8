@@ -89,6 +89,8 @@ project-8.iml
 /src/UITest.java
 src/UITest.java
 export/
+output
+database
 gameData/ManualFeatureInputLogs/namae.txt
 gameData/SpellCards/namae.json
 src/Test.java
