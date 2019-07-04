@@ -103,6 +103,42 @@ public class Connection {
         return "";
     }
 
+    public void sendChatMessage(String message) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("requestType", "sendChatMessage");
+        jsonObject.addProperty("message", message);
+        out.println(jsonObject.toString());
+        try {
+            String response = in.readLine();
+            jsonObject = getAsJson(response);
+            System.err.println(jsonObject.get("log").getAsString());
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("error occurred in fetching response from server");
+        }
+    }
+
+    public String[] getNewMessages() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("requestType", "getNewMessages");
+        out.println(jsonObject.toString());
+        try {
+            String response = in.readLine();
+            jsonObject = getAsJson(response);
+            System.err.println(jsonObject.get("log").getAsString());
+            JsonArray jsonArray = (JsonArray) jsonObject.get("messages");
+            String[] messages = new String[jsonArray.size()];
+            for (int i = 0; i < jsonArray.size(); i++) {
+                messages[i] = jsonArray.get(i).getAsString();
+            }
+            return messages;
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("error occurred in fetching response from server");
+            return new String[]{};
+        }
+    }
+
     public void closeConnection() {
         try {
             in.close();
