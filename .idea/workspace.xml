@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2549cda8-0ddf-4406-8710-6410b0291f4a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/client/AnonymousConnection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/Client.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/Connection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/Connection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/Connector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/Connector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/GreetClient.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/client/LoginRequest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/graphicControllers/menus/Leaderboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/graphicControllers/menus/Leaderboard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/menus/UI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/menus/UI.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -98,8 +90,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/menus/UI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="307">
-              <caret line="526" column="9" selection-start-line="526" selection-start-column="9" selection-end-line="526" selection-end-column="9" />
+            <state relative-caret-position="-1059">
+              <caret line="517" column="40" lean-forward="true" selection-start-line="517" selection-start-column="40" selection-end-line="517" selection-end-column="40" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#15778#15779#0" expanded="true" />
@@ -297,7 +289,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1562234759452" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1562234825843" />
     <property name="last_opened_file_path" value="$USER_HOME$/IdeaProjects/project-8" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -448,7 +440,7 @@
       <workItem from="1562044129317" duration="24965000" />
       <workItem from="1562151525158" duration="95000" />
       <workItem from="1562151632002" duration="17202000" />
-      <workItem from="1562219959115" duration="10032000" />
+      <workItem from="1562219959115" duration="10707000" />
     </task>
     <task id="LOCAL-00001" summary="refactor">
       <created>1560233012973</created>
@@ -702,17 +694,24 @@
       <option name="project" value="LOCAL" />
       <updated>1562224988793</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="leader board works!">
+      <created>1562234782504</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1562234782504</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="270540000" />
+    <option name="totallyTimeSpent" value="271215000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2751678" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2751678" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -722,7 +721,7 @@
       <window_info id="Learn" order="7" weight="0.3295302" />
       <window_info anchor="bottom" id="Messages" order="0" weight="0.32577905" />
       <window_info anchor="bottom" id="Message" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4997233" visible="true" weight="0.34844193" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4997233" weight="0.34844193" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39943343" />
       <window_info anchor="bottom" id="Find" order="4" weight="0.32719547" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
@@ -806,7 +805,8 @@
     <MESSAGE value="almost shop is complete :))" />
     <MESSAGE value="shop is complete!" />
     <MESSAGE value="shop is complete more complete + some bugs fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="shop is complete more complete + some bugs fixed" />
+    <MESSAGE value="leader board works!" />
+    <option name="LAST_COMMIT_MESSAGE" value="leader board works!" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/graphicControllers/menus/CustomGameMenu.java">
@@ -1242,8 +1242,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/menus/UI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="307">
-          <caret line="526" column="9" selection-start-line="526" selection-start-column="9" selection-end-line="526" selection-end-column="9" />
+        <state relative-caret-position="-1059">
+          <caret line="517" column="40" lean-forward="true" selection-start-line="517" selection-start-column="40" selection-end-line="517" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#15778#15779#0" expanded="true" />
