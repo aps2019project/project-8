@@ -3,19 +3,13 @@ package graphicControllers;
 import graphicControllers.menus.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import graphicControllers.menus.ShopMenu;
 import menus.UI;
-
-import java.io.File;
-import java.rmi.AlreadyBoundException;
-import java.rmi.Remote;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 
 public class GUI extends Application {
 
-    private Stage currentStage;
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     /**
      * here you must initiate the menuManager
@@ -40,6 +34,7 @@ public class GUI extends Application {
             menuManager.addMenu(new MultiplayerMenu());
             menuManager.addMenu(new GameMenu());
             menuManager.addMenu(new Graveyard());
+            menuManager.addMenu(new ChatMenu());
         } catch (MenuAlreadyCreatedException e) {
             e.printStackTrace();
         }
@@ -54,10 +49,5 @@ public class GUI extends Application {
         initiate(menuManager);
         menuManager.setStage(primaryStage);
         menuManager.startProcessOnStage();
-    }
-
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }
