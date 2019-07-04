@@ -1,0 +1,38 @@
+{
+  "spell": {
+    "targetType": "UNIT",
+    "targetArea": "ALL_OF_THE_MAP",
+    "targetUnit": "ENEMY_UNIT",
+    "targetUnitType": "ALL",
+    "numberOfRandomTargets": 100,
+    "gridX": 1,
+    "gridY": 1,
+    "buffs": [
+      {
+        "allegiance": "neither",
+        "duration": 4,
+        "holy": 0,
+        "poison": 1,
+        "effectHp": 0,
+        "effectAp": 0,
+        "stun": false,
+        "disarm": false,
+        "dispellable": true,
+        "delay": 0
+      }
+    ],
+    "canDispel": false,
+    "disarmable": true,
+    "poisonImmune": false,
+    "spellImmune": false,
+    "isBully": false,
+    "multiplied": false,
+    "ignoreHoly": false
+  },
+  "manaCost": 8,
+  "price": 1500,
+  "collectionItemID": "1011",
+  "name": "allPoison",
+  "description": "Poisons all units for 4 turns",
+  "count": 5
+}

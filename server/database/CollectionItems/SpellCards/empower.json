@@ -1,0 +1,38 @@
+{
+  "spell": {
+    "targetType": "UNIT",
+    "targetArea": "SELECTED_CELL",
+    "targetUnit": "FRIENDLY_UNIT",
+    "targetUnitType": "ALL",
+    "numberOfRandomTargets": 100,
+    "gridX": 1,
+    "gridY": 1,
+    "buffs": [
+      {
+        "allegiance": "neither",
+        "duration": 1000000,
+        "holy": 0,
+        "poison": 0,
+        "effectHp": 0,
+        "effectAp": 2,
+        "stun": false,
+        "disarm": false,
+        "dispellable": false,
+        "delay": 0
+      }
+    ],
+    "canDispel": false,
+    "disarmable": true,
+    "poisonImmune": false,
+    "spellImmune": false,
+    "isBully": false,
+    "multiplied": false,
+    "ignoreHoly": false
+  },
+  "manaCost": 1,
+  "price": 250,
+  "collectionItemID": "1003",
+  "name": "empower",
+  "description": "Adds 2 APs to a unit",
+  "count": 5
+}

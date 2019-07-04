@@ -1,0 +1,42 @@
+{
+  "unitType": "MELEE",
+  "hitPoint": 10,
+  "attackPoint": 14,
+  "specialPowerTypes": [
+    "ON_DEFEND"
+  ],
+  "specialPowers": [
+    {
+      "targetType": "CELL",
+      "targetArea": "SELECTED_CELL",
+      "numberOfRandomTargets": 100,
+      "gridX": 1,
+      "gridY": 1,
+      "canDispel": false,
+      "disarmable": false,
+      "poisonImmune": false,
+      "spellImmune": false,
+      "isBully": false,
+      "multiplied": false,
+      "ignoreHoly": false
+    }
+  ],
+  "canFly": false,
+  "attackRange": 0,
+  "buffs": [],
+  "flags": 0,
+  "canMove": false,
+  "canAttack": false,
+  "isDead": false,
+  "x": 0,
+  "y": 0,
+  "attackTimes": 0,
+  "defenceTimes": 0,
+  "hasAttacked": [],
+  "manaCost": 6,
+  "price": 500,
+  "collectionItemID": "2028",
+  "name": "gorazeVahshi",
+  "description": "can't get disarmed",
+  "count": 6
+}

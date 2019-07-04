@@ -1,0 +1,42 @@
+{
+  "unitType": "RANGED",
+  "hitPoint": 5,
+  "attackPoint": 7,
+  "specialPowerTypes": [
+    "ON_DEFEND"
+  ],
+  "specialPowers": [
+    {
+      "targetType": "CELL",
+      "targetArea": "SELECTED_CELL",
+      "numberOfRandomTargets": 100,
+      "gridX": 1,
+      "gridY": 1,
+      "canDispel": false,
+      "disarmable": true,
+      "poisonImmune": false,
+      "spellImmune": true,
+      "isBully": false,
+      "multiplied": false,
+      "ignoreHoly": false
+    }
+  ],
+  "canFly": false,
+  "attackRange": 5,
+  "buffs": [],
+  "flags": 0,
+  "canMove": false,
+  "canAttack": false,
+  "isDead": false,
+  "x": 0,
+  "y": 0,
+  "attackTimes": 0,
+  "defenceTimes": 0,
+  "hasAttacked": [],
+  "manaCost": 4,
+  "price": 450,
+  "collectionItemID": "2030",
+  "name": "giv",
+  "description": "immune to spell!",
+  "count": 6
+}

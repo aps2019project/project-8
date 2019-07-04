@@ -1,0 +1,58 @@
+{
+  "unitType": "MELEE",
+  "hitPoint": 6,
+  "attackPoint": 4,
+  "specialPowerTypes": [
+    "ON_ATTACK"
+  ],
+  "specialPowers": [
+    {
+      "targetType": "UNIT",
+      "targetArea": "SELECTED_CELL",
+      "targetUnit": "ENEMY_UNIT",
+      "targetUnitType": "ALL",
+      "numberOfRandomTargets": 100,
+      "gridX": 1,
+      "gridY": 1,
+      "buffs": [
+        {
+          "allegiance": "neither",
+          "duration": 1,
+          "holy": 0,
+          "poison": 0,
+          "effectHp": 0,
+          "effectAp": 0,
+          "stun": true,
+          "disarm": false,
+          "dispellable": true,
+          "delay": 0
+        }
+      ],
+      "canDispel": false,
+      "disarmable": true,
+      "poisonImmune": false,
+      "spellImmune": false,
+      "isBully": false,
+      "multiplied": false,
+      "ignoreHoly": false
+    }
+  ],
+  "canFly": false,
+  "attackRange": 0,
+  "buffs": [],
+  "flags": 0,
+  "canMove": false,
+  "canAttack": false,
+  "isDead": false,
+  "x": 0,
+  "y": 0,
+  "attackTimes": 0,
+  "defenceTimes": 0,
+  "hasAttacked": [],
+  "manaCost": 2,
+  "price": 400,
+  "collectionItemID": "2002",
+  "name": "persianSwordsman",
+  "description": "Stuns when attacking",
+  "count": 6
+}

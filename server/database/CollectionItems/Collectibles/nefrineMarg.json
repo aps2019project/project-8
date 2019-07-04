@@ -1,0 +1,51 @@
+{
+  "addMana": 0,
+  "addManaDuration": 0,
+  "itemType": "ADD_A_SPECIAL_POWER",
+  "specialPowerTypes": [
+    "ON_DEATH"
+  ],
+  "specialPowers": [
+    {
+      "targetType": "UNIT",
+      "targetArea": "ADJACENT_8",
+      "targetUnit": "ENEMY_UNIT",
+      "targetUnitType": "ALL",
+      "numberOfRandomTargets": 1,
+      "gridX": 1,
+      "gridY": 1,
+      "buffs": [
+        {
+          "allegiance": "neither",
+          "duration": 1000000,
+          "holy": 0,
+          "poison": 0,
+          "effectHp": -8,
+          "effectAp": 0,
+          "stun": false,
+          "disarm": false,
+          "dispellable": false,
+          "delay": 0
+        }
+      ],
+      "canDispel": false,
+      "disarmable": true,
+      "poisonImmune": false,
+      "spellImmune": false,
+      "isBully": false,
+      "multiplied": false,
+      "ignoreHoly": false
+    }
+  ],
+  "specialPowerTargets": [
+    {
+      "targetUnit": "FRIENDLY_MINION",
+      "targetUnitType": "ALL"
+    }
+  ],
+  "price": 0,
+  "collectionItemID": "4010",
+  "name": "nefrineMarg",
+  "description": "give a random minion the ability to hit a random closest unit by 8 points",
+  "count": 6
+}

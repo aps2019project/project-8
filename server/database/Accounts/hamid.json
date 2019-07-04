@@ -1,0 +1,14 @@
+{
+  "name": "hamid",
+  "password": "hamid",
+  "wins": 0,
+  "money": 0,
+  "matchHistory": [],
+  "data": {
+    "collection": {
+      "newID": 0,
+      "collectionItems": {},
+      "decks": {}
+    }
+  }
+}

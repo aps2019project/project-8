@@ -1,0 +1,38 @@
+{
+  "spell": {
+    "targetType": "UNIT",
+    "targetArea": "SELECTED_CELL",
+    "targetUnit": "ENEMY_MINION",
+    "targetUnitType": "ALL",
+    "numberOfRandomTargets": 100,
+    "gridX": 1,
+    "gridY": 1,
+    "buffs": [
+      {
+        "allegiance": "neither",
+        "duration": 1,
+        "holy": 0,
+        "poison": 0,
+        "effectHp": 0,
+        "effectAp": -4,
+        "stun": false,
+        "disarm": false,
+        "dispellable": true,
+        "delay": 0
+      }
+    ],
+    "canDispel": false,
+    "disarmable": true,
+    "poisonImmune": false,
+    "spellImmune": false,
+    "isBully": false,
+    "multiplied": false,
+    "ignoreHoly": false
+  },
+  "manaCost": 1,
+  "price": 1000,
+  "collectionItemID": "1017",
+  "name": "weakening",
+  "description": "Casts a 4AP weakness on an enemy minion",
+  "count": 6
+}

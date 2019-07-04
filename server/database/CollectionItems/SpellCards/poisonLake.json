@@ -1,0 +1,36 @@
+{
+  "spell": {
+    "targetType": "CELL",
+    "targetArea": "SELECTED_X_Y_GRID",
+    "numberOfRandomTargets": 100,
+    "gridX": 3,
+    "gridY": 3,
+    "buffs": [
+      {
+        "allegiance": "neither",
+        "duration": 1,
+        "holy": 0,
+        "poison": 1,
+        "effectHp": 0,
+        "effectAp": 0,
+        "stun": false,
+        "disarm": false,
+        "dispellable": false,
+        "delay": 0
+      }
+    ],
+    "canDispel": false,
+    "disarmable": true,
+    "poisonImmune": false,
+    "spellImmune": false,
+    "isBully": false,
+    "multiplied": false,
+    "ignoreHoly": false
+  },
+  "manaCost": 5,
+  "price": 900,
+  "collectionItemID": "1008",
+  "name": "poisonLake",
+  "description": "Imbues the selected cells with poison for 1 turn",
+  "count": 6
+}
