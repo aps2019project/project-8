@@ -18,25 +18,23 @@ public class Connector {
     private int port;
     private String log;
 
+    Socket socket;
+    BufferedReader in;
+    PrintWriter out;
+
     public Connector() {
         port = DEFAULT_PORT; // port should be read from config file
     }
 
-
-    // login is true for logging attempt. it's false for registering
-    public Connection connect(String userName, String password, boolean login) { // connecting to server
-        Socket socket;
-        BufferedReader in;
-        PrintWriter out;
-        String authenticationToken = null;
-
+    private boolean connectToSever() {
         try {
             socket = new Socket(SERVER_IP, DEFAULT_PORT);
         } catch (IOException e) {
             e.printStackTrace();
+            log = "unable to connect to game server";
             System.err.println("unable to connect to game server");
             System.err.println("try connecting later");
-            return null;
+            return false;
         }
 
         try {
@@ -45,8 +43,20 @@ public class Connector {
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("unable to set data streams of connection");
-            return null;
+            return false;
         }
+        return true;
+    }
+
+
+
+    // login is true for logging attempt. it's false for registering
+    public Connection connect(String userName, String password, boolean login) { // connecting to server
+        String authenticationToken = null;
+
+        boolean connected = connectToSever();
+        if (!connected)
+            return null;
 
         JsonObject jsonObject = new JsonObject();
 
@@ -83,6 +93,14 @@ public class Connector {
             return null;
         }
         return new Connection(socket, out, in, authenticationToken);
+    }
+
+    public AnonymousConnection anonymousConnect() {
+        boolean connected = connectToSever();
+        if (!connected)
+            return null;
+        log = "successfully connected to server";
+        return new AnonymousConnection(socket, out, in);
     }
 
     public String getLog() {

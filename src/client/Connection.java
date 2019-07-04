@@ -2,10 +2,7 @@ package client;
 
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
-import com.gilecode.yagson.com.google.gson.Gson;
-import com.gilecode.yagson.com.google.gson.JsonElement;
-import com.gilecode.yagson.com.google.gson.JsonObject;
-import com.gilecode.yagson.com.google.gson.JsonParser;
+import com.gilecode.yagson.com.google.gson.*;
 import model.AccountData;
 import model.AccountUser;
 import netscape.javascript.JSObject;
@@ -15,7 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class Connection extends Thread {
+public class Connection {
 
     private Socket socket;
     private PrintWriter out;

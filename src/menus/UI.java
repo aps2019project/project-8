@@ -1,5 +1,6 @@
         package menus;
 
+import client.AnonymousConnection;
 import client.Connection;
 import client.Connector;
 import com.gilecode.yagson.YaGson;
@@ -216,7 +217,7 @@ public class UI {
         else if (command.matches(LOGIN)) //****
             login(command.split(" ")[1]);
         else if (command.matches(SHOW_LEADERBOARD)) // ****
-            showLeaderboard();
+            return showLeaderboard();
         else if (command.matches(HELP))
             help();
         else
@@ -511,8 +512,20 @@ public class UI {
 //        switchTo(Menus.LOGIN_ACCOUNT);
     }
 
-    private static void showLeaderboard() {
-        view.showLeaderboard(AccountUser.getAccounts());
+    private static String showLeaderboard() {
+
+        Connector connector = new Connector();
+        AnonymousConnection anonymousConnection = connector.anonymousConnect();
+        if (connector.getLog().contains("success")) {
+            StringBuilder stringBuilder = new StringBuilder();
+            String[] names = anonymousConnection.getLeaderBoard();
+            for (String name : names)
+                stringBuilder.append(name).append("**");
+            return stringBuilder.toString();
+        } else {
+            return connector.getLog();
+        }
+//        view.showLeaderboard(AccountUser.getAccounts());
     }
 
     private static void help() {

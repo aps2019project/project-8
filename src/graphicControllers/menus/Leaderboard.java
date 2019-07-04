@@ -10,6 +10,7 @@ import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import menus.UI;
 import model.AccountUser;
 import view.GUIChangeMenuButton;
 import view.NodeWrapper;
@@ -66,7 +67,10 @@ public class Leaderboard extends Menu {
     public void refresh() {
         new Thread(() -> Platform.runLater(() -> {
             vBox.getChildren().clear();
-            AccountUser.getAccounts().stream().sorted().forEach(o -> {
+
+            String s = UI.decide("show leaderBoard");
+            String[] names = s.split("\\*\\*");
+            for (String name : names) {
                 try {
                     Label label = new Label();
                     label.setMinWidth(labelWidth);
@@ -75,7 +79,7 @@ public class Leaderboard extends Menu {
                     label.setMaxHeight(LABEL_HEIGHT);
                     label.setAlignment(Pos.CENTER);
                     label.setTextFill(Color.GOLDENROD);
-                    label.setText(o.getName() + " - Wins: " + o.getWins());
+                    label.setText(name);
                     label.setFont(Font.loadFont(new FileInputStream("./fonts/averta-black-webfont.ttf"), 17));
                     Image image = new Image(new FileInputStream("./images/placeholders/gauntlet_control_bar_bg@2x.png"
                     ), labelWidth, LABEL_HEIGHT, true, true);
@@ -84,7 +88,27 @@ public class Leaderboard extends Menu {
                     vBox.getChildren().add(label);
                 } catch (FileNotFoundException ignored) {
                 }
-            });
+            }
+
+//            AccountUser.getAccounts().stream().sorted().forEach(o -> {
+//                try {
+//                    Label label = new Label();
+//                    label.setMinWidth(labelWidth);
+//                    label.setMinWidth(labelWidth);
+//                    label.setMinHeight(LABEL_HEIGHT);
+//                    label.setMaxHeight(LABEL_HEIGHT);
+//                    label.setAlignment(Pos.CENTER);
+//                    label.setTextFill(Color.GOLDENROD);
+//                    label.setText(o.getName() + " - Wins: " + o.getWins());
+//                    label.setFont(Font.loadFont(new FileInputStream("./fonts/averta-black-webfont.ttf"), 17));
+//                    Image image = new Image(new FileInputStream("./images/placeholders/gauntlet_control_bar_bg@2x.png"
+//                    ), labelWidth, LABEL_HEIGHT, true, true);
+//                    label.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.NO_REPEAT,
+//                            BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+//                    vBox.getChildren().add(label);
+//                } catch (FileNotFoundException ignored) {
+//                }
+//            });
         })).start();
     }
 }
