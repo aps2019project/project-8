@@ -148,10 +148,6 @@ public class Shop extends Menu {
                         StandardCharsets.UTF_8), Usable.class));
             }
         } catch (Exception ignored) {}
-
-        for (CollectionItem collectionItem : collectionItems) {
-            System.err.println("shop loaded : " + collectionItem.getName() + " " + collectionItem.getID());
-        }
     }
 
     public static void showCollection() {

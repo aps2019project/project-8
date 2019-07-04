@@ -1,5 +1,7 @@
 package model;
 
+import menus.Menu;
+
 public class CollectionItem {
     protected static final String DASH = " - ";
     private static final String EQUALS = "equals";
@@ -58,6 +60,10 @@ public class CollectionItem {
 
     public String getName() {
         return name;
+    }
+
+    public String getShopInfo() {
+        return name + " " + Menu.getConnection().getItemCount(name) + "x  for " + getPrice() + "$";
     }
 
     public void setName(String name) {

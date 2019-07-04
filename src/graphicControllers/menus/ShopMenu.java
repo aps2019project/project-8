@@ -133,7 +133,7 @@ public class ShopMenu extends Menu {
             }
             buy.setText("Buy");
             buy.setOnMouseClicked(e -> {
-                popUpGetList(Shop.getCollectionItems().stream().map(CollectionItem::getName).distinct().sorted().collect(Collectors.toList()), "Buy", "Card name | item name").ifPresent(s -> {
+                popUpGetList(Shop.getCollectionItems().stream().map(CollectionItem::getShopInfo).distinct().sorted().collect(Collectors.toList()), "Buy", "Card name | item name").ifPresent(s -> {
 
 //                    if (UI.getAccount().getMoney() < Shop.getPrice(s)) {
 //                        showPopUp("Not enough money.");
@@ -146,7 +146,8 @@ public class ShopMenu extends Menu {
 //
 //                    showPopUp("Successfully bought the collection item.");
 
-                    String log = UI.decide("buy " + s);
+                    String name = s.split(" ")[0];
+                    String log = UI.decide("buy " + name);
                     showPopUp(log);
                 });
             });

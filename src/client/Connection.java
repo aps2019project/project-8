@@ -8,6 +8,7 @@ import com.gilecode.yagson.com.google.gson.JsonObject;
 import com.gilecode.yagson.com.google.gson.JsonParser;
 import model.AccountData;
 import model.AccountUser;
+import netscape.javascript.JSObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,12 +42,10 @@ public class Connection extends Thread {
         out.println(jsonObject.toString());
         try {
             String response = in.readLine();
-
             jsonObject = getAsJson(response);
             System.err.println(jsonObject.get("log").getAsString());
-//            System.err.println("got : " + response);
-            Gson gson = new Gson();
-            return gson.fromJson(jsonObject, AccountUser.class);
+            YaGson yaGson = new YaGson();
+            return yaGson.fromJson(jsonObject, AccountUser.class);
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("error occurred in fetching response from server");
@@ -64,13 +63,6 @@ public class Connection extends Thread {
         try {
             String response = in.readLine();
             jsonObject = getAsJson(response);
-
-            System.err.println();
-            System.err.println();
-            System.err.println("sent : " + jsonObject);
-            System.err.println();
-            System.err.println();
-
             System.err.println(jsonObject.get("log").getAsString());
         } catch (IOException e) {
             e.printStackTrace();
@@ -95,11 +87,30 @@ public class Connection extends Thread {
         }
     }
 
+    public String getItemCount(String collectionItemName) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("requestType", "getItemCount");
+        jsonObject.addProperty("authenticationToken", authenticationToken);
+        jsonObject.addProperty("collectionItemName", collectionItemName);
+        out.println(jsonObject.toString());
+        try {
+            String response = in.readLine();
+            jsonObject = getAsJson(response);
+            System.err.println(jsonObject.get("log").getAsString());
+            if (jsonObject.get("count") != null)
+                return jsonObject.get("count").getAsString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("error occurred in fetching response from server");
+        }
+        return "";
+    }
+
     public void closeConnection() {
         try {
-            socket.close();
             in.close();
             out.close();
+            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

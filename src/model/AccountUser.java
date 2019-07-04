@@ -16,9 +16,6 @@ public class AccountUser implements Comparable {
     private AccountData data = new AccountData();
 
 
-
-
-
     public AccountUser(AccountUser account) {
         accounts.add(account);
     }

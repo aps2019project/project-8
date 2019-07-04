@@ -1,4 +1,4 @@
-package menus;
+        package menus;
 
 import client.Connection;
 import client.Connector;
@@ -193,7 +193,7 @@ public class UI {
         } else {
             switchTo(Menus.MAIN_MENU);
             Menu.setConnection(connection);
-
+            Menu.setAccount(connection.getAccount());
         }
         view.logMessage(connector.getLog());
 
