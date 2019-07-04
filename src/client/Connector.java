@@ -1,5 +1,6 @@
 package client;
 
+import com.gilecode.yagson.com.google.gson.JsonArray;
 import com.gilecode.yagson.com.google.gson.JsonElement;
 import com.gilecode.yagson.com.google.gson.JsonObject;
 import com.gilecode.yagson.com.google.gson.JsonParser;
