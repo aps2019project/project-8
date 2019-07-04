@@ -12,6 +12,7 @@ import model.AccountUser;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -23,12 +24,16 @@ public class Server {
     private ShopInterface shopInterface;
     private AccountInterface accountInterface;
     private HashMap<String, AccountUser> players;
+    private ArrayList<String> chats;
+    private HashMap<String, Integer> messageIndex;
 
     public Server() {
         port = DEFAULT_PORT; // should be read from config file
         accountInterface = new AccountInterface();
         shopInterface = new ShopInterface();
         players = new HashMap<>();
+        chats = new ArrayList<>();
+        messageIndex = new HashMap<>();
     }
 
     public void start() {
@@ -75,6 +80,7 @@ public class Server {
             jsonObject.addProperty("log", user + " was successfully logged in");
             String token = getNewToken(accountInterface.getAccount(user));
             jsonObject.addProperty("authenticationToken", token);
+            messageIndex.put(token, chats.size());
         } else {
             jsonObject.addProperty("log", "invalid user name or password");
         }
@@ -197,6 +203,52 @@ public class Server {
         jsonObject.add("leaderBoard", jsonArray);
         jsonObject.addProperty("log", "successfully printed leader board");
         return jsonObject;
+    }
+
+    public JsonObject addChatMessage(JsonObject jsonObject) {
+        JsonElement jsonElement = jsonObject.get("authenticationToken");
+        JsonObject message = new JsonObject();
+        if (jsonElement != null) {
+            String token = jsonElement.getAsString();
+            AccountUser accountUser = players.get(token);
+            if (accountUser == null) {
+                message.addProperty("log", "your authentication token has expired");
+            } else {
+                jsonElement = jsonObject.get("message");
+                if (jsonElement != null) {
+                    chats.add(jsonElement.getAsString());
+                    message.addProperty("log", "successfully received chat message");
+                } else {
+                    message.addProperty("log", "no chat message sent");
+                }
+            }
+        } else {
+            message.addProperty("log", "no authentication token sent");
+        }
+        return message;
+    }
+
+    public JsonObject getNewMessages(JsonObject jsonObject) {
+        JsonElement jsonElement = jsonObject.get("authenticationToken");
+        JsonObject message = new JsonObject();
+        if (jsonElement != null) {
+            String token = jsonElement.getAsString();
+            AccountUser accountUser = players.get(token);
+            if (accountUser == null) {
+                message.addProperty("log", "your authentication token has expired");
+            } else {
+                JsonArray jsonArray = new JsonArray();
+                int index = messageIndex.get(token);
+                for (; index < chats.size(); index++) {
+                    jsonArray.add(chats.get(index));
+                }
+                jsonObject.add("messages", jsonArray);
+                jsonObject.addProperty("log", "successfully sent chat messages");
+            }
+        } else {
+            message.addProperty("log", "no authentication token sent");
+        }
+        return message;
     }
 
     public static void main(String[] args) {

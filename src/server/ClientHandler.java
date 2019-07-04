@@ -75,6 +75,12 @@ public class ClientHandler extends Thread {
             case "getLeaderBoard" :
                 response = server.getLeaderBoard();
                 break;
+            case "sendChatMessage" :
+                response = server.addChatMessage(jsonObject);
+                break;
+            case "getNewMessages" :
+                response = server.getNewMessages(jsonObject);
+                break;
         }
         sendMessage(response.toString());
     }
