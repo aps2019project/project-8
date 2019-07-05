@@ -18,7 +18,7 @@ public class Connection {
     private BufferedReader in;
     private String authenticationToken;
 
-    public Connection(Socket socket, PrintWriter out, BufferedReader in, String authenticationToken) {
+    Connection(Socket socket, PrintWriter out, BufferedReader in, String authenticationToken) {
         this.socket = socket;
         this.out = out;
         this.in = in;
@@ -105,16 +105,9 @@ public class Connection {
     public void sendChatMessage(String message) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("requestType", "sendChatMessage");
+        jsonObject.addProperty("authenticationToken", authenticationToken);
         jsonObject.addProperty("message", message);
-        out.println(jsonObject.toString());
-        try {
-            String response = in.readLine();
-            jsonObject = getAsJson(response);
-            System.err.println(jsonObject.get("log").getAsString());
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("error occurred in fetching response from server");
-        }
+        sendSimpleMessage(jsonObject);
     }
 
 
@@ -128,6 +121,7 @@ public class Connection {
     public String[] getNewMessages() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("requestType", "getNewMessages");
+        jsonObject.addProperty("authenticationToken", authenticationToken);
         out.println(jsonObject.toString());
         try {
             String response = in.readLine();
@@ -160,6 +154,53 @@ public class Connection {
         }
     }
 
+    public void sendMultiplayerGameRequest(String opponentName) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("requestType", "multiplayerGameRequest");
+        jsonObject.addProperty("opponentName", opponentName);
+        sendSimpleMessage(jsonObject);
+        out.println(jsonObject.toString());
+    }
+
+    public String receiveGameRequests() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("requestType", "getGameRequests");
+        jsonObject.addProperty("authenticationToken", authenticationToken);
+        out.println(jsonObject.toString());
+        try {
+            String response = in.readLine();
+            jsonObject = getAsJson(response);
+            System.err.println(jsonObject.get("log").getAsString());
+            return jsonObject.get("requester").getAsString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("error occurred in fetching response from server");
+            return "error occurred in fetching response from server";
+        }
+    }
+
+    public void cancelFirstGameRequest() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("requestType", "cancelFirstRequest");
+        jsonObject.addProperty("authenticationToken", authenticationToken);
+        out.println(jsonObject.toString());
+        sendSimpleMessage(jsonObject);
+    }
+
+    private JsonObject sendSimpleMessage(JsonObject jsonObject) {
+        out.println(jsonObject.toString());
+        try {
+            String response = in.readLine();
+            JsonObject responseObject = getAsJson(response);
+            System.err.println(responseObject.get("log").getAsString());
+            return responseObject;
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("error occurred in fetching response from server");
+            return null;
+        }
+    }
+
     public void closeConnection() {
         try {
             in.close();
@@ -168,9 +209,5 @@ public class Connection {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    void sendMessage(String message) {
-        out.println(message);
     }
 }
