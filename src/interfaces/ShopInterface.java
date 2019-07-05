@@ -13,6 +13,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 
+//project-8 Server.iml
+
 public class ShopInterface {
 
     private ArrayList<CollectionItem> collectionItems = new ArrayList<>();

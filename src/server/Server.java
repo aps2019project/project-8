@@ -6,12 +6,14 @@ import com.gilecode.yagson.com.google.gson.JsonArray;
 import com.gilecode.yagson.com.google.gson.JsonElement;
 import com.gilecode.yagson.com.google.gson.JsonObject;
 import com.oracle.webservices.internal.api.message.BasePropertySet;
+import com.sun.org.apache.bcel.internal.generic.ARRAYLENGTH;
 import interfaces.AccountInterface;
 import interfaces.ShopInterface;
 import model.AccountData;
 import model.AccountUser;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +30,9 @@ public class Server {
     private ArrayList<String> chats;
     private HashMap<String, Integer> messageIndex;
 
+    private HashMap<AccountUser, AccountUser> sentRequest;
+    private HashMap<AccountUser, ArrayList<AccountUser>> receivedRequests;
+
     public Server() {
         port = DEFAULT_PORT; // should be read from config file
         accountInterface = new AccountInterface();
@@ -35,6 +40,9 @@ public class Server {
         players = new HashMap<>();
         chats = new ArrayList<>();
         messageIndex = new HashMap<>();
+
+        sentRequest = new HashMap<>();
+        receivedRequests = new HashMap<>();
     }
 
     public void start() {
@@ -260,6 +268,84 @@ public class Server {
         }
         jsonObject.add("users", jsonArray);
         return jsonObject;
+    }
+
+    public JsonObject addGameRequest(JsonObject jsonObject) {
+        JsonElement jsonElement = jsonObject.get("authenticationToken");
+        JsonObject message = new JsonObject();
+        if (jsonElement != null) {
+            String token = jsonElement.getAsString();
+            AccountUser accountUser = players.get(token);
+            if (accountUser == null) {
+                message.addProperty("log", "your authentication token has expired");
+            } else {
+                if (sentRequest.get(accountUser) == null) {
+                    jsonElement = jsonObject.get("opponentName");
+                    if (jsonElement != null) {
+                        AccountUser opponent = players.get(jsonElement.getAsString());
+                        sentRequest.put(accountUser, opponent);
+                        ArrayList<AccountUser> reqs = receivedRequests.get(opponent);
+                        if (reqs == null) {
+                            reqs = new ArrayList<>();
+                        }
+                        reqs.add(accountUser);
+                        message.addProperty("log", "successfully received multiplayer game request");
+                    } else {
+                        message.addProperty("log", "no opponent user name sent");
+                    }
+                } else {
+                    message.addProperty("log", "you already have sent another game reqeuest. cancel that first");
+                }
+            }
+        } else {
+            message.addProperty("log", "no authentication token sent");
+        }
+        return message;
+    }
+
+
+    public JsonObject cancelGameRequest(JsonObject jsonObject) {
+        JsonElement jsonElement = jsonObject.get("authenticationToken");
+        JsonObject message = new JsonObject();
+        if (jsonElement != null) {
+            String token = jsonElement.getAsString();
+            AccountUser accountUser = players.get(token);
+            if (accountUser == null) {
+                message.addProperty("log", "your authentication token has expired");
+            } else {
+                sentRequest.remove(accountUser);
+                message.addProperty("log", "cancelled all game requests sent");
+            }
+        } else {
+            message.addProperty("log", "no authentication token sent");
+        }
+        return message;
+    }
+
+    public JsonObject getGameRequests(JsonObject jsonObject) {
+        JsonElement jsonElement = jsonObject.get("authenticationToken");
+        JsonObject message = new JsonObject();
+        if (jsonElement != null) {
+            String token = jsonElement.getAsString();
+            AccountUser accountUser = players.get(token);
+            if (accountUser == null) {
+                message.addProperty("log", "your authentication token has expired");
+            } else {
+                ArrayList<AccountUser> reqs = receivedRequests.get(accountUser);
+                JsonArray jsonArray = new JsonArray();
+                if (reqs != null) {
+                    for (AccountUser user : reqs)
+                        jsonArray.add(user.getName());
+                    message.addProperty("log", "your game requests were sent");
+                } else {
+                    message.addProperty("log", "you have no game requests");
+                }
+                message.add("users", jsonArray);
+            }
+        } else {
+            message.addProperty("log", "no authentication token sent");
+        }
+        return message;
     }
 
     public static void main(String[] args) {

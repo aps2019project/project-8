@@ -78,11 +78,20 @@ public class ClientHandler extends Thread {
             case "sendChatMessage" :
                 response = server.addChatMessage(jsonObject);
                 break;
+            case "getOnlineUsers" :
+                response = server.getOnlineUsers();
+                break;
             case "getNewMessages" :
                 response = server.getNewMessages(jsonObject);
                 break;
-            case "getOnlineUsers" :
-                response = server.getOnlineUsers();
+            case "multiplayerGameRequest" :
+                response = server.addGameRequest(jsonObject);
+                break;
+            case "cancelGameRequest" :
+                response = server.cancelGameRequest(jsonObject);
+                break;
+            case "getGameRequests" :
+                response = server.getGameRequests(jsonObject);
                 break;
         }
         sendMessage(response.toString());
