@@ -345,6 +345,41 @@ public class Server {
         return message;
     }
 
+    public JsonObject startGame(JsonObject jsonObject) {
+        JsonElement jsonElement = jsonObject.get("authenticationToken");
+        JsonObject message = new JsonObject();
+        if (jsonElement != null) {
+            String token = jsonElement.getAsString();
+            AccountUser accountUser = players.get(token);
+            if (accountUser == null) {
+                message.addProperty("log", "your authentication token has expired");
+            } else {
+                jsonElement = jsonObject.get("requesterName");
+                if (jsonElement == null) {
+                    message.addProperty("log","no requester name sent");
+                } else {
+                    AccountUser requester = accountInterface.getAccount(jsonElement.getAsString());
+                    if (requester == null) {
+                        message.addProperty("log", "no such user");
+                    } else {
+                        ArrayList<AccountUser> reqs = receivedRequests.get(accountUser);
+                        if (reqs.indexOf(requester) == -1) {
+                            message.addProperty("log", "this user has not requested to play with you");
+                        } else {
+                            message.addProperty("log", "the game is about to begin...");
+
+
+                            // here something happens
+                        }
+                    }
+                }
+            }
+        } else {
+            message.addProperty("log", "no authentication token sent");
+        }
+        return message;
+    }
+
     public static void main(String[] args) {
         new Server().start();
     }

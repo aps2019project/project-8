@@ -93,6 +93,8 @@ public class ClientHandler extends Thread {
             case "getGameRequests" :
                 response = server.getGameRequests(jsonObject);
                 break;
+            case "startGame" :
+                break;
         }
         sendMessage(response.toString());
     }
