@@ -1,5 +1,7 @@
 package model;
 
+import menus.Menu;
+
 import java.util.Map;
 import java.util.*;
 

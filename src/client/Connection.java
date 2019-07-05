@@ -179,11 +179,19 @@ public class Connection {
         }
     }
 
-    public void cancelFirstGameRequest() {
+    public void cancelGameRequest() {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("requestType", "cancelFirstRequest");
+        jsonObject.addProperty("requestType", "cancelGameRequest");
         jsonObject.addProperty("authenticationToken", authenticationToken);
         out.println(jsonObject.toString());
+        sendSimpleMessage(jsonObject);
+    }
+
+    public void startMultiplayerGame(String requesterName) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("requestType", "startGame");
+        jsonObject.addProperty("authenticationToken", authenticationToken);
+        jsonObject.addProperty("requesterName", requesterName);
         sendSimpleMessage(jsonObject);
     }
 
