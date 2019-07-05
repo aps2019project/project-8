@@ -117,6 +117,14 @@ public class Connection {
         }
     }
 
+
+    private String[] getJsonStringArray(JsonArray jsonArray) {
+        String[] s = new String[jsonArray.size()];
+        for (int i = 0; i < s.length; i++)
+            s[i] = jsonArray.get(i).getAsString();
+        return s;
+    }
+
     public String[] getNewMessages() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("requestType", "getNewMessages");
@@ -126,11 +134,7 @@ public class Connection {
             jsonObject = getAsJson(response);
             System.err.println(jsonObject.get("log").getAsString());
             JsonArray jsonArray = (JsonArray) jsonObject.get("messages");
-            String[] messages = new String[jsonArray.size()];
-            for (int i = 0; i < jsonArray.size(); i++) {
-                messages[i] = jsonArray.get(i).getAsString();
-            }
-            return messages;
+            return getJsonStringArray(jsonArray);
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("error occurred in fetching response from server");
@@ -138,7 +142,7 @@ public class Connection {
         }
     }
 
-    public String[] getOnlineUsers() {
+    public String[] getUsers(int type) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("requestType", "getOnlineUsers");
         out.println(jsonObject.toString());
@@ -147,11 +151,7 @@ public class Connection {
             jsonObject = getAsJson(response);
             System.err.println(jsonObject.get("log").getAsString());
             JsonArray jsonArray =  (JsonArray) jsonObject.get("users");
-            String[] users = new String[jsonArray.size()];
-            for (int i = 0; i < jsonArray.size(); i++) {
-                users[i] = jsonArray.get(i).getAsString();
-            }
-            return users;
+            return getJsonStringArray(jsonArray);
 
         } catch (IOException e) {
             e.printStackTrace();
