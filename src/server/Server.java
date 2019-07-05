@@ -5,15 +5,12 @@ import com.gilecode.yagson.YaGsonBuilder;
 import com.gilecode.yagson.com.google.gson.JsonArray;
 import com.gilecode.yagson.com.google.gson.JsonElement;
 import com.gilecode.yagson.com.google.gson.JsonObject;
-import com.oracle.webservices.internal.api.message.BasePropertySet;
-import com.sun.org.apache.bcel.internal.generic.ARRAYLENGTH;
 import interfaces.AccountInterface;
 import interfaces.ShopInterface;
 import model.AccountData;
 import model.AccountUser;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.HashMap;
