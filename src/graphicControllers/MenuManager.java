@@ -31,8 +31,10 @@ public class MenuManager {
     private void listenForMenuChange() {
         stage.setScene(currentMenu.getView().getScene());
         for (MenuChangeComponent changeComponent : currentMenu.getMenuChangeComponents()) {
-            if (changeComponent.isReady()) {
-                changeComponent.setOnAction(event -> {
+
+            changeComponent.setOnAction(event -> {
+                if (changeComponent.isReady()) {
+                    System.err.println("PIPI");
                     try {
                         int goalMenuID = changeComponent.getGoalMenuID();
                         boolean success = false;
@@ -51,8 +53,22 @@ public class MenuManager {
                     } catch (MenuDoesNotExistException e1) {
                         e1.printStackTrace();
                     }
-                });
-            }
+                }
+            });
+        }
+    }
+
+    public void rebuildMenu(int menuID) {
+        Menu menu = menusIDs.get(menuID);
+        menusIDs.remove(menuID);
+        Class clazz = menu.getClass();
+        System.err.println(clazz + " CLAZZZ");
+        try {
+            menusIDs.put(menuID, (Menu) clazz.newInstance());
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
     }
 
@@ -72,18 +88,15 @@ public class MenuManager {
     }
 
     public void setCurrentMenu(Menu currentMenu) {
-        if (currentMenu instanceof GameMenu)
-            currentMenu = new GameMenu();
         currentMenu.refresh();
         currentMenu.stopMedia();
         this.currentMenu = currentMenu;
-//        currentMenu.playMedia();
     }
 
     public void setCurrentMenu(int menuID) {
         currentMenu = menusIDs.get(menuID);
-        if (currentMenu instanceof GameMenu)
-            currentMenu = new GameMenu();
+        //if (currentMenu instanceof GameMenu)
+        //    currentMenu = new GameMenu();
         currentMenu.refresh();
         listenForMenuChange();
     }

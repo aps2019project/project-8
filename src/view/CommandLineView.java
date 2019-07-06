@@ -568,4 +568,9 @@ public class CommandLineView implements View {
     public void showSuccessfulImport() {
         System.out.println("Deck successfully imported.");
     }
+
+    @Override
+    public void showGameCannotLoadError() {
+        System.out.println("Game can't load");
+    }
 }

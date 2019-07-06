@@ -20,7 +20,8 @@ public class Battle extends Menu {
     private static final String[] commands = {
             "-------Battle Menu-------",
             "Single player",
-            "Multiplayer"
+            "Multiplayer",
+            "Load Last Game"
     };
 
     public static void help() {

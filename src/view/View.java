@@ -177,4 +177,6 @@ public interface View {
     void showImportedCardError();
 
     void showSuccessfulImport();
+
+    void showGameCannotLoadError();
 }

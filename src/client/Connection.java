@@ -137,7 +137,7 @@ public class Connection {
         }
     }
 
-    public String[] getUsers(int type) {
+    public String[] getUsers() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("requestType", "getOnlineUsers");
         out.println(jsonObject.toString());

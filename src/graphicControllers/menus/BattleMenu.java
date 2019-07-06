@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import menus.UI;
 import view.GUIButton;
+import view.GUIChangeMenuButton;
 import view.NodeWrapper;
 
 import java.io.File;
@@ -44,6 +45,7 @@ public class BattleMenu extends Menu {
             gotoSinglePlayer.setText("Single Player");
             gotoSinglePlayer.setOnMouseClicked(e -> {
                 UI.decide("singleplayer");
+                MenuManager.getInstance().rebuildMenu(Id.IN_GAME_MENU);
                 MenuManager.getInstance().setCurrentMenu(Id.SINGLEPLAYER_MENU);
             });
             addComponent(gotoSinglePlayer);
@@ -59,9 +61,30 @@ public class BattleMenu extends Menu {
             gotoMultiplayer.setText("Multiplayer");
             gotoMultiplayer.setOnMouseClicked(e -> {
                 UI.decide("multiplayer");
+                MenuManager.getInstance().rebuildMenu(Id.IN_GAME_MENU);
                 MenuManager.getInstance().setCurrentMenu(Id.MULTIPLAYER_MENU);
             });
             addComponent(gotoMultiplayer);
+
+            GUIButton loadLastGame = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
+                    / 2 + 50 + 5, 170, 50);
+
+            try {
+                loadLastGame.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+                loadLastGame.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+                loadLastGame.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+                loadLastGame.setText("Load");
+            } catch (FileNotFoundException ignored) {
+            }
+            loadLastGame.setOnMouseClicked(e -> {
+                String out = getUIOutputAsString("Load Last Game");
+                if (!out.contains("Game can't load")) {
+                    MenuManager.getInstance().setCurrentMenu(Id.IN_GAME_MENU);
+                } else {
+                    showPopUp("Game can't load");
+                }
+            });
+            addComponent(loadLastGame);
         }).start();
     }
 }

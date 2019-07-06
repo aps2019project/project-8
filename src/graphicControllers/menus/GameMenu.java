@@ -38,7 +38,6 @@ public class GameMenu extends Menu {
     private static final double CELL_CONTENT_HEIGHT = 70;
     private static final double TILE_WITDH = 50;
     private static final double TILE_HEIGHT = 30;
-
     private static final String SHOW_CARD_INFO = "show card info [^ ]+";
     private static final String SELECT_CARD = "select [^ ]+";
     private static final String MOVE_UNIT = "move to (\\d+, \\d+)";
@@ -47,6 +46,9 @@ public class GameMenu extends Menu {
     private static final double BUFF_HEIGHT = 10;
 
     private static transient GameMenu instance = null;
+    private double speedCoefficient = 1.0;
+    private boolean hasPopup = true;
+
     Rectangle disableEventRectangle;
     ArrayList<AnimationTimer> animations = new ArrayList<>();
     private ComponentSet firstPlayerBar, secondPlayerBar;
@@ -61,6 +63,7 @@ public class GameMenu extends Menu {
     private ArrayList<String> selectedComboCardIds = new ArrayList<>();
     private boolean clickedOnShowNextCard = false;
     private String selectedCollectibleID;
+
 
     private String[][] gridStrings;
 
@@ -80,14 +83,7 @@ public class GameMenu extends Menu {
         return instance;
     }
 
-    private String getUIOutputAsString(String command) {
-        PrintStream prevOut = System.out;
-        java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
-        System.setOut(new java.io.PrintStream(out));
-        UI.decide(command);
-        System.setOut(prevOut);
-        return out.toString().isEmpty() ? "Successful!" : out.toString();
-    }
+
 
     private void setUpBackGround() {
         // setting up the back ground
@@ -177,7 +173,7 @@ public class GameMenu extends Menu {
                     });
                     try {
                         if (!deathIDs.isEmpty())
-                            Thread.sleep(1000);
+                            Thread.sleep((long) (1000 / speedCoefficient));
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -202,7 +198,8 @@ public class GameMenu extends Menu {
         selectedCollectibleID = s;
         String out = getUIOutputAsString("select " + s);
         if (!gameEnded(out)) {
-            showPopUp(out);
+            if (hasPopup)
+                showPopUp(out);
             setGridOnCollectibleSelected();
         }
     }
@@ -211,61 +208,7 @@ public class GameMenu extends Menu {
         String out = getUIOutputAsString("end turn");
         out = out.trim();
         if (!gameEnded(out)) {
-//            showPopUp("Turn Ended!");
             refresh();
-//            for (int i = 0; i < gridStrings.length; i++)
-//            for(int i = 0; i < gridStrings.length; i++)
-//                for (int j = 0; j < gridStrings[i].length; j++)
-//                    System.err.println(i + " " + j + " " + gridStrings[i][j]);
-//            String[] commands = out.split("\\n");
-//            for (String s : commands) {
-//                s = s.trim();
-//                Pattern pattern = Pattern.compile("(\\w+) moved from (\\d+) (\\d+) to (\\d+) (\\d+)");
-//                Matcher matcher = pattern.matcher(s);
-//                if (matcher.find()) {
-//                    System.err.println(s);
-//                    selectedCardID = matcher.group(1);
-//                    int sx = Integer.parseInt(matcher.group(2)) - 1;
-//                    int sy = Integer.parseInt(matcher.group(3)) - 1;
-//                    int dx = Integer.parseInt(matcher.group(4)) - 1;
-//                    int dy = Integer.parseInt(matcher.group(5)) - 1;
-//                    handleGraphicallMove(sx, sy, dx, dy, true);
-//                }
-//
-//                pattern = Pattern.compile("a new card inserted to (\\d+) (\\d+)");
-//                matcher = pattern.matcher(s);
-//                if (matcher.find()) {
-//                    int x = Integer.parseInt(matcher.group(1)) - 1;
-//                    int y = Integer.parseInt(matcher.group(2)) - 1;
-////                    handleGraphicallMove(x, y, x, y, true);
-////                    handleCellSpawn(x, y);
-//                }
-//
-//                pattern = Pattern.compile("attack from (\\w+) to (\\w+)");
-//                matcher = pattern.matcher(s);
-//                if (matcher.find()) {
-//                    System.err.println("attacking " + matcher.group(1) + " " + matcher.group(2));
-//                    selectedCardID = (matcher.group(1));
-//                    handleAttackUnit(matcher.group(2));
-//                }
-//
-//                pattern = Pattern.compile("hero power on (\\d+) (\\d+)");
-//                matcher = pattern.matcher(s);
-//                if (matcher.find()) {
-//                    int x = Integer.parseInt(matcher.group(1)) - 1;
-//                    int y = Integer.parseInt(matcher.group(2)) - 1;
-//                    handleUseSpecialPower(x, y);
-//                }
-//
-//                pattern = Pattern.compile("apply collectible (\\d+) to (\\d+)");
-//                matcher = pattern.matcher(s);
-//                if (matcher.find()) {
-//                    System.err.println("collectible apllying" + matcher.group(1) + " " + matcher.group(2));
-//                    int x = Integer.parseInt(matcher.group(1)) - 1;
-//                    int y = Integer.parseInt(matcher.group(2)) - 1;
-//                    handleUseCollectible(x, y, true);
-//                }
-//            }
             for(int i = 0; i < gridStrings.length; i++)
                 for (int j = 0; j < gridStrings[i].length; j++)
                     System.err.println(i + " " + j + " " + gridStrings[i][j]);
@@ -339,7 +282,7 @@ public class GameMenu extends Menu {
                                     addComponent(new NodeWrapper(passive));
                                 });
                                 try {
-                                    Thread.sleep(1000);
+                                    Thread.sleep((long) (1000 / speedCoefficient));
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
@@ -364,7 +307,8 @@ public class GameMenu extends Menu {
             out = getUIOutputAsString("use (" + (row + 1) + ", " + (column + 1) + ")");
         if (ai || !gameEnded(out)) {
             if (!ai && !out.equals("Successful!")) {
-                showPopUp(out);
+                if (hasPopup)
+                    showPopUp(out);
                 enableEvents();
                 refresh();
             } else {
@@ -376,7 +320,7 @@ public class GameMenu extends Menu {
                         splash.setFitHeight(tile.getFitHeight() + 150);
                         splash.setFitWidth(tile.getFitWidth() + 150);
                         Platform.runLater(() -> addComponent(new NodeWrapper(splash)));
-                        Thread.sleep(1000);
+                        Thread.sleep((long) (1000 / speedCoefficient));
                         Platform.runLater(() -> {
                             removeComponent(new NodeWrapper(splash));
                             enableEvents();
@@ -395,7 +339,9 @@ public class GameMenu extends Menu {
     }
 
     private synchronized void handleShowCollectibleinfo() {
-        showPopUp(getUIOutputAsString("show info"));
+        String out = getUIOutputAsString("show info");
+        if (hasPopup)
+            showPopUp(out);
     }
 
     private synchronized void handleInsertCard(int row, int column, boolean ai) {
@@ -425,7 +371,7 @@ public class GameMenu extends Menu {
                                 addComponent(new NodeWrapper(strike));
                             });
                             try {
-                                Thread.sleep(1000);
+                                Thread.sleep((long) (1000 / speedCoefficient));
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
@@ -436,7 +382,7 @@ public class GameMenu extends Menu {
                                     new Thread(() -> {
                                         Platform.runLater(() -> addComponent(new NodeWrapper(onSpawnEffect)));
                                         try {
-                                            Thread.sleep(1000);
+                                            Thread.sleep((long) (1000 / speedCoefficient));
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
                                         }
@@ -460,7 +406,8 @@ public class GameMenu extends Menu {
 
                     }).start();
                 } else {
-                    showPopUp(output);
+                    if (hasPopup)
+                        showPopUp(output);
                     enableEvents();
                     refresh();
                 }
@@ -472,7 +419,9 @@ public class GameMenu extends Menu {
 
     private synchronized void handleSelectCard(String cardID) {
         selectedCardID = cardID;
-        showPopUp(getUIOutputAsString("select " + cardID));
+        String output = getUIOutputAsString("select " + cardID);
+        if (hasPopup)
+            showPopUp(output);
         cardSelectedGridChangePrimary();
     }
 
@@ -481,7 +430,8 @@ public class GameMenu extends Menu {
             return;
         String out = getUIOutputAsString("use special power (" + row + ", " + column + ")");
         if (!gameEnded(out)) {
-            showPopUp(out);
+            if (hasPopup)
+                showPopUp(out);
             refresh();
         }
     }
@@ -509,7 +459,8 @@ public class GameMenu extends Menu {
             }
             if (ai || !gameEnded(out)) {
                 if (!ai && !out.equals("Successful!")) {
-                    showPopUp(out);
+                    if (hasPopup)
+                        showPopUp(out);
                     enableEvents();
                     refresh();
                 } else {
@@ -560,7 +511,7 @@ public class GameMenu extends Menu {
 //                                }
                                 });
                                 try {
-                                    Thread.sleep(1000);
+                                    Thread.sleep((long) (1000 / speedCoefficient));
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
@@ -687,7 +638,7 @@ public class GameMenu extends Menu {
                 timeline.play();
             });
             try {
-                Thread.sleep(1000);
+                Thread.sleep((long) (1000 / speedCoefficient));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -714,7 +665,8 @@ public class GameMenu extends Menu {
             out = getUIOutputAsString("move to (" + (row + 1) + ", " + (column + 1) + ")");
         if (ai || !gameEnded(out)) {
             if (!ai && !out.contains("moved")) {
-                showPopUp(out);
+                if (hasPopup)
+                    showPopUp(out);
                 selectedCardID = null;
                 forceRefresh();
             } else {
@@ -729,7 +681,7 @@ public class GameMenu extends Menu {
                         timeline.play();
                     });
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep((long) (1000 / speedCoefficient));
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -769,7 +721,8 @@ public class GameMenu extends Menu {
 
         String out = getUIOutputAsString(stringBuilder.toString());
         if (!gameEnded(out)) {
-            showPopUp(out);
+            if (hasPopup)
+                showPopUp(out);
             refresh();
         }
     }
@@ -1028,7 +981,7 @@ public class GameMenu extends Menu {
 
                 new Thread(() -> {
                     try {
-                        Thread.sleep(2000);
+                        Thread.sleep((long) (2000 / speedCoefficient));
                     } catch (InterruptedException e1) {
                         e1.printStackTrace();
                     }

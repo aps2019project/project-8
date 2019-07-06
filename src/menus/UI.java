@@ -80,7 +80,7 @@ public class UI {
     private static final String EXPORT = "(?i:export)";
     private static final String IMPORT = "(?i:import) " + NAME;
     private static final String DEAD = "(?i:get dead)";
-
+    private static final String LOAD_LAST_GAME = "(?i:load last game)";
     private static final String SHENGDEBAO = "(?i:shengdebao)";
     private static final String KILL = "(?i:kill) " + ID;
 
@@ -327,6 +327,10 @@ public class UI {
             switchTo(Menus.SINGLE_PLAYER);
         else if (command.matches(MULTIPLAYER))
             switchTo(Menus.MULTIPLAYER);
+        else if (command.matches(LOAD_LAST_GAME)) {
+            if (GameMenu.loadLastGame())
+                switchTo(Menus.GAME_MENU);
+        }
         else
             view.showInvalidCommandError();
     }

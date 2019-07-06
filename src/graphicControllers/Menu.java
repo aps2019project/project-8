@@ -21,11 +21,13 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import menus.UI;
 import view.*;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -308,6 +310,15 @@ public class Menu {
             }
         });
         getGameModeContent.getChildren().add(textField);
+    }
+
+    protected String getUIOutputAsString(String command) {
+        PrintStream prevOut = System.out;
+        java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
+        System.setOut(new java.io.PrintStream(out));
+        UI.decide(command);
+        System.setOut(prevOut);
+        return out.toString().isEmpty() ? "Successful!" : out.toString();
     }
 
     private void setUpGetListItem() {

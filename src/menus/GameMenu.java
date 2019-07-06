@@ -108,6 +108,13 @@ public class GameMenu extends InGameMenu {
         return "";
     }
 
+    public static boolean loadLastGame() {
+        if (game == null) {
+            view.showGameCannotLoadError();
+            return false;
+        }
+        return true;
+    }
     //start a single player game with a specified AI
     public static boolean startGame(int aiID) {
         if (checkAccount()) return false;
