@@ -219,7 +219,8 @@ public class MainMenu extends Menu {
                         if (!getSpell(stringBuilder))
                             return;
                     }
-                    int count = Integer.valueOf(String.valueOf(popUpGetText("count of card on server", "Next")));
+//                    int count = Integer.valueOf(String.valueOf(popUpGetText("count of card on server", "Next")));
+                    int count = 3;
                     try {
                         FileWriter fileWriter = new FileWriter(new File("gameData/ManualFeatureInputLogs/" + name + ".txt"), false);
                         fileWriter.append(stringBuilder);
