@@ -24,6 +24,7 @@ public class CollectionItem {
         this.collectionItemID = collectionItem.collectionItemID;
         this.name = collectionItem.name;
         this.description = collectionItem.description;
+        this.count = collectionItem.getCount();
     }
 
     protected CollectionItem() {

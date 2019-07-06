@@ -96,6 +96,10 @@ public class ClientHandler extends Thread {
                 response = server.startGame(jsonObject);
                 break;
             case "addNewCard" :
+                response = server.addNewCard(jsonObject);
+                break;
+            case "addFuckingNewCard" :
+                response = server.addFuckingNewCard(jsonObject);
                 break;
 
         }

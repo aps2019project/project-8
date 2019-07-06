@@ -5,12 +5,15 @@ import com.gilecode.yagson.YaGsonBuilder;
 import com.gilecode.yagson.com.google.gson.JsonArray;
 import com.gilecode.yagson.com.google.gson.JsonElement;
 import com.gilecode.yagson.com.google.gson.JsonObject;
+import gen.JsonMaker;
 import interfaces.AccountInterface;
 import interfaces.ShopInterface;
 import model.AccountData;
 import model.AccountUser;
 import model.CollectionItem;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
@@ -193,6 +196,8 @@ public class Server {
             } else {
                 String collectionItemName = jsonObject.get("collectionItemName").getAsString();
                 message.addProperty("count", shopInterface.getItemCount(collectionItemName));
+                if (collectionItemName.contains("7headed"))
+                    System.err.println("sending item count "  + collectionItemName + " "  + shopInterface.getItemCount(collectionItemName));
                 message.addProperty("log", "successful action");
             }
         } else {
@@ -392,12 +397,60 @@ public class Server {
             } else {
                 CollectionItem collectionItem = new YaGson().fromJson(jsonObject, CollectionItem.class);
                 shopInterface.saveData(collectionItem);
+                message.addProperty("log", "successfully created card " + collectionItem.getName());
             }
         } else {
             message.addProperty("log", "no authentication token sent");
         }
         return message;
     }
+
+    public JsonObject addFuckingNewCard(JsonObject jsonObject) {
+        JsonElement jsonElement = jsonObject.get("authenticationToken");
+        JsonObject message = new JsonObject();
+        if (jsonElement != null) {
+            String token = jsonElement.getAsString();
+            AccountUser accountUser = players.get(token);
+            if (accountUser == null) {
+                message.addProperty("log", "your authentication token has expired");
+            } else {
+                String s = jsonObject.get("object").getAsString();
+                String name = jsonObject.get("name").getAsString();
+                int count = Integer.valueOf(jsonObject.get("count").getAsString());
+
+                FileWriter fileWriter = null;
+                try {
+                    fileWriter = new FileWriter(new File("./gameData/ManualFeatureInputLogs/" + name + ".txt"), false);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    fileWriter.append(s);
+                    fileWriter.flush();
+                    fileWriter.close();
+
+                        JsonMaker.main(new String[]{"java", "JsonMaker"});
+                        shopInterface.load();
+                        CollectionItem collectionItem = shopInterface.getCollectionItemByName(name);
+                        collectionItem.setCount(count);
+                        shopInterface.saveData(collectionItem);
+                        File file = new File("./gameData/ManualFeatureInputLogs/" + name + ".txt");
+                        if (file.delete()) {
+                        } else {
+                            System.err.println("fucking file not deleted");
+                        }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                message.addProperty("log", "fucking card added");
+            }
+        } else {
+            message.addProperty("log", "no authentication token sent");
+        }
+        return message;
+    }
+
 
     public static void main(String[] args) {
         new Server().start();

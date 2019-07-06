@@ -37,7 +37,7 @@ public class ShopInterface {
 //        return collectionItems;
 //    }
 
-    private CollectionItem getCollectionItemByName(String collectionItemName) {
+    public CollectionItem getCollectionItemByName(String collectionItemName) {
         for (CollectionItem collectionItem : collectionItems) {
             if (collectionItem.equalsName(collectionItemName))
                 return collectionItem;
@@ -62,6 +62,10 @@ public class ShopInterface {
             accountUser.receiveMoney(collectionItem.getPrice());
             accountUser.getData().getCollection().removeCollectionItem(collectionItemID);
             accountUser.saveAccount();
+
+            collectionItem = getCollectionItemByName(collectionItem.getName());
+            collectionItem.addCount();
+            saveData(collectionItem);
             return "you successfully sold this item";
         }
         return "no collection item with id " + collectionItemID;
@@ -130,7 +134,7 @@ public class ShopInterface {
 //        view.showShop(collectionItems);
 //    }
 
-    private void load() {
+    public void load() {
         collectibles.clear();
         collectionItems.clear();
         try {
@@ -169,18 +173,23 @@ public class ShopInterface {
             if (collectionItem instanceof Hero) {
                 out = new FileWriter("./database/CollectionItems/Heroes/" + collectionItem.getName() + ".json", false);
                 out.write(yaGson.toJson(collectionItem, Hero.class));
+                out.flush();
             } else if (collectionItem instanceof SpellCard) {
                 out = new FileWriter("./database/CollectionItems/SpellCards/" + collectionItem.getName() + ".json", false);
                 out.write(yaGson.toJson(collectionItem, SpellCard.class));
+                out.flush();
             } else if (collectionItem instanceof Minion) {
                 out = new FileWriter("./database/CollectionItems/Minions/" + collectionItem.getName() + ".json", false);
                 out.write(yaGson.toJson(collectionItem, Minion.class));
+                out.flush();
             } else if (collectionItem instanceof Usable) {
                 out = new FileWriter("./database/CollectionItems/Usables/" + collectionItem.getName() + ".json", false);
                 out.write(yaGson.toJson(collectionItem, Usable.class));
+                out.flush();
             } else if (collectionItem instanceof Collectible) {
                 out = new FileWriter("./database/CollectionItems/Collectibles/" + collectionItem.getName() + ".json", false);
                 out.write(yaGson.toJson(collectionItem, Collectible.class));
+                out.flush();
             } else {
                 System.err.println("object given is not an instance of an appropriate class");
                 throw new IOException();
@@ -189,6 +198,7 @@ public class ShopInterface {
         } catch (IOException ignored) {
         }
     }
+
 
 //    public void showCollection() {
 //        view.showShopCollection(getAccount().getData().getCollectionItems());
