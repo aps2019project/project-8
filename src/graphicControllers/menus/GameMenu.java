@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
@@ -91,6 +92,13 @@ public class GameMenu extends Menu  {
 
     public GameMenu() {
         super(Id.IN_GAME_MENU, "Game Menu", windowDefaultWidth, windowDefaultHeight);
+        getView().getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.UP) {
+                speedCoefficient *= 2;
+            } else if (event.getCode() == KeyCode.DOWN) {
+                speedCoefficient /= 2;
+            }
+        });
         setUpBackGround();
         setUpMenuButtons();
         instance = this;
@@ -614,7 +622,7 @@ public class GameMenu extends Menu  {
 
         PathTransition pathTransition = new PathTransition();
         pathTransition.setNode(imageView);
-        pathTransition.setDuration(Duration.millis(500));
+        pathTransition.setDuration(Duration.millis(500 / speedCoefficient));
         pathTransition.setPath(orthogonal);
         pathTransition.setCycleCount(1);
         pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
@@ -694,7 +702,7 @@ public class GameMenu extends Menu  {
                         KeyValue xValue = new KeyValue(source.xProperty(), (column - sourceColumn) * CELL_CONTENT_WIDTH);
                         KeyValue yValue = new KeyValue(source.yProperty(), (row - sourceRow) * CELL_CONTENT_HEIGHT);
                         KeyValue rValue = new KeyValue(source.rotateProperty(), 0);
-                        KeyFrame keyFrame = new KeyFrame(Duration.millis(1000), xValue, yValue, rValue);
+                        KeyFrame keyFrame = new KeyFrame(Duration.millis(1000 / speedCoefficient), xValue, yValue, rValue);
                         Timeline timeline = new Timeline(keyFrame);
                         timeline.play();
                     });
