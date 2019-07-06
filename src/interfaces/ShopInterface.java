@@ -162,7 +162,7 @@ public class ShopInterface {
         } catch (Exception ignored) {}
     }
 
-    private void saveData(CollectionItem collectionItem) {
+    public void saveData(CollectionItem collectionItem) {
         try {
             YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
             FileWriter out;

@@ -9,6 +9,7 @@ import interfaces.AccountInterface;
 import interfaces.ShopInterface;
 import model.AccountData;
 import model.AccountUser;
+import model.CollectionItem;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -373,6 +374,24 @@ public class Server {
                         }
                     }
                 }
+            }
+        } else {
+            message.addProperty("log", "no authentication token sent");
+        }
+        return message;
+    }
+
+    public JsonObject addNewCard(JsonObject jsonObject) {
+        JsonElement jsonElement = jsonObject.get("authenticationToken");
+        JsonObject message = new JsonObject();
+        if (jsonElement != null) {
+            String token = jsonElement.getAsString();
+            AccountUser accountUser = players.get(token);
+            if (accountUser == null) {
+                message.addProperty("log", "your authentication token has expired");
+            } else {
+                CollectionItem collectionItem = new YaGson().fromJson(jsonObject, CollectionItem.class);
+                shopInterface.saveData(collectionItem);
             }
         } else {
             message.addProperty("log", "no authentication token sent");

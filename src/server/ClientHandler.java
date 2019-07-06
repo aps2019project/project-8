@@ -3,7 +3,6 @@ package server;
 import com.gilecode.yagson.com.google.gson.JsonElement;
 import com.gilecode.yagson.com.google.gson.JsonObject;
 import com.gilecode.yagson.com.google.gson.JsonParser;
-import com.sun.deploy.security.JarSignature;
 
 import java.io.*;
 import java.net.Socket;
@@ -94,7 +93,11 @@ public class ClientHandler extends Thread {
                 response = server.getGameRequests(jsonObject);
                 break;
             case "startGame" :
+                response = server.startGame(jsonObject);
                 break;
+            case "addNewCard" :
+                break;
+
         }
         sendMessage(response.toString());
     }
