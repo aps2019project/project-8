@@ -95,4 +95,8 @@ public class GraphicsView {
             ((CardView) component).addInGroup(group);
         }
     }
+
+    public Group getGroup() {
+        return group;
+    }
 }
