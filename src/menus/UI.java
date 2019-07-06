@@ -186,6 +186,7 @@ public class UI {
         } else if (command.matches(GET_MESSAGES)) {
             ChatMenu.getMessages();
         } else if (command.matches(EXIT)) {
+            Menu.getConnection().sendChatMessage(getAccount().getName() + " Exited!");
             switchTo(Menus.MAIN_MENU);
         } else {
             view.showInvalidCommandError();
@@ -269,8 +270,10 @@ public class UI {
         else if (command.matches(LOGOUT)) {
             logout();
         }
-        else if (command.matches(GO_TO_CHAT))
+        else if (command.matches(GO_TO_CHAT)) {
+            Menu.getConnection().sendChatMessage(getAccount().getName() + " Entered!");
             switchTo(Menus.CHAT_MENU);
+        }
         else
             view.showInvalidCommandError();
         return "false";
