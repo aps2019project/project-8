@@ -1,16 +1,12 @@
 package menus;
 
 import com.gilecode.yagson.YaGson;
-import com.sun.org.apache.xml.internal.security.exceptions.AlgorithmAlreadyRegisteredException;
 import model.*;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.rmi.AlreadyBoundException;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
 import java.util.ArrayList;
 
 public class Shop extends Menu {

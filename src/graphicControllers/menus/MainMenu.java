@@ -10,6 +10,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import menus.Shop;
 import menus.UI;
+import model.CollectionItem;
 import model.SpecialPowerType;
 import model.Spell;
 import model.UnitType;
@@ -218,6 +219,8 @@ public class MainMenu extends Menu {
                         if (!getSpell(stringBuilder))
                             return;
                     }
+//                    int count = Integer.valueOf(String.valueOf(popUpGetText("count of card on server", "Next")));
+                    int count = 3;
                     try {
                         FileWriter fileWriter = new FileWriter(new File("gameData/ManualFeatureInputLogs/" + name + ".txt"), false);
                         fileWriter.append(stringBuilder);
@@ -226,7 +229,9 @@ public class MainMenu extends Menu {
                         new Thread(() -> {
                             JsonMaker.main(new String[]{"java", "JsonMaker"});
                             Shop.load();
-                            UI.getAccount().getData().getCollection().addCollectionItem(Shop.getCollectionItemByName(name));
+                            CollectionItem collectionItem = Shop.getCollectionItemByName(name);
+                            collectionItem.setCount(count);
+                            UI.sendNewCard(collectionItem);
                         }).start();
                     } catch (IOException ignored) {
                     }
@@ -272,6 +277,18 @@ public class MainMenu extends Menu {
                 });
             });
             addComponent(createCard);
+
+            GUIButton gotoChat = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
+                    / 2 - 50.0 / 2 + 4 * 10 + 4 * 50, 170, 50);
+            try {
+                gotoChat.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+                gotoChat.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+                gotoChat.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+            } catch (FileNotFoundException ignored) {
+            }
+            gotoChat.setText("Chat");
+            gotoChat.setOnMouseClicked(e -> MenuManager.getInstance().setCurrentMenu(Id.CHAT_MENU));
+            addComponent(gotoChat);
 
             GUIButton exit = new GUIButton(windowWidth - 100, windowHeight - 50, 100, 50);
             try {
