@@ -6,9 +6,7 @@ import client.Connector;
 import com.gilecode.yagson.YaGson;
 import com.gilecode.yagson.YaGsonBuilder;
 import gen.JsonMaker;
-import model.AI;
-import model.AccountUser;
-import model.Game;
+import model.*;
 import view.CommandLineView;
 import view.View;
 
@@ -606,6 +604,10 @@ public class UI {
 
     public static AccountUser getAccount() {
         return Menu.getAccount();
+    }
+
+    public static void sendNewCard(CollectionItem collectionItem) {
+        Menu.getConnection().sendNewCard(collectionItem);
     }
 
     public static Game getGame() {

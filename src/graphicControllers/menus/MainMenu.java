@@ -219,6 +219,7 @@ public class MainMenu extends Menu {
                         if (!getSpell(stringBuilder))
                             return;
                     }
+                    int count = Integer.valueOf(String.valueOf(popUpGetText("count of card on server", "Next")));
                     try {
                         FileWriter fileWriter = new FileWriter(new File("gameData/ManualFeatureInputLogs/" + name + ".txt"), false);
                         fileWriter.append(stringBuilder);
@@ -228,7 +229,8 @@ public class MainMenu extends Menu {
                             JsonMaker.main(new String[]{"java", "JsonMaker"});
                             Shop.load();
                             CollectionItem collectionItem = Shop.getCollectionItemByName(name);
-                            UI.getAccount().getData().getCollection().addCollectionItem(Shop.getCollectionItemByName(name));
+                            collectionItem.setCount(count);
+                            UI.sendNewCard(collectionItem);
                         }).start();
                     } catch (IOException ignored) {
                     }

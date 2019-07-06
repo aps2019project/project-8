@@ -5,6 +5,7 @@ import com.gilecode.yagson.YaGsonBuilder;
 import com.gilecode.yagson.com.google.gson.*;
 import model.AccountData;
 import model.AccountUser;
+import model.CollectionItem;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -192,6 +193,15 @@ public class Connection {
         jsonObject.addProperty("requestType", "startGame");
         jsonObject.addProperty("authenticationToken", authenticationToken);
         jsonObject.addProperty("requesterName", requesterName);
+        sendSimpleMessage(jsonObject);
+    }
+
+    public void sendNewCard(CollectionItem collectionItem) {
+        JsonObject jsonObject;
+        YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
+        jsonObject = (JsonObject) yaGson.toJsonTree(collectionItem, CollectionItem.class);
+        jsonObject.addProperty("requestType", "addNewCard");
+        jsonObject.addProperty("authenticationToken", authenticationToken);
         sendSimpleMessage(jsonObject);
     }
 
