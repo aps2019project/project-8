@@ -86,7 +86,8 @@ public class UI {
 
     // chat commands
     private static final String GO_TO_CHAT = "(?i:chat)";
-    private static final String SEND_MESSAGE = "send message:.*";
+    private static final String SEND_MESSAGE = "(?i:send message: ).*";
+    private static final String GET_MESSAGES = "(?i:get messages)";
 
     private static final String[] commands = {
             "create account [user name]",
@@ -181,7 +182,9 @@ public class UI {
         if (command.matches(HELP)) {
             ChatMenu.help();
         } else if (command.matches(SEND_MESSAGE)) {
-            ChatMenu.sendMessage(command.replaceFirst("(?i:send message:)", ""));
+            ChatMenu.sendMessage(command.replaceFirst("(?i:send message: )", ""));
+        } else if (command.matches(GET_MESSAGES)) {
+            ChatMenu.getMessages();
         } else if (command.matches(EXIT)) {
             switchTo(Menus.MAIN_MENU);
         } else {

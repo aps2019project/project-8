@@ -287,7 +287,10 @@ public class MainMenu extends Menu {
             } catch (FileNotFoundException ignored) {
             }
             gotoChat.setText("Chat");
-            gotoChat.setOnMouseClicked(e -> MenuManager.getInstance().setCurrentMenu(Id.CHAT_MENU));
+            gotoChat.setOnMouseClicked(e -> {
+                UI.decide("chat");
+                MenuManager.getInstance().setCurrentMenu(Id.CHAT_MENU);
+            });
             addComponent(gotoChat);
 
             GUIButton exit = new GUIButton(windowWidth - 100, windowHeight - 50, 100, 50);

@@ -1,5 +1,6 @@
 package graphicControllers;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -63,7 +64,7 @@ public class Menu {
     private Stage getListItem;
     private Label getListButton;
     private Optional<String> listItem = Optional.empty();
-    private ScrollPane scrollPane;
+    private ScrollPane sc;
     private Label showPopUpButton;
     private ImageView popUpButtonImage;
 
@@ -312,6 +313,32 @@ public class Menu {
         getGameModeContent.getChildren().add(textField);
     }
 
+    Thread autoRefresh;
+    boolean stoppedAutoRefresh;
+
+    protected void setAutoRefresh() {
+        setAutoRefresh(2000);
+    }
+
+    protected void setAutoRefresh(long milis) {
+        stoppedAutoRefresh = false;
+        autoRefresh = new Thread(() -> {
+            while (!stoppedAutoRefresh) {
+                Platform.runLater(this::refresh);
+                try {
+                    Thread.sleep(milis);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        autoRefresh.start();
+    }
+
+    protected void stopAutoRefresh() {
+        stoppedAutoRefresh = true;
+    }
+
     protected String getUIOutputAsString(String command) {
         PrintStream prevOut = System.out;
         java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
@@ -417,17 +444,17 @@ public class Menu {
         } catch (FileNotFoundException ignored) {
         }
         popUp.setScene(new Scene(group, 320, 180));
-        scrollPane = new ScrollPane(popUpContent);
-        scrollPane.setMinWidth(320);
-        scrollPane.setMaxWidth(320);
-        scrollPane.setMaxHeight(180 - POP_UP_BUTTON_HEIGHT);
-        scrollPane.setFitToWidth(true);
+        sc = new ScrollPane(popUpContent);
+        sc.setMinWidth(320);
+        sc.setMaxWidth(320);
+        sc.setMaxHeight(180 - POP_UP_BUTTON_HEIGHT);
+        sc.setFitToWidth(true);
         popUpContent.setFillWidth(true);
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setHmax(0);
-        scrollPane.getStylesheets().add("css/scrollPane.css");
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        group.getChildren().add(scrollPane);
+        sc.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        sc.setHmax(0);
+        sc.getStylesheets().add("css/scrollPane.css");
+        sc.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        group.getChildren().add(sc);
         popUp.setResizable(false);
         popUpContent.setAlignment(Pos.CENTER);
         popUpContent.getStylesheets().add("css/vBox.css");
@@ -470,14 +497,14 @@ public class Menu {
         label.setTextFill(Color.CORAL);
         label.setMinHeight(180 - POP_UP_BUTTON_HEIGHT - 2);
         popUpContent.getChildren().add(label);
-        scrollPane.setMinWidth(1240);
+        sc.setMinWidth(1240);
         Scene scene = new Scene(new Group(popUp.getScene().getRoot()), 1240, 720);
         popUp.setScene(scene);
-        scrollPane.setMaxWidth(1230);
+        sc.setMaxWidth(1230);
         popUpContent.setMinWidth(1230);
         popUpContent.setMaxWidth(1230);
-        scrollPane.setMinHeight(720 - POP_UP_BUTTON_HEIGHT);
-        scrollPane.setMaxHeight(720 - POP_UP_BUTTON_HEIGHT);
+        sc.setMinHeight(720 - POP_UP_BUTTON_HEIGHT);
+        sc.setMaxHeight(720 - POP_UP_BUTTON_HEIGHT);
         popUpContent.setMinHeight(720 - POP_UP_BUTTON_HEIGHT - 2);
         showPopUpButton.relocate(1240 / 2 - 90 / 2, 720 - POP_UP_BUTTON_HEIGHT);
         popUpButtonImage.relocate(1240 / 2 - 90 / 2, 720 - POP_UP_BUTTON_HEIGHT);

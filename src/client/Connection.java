@@ -124,11 +124,14 @@ public class Connection {
         jsonObject.addProperty("requestType", "getNewMessages");
         jsonObject.addProperty("authenticationToken", authenticationToken);
         out.println(jsonObject.toString());
+        out.flush();
         try {
             String response = in.readLine();
+            System.err.println(response);
             jsonObject = getAsJson(response);
-            System.err.println(jsonObject.get("log").getAsString());
+//            System.err.println(jsonObject.get("log").getAsString());
             JsonArray jsonArray = (JsonArray) jsonObject.get("messages");
+            System.err.println(jsonArray);
             return getJsonStringArray(jsonArray);
         } catch (IOException e) {
             e.printStackTrace();
@@ -217,10 +220,12 @@ public class Connection {
 
     private JsonObject sendSimpleMessage(JsonObject jsonObject) {
         out.println(jsonObject.toString());
+        out.flush();
         try {
             String response = in.readLine();
             JsonObject responseObject = getAsJson(response);
-            System.err.println(responseObject.get("log").getAsString());
+            System.err.println(jsonObject + "\n" + response);
+//            System.err.println(responseObject.get("log").getAsString());
             return responseObject;
         } catch (IOException e) {
             e.printStackTrace();
