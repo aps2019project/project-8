@@ -31,8 +31,10 @@ public class Server {
     private ArrayList<String> chats;
     private HashMap<String, Integer> messageIndex;
 
-    private HashMap<AccountUser, AccountUser> sentRequest;
-    private HashMap<AccountUser, ArrayList<AccountUser>> receivedRequests;
+    private ArrayList<AccountUser> inList;
+
+//    private HashMap<AccountUser, AccountUser> sentRequest;
+//    private HashMap<AccountUser, ArrayList<AccountUser>> receivedRequests;
 
     public Server() {
         port = DEFAULT_PORT; // should be read from config file
@@ -42,8 +44,10 @@ public class Server {
         chats = new ArrayList<>();
         messageIndex = new HashMap<>();
 
-        sentRequest = new HashMap<>();
-        receivedRequests = new HashMap<>();
+        inList = new ArrayList<>();
+
+//        sentRequest = new HashMap<>();
+//        receivedRequests = new HashMap<>();
     }
 
     public void start() {
@@ -273,6 +277,8 @@ public class Server {
         return jsonObject;
     }
 
+/*
+
     public JsonObject addGameRequest(JsonObject jsonObject) {
         JsonElement jsonElement = jsonObject.get("authenticationToken");
         JsonObject message = new JsonObject();
@@ -405,6 +411,9 @@ public class Server {
         return message;
     }
 
+    */
+
+
     public JsonObject addFuckingNewCard(JsonObject jsonObject) {
         JsonElement jsonElement = jsonObject.get("authenticationToken");
         JsonObject message = new JsonObject();
@@ -444,6 +453,34 @@ public class Server {
                     e.printStackTrace();
                 }
                 message.addProperty("log", "fucking card added");
+            }
+        } else {
+            message.addProperty("log", "no authentication token sent");
+        }
+        return message;
+    }
+
+    public JsonObject enterMulti(JsonObject jsonObject) {
+        JsonElement jsonElement = jsonObject.get("authenticationToken");
+        JsonObject message = new JsonObject();
+        if (jsonElement != null) {
+            String token = jsonElement.getAsString();
+            AccountUser accountUser = players.get(token);
+            if (accountUser == null) {
+                message.addProperty("log", "your authentication token has expired");
+            } else {
+                boolean in = jsonObject.get("in").getAsString().equals("yes");
+                if (in) {
+                    if (inList.indexOf(accountUser) == -1) {
+                        inList.add(accountUser);
+                    }
+                    if (inList.size() > 1) {
+                        // start game here
+                    }
+                } else {
+                    inList.remove(accountUser);
+                }
+                message.addProperty("log", "success");
             }
         } else {
             message.addProperty("log", "no authentication token sent");
