@@ -1,0 +1,38 @@
+{
+  "spell": {
+    "targetType": "UNIT",
+    "targetArea": "ADJACENT_8",
+    "targetUnit": "ENEMY_UNIT",
+    "targetUnitType": "HYBRID",
+    "numberOfRandomTargets": 100,
+    "gridX": 1,
+    "gridY": 1,
+    "buffs": [
+      {
+        "allegiance": "neither",
+        "duration": 2,
+        "holy": 3,
+        "poison": 1,
+        "effectHp": 0,
+        "effectAp": 0,
+        "stun": true,
+        "disarm": false,
+        "dispellable": true,
+        "delay": 5
+      }
+    ],
+    "canDispel": true,
+    "disarmable": true,
+    "poisonImmune": false,
+    "spellImmune": false,
+    "isBully": false,
+    "multiplied": false,
+    "ignoreHoly": false
+  },
+  "manaCost": 2,
+  "price": 2,
+  "collectionItemID": "pashmak",
+  "name": "pashmak",
+  "description": "pashm",
+  "count": 0
+}

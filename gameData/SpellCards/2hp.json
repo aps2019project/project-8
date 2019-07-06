@@ -1,0 +1,38 @@
+{
+  "spell": {
+    "targetType": "UNIT",
+    "targetArea": "SELECTED_CELL",
+    "targetUnit": "ENEMY_UNIT",
+    "targetUnitType": "ALL",
+    "numberOfRandomTargets": 100,
+    "gridX": 1,
+    "gridY": 1,
+    "buffs": [
+      {
+        "allegiance": "neither",
+        "duration": 2,
+        "holy": 0,
+        "poison": 0,
+        "effectHp": 2,
+        "effectAp": 0,
+        "stun": true,
+        "disarm": false,
+        "dispellable": false,
+        "delay": 0
+      }
+    ],
+    "canDispel": false,
+    "disarmable": true,
+    "poisonImmune": false,
+    "spellImmune": false,
+    "isBully": false,
+    "multiplied": false,
+    "ignoreHoly": false
+  },
+  "manaCost": 1,
+  "price": 1,
+  "collectionItemID": "2hp",
+  "name": "2hp",
+  "description": "2hp",
+  "count": 0
+}
