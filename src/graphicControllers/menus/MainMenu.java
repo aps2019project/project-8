@@ -10,6 +10,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import menus.Shop;
 import menus.UI;
+import model.CollectionItem;
 import model.SpecialPowerType;
 import model.Spell;
 import model.UnitType;
@@ -226,6 +227,7 @@ public class MainMenu extends Menu {
                         new Thread(() -> {
                             JsonMaker.main(new String[]{"java", "JsonMaker"});
                             Shop.load();
+                            CollectionItem collectionItem = Shop.getCollectionItemByName(name);
                             UI.getAccount().getData().getCollection().addCollectionItem(Shop.getCollectionItemByName(name));
                         }).start();
                     } catch (IOException ignored) {

@@ -36,6 +36,7 @@ public class JsonMaker {
         File[] directoryListing = dir.listFiles();
         if (directoryListing != null) {
             for (File child : directoryListing) {
+                System.err.println("child name "  + child.toString());
                 ManualFeatureAdder.main(new String[]{"java", "ManualFeatureAdder", child.toString()});
             }
         }
