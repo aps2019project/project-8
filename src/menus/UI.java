@@ -84,6 +84,10 @@ public class UI {
     private static final String SHENGDEBAO = "(?i:shengdebao)";
     private static final String KILL = "(?i:kill) " + ID;
 
+    // chat commands
+    private static final String GO_TO_CHAT = "(?i:chat)";
+    private static final String SEND_MESSAGE = "send message:.*";
+
     private static final String[] commands = {
             "create account [user name]",
             "login [user name]",
@@ -123,7 +127,7 @@ public class UI {
                     return;
                 }
             } catch (Exception ignored) {
-                System.out.println("Jooon!!!");
+                ignored.printStackTrace();
             }
             command = scanner.nextLine();
             command = command.trim();
@@ -167,8 +171,22 @@ public class UI {
                 break;
             case GRAVEYARD_MENU:
                 actGraveyard(command);
+            case CHAT_MENU:
+                actChatMenu(command);
         }
         return "false";
+    }
+
+    private static void actChatMenu(String command) {
+        if (command.matches(HELP)) {
+            ChatMenu.help();
+        } else if (command.matches(SEND_MESSAGE)) {
+            ChatMenu.sendMessage(command.replaceFirst("(?i:send message:)", ""));
+        } else if (command.matches(EXIT)) {
+            switchTo(Menus.MAIN_MENU);
+        } else {
+            view.showInvalidCommandError();
+        }
     }
 
     private static void actCreateAccount(String password) {
@@ -248,6 +266,8 @@ public class UI {
         else if (command.matches(LOGOUT)) {
             logout();
         }
+        else if (command.matches(GO_TO_CHAT))
+            switchTo(Menus.CHAT_MENU);
         else
             view.showInvalidCommandError();
         return "false";
@@ -571,6 +591,9 @@ public class UI {
                 break;
             case GRAVEYARD_MENU:
                 GraveyardMenu.help();
+                break;
+            case CHAT_MENU:
+                ChatMenu.help();
                 break;
             default:
                 break;

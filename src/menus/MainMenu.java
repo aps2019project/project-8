@@ -9,7 +9,8 @@ public class MainMenu extends Menu {
             "Exit",
             "Help",
             "Logout",
-            "Save"
+            "Save",
+            "Chat"
     };
 
     public static void help() {

@@ -85,6 +85,7 @@ public class ChatMenu extends Menu {
 
     private void handleSendMessage() {
         String message = textField.getText();
+
         textField.clear();
     }
 }

@@ -14,4 +14,5 @@ public enum Menus {
     GRAVEYARD_MENU,
     LOGIN_ACCOUNT,
     CREATE_ACCOUNT,
+    CHAT_MENU
 }
