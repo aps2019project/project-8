@@ -4,9 +4,12 @@ import graphicControllers.Menu;
 import graphicControllers.MenuManager;
 import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.shape.Rectangle;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -29,33 +32,49 @@ public class ReplayMenu extends Menu {
         gamesHistory.put("Game" + numberOfGamesPlayed, gameMenu);
     }
 
-    public void replay(GameMenu gameMenu) {
-        new Thread(() -> {
+    int currentPhase = 0;
+    GameMenu gameMenu;
 
-            for (ArrayList<Node> nodes : gameMenu.history) {
-                Platform.runLater(() -> {
-                    getView().getGroup().getChildren().clear();
-                    getView().getGroup().getChildren().addAll(nodes);
-                    Rectangle rectangle = new Rectangle(0, 0, windowWidth, windowHeight);
-                    rectangle.setOpacity(0);
-                    getView().getGroup().getChildren().add(rectangle);
-                });
+    public void setGameMenu(GameMenu gameMenu) {
+        this.gameMenu = gameMenu;
+    }
 
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+    private void setPhase() {
+        ArrayList<Node> nodes = gameMenu.history.get(currentPhase);
+        getView().getGroup().getChildren().clear();
+        getView().getGroup().getChildren().addAll(nodes);
+        Rectangle rectangle = new Rectangle(0, 0, windowWidth, windowHeight);
+        rectangle.setOpacity(0);
+        getView().getGroup().getChildren().add(rectangle);
+    }
 
-        }).start();
+    private void nextPhase() {
+        currentPhase++;
+        if (currentPhase >= gameMenu.history.size())
+            currentPhase--;
+    }
+
+    private void prevPhase() {
+        currentPhase--;
+        if (currentPhase < 0)
+            currentPhase++;
     }
 
     public ReplayMenu() {
         super(Id.REPLAY_MENU, "Replay", windowDefaultWidth, windowDefaultHeight);
+        try {
+            setBackGround(new Image(new FileInputStream("images/backgrounds/battlemap0_background@2x.png")));
+        } catch (FileNotFoundException ignored) {
+        }
         getView().getScene().setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ESCAPE) {
                 MenuManager.getInstance().setCurrentMenu(Id.MAIN_MENU);
+            } else if (event.getCode() == KeyCode.RIGHT) {
+                nextPhase();
+                setPhase();
+            } else if (event.getCode() == KeyCode.LEFT){
+                prevPhase();
+                setPhase();
             }
         });
     }

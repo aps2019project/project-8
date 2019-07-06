@@ -62,7 +62,7 @@ public class MainMenu extends Menu {
                 if (s.isPresent()) {
                     String gameID = s.get();
                     MenuManager.getInstance().setCurrentMenu(Id.REPLAY_MENU);
-                    ((ReplayMenu) MenuManager.getInstance().getCurrentMenu()).replay(ReplayMenu.getGame(gameID));
+                    ((ReplayMenu) MenuManager.getInstance().getCurrentMenu()).setGameMenu(ReplayMenu.getGame(gameID));
 
                     //System.err.println(MenuManager.getInstance().getCurrentMenu());
                     //MenuManager.getInstance().getCurrentMenu().getView().getGroup().getChildren().clear();

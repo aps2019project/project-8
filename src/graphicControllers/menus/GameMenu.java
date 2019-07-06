@@ -78,33 +78,15 @@ public class GameMenu extends Menu  {
 
 
 
-
-
     boolean isRecording;
 
     public void startRecording() {
         isRecording = true;
-        new Thread(() -> {
-            while (isRecording) {
-                Platform.runLater(() -> {
-                    ArrayList<Node> nodes = new ArrayList<>(getView().getGroup().getChildrenUnmodifiable());
-                    if (history.isEmpty() || !nodes.equals(history.get(history.size() - 1))) {
-                        history.add(new ArrayList<>(getView().getGroup().getChildrenUnmodifiable()));
-                    }
-                });
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
     }
 
     public void stopRecording() {
         ReplayMenu.addGame(this);
         isRecording = false;
-        System.err.println(history.size() +  "--------------------------------------");
     }
 
     public GameMenu() {
@@ -890,7 +872,6 @@ public class GameMenu extends Menu  {
                 "images/gameIcons/menuButtons/ui_left_normal.png");
         mainMenu.setOnMouseClicked(e -> {
             UI.decide("exit");
-            stopRecording();
             MenuManager.getInstance().setCurrentMenu(Id.MAIN_MENU);
         });
         menuButtons.addMenuComponent(mainMenu, "main_menu");
@@ -1182,6 +1163,12 @@ public class GameMenu extends Menu  {
                     }
 
                     addComponent(everyThing);
+                    if (isRecording) {
+                        ArrayList<Node> nodes = new ArrayList<>(getView().getGroup().getChildrenUnmodifiable());
+                        if (history.isEmpty() || !nodes.equals(history.get(history.size() - 1))) {
+                            history.add(new ArrayList<>(getView().getGroup().getChildrenUnmodifiable()));
+                        }
+                    }
                 } catch (Throwable ignored) {
 
                 }
