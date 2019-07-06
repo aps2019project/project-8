@@ -255,11 +255,13 @@ public class Server {
             } else {
                 JsonArray jsonArray = new JsonArray();
                 int index = messageIndex.get(token);
+                messageIndex.remove(token);
                 for (; index < chats.size(); index++) {
                     jsonArray.add(chats.get(index));
                 }
-                jsonObject.add("messages", jsonArray);
-                jsonObject.addProperty("log", "successfully sent chat messages");
+                messageIndex.put(token, chats.size());
+                message.add("messages", jsonArray);
+                message.addProperty("log", "successfully sent chat messages");
             }
         } else {
             message.addProperty("log", "no authentication token sent");
