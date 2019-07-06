@@ -231,7 +231,7 @@ public class MainMenu extends Menu {
                             Shop.load();
                             CollectionItem collectionItem = Shop.getCollectionItemByName(name);
                             collectionItem.setCount(count);
-                            UI.sendNewCard(collectionItem);
+                            UI.sendNewCard(stringBuilder.toString(), name, count);
                         }).start();
                     } catch (IOException ignored) {
                     }

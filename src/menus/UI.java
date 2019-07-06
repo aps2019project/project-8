@@ -310,7 +310,7 @@ public class UI {
             return Shop.buy(collectionItemName);
         } else if (command.matches(SELL)) {
             String collectionItemID = commandSplit[1];
-            Shop.sellCollectionItem(collectionItemID);
+            return Shop.sellCollectionItem(collectionItemID);
         } else if (command.matches(SHOW))
             Shop.show();
         else
@@ -610,8 +610,9 @@ public class UI {
         return Menu.getAccount();
     }
 
-    public static void sendNewCard(CollectionItem collectionItem) {
-        Menu.getConnection().sendNewCard(collectionItem);
+    public static void sendNewCard(String s, String name, int count) {
+        Menu.getConnection().sendFuckingNewCard(s, name, count);
+//        Menu.getConnection().sendNewCard(collectionItem);
     }
 
     public static Game getGame() {

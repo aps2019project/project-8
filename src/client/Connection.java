@@ -69,7 +69,7 @@ public class Connection {
 
     public String tradeCollectionItem(String s, boolean sell) {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("requestType", sell ? "sell" : "buy" + "CollectionItem");
+        jsonObject.addProperty("requestType", (sell ? "sell" : "buy") + "CollectionItem");
         jsonObject.addProperty("authenticationToken", authenticationToken);
         jsonObject.addProperty(sell ? "collectionItemID" : "collectionItemName", s);
         out.println(jsonObject.toString());
@@ -93,7 +93,7 @@ public class Connection {
         try {
             String response = in.readLine();
             jsonObject = getAsJson(response);
-            System.err.println(jsonObject.get("log").getAsString());
+//            System.err.println(jsonObject.get("log").getAsString());
             if (jsonObject.get("count") != null)
                 return jsonObject.get("count").getAsString();
         } catch (IOException e) {
@@ -202,6 +202,16 @@ public class Connection {
         jsonObject = (JsonObject) yaGson.toJsonTree(collectionItem, CollectionItem.class);
         jsonObject.addProperty("requestType", "addNewCard");
         jsonObject.addProperty("authenticationToken", authenticationToken);
+        sendSimpleMessage(jsonObject);
+    }
+
+    public void sendFuckingNewCard(String s, String name, int count) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("requestType", "addFuckingNewCard");
+        jsonObject.addProperty("authenticationToken", authenticationToken);
+        jsonObject.addProperty("object", s);
+        jsonObject.addProperty("name", name);
+        jsonObject.addProperty("count", count);
         sendSimpleMessage(jsonObject);
     }
 
