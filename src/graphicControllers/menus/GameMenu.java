@@ -47,7 +47,7 @@ public class GameMenu extends Menu {
     private static final Color textColor = Color.rgb(176, 42, 226);
     private static final double BUFF_WIDTH = 10;
     private static final double BUFF_HEIGHT = 10;
-    private static final int TIME_LIMIT = 20;
+    private static final int TIME_LIMIT = 60;
 
     static class Assets {
         private static HashMap<String, Image> imageMap = new HashMap<>();
@@ -59,7 +59,7 @@ public class GameMenu extends Menu {
                     imageMap.put(path, new Image(new FileInputStream(path)));
                 } catch (FileNotFoundException e) {
                     try {
-                        new Image(new FileInputStream("images/gameIcons/gifs/test_idle.gif"));
+                        return new Image(new FileInputStream("images/gameIcons/gifs/test_idle.gif"));
                     } catch (FileNotFoundException e1) {
                         e1.printStackTrace();
                     }
@@ -221,6 +221,8 @@ public class GameMenu extends Menu {
                     }
                 ImageView castSpellEffect = new ImageView(Assets.getImage("images/gameIcons/Cells/onDeath.gif"));
                 Platform.runLater(() -> {
+                    if (!deathIDs.isEmpty())
+                        new MediaPlayer(deathSound).play();
                     try {
                         for (String s : output) {
                             if (s.split(" ")[0].equalsIgnoreCase("death")) {
@@ -281,23 +283,18 @@ public class GameMenu extends Menu {
             refresh();
             Label timer = (Label) ((NodeWrapper) menuButtons.getComponentByID("timer")).getValue();
             timer.setText(TIME_LIMIT + "");
-            for (int i = 0; i < gridStrings.length; i++)
-                for (int j = 0; j < gridStrings[i].length; j++)
-                    System.err.println(i + " " + j + " " + gridStrings[i][j]);
             String[] commands = out.split("\\n");
             for (String s : commands) {
                 s = s.trim();
                 Pattern pattern = Pattern.compile("(\\w+) moved from (\\d+) (\\d+) to (\\d+) (\\d+)");
                 Matcher matcher = pattern.matcher(s);
                 if (matcher.find()) {
-                    System.err.println(s);
                     selectedCardID = matcher.group(1);
                     int sx = Integer.parseInt(matcher.group(2)) - 1;
                     int sy = Integer.parseInt(matcher.group(3)) - 1;
                     int dx = Integer.parseInt(matcher.group(4)) - 1;
                     int dy = Integer.parseInt(matcher.group(5)) - 1;
 
-                    System.err.println(s);
                     handleGraphicallMove(sx, sy, dx, dy, true);
                 }
 
@@ -307,18 +304,12 @@ public class GameMenu extends Menu {
                     int x = Integer.parseInt(matcher.group(1)) - 1;
                     int y = Integer.parseInt(matcher.group(2)) - 1;
                     handleInsertCard(x, y, true);
-                    System.err.println("iinnnnnnnnnnnnnnnnnsertinggggg" + x + " " + y);
-                    ;
-//                    handleGraphicallMove(x, y, x, y, true);
-//                    handleCellSpawn(x, y);
                 }
 
                 pattern = Pattern.compile("attack from (\\w+) to (\\w+)");
                 matcher = pattern.matcher(s);
                 if (matcher.find()) {
-                    System.err.println("attacking " + matcher.group(1) + " " + matcher.group(2));
                     selectedCardID = (matcher.group(1));
-//                    handleAttackUnit(matcher.group(2), true);
                 }
 
                 pattern = Pattern.compile("hero power on (\\d+) (\\d+)");
@@ -326,22 +317,18 @@ public class GameMenu extends Menu {
                 if (matcher.find()) {
                     int x = Integer.parseInt(matcher.group(1)) - 1;
                     int y = Integer.parseInt(matcher.group(2)) - 1;
-//                    handleUseSpecialPower(x, y, true);
                 }
 
                 pattern = Pattern.compile("apply collectible (\\d+) to (\\d+)");
                 matcher = pattern.matcher(s);
                 if (matcher.find()) {
-                    System.err.println("collectible apllying" + matcher.group(1) + " " + matcher.group(2));
                     int x = Integer.parseInt(matcher.group(1)) - 1;
                     int y = Integer.parseInt(matcher.group(2)) - 1;
-//                    handleUseCollectible(x, y, true);
                 }
             }
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 5; j++) {
                     if (getDescriptionByLocation(j, i) != null && getDescriptionByLocation(j, i).contains("passive")) {
-                        System.err.println("hlo");
                         int finalJ = j;
                         int finalI = i;
                         new Thread(() -> {
@@ -437,6 +424,7 @@ public class GameMenu extends Menu {
                         strike.relocate(tile.getLayoutX(), tile.getLayoutY());
 
                         Platform.runLater(() -> {
+                            new MediaPlayer(insertSound).play();
                             addComponent(new NodeWrapper(strike));
                         });
                         try {
@@ -447,7 +435,7 @@ public class GameMenu extends Menu {
 
                         Platform.runLater(() -> {
                             removeComponent(new NodeWrapper(strike));
-                            if (getDescriptionByLocation(row, column).contains("onSpawn")) {
+                            if (getDescriptionByLocation(row, column) != null && getDescriptionByLocation(row, column).contains("onSpawn")) {
                                 new Thread(() -> {
                                     Platform.runLater(() -> addComponent(new NodeWrapper(onSpawnEffect)));
                                     try {
@@ -528,6 +516,8 @@ public class GameMenu extends Menu {
                     enableEvents();
                     refresh();
                 } else {
+
+                    new MediaPlayer(attackSound).play();
                     new Thread(() -> {
                         try {
                             try {
@@ -580,14 +570,18 @@ public class GameMenu extends Menu {
                                     e.printStackTrace();
                                 }
                                 Platform.runLater(() -> {
-                                    if (!counterAttack)
-                                        removeComponent(new NodeWrapper(hit));
-                                    if (getDescriptionByLocation(sourceRow, sourceColumn).contains("onAttack"))
-                                        removeComponent(new NodeWrapper(onAttack));
-                                    if (getDescriptionByLocation(row, column).contains("onDefend"))
-                                        removeComponent(new NodeWrapper(onDefend));
-                                    enableEvents();
-                                    refresh();
+                                    try {
+                                        if (!counterAttack)
+                                            removeComponent(new NodeWrapper(hit));
+                                        if (getDescriptionByLocation(sourceRow, sourceColumn).contains("onAttack"))
+                                            removeComponent(new NodeWrapper(onAttack));
+                                        if (getDescriptionByLocation(row, column).contains("onDefend"))
+                                            removeComponent(new NodeWrapper(onDefend));
+                                        enableEvents();
+                                        refresh();
+                                    } catch (Throwable ex) {
+                                        System.out.println("GOOOD");
+                                    }
                                 });
                             } catch (Exception ex) {
                                 enableEvents();
@@ -716,7 +710,6 @@ public class GameMenu extends Menu {
 
     private void handleGraphicallMove(int sourceRow, int sourceColumn, int row, int column, boolean ai) {
 
-        System.err.println("fasdfadfasf " + sourceRow + " " + sourceColumn + " " + row + " " + column);
 
         disableEvents();
         ImageView source;
@@ -734,11 +727,12 @@ public class GameMenu extends Menu {
                 selectedCardID = null;
                 forceRefresh();
             } else {
-                MediaPlayer mediaPlayer = new MediaPlayer(runSound);
+                //MediaPlayer mediaPlayer = new MediaPlayer(runSound);
 
                 new Thread(() -> {
                     Platform.runLater(() -> {
-                        mediaPlayer.play();
+                        new MediaPlayer(runSound).play();
+                        //      mediaPlayer.play();
                         source.setImage(getImageByCardName(getNameFromID(selectedCardID), "run", "gif"));
                         KeyValue xValue = new KeyValue(source.xProperty(), (column - sourceColumn) * CELL_CONTENT_WIDTH);
                         KeyValue yValue = new KeyValue(source.yProperty(), (row - sourceRow) * CELL_CONTENT_HEIGHT);
@@ -753,7 +747,7 @@ public class GameMenu extends Menu {
                         e.printStackTrace();
                     }
                     Platform.runLater(() -> {
-                        mediaPlayer.stop();
+                    //    mediaPlayer.stop();
                         enableEvents();
                         selectedCardID = null;
                         refresh();

@@ -34,13 +34,11 @@ public class MenuManager {
 
             changeComponent.setOnAction(event -> {
                 if (changeComponent.isReady()) {
-                    System.err.println("PIPI");
                     try {
                         int goalMenuID = changeComponent.getGoalMenuID();
                         boolean success = false;
                         for (Map.Entry<Integer, Menu> entry : menusIDs.entrySet()) {
                             if (entry.getKey().equals(goalMenuID)) {
-                                System.err.println(entry.getValue());
                                 setCurrentMenu(entry.getValue());
                                 success = true;
                                 break;
@@ -62,7 +60,6 @@ public class MenuManager {
         Menu menu = menusIDs.get(menuID);
         menusIDs.remove(menuID);
         Class clazz = menu.getClass();
-        System.err.println(clazz + " CLAZZZ");
         try {
             menusIDs.put(menuID, (Menu) clazz.newInstance());
         } catch (InstantiationException e) {

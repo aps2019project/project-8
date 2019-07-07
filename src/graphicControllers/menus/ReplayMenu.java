@@ -51,17 +51,18 @@ public class ReplayMenu extends Menu {
     private void nextPhase() {
         currentPhase++;
         if (currentPhase >= gameMenu.history.size())
-            currentPhase--;
+            currentPhase = gameMenu.history.size() - 1;
     }
 
     private void prevPhase() {
         currentPhase--;
         if (currentPhase < 0)
-            currentPhase++;
+            currentPhase = 0;
     }
 
     public ReplayMenu() {
         super(Id.REPLAY_MENU, "Replay", windowDefaultWidth, windowDefaultHeight);
+        currentPhase = 0;
         try {
             setBackGround(new Image(new FileInputStream("images/backgrounds/battlemap0_background@2x.png")));
         } catch (FileNotFoundException ignored) {

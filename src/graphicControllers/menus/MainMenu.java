@@ -64,9 +64,6 @@ public class MainMenu extends Menu {
                     MenuManager.getInstance().setCurrentMenu(Id.REPLAY_MENU);
                     ((ReplayMenu) MenuManager.getInstance().getCurrentMenu()).setGameMenu(ReplayMenu.getGame(gameID));
 
-                    //System.err.println(MenuManager.getInstance().getCurrentMenu());
-                    //MenuManager.getInstance().getCurrentMenu().getView().getGroup().getChildren().clear();
-                    //ReplayMenu.getGame(gameID).replay();
                 }
             });
             addComponent(replay);
