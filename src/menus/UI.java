@@ -1,16 +1,20 @@
-        package menus;
+package menus;
 
 import client.AnonymousConnection;
 import client.Connection;
 import client.Connector;
 import com.gilecode.yagson.YaGson;
 import gen.JsonMaker;
-import model.*;
+import model.AI;
+import model.AccountUser;
+import model.Game;
 import view.CommandLineView;
 import view.View;
 
-import java.io.*;
-import java.util.Arrays;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
 
 //This is hamid
@@ -269,12 +273,10 @@ public class UI {
             save();
         else if (command.matches(LOGOUT)) {
             logout();
-        }
-        else if (command.matches(GO_TO_CHAT)) {
+        } else if (command.matches(GO_TO_CHAT)) {
             Menu.getConnection().sendChatMessage(getAccount().getName() + " Entered!");
             switchTo(Menus.CHAT_MENU);
-        }
-        else
+        } else
             view.showInvalidCommandError();
         return "false";
     }
@@ -356,8 +358,7 @@ public class UI {
         else if (command.matches(LOAD_LAST_GAME)) {
             if (GameMenu.loadLastGame())
                 switchTo(Menus.GAME_MENU);
-        }
-        else
+        } else
             view.showInvalidCommandError();
     }
 
