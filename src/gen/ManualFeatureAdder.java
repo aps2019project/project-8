@@ -529,6 +529,7 @@ class ManualFeatureAdder {
         if (!hasArg) {
             try {
                 writer.close();
+                scanner.close();
             } catch (IOException io) {
                 ShengdeBaoPrinter.println("IO Exception while closing");
             }
