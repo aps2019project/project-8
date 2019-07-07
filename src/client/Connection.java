@@ -154,6 +154,8 @@ public class Connection {
         }
     }
 
+    /*
+
     public void sendMultiplayerGameRequest(String opponentName) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("requestType", "multiplayerGameRequest");
@@ -204,6 +206,8 @@ public class Connection {
         sendSimpleMessage(jsonObject);
     }
 
+    */
+
     public void sendFuckingNewCard(String s, String name, int count) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("requestType", "addFuckingNewCard");
@@ -212,6 +216,14 @@ public class Connection {
         jsonObject.addProperty("name", name);
         jsonObject.addProperty("count", count);
         sendSimpleMessage(jsonObject);
+    }
+
+    public void enterMultiplayerMenu(boolean in) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("requestType", "enterMultiplayer");
+        jsonObject.addProperty("authenticationToken", authenticationToken);
+        jsonObject.addProperty("in", in ? "yes" : "no");
+        JsonObject response = sendSimpleMessage(jsonObject);
     }
 
     private JsonObject sendSimpleMessage(JsonObject jsonObject) {

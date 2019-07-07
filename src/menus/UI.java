@@ -646,6 +646,10 @@ public class UI {
 //        Menu.getConnection().sendNewCard(collectionItem);
     }
 
+    public static Connection getConnection() {
+        return Menu.getConnection();
+    }
+
     public static Game getGame() {
         return GameMenu.getGame();
     }
