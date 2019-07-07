@@ -142,13 +142,14 @@ public class Game extends InGameMenu {
         if (!gameEnded) {
             if (command.matches(EXIT)) {
                 exit(); //mark
-                switchTo(Menus.MAIN_MENU);
+//                switchTo(Menus.MAIN_MENU);
             } else if (command.matches(SHOW_MENU))
                 help(false);
             else if (command.matches(HELP))
                 showOptions();
-            else if (command.matches(ENTER_GRAVEYARD))
-                switchTo(Menus.GRAVEYARD_MENU);
+            else if (command.matches(ENTER_GRAVEYARD)) {
+//                switchTo(Menus.GRAVEYARD_MENU);
+            }
             else if (command.matches(GAME_INFO))
                 showGameInfo();
             else if (command.matches(SHOW_MY_MINIONS))
@@ -198,7 +199,7 @@ public class Game extends InGameMenu {
             checkGameCondition();
         } else {
             if (command.matches(END_GAME)) {
-                switchTo(Menus.MAIN_MENU);
+//                switchTo(Menus.MAIN_MENU);
                 gameEnded = false;
             } else if (command.matches(HELP))
                 help(true);

@@ -66,6 +66,7 @@ public class GameInterface {
             return "you are not in a game";
         ((CommandLineView) game.getView()).clean();
         game.setView(new CommandLineView());
+        game.parse(command);
         return ((CommandLineView) game.getView()).toString();
     }
 }
