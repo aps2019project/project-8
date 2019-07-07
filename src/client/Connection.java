@@ -227,6 +227,16 @@ public class Connection {
         JsonObject response = sendSimpleMessage(jsonObject);
     }
 
+    public String sendGameCommand(String command) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("requestType", "sendGameCommand");
+        jsonObject.addProperty("authenticationToken", authenticationToken);
+        jsonObject.addProperty("command", command);
+        JsonObject response = sendSimpleMessage(jsonObject);
+        assert response != null;
+        return response.get("log").getAsString();
+    }
+
     private JsonObject sendSimpleMessage(JsonObject jsonObject) {
         out.println(jsonObject.toString());
         out.flush();
