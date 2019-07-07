@@ -65,7 +65,7 @@ public class BattleMenu extends Menu {
             });
             addComponent(gotoMultiplayer);
 
-            GUIButton waitOnline = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight / 2 + 2 * 5 + 50,
+            GUIButton waitOnline = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight / 2 + 2 * 5 + 2 * 50,
                     170, 50);
             try {
                 waitOnline.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
@@ -75,7 +75,8 @@ public class BattleMenu extends Menu {
             }
             waitOnline.setText("Online");
             waitOnline.setOnMouseClicked(e -> {
-//                menus.Menu.getConnection().
+                menus.Menu.getConnection().enterMultiplayerMenu(true);
+                MenuManager.getInstance().setCurrentMenu(Id.WAITING_MENU);
             });
             addComponent(waitOnline);
 
