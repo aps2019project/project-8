@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 //This is hamid
@@ -428,63 +429,64 @@ public class UI {
     }
 
     private static void actInGame(String command) {
-        GameMenu.execute(command);
-/*        if (!gameEnded) {
+//        GameMenu.execute(command);
+        if (!gameEnded) {
             if (command.matches(EXIT)) {
                 GameMenu.exit(); //mark
                 switchTo(Menus.MAIN_MENU);
-            } else if (command.matches(SHOW_MENU))
-                GameMenu.help(false);
-            else if (command.matches(HELP))
-                GameMenu.showOptions();
+            }
+//            } else if (command.matches(SHOW_MENU))
+//                GameMenu.help(false);
+//            else if (command.matches(HELP))
+//                GameMenu.showOptions();
             else if (command.matches(ENTER_GRAVEYARD))
                 switchTo(Menus.GRAVEYARD_MENU);
-            else if (command.matches(GAME_INFO))
-                GameMenu.showGameInfo();
-            else if (command.matches(SHOW_MY_MINIONS))
-                GameMenu.showMinions(0);
-            else if (command.matches(SHOW_OPPONENT_MINIONS))
-                GameMenu.showMinions(1);
-            else if (command.matches(SHOW_CARD_INFO))
-                GameMenu.showCardInfo(command.split(" ")[3]);
-            else if (command.matches(SELECT_COLLECTION_ITEM))
-                GameMenu.select(command.split(" ")[1]);
-            else if (command.matches(MOVE)) {
-                int[] coordinates = getCoordinates(command);
-                GameMenu.moveUnit(coordinates[0], coordinates[1]);
-            } else if (command.matches(ATTACK))
-                GameMenu.attackUnit(command.split(" ")[1]);
-            else if (command.matches(ATTACK_COMBO)) {
-                String[] commandSplit = command.split(" ");
-                GameMenu.attackCombo(commandSplit[2], Arrays.copyOfRange(commandSplit, 3, commandSplit.length));
-            } else if (command.matches(SPECIAL_POWER)) {
-                int[] coordinates = getCoordinates(command);
-                GameMenu.useSpecialPower(coordinates[0], coordinates[1]);
-            } else if (command.matches(SHOW_HAND))
-                GameMenu.showHand();
-            else if (command.matches(INSERT)) {
-                int[] coordinates = getCoordinates(command);
-                GameMenu.insertCard(command.split(" ")[1], coordinates[0], coordinates[1]);
-            } else if (command.matches(END_TURN))
-                GameMenu.endTurn();
-            else if (command.matches(SHOW_COLLECTIBLES))
-                GameMenu.showAllCollectibles();
-            else if (command.matches(SHOW_INFO))
-                GameMenu.showCollectibleInfo();
-            else if (command.matches(USE_COLLECTIBLE)) {
-                int[] coordinates = getCoordinates(command);
-                GameMenu.useCollectible(coordinates[0], coordinates[1]);
-            } else if (command.matches(SHOW_NEXT_CARD))
-                GameMenu.showNextCard();
-            else if (command.matches(SHENGDEBAO)) {
-                GameMenu.shengdeShow();
-            }
-            else if (command.matches(KILL))
-                GameMenu.kill(command.split(" ")[1]);
-            else if (command.matches(DEAD))
-                GameMenu.getDead();
-            else
-                view.showInvalidCommandError();
+//            else if (command.matches(GAME_INFO))
+//                GameMenu.showGameInfo();
+//            else if (command.matches(SHOW_MY_MINIONS))
+//                GameMenu.showMinions(0);
+//            else if (command.matches(SHOW_OPPONENT_MINIONS))
+//                GameMenu.showMinions(1);
+//            else if (command.matches(SHOW_CARD_INFO))
+//                GameMenu.showCardInfo(command.split(" ")[3]);
+//            else if (command.matches(SELECT_COLLECTION_ITEM))
+//                GameMenu.select(command.split(" ")[1]);
+//            else if (command.matches(MOVE)) {
+//                int[] coordinates = getCoordinates(command);
+//                GameMenu.moveUnit(coordinates[0], coordinates[1]);
+//            } else if (command.matches(ATTACK))
+//                GameMenu.attackUnit(command.split(" ")[1]);
+//            else if (command.matches(ATTACK_COMBO)) {
+//                String[] commandSplit = command.split(" ");
+//                GameMenu.attackCombo(commandSplit[2], Arrays.copyOfRange(commandSplit, 3, commandSplit.length));
+//            } else if (command.matches(SPECIAL_POWER)) {
+//                int[] coordinates = getCoordinates(command);
+//                GameMenu.useSpecialPower(coordinates[0], coordinates[1]);
+//            } else if (command.matches(SHOW_HAND))
+//                GameMenu.showHand();
+//            else if (command.matches(INSERT)) {
+//                int[] coordinates = getCoordinates(command);
+//                GameMenu.insertCard(command.split(" ")[1], coordinates[0], coordinates[1]);
+//            } else if (command.matches(END_TURN))
+//                GameMenu.endTurn();
+//            else if (command.matches(SHOW_COLLECTIBLES))
+//                GameMenu.showAllCollectibles();
+//            else if (command.matches(SHOW_INFO))
+//                GameMenu.showCollectibleInfo();
+//            else if (command.matches(USE_COLLECTIBLE)) {
+//                int[] coordinates = getCoordinates(command);
+//                GameMenu.useCollectible(coordinates[0], coordinates[1]);
+//            } else if (command.matches(SHOW_NEXT_CARD))
+//                GameMenu.showNextCard();
+//            else if (command.matches(SHENGDEBAO)) {
+//                GameMenu.shengdeShow();
+//            }
+//            else if (command.matches(KILL))
+//                GameMenu.kill(command.split(" ")[1]);
+//            else if (command.matches(DEAD))
+//                GameMenu.getDead();
+//            else
+//                view.showInvalidCommandError();
             GameMenu.checkGameCondition();
         } else {
             if (command.matches(END_GAME)) {
@@ -494,7 +496,8 @@ public class UI {
                 GameMenu.help(true);
             else
                 view.showInvalidCommandError();
-        }*/
+        }
+        getConnection().sendGameCommand(command);
     }
 
     public static int[] getCoordinates(String command) {
