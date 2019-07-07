@@ -211,6 +211,7 @@ public class Menu {
         public static final int STORY_MODE = 8080;
         public static final int CHAT_MENU = 8585;
         public static final int REPLAY_MENU = 378;
+        public static final int WAITING_MENU = 9595;
     }
 
     public void refresh() {}

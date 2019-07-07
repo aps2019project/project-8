@@ -7,7 +7,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import menus.UI;
 import view.GUIButton;
-import view.GUIChangeMenuButton;
 import view.NodeWrapper;
 
 import java.io.File;
@@ -65,6 +64,20 @@ public class BattleMenu extends Menu {
                 MenuManager.getInstance().setCurrentMenu(Id.MULTIPLAYER_MENU);
             });
             addComponent(gotoMultiplayer);
+
+            GUIButton waitOnline = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight / 2 + 2 * 5 + 50,
+                    170, 50);
+            try {
+                waitOnline.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+                waitOnline.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+                waitOnline.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+            } catch (FileNotFoundException ignored) {
+            }
+            waitOnline.setText("Online");
+            waitOnline.setOnMouseClicked(e -> {
+//                menus.Menu.getConnection().
+            });
+            addComponent(waitOnline);
 
             GUIButton loadLastGame = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
                     / 2 + 50 + 5, 170, 50);
