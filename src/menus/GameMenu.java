@@ -224,7 +224,7 @@ public class GameMenu extends InGameMenu {
                 break;
             case WIN_SECOND_PLAYER:
                 account.addMatch(new Match((hasAI ? null : secondAccount), Result.WIN, LocalDateTime.now()));
-                if (!(secondAccount == null)) {
+                if (secondAccount != null) {
                     secondAccount.addWin();
                     secondAccount.addMatch(new Match(account, Result.WIN, LocalDateTime.now()));
                     secondAccount.payMoney(game.getPrize());
@@ -262,5 +262,10 @@ public class GameMenu extends InGameMenu {
         if (getGame() == null)
             return;
         game.getDead();
+    }
+
+    public static void execute(String command) {
+        if (game != null)
+            game.parse(command);
     }
 }

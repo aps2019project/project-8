@@ -20,6 +20,7 @@ import view.NodeWrapper;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Optional;
 
 public class MultiplayerMenu extends Menu {
@@ -67,7 +68,8 @@ public class MultiplayerMenu extends Menu {
     public void refresh() {
         new Thread(() -> Platform.runLater(() -> {
             vBox.getChildren().clear();
-            AccountUser.getAccounts().forEach(o -> {
+            Arrays.stream(menus.Menu.getConnection().getUsers()).forEach(name -> {
+                final AccountUser o = AccountUser.getAccount(name);
                 if (o != UI.getAccount()) {
                     if (o.getData().getMainDeck() != null && o.getData().getMainDeck().isValid()) {
                         try {
