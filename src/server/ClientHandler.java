@@ -83,27 +83,27 @@ public class ClientHandler extends Thread {
             case "getNewMessages" :
                 response = server.getNewMessages(jsonObject);
                 break;
-//            case "multiplayerGameRequest" :
-//                response = server.addGameRequest(jsonObject);
-//                break;
-//            case "cancelGameRequest" :
-//                response = server.cancelGameRequest(jsonObject);
-//                break;
-//            case "getGameRequests" :
-//                response = server.getGameRequests(jsonObject);
-//                break;
-//            case "startGame" :
-//                response = server.startGame(jsonObject);
-//                break;
-//            case "addNewCard" :
-//                response = server.addNewCard(jsonObject);
-//                break;
+            case "multiplayerGameRequest" :
+                response = server.addGameRequest(jsonObject);
+                break;
+            case "cancelGameRequest" :
+                response = server.cancelGameRequest(jsonObject);
+                break;
+            case "getGameRequests" :
+                response = server.getGameRequests(jsonObject);
+                break;
+            case "startGame" :
+                response = server.startGame(jsonObject);
+                break;
+            case "addNewCard" :
+                response = server.addNewCard(jsonObject);
+                break;
             case "addFuckingNewCard" :
                 response = server.addFuckingNewCard(jsonObject);
                 break;
-            case "enterMultiplayer" :
-                response = server.enterMulti(jsonObject);
-                break;
+//            case "enterMultiplayer" :
+//                response = server.enterMulti(jsonObject);
+//                break;
 
         }
         sendMessage(response.toString());

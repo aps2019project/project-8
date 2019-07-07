@@ -411,8 +411,6 @@ public class Server {
         return message;
     }
 
-    /*
-
 
     public JsonObject addFuckingNewCard(JsonObject jsonObject) {
         JsonElement jsonElement = jsonObject.get("authenticationToken");
@@ -459,6 +457,8 @@ public class Server {
         }
         return message;
     }
+
+    /*
 
     public JsonObject enterMulti(JsonObject jsonObject) {
         JsonElement jsonElement = jsonObject.get("authenticationToken");
