@@ -128,7 +128,6 @@ public class Connection {
             String response = in.readLine();
             jsonObject = getAsJson(response);
             JsonArray jsonArray = (JsonArray) jsonObject.get("messages");
-            System.err.println(jsonArray);
             return getJsonStringArray(jsonArray);
         } catch (IOException e) {
             e.printStackTrace();
