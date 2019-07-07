@@ -3,6 +3,7 @@ package interfaces;
 import model.AccountUser;
 import model.Game;
 import model.GameType;
+import view.CommandLineView;
 
 import java.util.HashMap;
 
@@ -57,5 +58,14 @@ public class GameInterface {
 //        hasAI = false;
 //        GraveyardMenu.setGame(game);
         return game;
+    }
+
+    public String sendCommand(AccountUser accountUser, String command) {
+        Game game = games.get(accountUser);
+        if (game == null)
+            return "you are not in a game";
+        ((CommandLineView) game.getView()).clean();
+        game.setView(new CommandLineView());
+        return ((CommandLineView) game.getView()).toString();
     }
 }

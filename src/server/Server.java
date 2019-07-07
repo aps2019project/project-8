@@ -487,16 +487,37 @@ public class Server {
             } else {
                 boolean in = jsonObject.get("in").getAsString().equals("yes");
                 if (in) {
-                    if (inList.indexOf(accountUser) == -1) {
-                        inList.add(accountUser);
-                    }
-                    if (inList.size() > 1) {
-                        // start game here
+                    if (inList.size() > 0) {
+                        AccountUser b = inList.remove(0);
+//                        gameInterface.startGame(accountUser, b);
+                        // game start game game here some thing happens
                     }
                 } else {
                     inList.remove(accountUser);
+                    message.addProperty("log", "you were removed from list");
                 }
-                message.addProperty("log", "success");
+            }
+        } else {
+            message.addProperty("log", "no authentication token sent");
+        }
+        return message;
+    }
+
+    public JsonObject sendGameCommand(JsonObject jsonObject) {
+        JsonElement jsonElement = jsonObject.get("authenticationToken");
+        JsonObject message = new JsonObject();
+        if (jsonElement != null) {
+            String token = jsonElement.getAsString();
+            AccountUser accountUser = players.get(token);
+            if (accountUser == null) {
+                message.addProperty("log", "your authentication token has expired");
+            } else {
+                jsonElement = jsonObject.get("command");
+                if (jsonElement != null) {
+                    message.addProperty("log", gameInterface.sendCommand(accountUser, jsonElement.getAsString()));
+                } else {
+                    message.addProperty("log","no command sent");
+                }
             }
         } else {
             message.addProperty("log", "no authentication token sent");

@@ -104,6 +104,9 @@ public class ClientHandler extends Thread {
             case "enterMultiplayer" :
                 response = server.enterMulti(jsonObject);
                 break;
+            case "sendGameCommand" :
+                response = server.sendGameCommand(jsonObject);
+                break;
 
         }
         sendMessage(response.toString());
