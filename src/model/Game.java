@@ -2,12 +2,17 @@ package model;
 
 import com.gilecode.yagson.YaGson;
 import menus.InGameMenu;
+import menus.Menus;
+import menus.UI;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.*;
+
+import static menus.UI.*;
 
 public class Game extends InGameMenu {
 
@@ -18,6 +23,32 @@ public class Game extends InGameMenu {
     private static final String FRIENDLY = "friendly";
     private static final String ENEMY = "enemy";
     private static final String NEITHER = "neither";
+    private static final String[] commands = {
+            "-------Game Menu-------",
+            "Game info",
+            "Show my minions",
+            "Show opponent minions",
+            "Show card info [card id]",
+            "Select [card id]",
+            "Move to ([x], [y])",
+            "Attack [opponent card id]",
+            "Attack combo [opponent card id] [my card id] [my card id] [...]",
+            "Use special power ([x], [y])",
+            "Show hand",
+            "Insert [card name] in ([x], [y])",
+            "End turn",
+            "Show collectibles",
+            "Select [collectible id]",
+            "Show info",
+            "Use ([x], [y])",
+            "Show next card",
+            "Enter graveyard",
+            "Help",
+            "Exit",
+            "Show menu"
+    };
+
+    private static String[] endGame = {"End Game"};
 
     private HashMap<Player, ArrayList<Item>> currentItems = new HashMap<>();
     private HashMap<Player, HashMap<Item, Integer>> itemCastingTurns = new HashMap<>();
@@ -26,6 +57,7 @@ public class Game extends InGameMenu {
     private Map map = new Map();
     private Player[] players;
     private boolean[] hasAI = new boolean[2];
+    private boolean hasAnyAI = false;
     private AccountUser[] accounts;
     private Unit selectedUnit;
     private Collectible selectedCollectible;
@@ -35,6 +67,133 @@ public class Game extends InGameMenu {
     private AI ai;
     private ArrayList<Collectible> collectibles = new ArrayList<>();
     private ArrayList<Unit> dead = new ArrayList<>();
+    private boolean gameEnded = false;
+
+    public void parse(String command) {
+        if (!gameEnded) {
+            if (command.matches(EXIT)) {
+                exit(); //mark
+                switchTo(Menus.MAIN_MENU);
+            } else if (command.matches(SHOW_MENU))
+                help(false);
+            else if (command.matches(HELP))
+                showOptions();
+            else if (command.matches(ENTER_GRAVEYARD))
+                switchTo(Menus.GRAVEYARD_MENU);
+            else if (command.matches(GAME_INFO))
+                showGameInfo();
+            else if (command.matches(SHOW_MY_MINIONS))
+                showMyMinions();
+            else if (command.matches(SHOW_OPPONENT_MINIONS))
+                showOpponentMinions();
+            else if (command.matches(SHOW_CARD_INFO))
+                showCardInfo(command.split(" ")[3]);
+            else if (command.matches(SELECT_COLLECTION_ITEM))
+                select(command.split(" ")[1]);
+            else if (command.matches(MOVE)) {
+                int[] coordinates = getCoordinates(command);
+                moveSelectedUnit(coordinates[0] - 1, coordinates[1] - 1);
+            } else if (command.matches(ATTACK))
+                attackTargetCardWithSelectedUnit(command.split(" ")[1]);
+            else if (command.matches(ATTACK_COMBO)) {
+                String[] commandSplit = command.split(" ");
+                attackCombo(commandSplit[2], Arrays.copyOfRange(commandSplit, 3, commandSplit.length));
+            } else if (command.matches(SPECIAL_POWER)) {
+                int[] coordinates = getCoordinates(command);
+                useHeroSpecialPower(coordinates[0] - 1, coordinates[1] - 1);
+            } else if (command.matches(SHOW_HAND))
+                showHand();
+            else if (command.matches(INSERT)) {
+                int[] coordinates = getCoordinates(command);
+                insertCard(command.split(" ")[1], coordinates[0] - 1, coordinates[1] - 1);
+            } else if (command.matches(END_TURN))
+                endTurn();
+            else if (command.matches(SHOW_COLLECTIBLES))
+                showAllCollectibles();
+            else if (command.matches(SHOW_INFO))
+                showCollectibleInfo();
+            else if (command.matches(USE_COLLECTIBLE)) {
+                int[] coordinates = getCoordinates(command);
+                applyCollectible(coordinates[0] - 1, coordinates[1] - 1);
+            } else if (command.matches(SHOW_NEXT_CARD))
+                showNextCardInDeck();
+            else if (command.matches(SHENGDEBAO)) {
+                shengdeShow();
+            }
+            else if (command.matches(KILL))
+                killInstantly(command.split(" ")[1]);
+            else if (command.matches(DEAD))
+                getDead();
+            else
+                view.showInvalidCommandError();
+            checkGameCondition();
+        } else {
+            if (command.matches(END_GAME)) {
+                switchTo(Menus.MAIN_MENU);
+                gameEnded = false;
+            } else if (command.matches(HELP))
+                help(true);
+            else
+                view.showInvalidCommandError();
+        }
+    }
+
+    private void checkGameCondition() {
+        switch (getGameState()) {
+            case WIN_FIRST_PLAYER:
+                account.payMoney(getPrize());
+                account.addMatch(new Match((hasAnyAI ? null : accounts[1]), Result.WIN, LocalDateTime.now()));
+                account.addWin();
+                if (!hasAnyAI) {
+                    accounts[1].addMatch(new Match(account, Result.WIN, LocalDateTime.now()));
+                }
+                accounts[1] = null;
+                view.showWinner(account, getPrize());
+                UI.endGame();
+                break;
+            case WIN_SECOND_PLAYER:
+                account.addMatch(new Match((hasAnyAI ? null : accounts[1]), Result.WIN, LocalDateTime.now()));
+                if (accounts[1] != null) {
+                    accounts[1].addWin();
+                    accounts[1].addMatch(new Match(account, Result.WIN, LocalDateTime.now()));
+                    accounts[1].payMoney(getPrize());
+                    view.showWinner(accounts[1], getPrize());
+                } else
+                    view.alertCPUWin();
+                accounts[1] = null;
+                UI.endGame();
+                break;
+            default:
+        }
+    }
+
+    private void select(String collectionItemID) {
+        if (hasCollectible(collectionItemID))
+            selectCollectible(collectionItemID);
+        else
+            selectCard(collectionItemID);
+    }
+
+    private void showOptions() {
+        ArrayList<Card>[] availableOptions = showAvailableOptions();
+        view.showUnitsReadyToMove(availableOptions[0]);
+        view.showUnitsAvailableForAttack(availableOptions[1]);
+        view.showCardsReadyToBePlayed(availableOptions[2]);
+    }
+
+    public static void help(boolean gameEnded) {
+        if (!gameEnded)
+            view.showHelp(commands);
+        else
+            view.showHelp(endGame);
+    }
+
+    private void exit() {
+        AccountUser account = getOtherAccount();
+        if (account != null) {
+            account.receiveMoney(getPrize());
+        }
+    }
 
     public Game(AccountUser firstPlayer, AccountUser secondPlayer, GameType gameType, int numberOfFlags) {
         accounts = new AccountUser[]{firstPlayer, secondPlayer};
@@ -51,6 +210,7 @@ public class Game extends InGameMenu {
         players = new Player[]{account.getData().getPlayer().setName(account.getName()), ai.getPlayer().setName("COM")};
         hasAI[0] = false;
         hasAI[1] = true;
+        hasAnyAI = true;
         this.gameType = gameType;
         this.numberOfFlags = numberOfFlags;
     }
