@@ -55,7 +55,11 @@ public class NodeWrapper implements MenuComponent {
 
     @Override
     public boolean equals(Object object) {
-        if (object instanceof NodeWrapper)
+        if (object == null)
+            return false;
+        if (value == null)
+            return false;
+        if (object instanceof NodeWrapper && ((NodeWrapper) object).getValue() != null)
             return value.equals(((NodeWrapper) object).getValue());
         if (object instanceof Node)
             return value.equals(object);

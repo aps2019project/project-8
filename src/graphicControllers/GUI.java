@@ -43,6 +43,7 @@ public class GUI extends Application {
             menuManager.addMenu(new ChatMenu());
             menuManager.addMenu(new ReplayMenu());
             menuManager.addMenu(new WaitingMenu());
+//            menuManager.addMenu(new ChatMenu());
         } catch (MenuAlreadyCreatedException e) {
             e.printStackTrace();
         }

@@ -18,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
@@ -38,7 +39,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class GameMenu extends Menu  {
+public class GameMenu extends Menu {
     private static final double CELL_CONTENT_WIDTH = 100;
     private static final double CELL_CONTENT_HEIGHT = 70;
     private static final double TILE_WITDH = 50;
@@ -46,6 +47,39 @@ public class GameMenu extends Menu  {
     private static final Color textColor = Color.rgb(176, 42, 226);
     private static final double BUFF_WIDTH = 10;
     private static final double BUFF_HEIGHT = 10;
+    private static final int TIME_LIMIT = 60;
+
+    static class Assets {
+        private static HashMap<String, Image> imageMap = new HashMap<>();
+        private static HashMap<String, Media> mediaMap = new HashMap<>();
+
+        public static Image getImage(String path) {
+            if (!imageMap.containsKey(path)) {
+                try {
+                    imageMap.put(path, new Image(new FileInputStream(path)));
+                } catch (FileNotFoundException e) {
+                    try {
+                        return new Image(new FileInputStream("images/gameIcons/gifs/test_idle.gif"));
+                    } catch (FileNotFoundException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+            return imageMap.get(path);
+        }
+
+        public static Media getMedia(String path) {
+            if (!mediaMap.containsKey(path)) {
+                mediaMap.put(path, new Media(new File(path).toURI().toString()));
+            }
+            return mediaMap.get(path);
+        }
+    }
+
+    private static final Media attackSound = new Media(new File("sfx/attack.m4a").toURI().toString());
+    private static final Media deathSound = new Media(new File("sfx/death.m4a").toURI().toString());
+    private static final Media insertSound = new Media(new File("sfx/insert_card.m4a").toURI().toString());
+    private static final Media runSound = new Media(new File("sfx/runn.m4a").toURI().toString());
 
     private static transient GameMenu instance = null;
     private double speedCoefficient = 1.0;
@@ -78,8 +112,8 @@ public class GameMenu extends Menu  {
     public ArrayList<ArrayList<Node>> history = new ArrayList<>();
 
 
-
     boolean isRecording;
+    private boolean isInGame;
 
     public void startRecording() {
         isRecording = true;
@@ -99,10 +133,32 @@ public class GameMenu extends Menu  {
                 speedCoefficient /= 2;
             }
         });
+        setUpEndTurnTimer();
         setUpBackGround();
         setUpMenuButtons();
         instance = this;
         startRecording();
+    }
+
+    private void setUpEndTurnTimer() {
+        new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep((long) (1000 / speedCoefficient));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (isInGame) {
+                    Platform.runLater(() -> {
+                        Label timer = (Label) ((NodeWrapper) menuButtons.getComponentByID("timer")).getValue();
+                        timer.setText(Integer.toString(Integer.parseInt(timer.getText()) - 1));
+                        if (timer.getText().equals("0")) {
+                            handleEndTurn();
+                        }
+                    });
+                }
+            }
+        }).start();
     }
 
     public static GameMenu getInstance() {
@@ -110,31 +166,21 @@ public class GameMenu extends Menu  {
     }
 
 
-
     private void setUpBackGround() {
         // setting up the back ground
-        try {
-            setBackGround(new Image(new FileInputStream("images/backgrounds/battlemap0_background@2x.png")));
-        } catch (FileNotFoundException ignored) {
-        }
+        setBackGround(Assets.getImage("images/backgrounds/battlemap0_background@2x.png"));
 
 
-        try {
-            ImageView middleGround = new ImageView(new Image(new FileInputStream("images/gameIcons/middleGround/battlemap0_middleground.png")));
-            middleGround.setFitHeight(windowHeight);
-            middleGround.setFitWidth(windowWidth);
-            addComponent(new NodeWrapper(middleGround));
-        } catch (FileNotFoundException ignored) {
-        }
+        ImageView middleGround = new ImageView(Assets.getImage("images/gameIcons/middleGround/battlemap0_middleground.png"));
+        middleGround.setFitHeight(windowHeight);
+        middleGround.setFitWidth(windowWidth);
+        addComponent(new NodeWrapper(middleGround));
 
-        try {
-            ImageView foreGround = new ImageView(new Image(new FileInputStream("images/foregrounds/battlemap0_foreground_002@2x.png")));
-            foreGround.setPreserveRatio(true);
-            foreGround.setFitWidth(windowHeight / 3);
-            foreGround.relocate(windowWidth - foreGround.getFitWidth(), windowHeight - foreGround.getFitWidth() * foreGround.getImage().getHeight() / foreGround.getImage().getWidth());
-            addComponent(new NodeWrapper(foreGround));
-        } catch (FileNotFoundException ignored) {
-        }
+        ImageView foreGround = new ImageView(Assets.getImage("images/foregrounds/battlemap0_foreground_002@2x.png"));
+        foreGround.setPreserveRatio(true);
+        foreGround.setFitWidth(windowHeight / 3);
+        foreGround.relocate(windowWidth - foreGround.getFitWidth(), windowHeight - foreGround.getFitWidth() * foreGround.getImage().getHeight() / foreGround.getImage().getWidth());
+        addComponent(new NodeWrapper(foreGround));
     }
 
     private synchronized void disableEvents() {
@@ -165,54 +211,54 @@ public class GameMenu extends Menu  {
         String out = getUIOutputAsString("get dead");
         if (!gameEnded(out)) {
             new Thread(() -> {
-                try {
-                    ArrayList<NodeWrapper> effects = new ArrayList<>();
-                    String[] output = out.split("\\n");
-                    ArrayList<String> deathIDs = new ArrayList<>();
-                    for (String s : output)
-                        if (s.contains("death")) {
-                            deathIDs.add(s.split(" ")[1]);
-                        }
-                    ImageView castSpellEffect = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/onDeath.gif")));
-                    Platform.runLater(() -> {
-                        try {
-                            for (String s : output) {
-                                if (s.split(" ")[0].equalsIgnoreCase("death")) {
-                                    int row = Integer.parseInt(s.split(" ")[2]);
-                                    int column = Integer.parseInt(s.split(" ")[3]);
-                                    ImageView imageView = getCellContent(row, column);
-                                    imageView.setImage(getImageByCardName(s.split(" ")[1], "death", "gif"));
-                                    ImageView tile = getTile(row, column);
-                                    if (s.contains("onDeath")) {
-                                        castSpellEffect.relocate(tile.getLayoutX(), tile.getLayoutY() - 20);
-                                        castSpellEffect.setFitHeight(tile.getFitHeight() + 20);
-                                        castSpellEffect.setFitWidth(tile.getFitWidth());
-                                        addComponent(new NodeWrapper(castSpellEffect));
-                                        effects.add(new NodeWrapper(castSpellEffect));
-                                    }
+
+                ArrayList<NodeWrapper> effects = new ArrayList<>();
+                String[] output = out.split("\\n");
+                ArrayList<String> deathIDs = new ArrayList<>();
+                for (String s : output)
+                    if (s.contains("death")) {
+                        deathIDs.add(s.split(" ")[1]);
+                    }
+                ImageView castSpellEffect = new ImageView(Assets.getImage("images/gameIcons/Cells/onDeath.gif"));
+                Platform.runLater(() -> {
+                    if (!deathIDs.isEmpty())
+                        new MediaPlayer(deathSound).play();
+                    try {
+                        for (String s : output) {
+                            if (s.split(" ")[0].equalsIgnoreCase("death")) {
+                                int row = Integer.parseInt(s.split(" ")[2]);
+                                int column = Integer.parseInt(s.split(" ")[3]);
+                                ImageView imageView = getCellContent(row, column);
+                                imageView.setImage(getImageByCardName(s.split(" ")[1], "death", "gif"));
+                                ImageView tile = getTile(row, column);
+                                if (s.contains("onDeath")) {
+                                    castSpellEffect.relocate(tile.getLayoutX(), tile.getLayoutY() - 20);
+                                    castSpellEffect.setFitHeight(tile.getFitHeight() + 20);
+                                    castSpellEffect.setFitWidth(tile.getFitWidth());
+                                    addComponent(new NodeWrapper(castSpellEffect));
+                                    effects.add(new NodeWrapper(castSpellEffect));
                                 }
                             }
-                        } catch (Throwable ex) {
-                            forceRefresh();
-                            System.out.println("GOOOD!");
                         }
-                    });
-                    try {
-                        if (!deathIDs.isEmpty())
-                            Thread.sleep((long) (1000 / speedCoefficient));
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    } catch (Throwable ex) {
+                        forceRefresh();
+                        System.out.println("GOOOD!");
                     }
-                    Platform.runLater(() -> {
-                        enableEvents();
-                        for (NodeWrapper n : effects)
-                            removeComponent(n);
-                        effects.clear();
-                    });
-//                }
-                } catch (FileNotFoundException ex) {
-                    ex.printStackTrace();
+                });
+                try {
+                    if (!deathIDs.isEmpty())
+                        Thread.sleep((long) (1000 / speedCoefficient));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+                Platform.runLater(() -> {
+                    enableEvents();
+                    for (NodeWrapper n : effects)
+                        removeComponent(n);
+                    effects.clear();
+                });
+//                }
+
             }).start();
         } else {
             enableEvents();
@@ -235,23 +281,20 @@ public class GameMenu extends Menu  {
         out = out.trim();
         if (!gameEnded(out)) {
             refresh();
-            for(int i = 0; i < gridStrings.length; i++)
-                for (int j = 0; j < gridStrings[i].length; j++)
-                    System.err.println(i + " " + j + " " + gridStrings[i][j]);
+            Label timer = (Label) ((NodeWrapper) menuButtons.getComponentByID("timer")).getValue();
+            timer.setText(TIME_LIMIT + "");
             String[] commands = out.split("\\n");
             for (String s : commands) {
                 s = s.trim();
                 Pattern pattern = Pattern.compile("(\\w+) moved from (\\d+) (\\d+) to (\\d+) (\\d+)");
                 Matcher matcher = pattern.matcher(s);
                 if (matcher.find()) {
-                    System.err.println(s);
                     selectedCardID = matcher.group(1);
                     int sx = Integer.parseInt(matcher.group(2)) - 1;
                     int sy = Integer.parseInt(matcher.group(3)) - 1;
                     int dx = Integer.parseInt(matcher.group(4)) - 1;
                     int dy = Integer.parseInt(matcher.group(5)) - 1;
 
-                    System.err.println(s);
                     handleGraphicallMove(sx, sy, dx, dy, true);
                 }
 
@@ -261,17 +304,12 @@ public class GameMenu extends Menu  {
                     int x = Integer.parseInt(matcher.group(1)) - 1;
                     int y = Integer.parseInt(matcher.group(2)) - 1;
                     handleInsertCard(x, y, true);
-                    System.err.println("iinnnnnnnnnnnnnnnnnsertinggggg" + x + " " + y);;
-//                    handleGraphicallMove(x, y, x, y, true);
-//                    handleCellSpawn(x, y);
                 }
 
                 pattern = Pattern.compile("attack from (\\w+) to (\\w+)");
                 matcher = pattern.matcher(s);
                 if (matcher.find()) {
-                    System.err.println("attacking " + matcher.group(1) + " " + matcher.group(2));
                     selectedCardID = (matcher.group(1));
-//                    handleAttackUnit(matcher.group(2), true);
                 }
 
                 pattern = Pattern.compile("hero power on (\\d+) (\\d+)");
@@ -279,46 +317,39 @@ public class GameMenu extends Menu  {
                 if (matcher.find()) {
                     int x = Integer.parseInt(matcher.group(1)) - 1;
                     int y = Integer.parseInt(matcher.group(2)) - 1;
-//                    handleUseSpecialPower(x, y, true);
                 }
 
                 pattern = Pattern.compile("apply collectible (\\d+) to (\\d+)");
                 matcher = pattern.matcher(s);
                 if (matcher.find()) {
-                    System.err.println("collectible apllying" + matcher.group(1) + " " + matcher.group(2));
                     int x = Integer.parseInt(matcher.group(1)) - 1;
                     int y = Integer.parseInt(matcher.group(2)) - 1;
-//                    handleUseCollectible(x, y, true);
                 }
             }
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 5; j++) {
                     if (getDescriptionByLocation(j, i) != null && getDescriptionByLocation(j, i).contains("passive")) {
-                        System.err.println("hlo");
                         int finalJ = j;
                         int finalI = i;
                         new Thread(() -> {
+                            ImageView tile = getTile(finalJ, finalI);
+                            ImageView passive = new ImageView(Assets.getImage("images/gameIcons/Cells/passive.gif"));
+                            Platform.runLater(() -> {
+                                passive.setFitWidth(tile.getFitWidth());
+                                passive.setFitHeight(tile.getFitHeight());
+                                passive.relocate(tile.getLayoutX(), tile.getLayoutY());
+                                addComponent(new NodeWrapper(passive));
+                            });
                             try {
-                                ImageView tile = getTile(finalJ, finalI);
-                                ImageView passive = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/passive.gif")));
-                                Platform.runLater(() -> {
-                                    passive.setFitWidth(tile.getFitWidth());
-                                    passive.setFitHeight(tile.getFitHeight());
-                                    passive.relocate(tile.getLayoutX(), tile.getLayoutY());
-                                    addComponent(new NodeWrapper(passive));
-                                });
-                                try {
-                                    Thread.sleep((long) (1000 / speedCoefficient));
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                Platform.runLater(() -> {
-                                    removeComponent(new NodeWrapper(passive));
-                                    enableEvents();
-                                    refresh();
-                                });
-                            } catch (FileNotFoundException ignored) {
+                                Thread.sleep((long) (1000 / speedCoefficient));
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
                             }
+                            Platform.runLater(() -> {
+                                removeComponent(new NodeWrapper(passive));
+                                enableEvents();
+                                refresh();
+                            });
                         }).start();
                     }
                 }
@@ -341,7 +372,7 @@ public class GameMenu extends Menu  {
                 new Thread(() -> {
                     try {
                         ImageView tile = getTile(row, column);
-                        ImageView splash = new ImageView(new Image(new FileInputStream("images/gameIcons/collectible_splash.gif")));
+                        ImageView splash = new ImageView(Assets.getImage("images/gameIcons/collectible_splash.gif"));
                         splash.relocate(tile.getLayoutX() - 75, tile.getLayoutY() - 75);
                         splash.setFitHeight(tile.getFitHeight() + 150);
                         splash.setFitWidth(tile.getFitWidth() + 150);
@@ -352,7 +383,7 @@ public class GameMenu extends Menu  {
                             enableEvents();
                             refresh();
                         });
-                    } catch (FileNotFoundException | InterruptedException ex) {
+                    } catch (InterruptedException ex) {
                         ex.printStackTrace();
                     }
                 }).start();
@@ -381,54 +412,49 @@ public class GameMenu extends Menu  {
             if (ai || !gameEnded(output)) {
                 if (output.contains("inserted")) {
                     new Thread(() -> {
+                        ImageView onSpawnEffect = new ImageView(Assets.getImage("images/gameIcons/Cells/onSpawn.gif"));
+                        ImageView tile = getTile(row, column);
+                        onSpawnEffect.relocate(tile.getLayoutX(), tile.getLayoutY() - 20);
+                        onSpawnEffect.setFitWidth(tile.getFitWidth());
+                        onSpawnEffect.setFitHeight(tile.getFitHeight() + 20);
+
+                        ImageView strike = new ImageView(Assets.getImage("images/gameIcons/lightning_strike.gif"));
+                        strike.setFitHeight(tile.getFitHeight());
+                        strike.setFitWidth(tile.getFitWidth());
+                        strike.relocate(tile.getLayoutX(), tile.getLayoutY());
+
+                        Platform.runLater(() -> {
+                            new MediaPlayer(insertSound).play();
+                            addComponent(new NodeWrapper(strike));
+                        });
                         try {
-                            ImageView onSpawnEffect = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/onSpawn.gif")));
-                            ImageView tile = getTile(row, column);
-                            onSpawnEffect.relocate(tile.getLayoutX(), tile.getLayoutY() - 20);
-                            onSpawnEffect.setFitWidth(tile.getFitWidth());
-                            onSpawnEffect.setFitHeight(tile.getFitHeight() + 20);
-
-                            ImageView strike = new ImageView(new Image(new FileInputStream("images/gameIcons/lightning_strike.gif")));
-                            strike.setFitHeight(tile.getFitHeight());
-                            strike.setFitWidth(tile.getFitWidth());
-                            strike.relocate(tile.getLayoutX(), tile.getLayoutY());
-
-                            Platform.runLater(() -> {
-                                addComponent(new NodeWrapper(strike));
-                            });
-                            try {
-                                Thread.sleep((long) (1000 / speedCoefficient));
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-
-                            Platform.runLater(() -> {
-                                removeComponent(new NodeWrapper(strike));
-                                if (getDescriptionByLocation(row, column).contains("onSpawn")) {
-                                    new Thread(() -> {
-                                        Platform.runLater(() -> addComponent(new NodeWrapper(onSpawnEffect)));
-                                        try {
-                                            Thread.sleep((long) (1000 / speedCoefficient));
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
-                                        Platform.runLater(() -> {
-                                            removeComponent(new NodeWrapper(onSpawnEffect));
-                                            enableEvents();
-                                            refresh();
-                                        });
-                                    }).start();
-                                } else {
-                                    enableEvents();
-                                    refresh();
-                                }
-                            });
-
-
-
-                        } catch (FileNotFoundException ex) {
-                            ex.printStackTrace();
+                            Thread.sleep((long) (1000 / speedCoefficient));
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
+
+                        Platform.runLater(() -> {
+                            removeComponent(new NodeWrapper(strike));
+                            if (getDescriptionByLocation(row, column) != null && getDescriptionByLocation(row, column).contains("onSpawn")) {
+                                new Thread(() -> {
+                                    Platform.runLater(() -> addComponent(new NodeWrapper(onSpawnEffect)));
+                                    try {
+                                        Thread.sleep((long) (1000 / speedCoefficient));
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Platform.runLater(() -> {
+                                        removeComponent(new NodeWrapper(onSpawnEffect));
+                                        enableEvents();
+                                        refresh();
+                                    });
+                                }).start();
+                            } else {
+                                enableEvents();
+                                refresh();
+                            }
+                        });
+
 
                     }).start();
                 } else {
@@ -490,6 +516,8 @@ public class GameMenu extends Menu  {
                     enableEvents();
                     refresh();
                 } else {
+
+                    new MediaPlayer(attackSound).play();
                     new Thread(() -> {
                         try {
                             try {
@@ -500,9 +528,9 @@ public class GameMenu extends Menu  {
                                 if (counterAttack)
                                     hit = getCellContent(row, column);
                                 else
-                                    hit = new ImageView(new Image(new FileInputStream("images/gameIcons/hit.gif")));
-                                ImageView onAttack = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/onAttack.gif")));
-                                ImageView onDefend = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/onDefend.gif")));
+                                    hit = new ImageView(Assets.getImage("images/gameIcons/hit.gif"));
+                                ImageView onAttack = new ImageView(Assets.getImage("images/gameIcons/Cells/onAttack.gif"));
+                                ImageView onDefend = new ImageView(Assets.getImage("images/gameIcons/Cells/onDefend.gif"));
                                 Platform.runLater(() -> {
                                     try {
                                         imageView.setImage(getImageByCardName(getNameFromID(selectedCardID), "attack", "gif"));
@@ -542,16 +570,20 @@ public class GameMenu extends Menu  {
                                     e.printStackTrace();
                                 }
                                 Platform.runLater(() -> {
-                                    if (!counterAttack)
-                                        removeComponent(new NodeWrapper(hit));
-                                    if (getDescriptionByLocation(sourceRow, sourceColumn).contains("onAttack"))
-                                        removeComponent(new NodeWrapper(onAttack));
-                                    if (getDescriptionByLocation(row, column).contains("onDefend"))
-                                        removeComponent(new NodeWrapper(onDefend));
-                                    enableEvents();
-                                    refresh();
+                                    try {
+                                        if (!counterAttack)
+                                            removeComponent(new NodeWrapper(hit));
+                                        if (getDescriptionByLocation(sourceRow, sourceColumn).contains("onAttack"))
+                                            removeComponent(new NodeWrapper(onAttack));
+                                        if (getDescriptionByLocation(row, column).contains("onDefend"))
+                                            removeComponent(new NodeWrapper(onDefend));
+                                        enableEvents();
+                                        refresh();
+                                    } catch (Throwable ex) {
+                                        System.out.println("GOOOD");
+                                    }
                                 });
-                            } catch (FileNotFoundException ex) {
+                            } catch (Exception ex) {
                                 enableEvents();
                                 ex.printStackTrace();
                             }
@@ -678,7 +710,6 @@ public class GameMenu extends Menu  {
 
     private void handleGraphicallMove(int sourceRow, int sourceColumn, int row, int column, boolean ai) {
 
-        System.err.println("fasdfadfasf " + sourceRow + " " + sourceColumn + " " + row + " " + column);
 
         disableEvents();
         ImageView source;
@@ -696,8 +727,12 @@ public class GameMenu extends Menu  {
                 selectedCardID = null;
                 forceRefresh();
             } else {
+                //MediaPlayer mediaPlayer = new MediaPlayer(runSound);
+
                 new Thread(() -> {
                     Platform.runLater(() -> {
+                        new MediaPlayer(runSound).play();
+                        //      mediaPlayer.play();
                         source.setImage(getImageByCardName(getNameFromID(selectedCardID), "run", "gif"));
                         KeyValue xValue = new KeyValue(source.xProperty(), (column - sourceColumn) * CELL_CONTENT_WIDTH);
                         KeyValue yValue = new KeyValue(source.yProperty(), (row - sourceRow) * CELL_CONTENT_HEIGHT);
@@ -712,6 +747,7 @@ public class GameMenu extends Menu  {
                         e.printStackTrace();
                     }
                     Platform.runLater(() -> {
+                    //    mediaPlayer.stop();
                         enableEvents();
                         selectedCardID = null;
                         refresh();
@@ -769,7 +805,7 @@ public class GameMenu extends Menu  {
                 rectangle.setFill(Color.RED);
                 rectangle.setOpacity(0.1);
                 addComponent(new NodeWrapper(rectangle));
-                ImageView imageView = new ImageView(new Image(new FileInputStream("images/gameIcons/notification.png")));
+                ImageView imageView = new ImageView(Assets.getImage("images/gameIcons/notification.png"));
                 imageView.setFitWidth(windowWidth);
                 imageView.setFitHeight(windowHeight - 300);
                 imageView.relocate(0, 150);
@@ -836,32 +872,22 @@ public class GameMenu extends Menu  {
     }
 
     private void setOnEnterAndExitEffect(GUIButton guiButton, String text, String enterImagePath, String exitImagePath) {
-        try {
-            guiButton.setImage(new Image(new FileInputStream(exitImagePath)));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        guiButton.setImage(Assets.getImage(exitImagePath));
+
         guiButton.setText(text);
-        try {
-            guiButton.setActiveImage(new Image(new FileInputStream(enterImagePath)));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        guiButton.setActiveImage(Assets.getImage(enterImagePath));
+
         guiButton.setSound(new Media(new File("sfx/sfx_unit_onclick.m4a").toURI().toString()));
     }
 
     private void setUpMenuButtons() {
         menuButtons = new ComponentSet();
 
-        try {
-            ImageView collectibleBackground = new ImageView(new Image(new FileInputStream("images/gameIcons/menuButtons/collectible_background.png")));
-            collectibleBackground.setFitHeight(268);
-            collectibleBackground.setFitWidth(201);
-            collectibleBackground.relocate(30 + 5, -300 + 27);
-            menuButtons.addMenuComponent(new NodeWrapper(collectibleBackground));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        ImageView collectibleBackground = new ImageView(Assets.getImage("images/gameIcons/menuButtons/collectible_background.png"));
+        collectibleBackground.setFitHeight(268);
+        collectibleBackground.setFitWidth(201);
+        collectibleBackground.relocate(30 + 5, -300 + 27);
+        menuButtons.addMenuComponent(new NodeWrapper(collectibleBackground));
 
         GUIButton refresh = new GUIButton(-925, -120, 100, 100);
         setOnEnterAndExitEffect(refresh, "", "images/gameIcons/menuButtons/cancel.png",
@@ -880,6 +906,7 @@ public class GameMenu extends Menu  {
                 "images/gameIcons/menuButtons/ui_left_normal.png");
         mainMenu.setOnMouseClicked(e -> {
             UI.decide("exit");
+            isInGame = false;
             MenuManager.getInstance().setCurrentMenu(Id.MAIN_MENU);
         });
         menuButtons.addMenuComponent(mainMenu, "main_menu");
@@ -888,6 +915,7 @@ public class GameMenu extends Menu  {
         setOnEnterAndExitEffect(graveyard, "Graveyard", "images/gameIcons/menuButtons/ui_right_glowing.png",
                 "images/gameIcons/menuButtons/ui_right_normal.png");
         graveyard.setGoalMenuID(Id.GRAVE_YARD_MENU);
+        graveyard.setOnMouseClicked(e -> isInGame = false);
         menuButtons.addMenuComponent(graveyard);
 
         GUIButton collectibles = new GUIButton(140 - 10 + 20, -100 + 10 - 5, 100, 100);
@@ -905,6 +933,15 @@ public class GameMenu extends Menu  {
             s.ifPresent(s1 -> handleSelectCollectible(map.get(s1)));
         });
         menuButtons.addMenuComponent(collectibles);
+
+        Label timer = new Label(TIME_LIMIT + "");
+        timer.setTextFill(textColor);
+        try {
+            timer.setFont(Font.loadFont(new FileInputStream("fonts/chatmenu_font2.ttf"), 80));
+        } catch (FileNotFoundException ignored) {
+        }
+        timer.relocate(-895, -220);
+        menuButtons.addMenuComponent(new NodeWrapper(timer), "timer");
 
         menuButtons.relocate(windowWidth - 250, windowHeight - 200);
         addComponent(menuButtons);
@@ -949,106 +986,101 @@ public class GameMenu extends Menu  {
 
     private ComponentSet setHandOptions(String deckCapacityNumber) {
         ComponentSet handOptions = new ComponentSet();
-        try {
-            ImageView backGround = new ImageView(new Image(new FileInputStream("images/gameIcons/hand_options_background.png")));
-            backGround.setFitWidth(70);
-            backGround.setFitHeight(70);
-            backGround.setOpacity(0.5);
-            handOptions.addMenuComponent(new NodeWrapper(backGround));
-            ImageView textBackground = new ImageView(new Image(new FileInputStream("images/gameIcons/simple_text_background.png")));
-            textBackground.setFitHeight(10);
-            textBackground.setFitWidth(20);
-            textBackground.relocate(35 - 10, 35 - 5);
-            handOptions.addMenuComponent(new NodeWrapper(textBackground), "text_background");
-            Label deckNameLabel = new Label("Deck");
-            deckNameLabel.relocate(35 - 10 + 4, 35 - 5 + 2);
-            deckNameLabel.setTextFill(Color.AZURE);
-            deckNameLabel.setFont(new Font(5));
-            handOptions.addMenuComponent(new NodeWrapper(deckNameLabel), "deck_name_label");
-            Label deckCapacity = new Label(deckCapacityNumber + "/" + 20);
-            deckCapacity.relocate(35 - 10, 35 - 5 + 2 + 15);
-            deckCapacity.setTextFill(Color.AZURE);
-            deckCapacity.setFont(new Font(7));
-            handOptions.addMenuComponent(new NodeWrapper(deckCapacity));
-            ImageView interactor = new ImageView(new Image(new FileInputStream("images/gameIcons/hand_options_background.png")));
-            interactor.setFitWidth(70);
-            interactor.setFitWidth(70);
-            interactor.setOpacity(0);
-            interactor.setOnMouseEntered(e -> backGround.setOpacity(0.5));
-            interactor.setOnMouseExited(e -> backGround.setOpacity(1));
 
-            interactor.setOnMouseClicked(e -> {
-                if (clickedOnShowNextCard)
-                    return;
-                clickedOnShowNextCard = true;
-                String s = getUIOutputAsString("show next card");
-                s = s.replaceFirst(".*Name : ", "");
-                s = s.replaceAll(" -.*", "").trim();
-                String type = NamesAndTypes.getType(s);
-                String state = "idle";
-                if (type.equals("spellCard") || type.equals("usable") || type.equals("collectible")) {
-                    state = "actionbar";
-                }
-                ImageView imageView = getImageViewByCardName(s, state, "gif");
-                imageView.setFitWidth(150);
-                imageView.setFitHeight(170);
-                imageView.relocate(50 - 17, windowHeight - 200 - 10);
+        ImageView backGround = new ImageView(Assets.getImage("images/gameIcons/hand_options_background.png"));
+        backGround.setFitWidth(70);
+        backGround.setFitHeight(70);
+        backGround.setOpacity(0.5);
+        handOptions.addMenuComponent(new NodeWrapper(backGround));
+        ImageView textBackground = new ImageView(Assets.getImage("images/gameIcons/simple_text_background.png"));
+        textBackground.setFitHeight(10);
+        textBackground.setFitWidth(20);
+        textBackground.relocate(35 - 10, 35 - 5);
+        handOptions.addMenuComponent(new NodeWrapper(textBackground), "text_background");
+        Label deckNameLabel = new Label("Deck");
+        deckNameLabel.relocate(35 - 10 + 4, 35 - 5 + 2);
+        deckNameLabel.setTextFill(Color.AZURE);
+        deckNameLabel.setFont(new Font(5));
+        handOptions.addMenuComponent(new NodeWrapper(deckNameLabel), "deck_name_label");
+        Label deckCapacity = new Label(deckCapacityNumber + "/" + 20);
+        deckCapacity.relocate(35 - 10, 35 - 5 + 2 + 15);
+        deckCapacity.setTextFill(Color.AZURE);
+        deckCapacity.setFont(new Font(7));
+        handOptions.addMenuComponent(new NodeWrapper(deckCapacity));
+        ImageView interactor = new ImageView(Assets.getImage("images/gameIcons/hand_options_background.png"));
+        interactor.setFitWidth(70);
+        interactor.setFitWidth(70);
+        interactor.setOpacity(0);
+        interactor.setOnMouseEntered(e -> backGround.setOpacity(0.5));
+        interactor.setOnMouseExited(e -> backGround.setOpacity(1));
 
-                addComponent(new NodeWrapper(imageView));
-                double prevLabelOpacity = deckNameLabel.getOpacity();
-                double prevTextBackGroundOpacity = textBackground.getOpacity();
-                double prevDeckCapacityOpacity = deckCapacity.getOpacity();
-                deckNameLabel.setOpacity(-100);
-                textBackground.setOpacity(-100);
-                deckCapacity.setOpacity(-100);
-                backGround.setOpacity(1);
-                interactor.setOnMouseEntered(event -> {
-                });
-                interactor.setOnMouseExited(event -> {
-                });
+        interactor.setOnMouseClicked(e -> {
+            if (clickedOnShowNextCard)
+                return;
+            clickedOnShowNextCard = true;
+            String s = getUIOutputAsString("show next card");
+            s = s.replaceFirst(".*Name : ", "");
+            s = s.replaceAll(" -.*", "").trim();
+            String type = NamesAndTypes.getType(s);
+            String state = "idle";
+            if (type.equals("spellCard") || type.equals("usable") || type.equals("collectible")) {
+                state = "actionbar";
+            }
+            ImageView imageView = getImageViewByCardName(s, state, "gif");
+            imageView.setFitWidth(150);
+            imageView.setFitHeight(170);
+            imageView.relocate(50 - 17, windowHeight - 200 - 10);
 
-                new Thread(() -> {
-                    try {
-                        Thread.sleep((long) (2000 / speedCoefficient));
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
-                    Platform.runLater(() -> {
-                        removeComponent(new NodeWrapper(imageView));
-                        deckNameLabel.setOpacity(prevLabelOpacity);
-                        textBackground.setOpacity(prevTextBackGroundOpacity);
-                        deckCapacity.setOpacity(prevDeckCapacityOpacity);
-                        interactor.setOnMouseEntered(event -> backGround.setOpacity(0.5));
-                        interactor.setOnMouseExited(event -> backGround.setOpacity(1));
-
-                    });
-                    clickedOnShowNextCard = false;
-                }).start();
-
-
+            addComponent(new NodeWrapper(imageView));
+            double prevLabelOpacity = deckNameLabel.getOpacity();
+            double prevTextBackGroundOpacity = textBackground.getOpacity();
+            double prevDeckCapacityOpacity = deckCapacity.getOpacity();
+            deckNameLabel.setOpacity(-100);
+            textBackground.setOpacity(-100);
+            deckCapacity.setOpacity(-100);
+            backGround.setOpacity(1);
+            interactor.setOnMouseEntered(event -> {
             });
-            handOptions.addMenuComponent(new NodeWrapper(interactor));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+            interactor.setOnMouseExited(event -> {
+            });
+
+            new Thread(() -> {
+                try {
+                    Thread.sleep((long) (2000 / speedCoefficient));
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+                Platform.runLater(() -> {
+                    removeComponent(new NodeWrapper(imageView));
+                    deckNameLabel.setOpacity(prevLabelOpacity);
+                    textBackground.setOpacity(prevTextBackGroundOpacity);
+                    deckCapacity.setOpacity(prevDeckCapacityOpacity);
+                    interactor.setOnMouseEntered(event -> backGround.setOpacity(0.5));
+                    interactor.setOnMouseExited(event -> backGround.setOpacity(1));
+
+                });
+                clickedOnShowNextCard = false;
+            }).start();
+
+
+        });
+        handOptions.addMenuComponent(new NodeWrapper(interactor));
+
         return handOptions;
     }
 
     private ComponentSet makeManaBar(int mana, int capacity) {
         ComponentSet manaBar = new ComponentSet();
         for (int i = 0; i < capacity; i++) {
-            try {
-                ImageView imageView = new ImageView(new Image(new FileInputStream("images/gameIcons/MenuIcons/icon_mana_inactive.png")));
-                if (i < mana) {
-                    imageView.setImage(new Image(new FileInputStream("images/gameIcons/MenuIcons/icon_mana.png")));
-                }
-                imageView.setFitWidth(20);
-                imageView.setFitHeight(20);
-                imageView.relocate(i * 20 + i * 5, 0);
-                manaBar.addMenuComponent(new NodeWrapper(imageView));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+            ImageView imageView = new ImageView(Assets.getImage("images/gameIcons/MenuIcons/icon_mana_inactive.png"));
+            if (i < mana) {
+                imageView.setImage(Assets.getImage("images/gameIcons/MenuIcons/icon_mana.png"));
             }
+            imageView.setFitWidth(20);
+            imageView.setFitHeight(20);
+            imageView.relocate(i * 20 + i * 5, 0);
+            manaBar.addMenuComponent(new NodeWrapper(imageView));
+
             Label label = new Label(mana + "/" + capacity);
             label.relocate(capacity * 25 + 5, 2.5);
             label.setTextFill(textColor);
@@ -1062,6 +1094,10 @@ public class GameMenu extends Menu  {
         if (UI.getGame() == null)
             return;
 
+
+        if (MenuManager.getInstance().getCurrentMenu() instanceof GameMenu) {
+            isInGame = true;
+        }
 
         new Thread(() -> {
             synchronized (this) {
@@ -1307,19 +1343,16 @@ public class GameMenu extends Menu  {
     private ComponentSet makePlayerStat(String playerName, String heroName, String usableItemName, String mana, int manaCapacity) {
         ComponentSet statBar = new ComponentSet();
 
-        try {
-            ImageView backGround = new ImageView(new Image(new FileInputStream("images/gameIcons/Hero/hero_background.png")));
-            backGround.setFitHeight(55);
-            backGround.setFitWidth(55);
-            statBar.addMenuComponent(new NodeWrapper(backGround));
-            ImageView heroIcon = getImageViewByCardName(heroName, "idle", "gif");
-            heroIcon.setFitWidth(55);
-            heroIcon.setFitHeight(70);
-            heroIcon.relocate(heroIcon.getLayoutX(), heroIcon.getLayoutY() - 20);
-            statBar.addMenuComponent(new NodeWrapper(heroIcon));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        ImageView backGround = new ImageView(Assets.getImage("images/gameIcons/Hero/hero_background.png"));
+        backGround.setFitHeight(55);
+        backGround.setFitWidth(55);
+        statBar.addMenuComponent(new NodeWrapper(backGround));
+        ImageView heroIcon = getImageViewByCardName(heroName, "idle", "gif");
+        heroIcon.setFitWidth(55);
+        heroIcon.setFitHeight(70);
+        heroIcon.relocate(heroIcon.getLayoutX(), heroIcon.getLayoutY() - 20);
+        statBar.addMenuComponent(new NodeWrapper(heroIcon));
+
 
         Label playerNameLabel = new Label(playerName);
         playerNameLabel.relocate(50 + 10, 5);
@@ -1327,24 +1360,21 @@ public class GameMenu extends Menu  {
         statBar.addMenuComponent(new NodeWrapper(playerNameLabel));
 
 
-        try {
-            ImageView usableBackground = new ImageView(new Image(new FileInputStream("images/gameIcons/Hero/usable_background.png")));
-            usableBackground.setFitHeight(35);
-            usableBackground.setFitWidth(35);
-            usableBackground.relocate(45, 57);
-            statBar.addMenuComponent(new NodeWrapper(usableBackground));
+        ImageView usableBackground = new ImageView(Assets.getImage("images/gameIcons/Hero/usable_background.png"));
+        usableBackground.setFitHeight(35);
+        usableBackground.setFitWidth(35);
+        usableBackground.relocate(45, 57);
+        statBar.addMenuComponent(new NodeWrapper(usableBackground));
 
-            if (usableItemName != null) {
-                ImageView usable = getImageViewByCardName(usableItemName, "actionbar", "gif");
-                usable.setOnMouseClicked(e -> showCardInfo(usableItemName));
-                usable.setFitHeight(35);
-                usable.setFitWidth(35);
-                usable.relocate(45, 57);
-                statBar.addMenuComponent(new NodeWrapper(usable));
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        if (usableItemName != null) {
+            ImageView usable = getImageViewByCardName(usableItemName, "actionbar", "gif");
+            usable.setOnMouseClicked(e -> showCardInfo(usableItemName));
+            usable.setFitHeight(35);
+            usable.setFitWidth(35);
+            usable.relocate(45, 57);
+            statBar.addMenuComponent(new NodeWrapper(usable));
         }
+
 
         {
 //            Label label = new Label("N");
@@ -1362,32 +1392,17 @@ public class GameMenu extends Menu  {
 
     private Image getImageByCardName(String cardName, String state, String format) {
         Image image = null;
-        try {
-            image = new Image(new FileInputStream("images/gameIcons/gifs/" + NamesAndTypes.getType(cardName)
-                    + "/" + cardName + "/" + state + "." + format));
-        } catch (FileNotFoundException e) {
-            try {
-                image = new Image(new FileInputStream("images/gameIcons/gifs/test_idle.gif"));
-            } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
-            }
-        }
+        image = Assets.getImage("images/gameIcons/gifs/" + NamesAndTypes.getType(cardName)
+                + "/" + cardName + "/" + state + "." + format);
+
         return image;
     }
 
     private ImageView getImageViewByCardName(String cardName, String state, String format) {
         ImageView imageView = null;
-        try {
-            imageView = new ImageView(new Image(new FileInputStream("images/gameIcons/gifs/" + NamesAndTypes.getType(cardName)
-                    + "/" + cardName + "/" + state + "." + format)));
+        imageView = new ImageView(Assets.getImage("images/gameIcons/gifs/" + NamesAndTypes.getType(cardName)
+                + "/" + cardName + "/" + state + "." + format));
 
-        } catch (FileNotFoundException e) {
-            try {
-                imageView = new ImageView(new Image(new FileInputStream("images/gameIcons/gifs/test_idle.gif")));
-            } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
-            }
-        }
         return imageView;
     }
 
@@ -1452,32 +1467,23 @@ public class GameMenu extends Menu  {
     private ComponentSet makeCellContent(int i, int j, boolean isFriendly, boolean isEnemy, String contentCardName, int numberOfFlags, int poisonEffect, int hpEffect) {
         ComponentSet cell = new ComponentSet();
         ImageView tile = null;
-        try {
-            tile = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/tile_normal.png")));
-            tile.setFitWidth(TILE_WITDH);
-            tile.setFitHeight(TILE_HEIGHT);
-            tile.relocate(j * 50, i * 30);
-            tile.setOpacity(0.1);
-            cell.addMenuComponent(new NodeWrapper(tile), "tile");
-
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        tile = new ImageView(Assets.getImage("images/gameIcons/Cells/tile_normal.png"));
+        tile.setFitWidth(TILE_WITDH);
+        tile.setFitHeight(TILE_HEIGHT);
+        tile.relocate(j * 50, i * 30);
+        tile.setOpacity(0.1);
+        cell.addMenuComponent(new NodeWrapper(tile), "tile");
 
 
         if (poisonEffect != 0 && tile != null) {
 
-            try {
-                ImageView effect = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/poison_cell.gif")));
-                effect.setFitWidth(50);
-                effect.setFitHeight(30);
-                effect.setOpacity(0.5);
-                effect.relocate(j * 50, i * 30);
-                cell.addMenuComponent(new NodeWrapper(effect));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            ImageView effect = new ImageView(Assets.getImage("images/gameIcons/Cells/poison_cell.gif"));
+            effect.setFitWidth(50);
+            effect.setFitHeight(30);
+            effect.setOpacity(0.5);
+            effect.relocate(j * 50, i * 30);
+            cell.addMenuComponent(new NodeWrapper(effect));
+
 
             Label label = new Label(poisonEffect + "");
             label.setTextFill(Color.GREENYELLOW);
@@ -1490,15 +1496,12 @@ public class GameMenu extends Menu  {
 
         if (hpEffect != 0 && tile != null) {
 
-            try {
-                ImageView effect = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/hp_cell.gif")));
-                effect.setFitWidth(50);
-                effect.setFitHeight(30);
-                effect.relocate(j * 50, i * 30);
-                cell.addMenuComponent(new NodeWrapper(effect));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            ImageView effect = new ImageView(Assets.getImage("images/gameIcons/Cells/hp_cell.gif"));
+            effect.setFitWidth(50);
+            effect.setFitHeight(30);
+            effect.relocate(j * 50, i * 30);
+            cell.addMenuComponent(new NodeWrapper(effect));
+
 
             Label label = new Label(hpEffect + "");
             label.setTextFill(Color.RED);
@@ -1509,39 +1512,34 @@ public class GameMenu extends Menu  {
         }
 
         if (numberOfFlags != 0) {
-            try {
-                ImageView flag = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/flag.gif")));
-                flag.setFitHeight(30);
-                flag.setFitWidth(50);
-                flag.relocate(j * 50, i * 30);
-                cell.addMenuComponent(new NodeWrapper(flag));
-            } catch (FileNotFoundException ex) {
-                ex.printStackTrace();
-            }
+
+            ImageView flag = new ImageView(Assets.getImage("images/gameIcons/Cells/flag.gif"));
+            flag.setFitHeight(30);
+            flag.setFitWidth(50);
+            flag.relocate(j * 50, i * 30);
+            cell.addMenuComponent(new NodeWrapper(flag));
+
             Label label = new Label(numberOfFlags + "");
             label.relocate(j * 50 + 20, i * 30 + 5);
             label.setFont(new Font(12));
             cell.addMenuComponent(new NodeWrapper(label));
         }
-        try {
-            ImageView background = null;
-            if (isFriendly) {
-                background = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/friendly_background.png")));
-            }
-
-            if (isEnemy) {
-                background = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/opponent_background.png")));
-            }
-
-            if (background != null) {
-                background.setFitWidth(50);
-                background.setFitHeight(30);
-                background.relocate(j * 50, i * 30);
-                cell.addMenuComponent(new NodeWrapper(background), "friendliness");
-            }
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
+        ImageView background = null;
+        if (isFriendly) {
+            background = new ImageView(Assets.getImage("images/gameIcons/Cells/friendly_background.png"));
         }
+
+        if (isEnemy) {
+            background = new ImageView(Assets.getImage("images/gameIcons/Cells/opponent_background.png"));
+        }
+
+        if (background != null) {
+            background.setFitWidth(50);
+            background.setFitHeight(30);
+            background.relocate(j * 50, i * 30);
+            cell.addMenuComponent(new NodeWrapper(background), "friendliness");
+        }
+
 
         if (contentCardName != null && !contentCardName.equals(".")) {
             String type = NamesAndTypes.getType(contentCardName);
@@ -1582,17 +1580,14 @@ public class GameMenu extends Menu  {
         int cnt = 0;
         for (String buffName : buffNamesInDescription) {
             if (desc.contains(buffName)) {
-                try {
-                    ImageView buffView = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/" + buffName + "_buff.png")));
-                    buffView.setFitWidth(BUFF_WIDTH);
-                    buffView.setFitHeight(BUFF_HEIGHT);
-                    buffView.relocate(centreX + Math.cos(angleForOne * cnt) * radius,
-                            centreY - Math.sin(angleForOne * cnt) * radius);
-                    cell.addMenuComponent(new NodeWrapper(buffView));
-                    cnt++;
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+                ImageView buffView = new ImageView(Assets.getImage("images/gameIcons/Cells/" + buffName + "_buff.png"));
+                buffView.setFitWidth(BUFF_WIDTH);
+                buffView.setFitHeight(BUFF_HEIGHT);
+                buffView.relocate(centreX + Math.cos(angleForOne * cnt) * radius,
+                        centreY - Math.sin(angleForOne * cnt) * radius);
+                cell.addMenuComponent(new NodeWrapper(buffView));
+                cnt++;
+
             }
         }
     }
@@ -1638,46 +1633,44 @@ public class GameMenu extends Menu  {
     }
 
     private void addCellInteractor(int i, int j, ComponentSet cell) {
-        try {
-            ImageView interactor = new ImageView(new Image(new FileInputStream("images/gameIcons/Cells/active_cell.png")));
 
-            interactor.setFitWidth(50);
-            interactor.setFitHeight(30);
-            interactor.relocate(j * 50, i * 30);
-            interactor.setOpacity(0);
+        ImageView interactor = new ImageView(Assets.getImage("images/gameIcons/Cells/active_cell.png"));
 
-            interactor.setOnMouseEntered(e -> ((NodeWrapper) cell.getComponentByID("tile")).getValue().setOpacity(0.5));
-            interactor.setOnMouseExited(e -> ((NodeWrapper) cell.getComponentByID("tile")).getValue().setOpacity(0.1));
-            interactor.setOnMouseClicked(mouseEvent -> {
-                if (mouseEvent.getButton() == MouseButton.MIDDLE) {
-                    String cardName = getNameFromID(getCardIDByLocation(i, j));
-                    if (cardName != null) {
-                        showCardInfo(cardName);
-                    }
-                    return;
+        interactor.setFitWidth(50);
+        interactor.setFitHeight(30);
+        interactor.relocate(j * 50, i * 30);
+        interactor.setOpacity(0);
+
+        interactor.setOnMouseEntered(e -> ((NodeWrapper) cell.getComponentByID("tile")).getValue().setOpacity(0.5));
+        interactor.setOnMouseExited(e -> ((NodeWrapper) cell.getComponentByID("tile")).getValue().setOpacity(0.1));
+        interactor.setOnMouseClicked(mouseEvent -> {
+            if (mouseEvent.getButton() == MouseButton.MIDDLE) {
+                String cardName = getNameFromID(getCardIDByLocation(i, j));
+                if (cardName != null) {
+                    showCardInfo(cardName);
                 }
-                String cardID = getFriendlyCardID(i, j);
-                if (cardID != null) {
-                    if (mouseEvent.getButton() == MouseButton.PRIMARY) {
-                        handleSelectCard(cardID);
-                    }
-                    if (mouseEvent.getButton() == MouseButton.SECONDARY) {
-                        if (UI.getGame().getCurrentPlayer().getUnit(cardID).canCombo()) {
-                            selectedComboCardIds.clear();
-                            selectedComboCardIds.add(cardID);
-                            (new NodeWrapper(getInteractor(i, j))).disableMouseEvents();
-                            getTile(i, j).setOpacity(1);
-                            comboGridChange();
-                        }
-                    }
-
+                return;
+            }
+            String cardID = getFriendlyCardID(i, j);
+            if (cardID != null) {
+                if (mouseEvent.getButton() == MouseButton.PRIMARY) {
+                    handleSelectCard(cardID);
                 }
-            });
+                if (mouseEvent.getButton() == MouseButton.SECONDARY) {
+                    if (UI.getGame().getCurrentPlayer().getUnit(cardID).canCombo()) {
+                        selectedComboCardIds.clear();
+                        selectedComboCardIds.add(cardID);
+                        (new NodeWrapper(getInteractor(i, j))).disableMouseEvents();
+                        getTile(i, j).setOpacity(1);
+                        comboGridChange();
+                    }
+                }
 
-            cell.addMenuComponent(new NodeWrapper(interactor), "interactor");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+            }
+        });
+
+        cell.addMenuComponent(new NodeWrapper(interactor), "interactor");
+
 
     }
 
@@ -1806,80 +1799,72 @@ public class GameMenu extends Menu  {
         cardBar = new ComponentSet();
         for (int i = 0; i < 5; i++) {
             ComponentSet handCard = new ComponentSet();
-            try {
-                ImageView manaIcon = new ImageView(new Image(new FileInputStream("images/gameIcons/MenuIcons/icon_mana.png")));
-                if (i >= size) {
-                    manaIcon.setImage(new Image(new FileInputStream("images/gameIcons/MenuIcons/icon_mana_inactive.png")));
-                }
-                manaIcon.setOpacity(0.7);
-                manaIcon.setFitWidth(20);
-                manaIcon.setFitHeight(20);
-                manaIcon.relocate(i * 55 + 25 - 7, 50 + 1);
-                handCard.addMenuComponent(new NodeWrapper(manaIcon));
 
-                ImageView imageView = new ImageView(new Image(new FileInputStream("images/gameIcons/card_background.png")));
-                imageView.setFitHeight(55);
-                imageView.setFitWidth(55);
-                imageView.relocate(i * 55, 0);
-
-
-                ImageView innerGlow = new ImageView(new Image(new FileInputStream("images/gameIcons/card_background_inner_glow.png")));
-                innerGlow.setFitWidth(55);
-                innerGlow.setFitHeight(55);
-                innerGlow.relocate(i * 55, 0);
-                innerGlow.setOpacity(0.7);
-
-                if (i < size) {
-
-
-                    String x = handCardManaCosts.get(i);
-                    Label label = new Label(x);
-                    label.relocate(i * 55 + 25 - 1, 50 + 3.8);
-                    label.setFont(new Font(12));
-                    label.setTextFill(Color.LIGHTCYAN);
-                    label.setOpacity(0.7);
-                    handCard.addMenuComponent(new NodeWrapper(label));
-
-                    String cardName = handCardNames.get(i);
-
-                    imageView.setOnMouseEntered(e -> {
-                        try {
-                            imageView.setImage(new Image(new FileInputStream("images/gameIcons/cardbackground_highlight.png")));
-                            innerGlow.setOpacity(1);
-                            manaIcon.setOpacity(1);
-                            label.setOpacity(1);
-                        } catch (FileNotFoundException e1) {
-                            e1.printStackTrace();
-                        }
-                    });
-                    imageView.setOnMouseExited(e -> {
-                        try {
-                            imageView.setImage(new Image(new FileInputStream("images/gameIcons/card_background.png")));
-                            innerGlow.setOpacity(0.7);
-                            manaIcon.setOpacity(0.7);
-                            label.setOpacity(0.7);
-                        } catch (FileNotFoundException e1) {
-                            e1.printStackTrace();
-                        }
-                    });
-
-                    handCard.addMenuComponent(new NodeWrapper(innerGlow));
-                    String type = NamesAndTypes.getType(handCardNames.get(i));
-                    String state = "idle";
-                    if (type.equals("spellCard") || type.equals("usable") || type.equals("collectible")) {
-                        state = "actionbar";
-                    }
-                    ImageView cardContent = getImageViewByCardName(handCardNames.get(i), state, "gif");
-                    cardContent.setFitWidth(55);
-                    cardContent.setFitHeight(55);
-                    cardContent.relocate(i * 55, 0);
-                    handCard.addMenuComponent(new NodeWrapper(cardContent), "content");
-
-                }
-                handCard.addMenuComponent(new NodeWrapper(imageView), "background");
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+            ImageView manaIcon = new ImageView(Assets.getImage("images/gameIcons/MenuIcons/icon_mana.png"));
+            if (i >= size) {
+                manaIcon.setImage(Assets.getImage("images/gameIcons/MenuIcons/icon_mana_inactive.png"));
             }
+            manaIcon.setOpacity(0.7);
+            manaIcon.setFitWidth(20);
+            manaIcon.setFitHeight(20);
+            manaIcon.relocate(i * 55 + 25 - 7, 50 + 1);
+            handCard.addMenuComponent(new NodeWrapper(manaIcon));
+
+            ImageView imageView = new ImageView(Assets.getImage("images/gameIcons/card_background.png"));
+            imageView.setFitHeight(55);
+            imageView.setFitWidth(55);
+            imageView.relocate(i * 55, 0);
+
+
+            ImageView innerGlow = new ImageView(Assets.getImage("images/gameIcons/card_background_inner_glow.png"));
+            innerGlow.setFitWidth(55);
+            innerGlow.setFitHeight(55);
+            innerGlow.relocate(i * 55, 0);
+            innerGlow.setOpacity(0.7);
+
+            if (i < size) {
+
+
+                String x = handCardManaCosts.get(i);
+                Label label = new Label(x);
+                label.relocate(i * 55 + 25 - 1, 50 + 3.8);
+                label.setFont(new Font(12));
+                label.setTextFill(Color.LIGHTCYAN);
+                label.setOpacity(0.7);
+                handCard.addMenuComponent(new NodeWrapper(label));
+
+                String cardName = handCardNames.get(i);
+
+                imageView.setOnMouseEntered(e -> {
+                    imageView.setImage(Assets.getImage("images/gameIcons/cardbackground_highlight.png"));
+                    innerGlow.setOpacity(1);
+                    manaIcon.setOpacity(1);
+                    label.setOpacity(1);
+
+                });
+                imageView.setOnMouseExited(e -> {
+                    imageView.setImage(Assets.getImage("images/gameIcons/card_background.png"));
+                    innerGlow.setOpacity(0.7);
+                    manaIcon.setOpacity(0.7);
+                    label.setOpacity(0.7);
+
+                });
+
+                handCard.addMenuComponent(new NodeWrapper(innerGlow));
+                String type = NamesAndTypes.getType(handCardNames.get(i));
+                String state = "idle";
+                if (type.equals("spellCard") || type.equals("usable") || type.equals("collectible")) {
+                    state = "actionbar";
+                }
+                ImageView cardContent = getImageViewByCardName(handCardNames.get(i), state, "gif");
+                cardContent.setFitWidth(55);
+                cardContent.setFitHeight(55);
+                cardContent.relocate(i * 55, 0);
+                handCard.addMenuComponent(new NodeWrapper(cardContent), "content");
+
+            }
+            handCard.addMenuComponent(new NodeWrapper(imageView), "background");
+
             ComponentSet handOptions = setHandOptions(firstPlayerDeckCapacity);
             handOptions.relocate(-80, -7);
             handOptions.resize(1.2, 1.2);
