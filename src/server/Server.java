@@ -31,10 +31,10 @@ public class Server {
     private ArrayList<String> chats;
     private HashMap<String, Integer> messageIndex;
 
-    private ArrayList<AccountUser> inList;
+//    private ArrayList<AccountUser> inList;
 
-//    private HashMap<AccountUser, AccountUser> sentRequest;
-//    private HashMap<AccountUser, ArrayList<AccountUser>> receivedRequests;
+    private HashMap<AccountUser, AccountUser> sentRequest;
+    private HashMap<AccountUser, ArrayList<AccountUser>> receivedRequests;
 
     public Server() {
         port = DEFAULT_PORT; // should be read from config file
@@ -44,10 +44,10 @@ public class Server {
         chats = new ArrayList<>();
         messageIndex = new HashMap<>();
 
-        inList = new ArrayList<>();
+//        inList = new ArrayList<>();
 
-//        sentRequest = new HashMap<>();
-//        receivedRequests = new HashMap<>();
+        sentRequest = new HashMap<>();
+        receivedRequests = new HashMap<>();
     }
 
     public void start() {
@@ -279,8 +279,6 @@ public class Server {
         return jsonObject;
     }
 
-/*
-
     public JsonObject addGameRequest(JsonObject jsonObject) {
         JsonElement jsonElement = jsonObject.get("authenticationToken");
         JsonObject message = new JsonObject();
@@ -413,7 +411,7 @@ public class Server {
         return message;
     }
 
-    */
+    /*
 
 
     public JsonObject addFuckingNewCard(JsonObject jsonObject) {
@@ -489,6 +487,8 @@ public class Server {
         }
         return message;
     }
+
+    */
 
 
     public static void main(String[] args) {
