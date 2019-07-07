@@ -30,7 +30,7 @@ public class ChatMenu extends Menu {
 
     public ChatMenu() {
         super(Id.CHAT_MENU, "Chat Menu", 800, 600);
-        setAutoRefresh();
+        setAutoRefresh(1000);
         vBox = new VBox();
         vBox.setMinHeight(600 - 50);
         vBox.setMaxHeight(600 - 50);
@@ -81,7 +81,9 @@ public class ChatMenu extends Menu {
         }
         back.setText("Back");
         back.setGoalMenuID(Id.MAIN_MENU);
-        back.setOnMouseClicked(e -> UI.decide("exit"));
+        back.setOnMouseClicked(e -> {
+            UI.decide("exit");
+        });
         addComponent(back);
 
         setTextBox();
@@ -91,7 +93,7 @@ public class ChatMenu extends Menu {
         textField = new TextField();
         textField.setMinHeight(50);
         textField.setMaxHeight(50);
-        textField.setMinWidth(windowWidth - 20);
+        textField.setMinWidth(windowWidth);
         bottom.getChildren().add(textField);
         textField.setBackground(Background.EMPTY);
         try {
@@ -103,26 +105,27 @@ public class ChatMenu extends Menu {
         getView().getScene().setOnKeyPressed(event -> {
             if (event.getCode().equals(KeyCode.ENTER)) {
                 handleSendMessage();
+                refresh();
             }
         });
 
-
-        Button button = new Button("refresh");
-        button.setOnMouseClicked(e -> handleGetMessages());
-        bottom.getChildren().add(button);
     }
 
     private void handleGetMessages() {
         String[] newMessages = null;
         try {
-            newMessages = getUIOutputAsString("get messages").split("\\n");
+            String out = getUIOutputAsString("get messages");
+            if (out.contains("NO NEW MESSAGES WHERE FOUND!"))
+                return;
+            newMessages = out.split("\\n");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        if (newMessages == null || newMessages.length == 0) {
-            newMessages = new String[]{"empty!", "emty!"};
-        }
+        if (newMessages == null)
+            return;
         for (String message: newMessages) {
+            if (message.isEmpty() || message.matches(".*(?i:invalid command).*"))
+                continue;
             Label messageLabel = new Label(message);
             messageLabel.setStyle("-fx-background-color:POWDERBLUE");
             try {
@@ -143,7 +146,7 @@ public class ChatMenu extends Menu {
     }
 
     @Override
-    public void refresh() {
+    public synchronized void refresh() {
         handleGetMessages();
     }
 }

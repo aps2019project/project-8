@@ -14,14 +14,17 @@ public class ChatMenu extends Menu {
     }
 
     public static void sendMessage(String message) {
-        System.err.println("-- send message invoked! --");
-        Menu.getConnection().sendChatMessage(message);
+        Menu.getConnection().sendChatMessage(getAccount().getName() + " : " + message);
     }
 
     public static void getMessages() {
-        System.err.println("-- get messages invoked! --");
         String[] messages = Menu.getConnection().getNewMessages();
-        for (String s: messages)
-            System.out.println(s);
+        if (messages == null || messages.length == 0) {
+            System.out.println("NO NEW MESSAGES WHERE FOUND!");
+        } else {
+            for (String s : messages) {
+                System.out.println(s);
+            }
+        }
     }
 }

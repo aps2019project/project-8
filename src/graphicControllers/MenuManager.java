@@ -87,10 +87,15 @@ public class MenuManager {
         return currentMenu;
     }
 
-    public void setCurrentMenu(Menu currentMenu) {
-        currentMenu.refresh();
+    public void setCurrentMenu(boolean refresh, Menu currentMenu) {
+        if (refresh)
+            currentMenu.refresh();
         currentMenu.stopMedia();
         this.currentMenu = currentMenu;
+
+    }
+    public void setCurrentMenu(Menu currentMenu) {
+        setCurrentMenu(true, currentMenu);
     }
 
     public void setCurrentMenu(int menuID) {

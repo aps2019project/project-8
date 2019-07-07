@@ -48,6 +48,29 @@ public class MainMenu extends Menu {
             } catch (FileNotFoundException ignored) {
             }
 
+            GUIButton replay = new GUIButton(windowWidth / 2 - 170.0 /2, windowHeight
+                    / 2 - 50.0 / 2 - 2 * 10 - 2 * 50 - 50, 170, 50);
+            try {
+                replay.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+                replay.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+                replay.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+            } catch (FileNotFoundException ignored) {
+            }
+            replay.setText("Replay");
+            replay.setOnMouseClicked(e -> {
+                Optional<String> s = popUpGetList(ReplayMenu.getGames(), "Choose", "Choose A Game!");
+                if (s.isPresent()) {
+                    String gameID = s.get();
+                    MenuManager.getInstance().setCurrentMenu(Id.REPLAY_MENU);
+                    ((ReplayMenu) MenuManager.getInstance().getCurrentMenu()).setGameMenu(ReplayMenu.getGame(gameID));
+
+                    //System.err.println(MenuManager.getInstance().getCurrentMenu());
+                    //MenuManager.getInstance().getCurrentMenu().getView().getGroup().getChildren().clear();
+                    //ReplayMenu.getGame(gameID).replay();
+                }
+            });
+            addComponent(replay);
+
             GUIButton gotoCollection = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight
                     / 2 - 50.0 / 2 - 2 * 10 - 2 * 50, 170, 50);
             try {

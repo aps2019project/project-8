@@ -93,7 +93,6 @@ public class Connection {
         try {
             String response = in.readLine();
             jsonObject = getAsJson(response);
-//            System.err.println(jsonObject.get("log").getAsString());
             if (jsonObject.get("count") != null)
                 return jsonObject.get("count").getAsString();
         } catch (IOException e) {
@@ -127,9 +126,7 @@ public class Connection {
         out.flush();
         try {
             String response = in.readLine();
-            System.err.println(response);
             jsonObject = getAsJson(response);
-//            System.err.println(jsonObject.get("log").getAsString());
             JsonArray jsonArray = (JsonArray) jsonObject.get("messages");
             System.err.println(jsonArray);
             return getJsonStringArray(jsonArray);
@@ -224,7 +221,6 @@ public class Connection {
         try {
             String response = in.readLine();
             JsonObject responseObject = getAsJson(response);
-            System.err.println(jsonObject + "\n" + response);
 //            System.err.println(responseObject.get("log").getAsString());
             return responseObject;
         } catch (IOException e) {

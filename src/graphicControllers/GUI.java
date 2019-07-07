@@ -41,6 +41,7 @@ public class GUI extends Application {
             menuManager.addMenu(new GameMenu());
             menuManager.addMenu(new Graveyard());
             menuManager.addMenu(new ChatMenu());
+            menuManager.addMenu(new ReplayMenu());
         } catch (MenuAlreadyCreatedException e) {
             e.printStackTrace();
         }

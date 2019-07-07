@@ -5,13 +5,17 @@ import graphicControllers.Menu;
 import graphicControllers.MenuManager;
 import javafx.animation.*;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
@@ -23,6 +27,7 @@ import menus.UI;
 import model.Map;
 import model.Match;
 import model.Unit;
+import sun.security.krb5.internal.TGSRep;
 import view.*;
 
 import java.io.File;
@@ -33,14 +38,11 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class GameMenu extends Menu {
+public class GameMenu extends Menu  {
     private static final double CELL_CONTENT_WIDTH = 100;
     private static final double CELL_CONTENT_HEIGHT = 70;
     private static final double TILE_WITDH = 50;
     private static final double TILE_HEIGHT = 30;
-    private static final String SHOW_CARD_INFO = "show card info [^ ]+";
-    private static final String SELECT_CARD = "select [^ ]+";
-    private static final String MOVE_UNIT = "move to (\\d+, \\d+)";
     private static final Color textColor = Color.rgb(176, 42, 226);
     private static final double BUFF_WIDTH = 10;
     private static final double BUFF_HEIGHT = 10;
@@ -72,11 +74,35 @@ public class GameMenu extends Menu {
     private String selectedCardID;
     private int numberOfDisable = 0;
 
+
+    public ArrayList<ArrayList<Node>> history = new ArrayList<>();
+
+
+
+    boolean isRecording;
+
+    public void startRecording() {
+        isRecording = true;
+    }
+
+    public void stopRecording() {
+        ReplayMenu.addGame(this);
+        isRecording = false;
+    }
+
     public GameMenu() {
         super(Id.IN_GAME_MENU, "Game Menu", windowDefaultWidth, windowDefaultHeight);
+        getView().getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.UP) {
+                speedCoefficient *= 2;
+            } else if (event.getCode() == KeyCode.DOWN) {
+                speedCoefficient /= 2;
+            }
+        });
         setUpBackGround();
         setUpMenuButtons();
         instance = this;
+        startRecording();
     }
 
     public static GameMenu getInstance() {
@@ -596,7 +622,7 @@ public class GameMenu extends Menu {
 
         PathTransition pathTransition = new PathTransition();
         pathTransition.setNode(imageView);
-        pathTransition.setDuration(Duration.millis(500));
+        pathTransition.setDuration(Duration.millis(500 / speedCoefficient));
         pathTransition.setPath(orthogonal);
         pathTransition.setCycleCount(1);
         pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
@@ -676,7 +702,7 @@ public class GameMenu extends Menu {
                         KeyValue xValue = new KeyValue(source.xProperty(), (column - sourceColumn) * CELL_CONTENT_WIDTH);
                         KeyValue yValue = new KeyValue(source.yProperty(), (row - sourceRow) * CELL_CONTENT_HEIGHT);
                         KeyValue rValue = new KeyValue(source.rotateProperty(), 0);
-                        KeyFrame keyFrame = new KeyFrame(Duration.millis(1000), xValue, yValue, rValue);
+                        KeyFrame keyFrame = new KeyFrame(Duration.millis(1000 / speedCoefficient), xValue, yValue, rValue);
                         Timeline timeline = new Timeline(keyFrame);
                         timeline.play();
                     });
@@ -729,6 +755,8 @@ public class GameMenu extends Menu {
 
     private boolean gameEnded(String output) {
         if (output.contains("winner is:") || output.contains("HAHA!")) {
+
+            stopRecording();
             String[] parts = output.split("\\n");
             output = "";
             for (int i = 0; i < parts.length; i++)
@@ -1047,102 +1075,111 @@ public class GameMenu extends Menu {
             }
 
             Platform.runLater(() -> {
-                stopAnimations();
-                removeComponent(selectedCardInfo);
-                if (collectibleComponents != null) {
-                    removeComponent(collectibleComponents);
-                    collectibleComponents = null;
-                }
-
-                draggedComponenet = null;
-                draggedCardName = null;
-                String firstPlayerName = null, secondPlayerName = null, firstPlayerMana = null, secondPlayerMana = null;
-                String firstPlayerDeckCapacity = null;
-                ArrayList<String> handCardNames = new ArrayList<>();
-                ArrayList<String> handCardManaCosts = new ArrayList<>();
-                String playerOneUsableItemName = null, playerTwoUsableItemName = null;
-                gridStrings = new String[Map.NUMBER_OF_ROWS][Map.NUMBER_OF_COLUMNS];
-                int turnNumber = 0;
-
-                String[] shengdeShow = getUIOutputAsString("shengdebao").split("\\n");
-
-                for (int i = 0; i < shengdeShow.length; i++) {
-                    shengdeShow[i] = shengdeShow[i].trim();
-                    if (i == 0) {
-                        turnNumber = Integer.parseInt(shengdeShow[i].replaceFirst("Turn number: ", ""));
-                    } else if (i == 1) {
-                        Pattern pattern = Pattern.compile("(.+) Mana\\((\\d+)\\) deck\\((\\d+)\\) hand:.*");
-                        Matcher matcher = pattern.matcher(shengdeShow[i]);
-                        if (matcher.find()) {
-                            firstPlayerName = matcher.group(1);
-                            firstPlayerMana = matcher.group(2);
-                            firstPlayerDeckCapacity = matcher.group(3);
-                        }
-                    } else if (i == 2) {
-                        Pattern pattern = Pattern.compile("([a-zA-Z0-9]+)\\((\\d+)\\)");
-                        Matcher matcher = pattern.matcher(shengdeShow[i]);
-                        while (matcher.find()) {
-                            handCardNames.add(matcher.group(1));
-                            handCardManaCosts.add(matcher.group(2));
-                        }
-                    } else if (i == 3) {
-                        Pattern pattern = Pattern.compile("Player 1 usable item is: (.+)");
-                        Matcher matcher = pattern.matcher(shengdeShow[i]);
-                        if (matcher.find()) {
-                            String s = matcher.group(1);
-                            if (!s.equals("No Items selected"))
-                                playerOneUsableItemName = s;
-                        }
-                    } else if (i == shengdeShow.length - 3) {
-                        Pattern pattern = Pattern.compile("(.+) Mana\\((\\d+)\\) deck\\(\\d+\\) hand:.*");
-                        Matcher matcher = pattern.matcher(shengdeShow[i]);
-                        if (matcher.find()) {
-                            secondPlayerName = matcher.group(1);
-                            secondPlayerMana = matcher.group(2);
-                        }
-                    } else if (i == shengdeShow.length - 1) {
-                        Pattern pattern = Pattern.compile("Player 2 usable item is: (.+)");
-                        Matcher matcher = pattern.matcher(shengdeShow[i]);
-                        if (matcher.find()) {
-                            playerTwoUsableItemName = matcher.group(1);
-                            if (playerTwoUsableItemName.equals("No Items selected"))
-                                playerTwoUsableItemName = null;
-                        }
-                    } else if (i < 4 + Map.NUMBER_OF_ROWS) {
-                        String[] strings = shengdeShow[i].split(" +");
-                        gridStrings[i - 4] = Arrays.copyOf(strings, gridStrings[i - 4].length);
-                    }
-                }
-
-                if (everyThing != null)
-                    removeComponent(everyThing);
-                everyThing = new ComponentSet();
-
-                String friendlyHeroName = getFriendlyHeroName();
-                String opponentHeroName = getOpponentHeroName();
-
-                if (turnNumber % 2 == 0) {
-                    firstPlayerBar = makePlayerStat(firstPlayerName, friendlyHeroName, playerOneUsableItemName, firstPlayerMana, Math.max(Integer.parseInt(firstPlayerMana), Math.min(9, (turnNumber + 1) / 2 + 2)));
-                    secondPlayerBar = makeReverseEmptyPlayerStat(secondPlayerName, opponentHeroName, playerTwoUsableItemName);
-                } else {
-                    firstPlayerBar = makeEmptyPlayerStat(firstPlayerName, opponentHeroName, playerOneUsableItemName);
-                    secondPlayerBar = makeReversePlayerStat(secondPlayerName, friendlyHeroName, playerTwoUsableItemName, secondPlayerMana, Math.min(9, (turnNumber + 1) / 2 + 1));
-                }
-                cardBar = makeCardBar(firstPlayerDeckCapacity, handCardNames, handCardManaCosts);
-                gridCells = makeGridCells(gridStrings);
-                everyThing.addMenuComponent(firstPlayerBar, "first_player_bar");
-                everyThing.addMenuComponent(secondPlayerBar, "second_player_bar");
-                everyThing.addMenuComponent(cardBar, "card_bar");
-                everyThing.addMenuComponent(gridCells, "grid_cells");
-
                 try {
-                    everyThing.setLabelFromLocalDir("fonts/averta-black-webfont.ttf");
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                    stopAnimations();
+                    removeComponent(selectedCardInfo);
+                    if (collectibleComponents != null) {
+                        removeComponent(collectibleComponents);
+                        collectibleComponents = null;
+                    }
+
+                    draggedComponenet = null;
+                    draggedCardName = null;
+                    String firstPlayerName = null, secondPlayerName = null, firstPlayerMana = null, secondPlayerMana = null;
+                    String firstPlayerDeckCapacity = null;
+                    ArrayList<String> handCardNames = new ArrayList<>();
+                    ArrayList<String> handCardManaCosts = new ArrayList<>();
+                    String playerOneUsableItemName = null, playerTwoUsableItemName = null;
+                    gridStrings = new String[Map.NUMBER_OF_ROWS][Map.NUMBER_OF_COLUMNS];
+                    int turnNumber = 0;
+
+                    String[] shengdeShow = getUIOutputAsString("shengdebao").split("\\n");
+
+                    for (int i = 0; i < shengdeShow.length; i++) {
+                        shengdeShow[i] = shengdeShow[i].trim();
+                        if (i == 0) {
+                            turnNumber = Integer.parseInt(shengdeShow[i].replaceFirst("Turn number: ", ""));
+                        } else if (i == 1) {
+                            Pattern pattern = Pattern.compile("(.+) Mana\\((\\d+)\\) deck\\((\\d+)\\) hand:.*");
+                            Matcher matcher = pattern.matcher(shengdeShow[i]);
+                            if (matcher.find()) {
+                                firstPlayerName = matcher.group(1);
+                                firstPlayerMana = matcher.group(2);
+                                firstPlayerDeckCapacity = matcher.group(3);
+                            }
+                        } else if (i == 2) {
+                            Pattern pattern = Pattern.compile("([a-zA-Z0-9]+)\\((\\d+)\\)");
+                            Matcher matcher = pattern.matcher(shengdeShow[i]);
+                            while (matcher.find()) {
+                                handCardNames.add(matcher.group(1));
+                                handCardManaCosts.add(matcher.group(2));
+                            }
+                        } else if (i == 3) {
+                            Pattern pattern = Pattern.compile("Player 1 usable item is: (.+)");
+                            Matcher matcher = pattern.matcher(shengdeShow[i]);
+                            if (matcher.find()) {
+                                String s = matcher.group(1);
+                                if (!s.equals("No Items selected"))
+                                    playerOneUsableItemName = s;
+                            }
+                        } else if (i == shengdeShow.length - 3) {
+                            Pattern pattern = Pattern.compile("(.+) Mana\\((\\d+)\\) deck\\(\\d+\\) hand:.*");
+                            Matcher matcher = pattern.matcher(shengdeShow[i]);
+                            if (matcher.find()) {
+                                secondPlayerName = matcher.group(1);
+                                secondPlayerMana = matcher.group(2);
+                            }
+                        } else if (i == shengdeShow.length - 1) {
+                            Pattern pattern = Pattern.compile("Player 2 usable item is: (.+)");
+                            Matcher matcher = pattern.matcher(shengdeShow[i]);
+                            if (matcher.find()) {
+                                playerTwoUsableItemName = matcher.group(1);
+                                if (playerTwoUsableItemName.equals("No Items selected"))
+                                    playerTwoUsableItemName = null;
+                            }
+                        } else if (i < 4 + Map.NUMBER_OF_ROWS) {
+                            String[] strings = shengdeShow[i].split(" +");
+                            gridStrings[i - 4] = Arrays.copyOf(strings, gridStrings[i - 4].length);
+                        }
+                    }
+
+                    if (everyThing != null)
+                        removeComponent(everyThing);
+                    everyThing = new ComponentSet();
+
+                    String friendlyHeroName = getFriendlyHeroName();
+                    String opponentHeroName = getOpponentHeroName();
+
+                    if (turnNumber % 2 == 0) {
+                        firstPlayerBar = makePlayerStat(firstPlayerName, friendlyHeroName, playerOneUsableItemName, firstPlayerMana, Math.max(Integer.parseInt(firstPlayerMana), Math.min(9, (turnNumber + 1) / 2 + 2)));
+                        secondPlayerBar = makeReverseEmptyPlayerStat(secondPlayerName, opponentHeroName, playerTwoUsableItemName);
+                    } else {
+                        firstPlayerBar = makeEmptyPlayerStat(firstPlayerName, opponentHeroName, playerOneUsableItemName);
+                        secondPlayerBar = makeReversePlayerStat(secondPlayerName, friendlyHeroName, playerTwoUsableItemName, secondPlayerMana, Math.min(9, (turnNumber + 1) / 2 + 1));
+                    }
+                    cardBar = makeCardBar(firstPlayerDeckCapacity, handCardNames, handCardManaCosts);
+                    gridCells = makeGridCells(gridStrings);
+                    everyThing.addMenuComponent(firstPlayerBar, "first_player_bar");
+                    everyThing.addMenuComponent(secondPlayerBar, "second_player_bar");
+                    everyThing.addMenuComponent(cardBar, "card_bar");
+                    everyThing.addMenuComponent(gridCells, "grid_cells");
+
+                    try {
+                        everyThing.setLabelFromLocalDir("fonts/averta-black-webfont.ttf");
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                    addComponent(everyThing);
+                    if (isRecording) {
+                        ArrayList<Node> nodes = new ArrayList<>(getView().getGroup().getChildrenUnmodifiable());
+                        if (history.isEmpty() || !nodes.equals(history.get(history.size() - 1))) {
+                            history.add(new ArrayList<>(getView().getGroup().getChildrenUnmodifiable()));
+                        }
+                    }
+                } catch (Throwable ignored) {
+
                 }
-
-                addComponent(everyThing);
-
             });
         }).start();
 
