@@ -28,7 +28,7 @@ public class AccountUser implements Comparable {
             return 0;
         AccountUser accountUser = (AccountUser) o;
         if (wins - accountUser.wins != 0)
-            return wins - accountUser.wins;
+            return - (wins - accountUser.wins);
         return name.compareTo(accountUser.getName());
     }
 
