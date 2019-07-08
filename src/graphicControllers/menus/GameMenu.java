@@ -5,13 +5,10 @@ import graphicControllers.Menu;
 import graphicControllers.MenuManager;
 import javafx.animation.*;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -26,15 +23,12 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 import menus.UI;
 import model.Map;
-import model.Match;
 import model.Unit;
-import sun.security.krb5.internal.TGSRep;
 import view.*;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.PrintStream;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,45 +42,17 @@ public class GameMenu extends Menu {
     private static final double BUFF_WIDTH = 10;
     private static final double BUFF_HEIGHT = 10;
     private static final int TIME_LIMIT = 600;
-
-    static class Assets {
-        private static HashMap<String, Image> imageMap = new HashMap<>();
-        private static HashMap<String, Media> mediaMap = new HashMap<>();
-
-        public static Image getImage(String path) {
-            if (!imageMap.containsKey(path)) {
-                try {
-                    imageMap.put(path, new Image(new FileInputStream(path)));
-                } catch (FileNotFoundException e) {
-                    try {
-                        return new Image(new FileInputStream("images/gameIcons/gifs/test_idle.gif"));
-                    } catch (FileNotFoundException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            }
-            return imageMap.get(path);
-        }
-
-        public static Media getMedia(String path) {
-            if (!mediaMap.containsKey(path)) {
-                mediaMap.put(path, new Media(new File(path).toURI().toString()));
-            }
-            return mediaMap.get(path);
-        }
-    }
-
     private static final Media attackSound = new Media(new File("sfx/attack.m4a").toURI().toString());
     private static final Media deathSound = new Media(new File("sfx/death.m4a").toURI().toString());
     private static final Media insertSound = new Media(new File("sfx/insert_card.m4a").toURI().toString());
     private static final Media runSound = new Media(new File("sfx/runn.m4a").toURI().toString());
-
     private static transient GameMenu instance = null;
-    private double speedCoefficient = 1.0;
-    private boolean hasPopup = true;
-
+    public ArrayList<ArrayList<Node>> history = new ArrayList<>();
     Rectangle disableEventRectangle;
     ArrayList<AnimationTimer> animations = new ArrayList<>();
+    boolean isRecording;
+    private double speedCoefficient = 1.0;
+    private boolean hasPopup = true;
     private ComponentSet firstPlayerBar, secondPlayerBar;
     private ComponentSet gridCells;
     private ComponentSet cardBar;
@@ -99,31 +65,11 @@ public class GameMenu extends Menu {
     private ArrayList<String> selectedComboCardIds = new ArrayList<>();
     private boolean clickedOnShowNextCard = false;
     private String selectedCollectibleID;
-
-
     private String[][] gridStrings;
-
-
     private boolean showCutSceneMode = false;
     private String selectedCardID;
     private int numberOfDisable = 0;
-
-
-    public ArrayList<ArrayList<Node>> history = new ArrayList<>();
-
-
-    boolean isRecording;
     private boolean isInGame;
-
-    public void startRecording() {
-        isRecording = true;
-    }
-
-    public void stopRecording() {
-        ReplayMenu.addGame(this);
-        isRecording = false;
-    }
-
     public GameMenu() {
         super(Id.IN_GAME_MENU, "Game Menu", windowDefaultWidth, windowDefaultHeight);
         getView().getScene().setOnKeyPressed(event -> {
@@ -138,6 +84,19 @@ public class GameMenu extends Menu {
         setUpMenuButtons();
         instance = this;
         startRecording();
+    }
+
+    public static GameMenu getInstance() {
+        return instance;
+    }
+
+    public void startRecording() {
+        isRecording = true;
+    }
+
+    public void stopRecording() {
+        ReplayMenu.addGame(this);
+        isRecording = false;
     }
 
     private void setUpEndTurnTimer() {
@@ -160,11 +119,6 @@ public class GameMenu extends Menu {
             }
         }).start();
     }
-
-    public static GameMenu getInstance() {
-        return instance;
-    }
-
 
     private void setUpBackGround() {
         // setting up the back ground
@@ -604,12 +558,6 @@ public class GameMenu extends Menu {
 
     }
 
-    //
-    //
-    //
-    //
-
-
     private void toggleCellActive(int row, int column, boolean active, boolean attack) {
         ComponentSet cell = (ComponentSet) gridCells.getComponentByID(row + "," + column);
         double opacity = active ? 1 : 0;
@@ -627,6 +575,11 @@ public class GameMenu extends Menu {
                 cardContent = null;
         }
     }
+
+    //
+    //
+    //
+    //
 
     private void moveUnit(String cardID, int dRow, int dColumn) {
         int sRow = getRowFromUnitID(cardID);
@@ -673,13 +626,6 @@ public class GameMenu extends Menu {
         pathTransition.play();
     }
 
-
-    //
-    //
-    //
-    //
-    //
-
     private void handleCellSpawn(int x, int y) {
         disableEvents();
         ComponentSet cell = (ComponentSet) gridCells.getComponentByID(x + "," + y);
@@ -707,6 +653,12 @@ public class GameMenu extends Menu {
         }).start();
     }
 
+
+    //
+    //
+    //
+    //
+    //
 
     private void handleGraphicallMove(int sourceRow, int sourceColumn, int row, int column, boolean ai) {
 
@@ -747,7 +699,7 @@ public class GameMenu extends Menu {
                         e.printStackTrace();
                     }
                     Platform.runLater(() -> {
-                    //    mediaPlayer.stop();
+                        //    mediaPlayer.stop();
                         enableEvents();
                         selectedCardID = null;
                         refresh();
@@ -1696,7 +1648,6 @@ public class GameMenu extends Menu {
         moveComponentToFront(secondPlayerBar);
     }
 
-
     private String getInfoOfUnit(int row, int column) {
         String s;
         s = getDescriptionByLocation(row, column, "show my minions");
@@ -1729,7 +1680,6 @@ public class GameMenu extends Menu {
             }
         }
     }
-
 
     ImageView getTile(int row, int column) {
         ComponentSet cell = (ComponentSet) gridCells.getComponentByID(row + "," + column);
@@ -1791,7 +1741,6 @@ public class GameMenu extends Menu {
             }
         }
     }
-
 
     private ComponentSet makeCardBar(String firstPlayerDeckCapacity, ArrayList<String> handCardNames, ArrayList<String> handCardManaCosts) {
 
@@ -1915,6 +1864,33 @@ public class GameMenu extends Menu {
             }
         }
         return cardBar;
+    }
+
+    static class Assets {
+        private static HashMap<String, Image> imageMap = new HashMap<>();
+        private static HashMap<String, Media> mediaMap = new HashMap<>();
+
+        public static Image getImage(String path) {
+            if (!imageMap.containsKey(path)) {
+                try {
+                    imageMap.put(path, new Image(new FileInputStream(path)));
+                } catch (FileNotFoundException e) {
+                    try {
+                        return new Image(new FileInputStream("images/gameIcons/gifs/test_idle.gif"));
+                    } catch (FileNotFoundException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+            return imageMap.get(path);
+        }
+
+        public static Media getMedia(String path) {
+            if (!mediaMap.containsKey(path)) {
+                mediaMap.put(path, new Media(new File(path).toURI().toString()));
+            }
+            return mediaMap.get(path);
+        }
     }
 
 
