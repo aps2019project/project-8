@@ -218,11 +218,15 @@ public class Connection {
         sendSimpleMessage(jsonObject);
     }
 
-    public void enterMultiplayerMenu(boolean in) {
+    public void enterMultiplayerMenu(boolean in, int mode, int flags) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("requestType", "enterMultiplayer");
         jsonObject.addProperty("authenticationToken", authenticationToken);
         jsonObject.addProperty("in", in ? "yes" : "no");
+        if (in) {
+            jsonObject.addProperty("mode", String.valueOf(mode));
+            jsonObject.addProperty("flags", String.valueOf(flags));
+        }
         JsonObject response = sendSimpleMessage(jsonObject);
     }
 
@@ -233,6 +237,14 @@ public class Connection {
         jsonObject.addProperty("command", command);
         JsonObject response = sendSimpleMessage(jsonObject);
         assert response != null;
+        return response.get("log").getAsString();
+    }
+
+    public String inGame() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("requestType", "checkMe");
+        jsonObject.addProperty("authenticationToken", authenticationToken);
+        JsonObject response = sendSimpleMessage(jsonObject);
         return response.get("log").getAsString();
     }
 

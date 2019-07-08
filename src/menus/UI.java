@@ -497,7 +497,10 @@ public class UI {
             else
                 view.showInvalidCommandError();
         }
-        getConnection().sendGameCommand(command);
+
+        String gameResponse = getConnection().sendGameCommand(command);
+        gameResponse = gameResponse.trim();
+        System.out.println(gameResponse);
     }
 
     public static int[] getCoordinates(String command) {
