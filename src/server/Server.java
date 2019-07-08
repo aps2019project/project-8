@@ -576,8 +576,13 @@ public class Server {
             if (accountUser == null) {
                 message.addProperty("log", "your authentication token has expired");
             } else {
+
+
                 int wins = Integer.valueOf(jsonObject.get("win").getAsString());
                 int money = Integer.valueOf(jsonObject.get("money").getAsString());
+
+                System.err.println("HERE TO ADD WIN FOR " + accountUser.getName() + " " + wins + " " + money);
+
                 for (int i = 0; i < wins; i++)
                     accountUser.addWin();
                 accountUser.receiveMoney(money);
