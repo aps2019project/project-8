@@ -7,10 +7,9 @@ import com.gilecode.yagson.com.google.gson.JsonElement;
 import com.gilecode.yagson.com.google.gson.JsonObject;
 import gen.JsonMaker;
 import interfaces.AccountInterface;
+import interfaces.GameInterface;
 import interfaces.ShopInterface;
-import model.AccountData;
-import model.AccountUser;
-import model.CollectionItem;
+import model.*;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -31,10 +30,12 @@ public class Server {
     private ArrayList<String> chats;
     private HashMap<String, Integer> messageIndex;
 
-//    private ArrayList<AccountUser> inList;
+    private ArrayList<AccountUser> inList;
 
-    private HashMap<AccountUser, AccountUser> sentRequest;
-    private HashMap<AccountUser, ArrayList<AccountUser>> receivedRequests;
+//    private HashMap<AccountUser, AccountUser> sentRequest;
+//    private HashMap<AccountUser, ArrayList<AccountUser>> receivedRequests;
+
+    private GameInterface gameInterface;
 
     public Server() {
         port = DEFAULT_PORT; // should be read from config file
@@ -44,10 +45,12 @@ public class Server {
         chats = new ArrayList<>();
         messageIndex = new HashMap<>();
 
-//        inList = new ArrayList<>();
+        inList = new ArrayList<>();
 
-        sentRequest = new HashMap<>();
-        receivedRequests = new HashMap<>();
+//        sentRequest = new HashMap<>();
+//        receivedRequests = new HashMap<>();
+
+        gameInterface = new GameInterface();
     }
 
     public void start() {
@@ -279,6 +282,8 @@ public class Server {
         return jsonObject;
     }
 
+    /*
+
     public JsonObject addGameRequest(JsonObject jsonObject) {
         JsonElement jsonElement = jsonObject.get("authenticationToken");
         JsonObject message = new JsonObject();
@@ -303,7 +308,7 @@ public class Server {
                         message.addProperty("log", "no opponent user name sent");
                     }
                 } else {
-                    message.addProperty("log", "you already have sent another game reqeuest. cancel that first");
+                    message.addProperty("log", "you already have sent another game request. cancel that first");
                 }
             }
         } else {
@@ -340,16 +345,21 @@ public class Server {
             if (accountUser == null) {
                 message.addProperty("log", "your authentication token has expired");
             } else {
-                ArrayList<AccountUser> reqs = receivedRequests.get(accountUser);
-                JsonArray jsonArray = new JsonArray();
-                if (reqs != null) {
-                    for (AccountUser user : reqs)
-                        jsonArray.add(user.getName());
-                    message.addProperty("log", "your game requests were sent");
+                String deckValid = gameInterface.checkAccount(accountUser);
+                if (deckValid.equals("ok")) {
+                    ArrayList<AccountUser> reqs = receivedRequests.get(accountUser);
+                    JsonArray jsonArray = new JsonArray();
+                    if (reqs != null) {
+                        for (AccountUser user : reqs)
+                            jsonArray.add(user.getName());
+                        message.addProperty("log", "your game requests were sent");
+                    } else {
+                        message.addProperty("log", "you have no game requests");
+                    }
+                    message.add("users", jsonArray);
                 } else {
-                    message.addProperty("log", "you have no game requests");
+                    message.addProperty("log", deckValid);
                 }
-                message.add("users", jsonArray);
             }
         } else {
             message.addProperty("log", "no authentication token sent");
@@ -378,10 +388,16 @@ public class Server {
                         if (reqs.indexOf(requester) == -1) {
                             message.addProperty("log", "this user has not requested to play with you");
                         } else {
-                            message.addProperty("log", "the game is about to begin...");
+                            String deckValid = gameInterface.checkAccount(accountUser);
+                            if (deckValid.equals("ok")) {
 
+                                message.addProperty("log", "the game is about to begin...");
 
-                            // here something happens
+                                // here something happens;
+
+                            } else {
+                                message.addProperty("log", deckValid);
+                            }
                         }
                     }
                 }
@@ -410,6 +426,8 @@ public class Server {
         }
         return message;
     }
+
+    */
 
 
     public JsonObject addFuckingNewCard(JsonObject jsonObject) {
@@ -458,8 +476,6 @@ public class Server {
         return message;
     }
 
-    /*
-
     public JsonObject enterMulti(JsonObject jsonObject) {
         JsonElement jsonElement = jsonObject.get("authenticationToken");
         JsonObject message = new JsonObject();
@@ -471,16 +487,15 @@ public class Server {
             } else {
                 boolean in = jsonObject.get("in").getAsString().equals("yes");
                 if (in) {
-                    if (inList.indexOf(accountUser) == -1) {
-                        inList.add(accountUser);
-                    }
-                    if (inList.size() > 1) {
-                        // start game here
+                    if (inList.size() > 0) {
+                        AccountUser b = inList.remove(0);
+//                        gameInterface.startGame(accountUser, b);
+                        // game start game game here some thing happens
                     }
                 } else {
                     inList.remove(accountUser);
+                    message.addProperty("log", "you were removed from list");
                 }
-                message.addProperty("log", "success");
             }
         } else {
             message.addProperty("log", "no authentication token sent");
@@ -488,8 +503,27 @@ public class Server {
         return message;
     }
 
-    */
-
+    public JsonObject sendGameCommand(JsonObject jsonObject) {
+        JsonElement jsonElement = jsonObject.get("authenticationToken");
+        JsonObject message = new JsonObject();
+        if (jsonElement != null) {
+            String token = jsonElement.getAsString();
+            AccountUser accountUser = players.get(token);
+            if (accountUser == null) {
+                message.addProperty("log", "your authentication token has expired");
+            } else {
+                jsonElement = jsonObject.get("command");
+                if (jsonElement != null) {
+                    message.addProperty("log", gameInterface.sendCommand(accountUser, jsonElement.getAsString()));
+                } else {
+                    message.addProperty("log","no command sent");
+                }
+            }
+        } else {
+            message.addProperty("log", "no authentication token sent");
+        }
+        return message;
+    }
 
     public static void main(String[] args) {
         new Server().start();

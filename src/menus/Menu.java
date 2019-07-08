@@ -9,9 +9,9 @@ public abstract class Menu {
     protected static AccountUser account = null;
     protected static View view = null;
 
-//    public static void setView(View view) {
-//        Menu.view = view;
-//    }
+    public static void setView(View view) {
+        Menu.view = view;
+    }
 //
 //    public static void setConnection(Connection connection) {
 //        Menu.connection = connection;
@@ -24,6 +24,10 @@ public abstract class Menu {
 //    public static AccountUser getAccount() {
 //        return account;
 //    }
+
+    public View getView() {
+        return view;
+    }
 
     public static void setAccount(AccountUser accountUser) {
         Menu.account = accountUser;

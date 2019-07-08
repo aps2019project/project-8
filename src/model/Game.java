@@ -16,6 +16,74 @@ import java.util.*;
 
 public class Game extends InGameMenu {
 
+
+    public static final String NAME = "\\w+";
+    public static final String ACCOUNT_NAME = NAME;
+    public static final String CREATE_ACCOUNT = "(?i:create account) " + ACCOUNT_NAME;
+    public static final String LOGIN = "(?i:login) " + ACCOUNT_NAME;
+    public static final String SHOW_LEADERBOARD = "(?i:show leader[ ]?board)";
+    public static final String HELP = "(?i:help)";
+    public static final String EXIT = "(?i:exit)";
+    public static final String COLLECTION = "(?i:collection)";
+    public static final String SHOP = "(?i:shop)";
+    public static final String BATTLE = "(?i:battle)";
+    public static final String LOGOUT = "(?i:logout)";
+    public static final String SAVE = "(?i:save)";
+    public static final String SINGLE_PLAYER = "(?i:single[ ]?player)";
+    public static final String MULTIPLAYER = "(?i:multi[ ]?player)";
+    public static final String STORY = "(?i:story)";
+    public static final String CUSTOM_GAME = "(?i:custom game)";
+    public static final String SHOW = "(?i:show)";
+    public static final String COLLECTION_ITEM_NAME = NAME;
+    public static final String SEARCH = "(?i:search) " + COLLECTION_ITEM_NAME;
+    public static final String DECK_NAME = NAME;
+    public static final String CREATE_DECK = "(?i:create deck) " + DECK_NAME;
+    public static final String DELETE_DECK = "(?i:delete deck) " + DECK_NAME;
+    public static final String ID = NAME;
+    public static final String ADD_COLLECTION_ITEM_TO_DECK = "(?i:add) " + ID + " (?i:to deck) " + DECK_NAME;
+    public static final String REMOVE_COLLECTION_ITEM_FROM_DECK = "(?i:remove) " + ID + " (?i:from deck) " + DECK_NAME;
+    public static final String VALIDATE_DECK = "(?i:validate deck) " + DECK_NAME;
+    public static final String SELECT_DECK = "(?i:select deck) " + DECK_NAME;
+    public static final String SHOW_ALL_DECKS = "(?i:show all decks)";
+    public static final String SHOW_DECK = "(?i:show deck) " + DECK_NAME;
+    public static final String SHOW_COLLECTION = "(?i:show collection)";
+    public static final String SEARCH_COLLECTION = "(?i:search collection) " + COLLECTION_ITEM_NAME;
+    public static final String BUY = "(?i:buy) " + COLLECTION_ITEM_NAME;
+    public static final String SELL = "(?i:sell) " + ID;
+    public static final String LEVEL = "\\d";
+    public static final String START_CUSTOM_GAME = "(?i:start game) " + DECK_NAME + " \\d( \\d)*";
+    public static final String SELECT_USER = "(?i:select user) " + NAME;
+    public static final String START_MULTIPLAYER_GAME = "(?i:start multiplayer game) \\d( \\d)*";
+    public static final String GAME_INFO = "(?i:game info)";
+    public static final String SHOW_MY_MINIONS = "(?i:show my minions)";
+    public static final String SHOW_OPPONENT_MINIONS = "(?i:show opponent minions)";
+    public static final String SHOW_CARD_INFO = "(?i:show card info) " + ID;
+    public static final String SHOW_INFO_CARD = "(?i:show info) " + ID;
+    public static final String SELECT_COLLECTION_ITEM = "(?i:select) " + ID;
+    public static final String COORDINATES = "\\(\\d+, \\d+\\)";
+    public static final String MOVE = "(?i:move to) " + COORDINATES;
+    public static final String ATTACK = "(?i:attack) " + ID;
+    public static final String ATTACK_COMBO = "(?i:attack combo) " + ID + "( " + ID + ")+";
+    public static final String SPECIAL_POWER = "(?i:use special power) " + COORDINATES;
+    public static final String SHOW_HAND = "(?i:show hand)";
+    public static final String INSERT = "(?i:insert) " + COLLECTION_ITEM_NAME + " (?i:in) " + COORDINATES;
+    public static final String END_TURN = "(?i:end turn)";
+    public static final String SHOW_COLLECTIBLES = "(?i:show collectibles)";
+    public static final String SHOW_INFO = "(?i:show info)";
+    public static final String USE_COLLECTIBLE = "(?i:use) " + COORDINATES;
+    public static final String SHOW_NEXT_CARD = "(?i:show next card)";
+    public static final String ENTER_GRAVEYARD = "(?i:enter graveyard)";
+    public static final String GRAVEYARD_SHOW_INFO = "(?i:show info) " + ID;
+    public static final String SHOW_CARDS = "(?i:show cards)";
+    public static final String END_GAME = "(?i:end game)";
+    public static final String SHOW_MENU = "(?i:show menu)";
+    public static final String EXPORT = "(?i:export)";
+    public static final String IMPORT = "(?i:import) " + NAME;
+    public static final String DEAD = "(?i:get dead)";
+    public static final String LOAD_LAST_GAME = "(?i:load last game)";
+    public static final String SHENGDEBAO = "(?i:shengdebao)";
+    public static final String KILL = "(?i:kill) " + ID;
+
     private static final int[] HERO_INITIAL_ROW = {2, 2};
     private static final int[] HERO_INITIAL_COLUMN = {0, 8};
     private static final int NUMBER_OF_FLAG_TURNS = 6;
@@ -69,18 +137,19 @@ public class Game extends InGameMenu {
     private ArrayList<Unit> dead = new ArrayList<>();
     private boolean gameEnded = false;
 
-    /*
+
     public void parse(String command) {
         if (!gameEnded) {
             if (command.matches(EXIT)) {
                 exit(); //mark
-                switchTo(Menus.MAIN_MENU);
+//                switchTo(Menus.MAIN_MENU);
             } else if (command.matches(SHOW_MENU))
                 help(false);
             else if (command.matches(HELP))
                 showOptions();
-            else if (command.matches(ENTER_GRAVEYARD))
-                switchTo(Menus.GRAVEYARD_MENU);
+            else if (command.matches(ENTER_GRAVEYARD)) {
+//                switchTo(Menus.GRAVEYARD_MENU);
+            }
             else if (command.matches(GAME_INFO))
                 showGameInfo();
             else if (command.matches(SHOW_MY_MINIONS))
@@ -130,7 +199,7 @@ public class Game extends InGameMenu {
             checkGameCondition();
         } else {
             if (command.matches(END_GAME)) {
-                switchTo(Menus.MAIN_MENU);
+//                switchTo(Menus.MAIN_MENU);
                 gameEnded = false;
             } else if (command.matches(HELP))
                 help(true);
@@ -139,7 +208,13 @@ public class Game extends InGameMenu {
         }
     }
 
-    */
+
+    public static int[] getCoordinates(String command) {
+        command = command.split("\\(")[1];
+        command = command.split("\\)")[0];
+        String[] commandSplit = command.split(",");
+        return new int[]{Integer.parseInt(commandSplit[0]), Integer.parseInt(commandSplit[1].trim())};
+    }
 
     private void checkGameCondition() {
         switch (getGameState()) {
@@ -312,9 +387,13 @@ public class Game extends InGameMenu {
                 currentCell.setContent(null);
                 map.getGrid()[x][y].setContent(selectedUnit);
 
+
+
+
                 if (!hasAI[turn % 2])
                     view.logMessage(selectedUnit.getID() + " moved to " + (x + 1) + " " + (y + 1));
-                else view.logMessage(selectedUnit.getID() + " moved from " +  (selectedUnit.getX() + 1) + " " + (selectedUnit.getY() + 1) + " to " + (x + 1) + " " + (y + 1));
+//                else view.logMessage(selectedUnit.getID() + " moved from " +  (selectedUnit.getX() + 1) + " " + (selectedUnit.getY() + 1) + " to " + (x + 1) + " " + (y + 1));
+
                 selectedUnit.setX(x);
                 selectedUnit.setY(y);
 
