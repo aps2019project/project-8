@@ -74,7 +74,7 @@ public class BattleMenu extends Menu {
             } catch (FileNotFoundException ignored) {
             }
             waitOnline.setText("Online");
-            waitOnline.setOnMouseClicked(e -> {
+            waitOnline.setOnMouseClicked(e-> {
                 menus.Menu.getConnection().enterMultiplayerMenu(true);
                 MenuManager.getInstance().setCurrentMenu(Id.WAITING_MENU);
             });
