@@ -83,12 +83,12 @@ public class CollectionItem {
         return collectionItemID.equals(((CollectionItem) obj).collectionItemID);
     }
 
-    public void setCount(int count) {
-        this.count = count;
-    }
-
     public int getCount() {
         return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
     public void addCount() {

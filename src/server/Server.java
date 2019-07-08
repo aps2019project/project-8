@@ -22,6 +22,7 @@ import java.util.Random;
 public class Server {
 
     private final static int DEFAULT_PORT = 6666;
+    private static Server instance = new Server();
     private int port;
     private ServerSocket serverSocket;
     private ShopInterface shopInterface;
@@ -29,13 +30,11 @@ public class Server {
     private HashMap<String, AccountUser> players;
     private ArrayList<String> chats;
     private HashMap<String, Integer> messageIndex;
-
     private ArrayList<AccountUser> inList;
+    private GameInterface gameInterface;
 
 //    private HashMap<AccountUser, AccountUser> sentRequest;
 //    private HashMap<AccountUser, ArrayList<AccountUser>> receivedRequests;
-
-    private GameInterface gameInterface;
 
     public Server() {
         port = DEFAULT_PORT; // should be read from config file
@@ -51,6 +50,22 @@ public class Server {
 //        receivedRequests = new HashMap<>();
 
         gameInterface = new GameInterface();
+    }
+
+    public static Server getInstance() {
+        return instance;
+    }
+
+    public static void main(String[] args) {
+        instance.start();
+    }
+
+    public HashMap<String, AccountUser> getPlayers() {
+        return players;
+    }
+
+    public ShopInterface getShopInterface() {
+        return shopInterface;
     }
 
     public void start() {
@@ -110,7 +125,7 @@ public class Server {
         if (created) {
             jsonObject.addProperty("log", "account successfully created");
         } else {
-            jsonObject.addProperty("log","a user with this username already exists");
+            jsonObject.addProperty("log", "a user with this username already exists");
         }
         return jsonObject;
     }
@@ -204,7 +219,7 @@ public class Server {
                 String collectionItemName = jsonObject.get("collectionItemName").getAsString();
                 message.addProperty("count", shopInterface.getItemCount(collectionItemName));
                 if (collectionItemName.contains("7headed"))
-                    System.err.println("sending item count "  + collectionItemName + " "  + shopInterface.getItemCount(collectionItemName));
+                    System.err.println("sending item count " + collectionItemName + " " + shopInterface.getItemCount(collectionItemName));
                 message.addProperty("log", "successful action");
             }
         } else {
@@ -221,64 +236,6 @@ public class Server {
             jsonArray.add(name);
         jsonObject.add("leaderBoard", jsonArray);
         jsonObject.addProperty("log", "successfully printed leader board");
-        return jsonObject;
-    }
-
-    public JsonObject addChatMessage(JsonObject jsonObject) {
-        JsonElement jsonElement = jsonObject.get("authenticationToken");
-        JsonObject message = new JsonObject();
-        if (jsonElement != null) {
-            String token = jsonElement.getAsString();
-            AccountUser accountUser = players.get(token);
-            if (accountUser == null) {
-                message.addProperty("log", "your authentication token has expired");
-            } else {
-                jsonElement = jsonObject.get("message");
-                if (jsonElement != null) {
-                    chats.add(jsonElement.getAsString());
-                    message.addProperty("log", "successfully received chat message");
-                } else {
-                    message.addProperty("log", "no chat message sent");
-                }
-            }
-        } else {
-            message.addProperty("log", "no authentication token sent");
-        }
-        return message;
-    }
-
-    public JsonObject getNewMessages(JsonObject jsonObject) {
-        JsonElement jsonElement = jsonObject.get("authenticationToken");
-        JsonObject message = new JsonObject();
-        if (jsonElement != null) {
-            String token = jsonElement.getAsString();
-            AccountUser accountUser = players.get(token);
-            if (accountUser == null) {
-                message.addProperty("log", "your authentication token has expired");
-            } else {
-                JsonArray jsonArray = new JsonArray();
-                int index = messageIndex.get(token);
-                messageIndex.remove(token);
-                for (; index < chats.size(); index++) {
-                    jsonArray.add(chats.get(index));
-                }
-                messageIndex.put(token, chats.size());
-                message.add("messages", jsonArray);
-                message.addProperty("log", "successfully sent chat messages");
-            }
-        } else {
-            message.addProperty("log", "no authentication token sent");
-        }
-        return message;
-    }
-
-    public JsonObject getOnlineUsers() {
-        JsonObject jsonObject = new JsonObject();
-        JsonArray jsonArray = new JsonArray();
-        for (HashMap.Entry<String, AccountUser> entry : players.entrySet()) {
-            jsonArray.add(entry.getValue().getName());
-        }
-        jsonObject.add("users", jsonArray);
         return jsonObject;
     }
 
@@ -429,6 +386,63 @@ public class Server {
 
     */
 
+    public JsonObject addChatMessage(JsonObject jsonObject) {
+        JsonElement jsonElement = jsonObject.get("authenticationToken");
+        JsonObject message = new JsonObject();
+        if (jsonElement != null) {
+            String token = jsonElement.getAsString();
+            AccountUser accountUser = players.get(token);
+            if (accountUser == null) {
+                message.addProperty("log", "your authentication token has expired");
+            } else {
+                jsonElement = jsonObject.get("message");
+                if (jsonElement != null) {
+                    chats.add(jsonElement.getAsString());
+                    message.addProperty("log", "successfully received chat message");
+                } else {
+                    message.addProperty("log", "no chat message sent");
+                }
+            }
+        } else {
+            message.addProperty("log", "no authentication token sent");
+        }
+        return message;
+    }
+
+    public JsonObject getNewMessages(JsonObject jsonObject) {
+        JsonElement jsonElement = jsonObject.get("authenticationToken");
+        JsonObject message = new JsonObject();
+        if (jsonElement != null) {
+            String token = jsonElement.getAsString();
+            AccountUser accountUser = players.get(token);
+            if (accountUser == null) {
+                message.addProperty("log", "your authentication token has expired");
+            } else {
+                JsonArray jsonArray = new JsonArray();
+                int index = messageIndex.get(token);
+                messageIndex.remove(token);
+                for (; index < chats.size(); index++) {
+                    jsonArray.add(chats.get(index));
+                }
+                messageIndex.put(token, chats.size());
+                message.add("messages", jsonArray);
+                message.addProperty("log", "successfully sent chat messages");
+            }
+        } else {
+            message.addProperty("log", "no authentication token sent");
+        }
+        return message;
+    }
+
+    public JsonObject getOnlineUsers() {
+        JsonObject jsonObject = new JsonObject();
+        JsonArray jsonArray = new JsonArray();
+        for (HashMap.Entry<String, AccountUser> entry : players.entrySet()) {
+            jsonArray.add(entry.getValue().getName());
+        }
+        jsonObject.add("users", jsonArray);
+        return jsonObject;
+    }
 
     public JsonObject addFuckingNewCard(JsonObject jsonObject) {
         JsonElement jsonElement = jsonObject.get("authenticationToken");
@@ -454,16 +468,16 @@ public class Server {
                     fileWriter.flush();
                     fileWriter.close();
 
-                        JsonMaker.main(new String[]{"java", "JsonMaker"});
-                        shopInterface.load();
-                        CollectionItem collectionItem = shopInterface.getCollectionItemByName(name);
-                        collectionItem.setCount(count);
-                        shopInterface.saveData(collectionItem);
-                        File file = new File("./gameData/ManualFeatureInputLogs/" + name + ".txt");
-                        if (file.delete()) {
-                        } else {
-                            System.err.println("fucking file not deleted");
-                        }
+                    JsonMaker.main(new String[]{"java", "JsonMaker"});
+                    shopInterface.load();
+                    CollectionItem collectionItem = shopInterface.getCollectionItemByName(name);
+                    collectionItem.setCount(count);
+                    shopInterface.saveData(collectionItem);
+                    File file = new File("./gameData/ManualFeatureInputLogs/" + name + ".txt");
+                    if (file.delete()) {
+                    } else {
+                        System.err.println("fucking file not deleted");
+                    }
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -526,7 +540,7 @@ public class Server {
                 if (jsonElement != null) {
                     message.addProperty("log", gameInterface.sendCommand(accountUser, jsonElement.getAsString()));
                 } else {
-                    message.addProperty("log","no command sent");
+                    message.addProperty("log", "no command sent");
                 }
             }
         } else {
