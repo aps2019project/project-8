@@ -348,6 +348,8 @@ public class Menu {
 
             String response = UI.getConnection().sendGameCommand(command);
 //            System.err.println(response);
+            if (response.isEmpty())
+                response = "Successful!";
             return response;
         } else {
             PrintStream prevOut = System.out;

@@ -1,6 +1,7 @@
 package graphicControllers.menus;
 
 import graphicControllers.Menu;
+import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -27,6 +28,34 @@ public class ChatMenu extends Menu {
 
     HBox bottom;
     TextField textField;
+
+    private boolean hasThread = false;
+
+    private Refresher refresher = new Refresher();
+
+    private class Refresher extends Thread {
+        @Override
+        public void run() {
+            while (!interrupted()) {
+                if (UI.getConnection() == null) {
+                    System.err.println("connection null");
+                } else if (UI.getConnection().inGame().equals("no")) {
+                    System.err.println("not in game");
+                }  else if (UI.getConnection().getGameInfo().get("currentPlayer") == null) {
+                    System.err.println("current player null");
+                } else if (UI.getAccount() == null) {
+                    System.err.println("account null");
+                }
+                Platform.runLater(ChatMenu.this::handleGetMessages);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    interrupt();
+                    return;
+                }
+            }
+        }
+    }
 
     public ChatMenu() {
         super(Id.CHAT_MENU, "Chat Menu", 800, 600);
@@ -82,6 +111,10 @@ public class ChatMenu extends Menu {
         back.setText("Back");
         back.setGoalMenuID(Id.MAIN_MENU);
         back.setOnMouseClicked(e -> {
+            if (refresher != null && !refresher.isInterrupted()) {
+                hasThread = false;
+                refresher.interrupt();
+            }
             UI.decide("exit");
         });
         addComponent(back);
@@ -141,6 +174,10 @@ public class ChatMenu extends Menu {
 
     @Override
     public synchronized void refresh() {
-        handleGetMessages();
+        if (!hasThread) {
+            refresher = new Refresher();
+            refresher.start();
+        }
+        hasThread = true;
     }
 }

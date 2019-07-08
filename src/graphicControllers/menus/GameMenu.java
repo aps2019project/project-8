@@ -58,9 +58,9 @@ public class GameMenu extends Menu {
                     System.err.println("account null");
                 }
                 if (!UI.getGame().getCurrentPlayer().getName().equals(UI.getAccount().getName()))
-                    Platform.runLater(() -> refresh());
+                    Platform.runLater(GameMenu.this::refresh);
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     interrupt();
                     return;
@@ -525,6 +525,9 @@ public class GameMenu extends Menu {
                 if (!ai && !out.equals("Successful!")) {
 
                     System.err.println("pop up happens here?");
+                    showPopUp("test");
+                    showPopUp(out);
+                    showPopUp("test");
 
                     if (hasPopup)
                         showPopUp(out);
@@ -1113,6 +1116,11 @@ public class GameMenu extends Menu {
 
     @Override
     public void refresh() {
+
+//        if (!UI.getConnection().getGameInfo().get("currentPlayer").getAsString().equals(UI.getAccount().getName()))
+//            disableEvents();
+//        else
+//            enableEvents();
 
         if (UI.getConnection().inGame().equals("no") && UI.getGame() == null)
             return;
