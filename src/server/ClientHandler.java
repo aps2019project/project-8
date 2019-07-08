@@ -107,7 +107,9 @@ public class ClientHandler extends Thread {
             case "sendGameCommand" :
                 response = server.sendGameCommand(jsonObject);
                 break;
-
+            case "checkMe" :
+                response = server.checkMe(jsonObject);
+                break;
         }
         sendMessage(response.toString());
     }

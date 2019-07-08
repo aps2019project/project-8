@@ -9,9 +9,7 @@ import gen.JsonMaker;
 import interfaces.AccountInterface;
 import interfaces.GameInterface;
 import interfaces.ShopInterface;
-import model.AccountData;
-import model.AccountUser;
-import model.CollectionItem;
+import model.*;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -505,8 +503,18 @@ public class Server {
                 if (in) {
                     if (inList.size() > 0) {
                         AccountUser b = inList.remove(0);
-//                        gameInterface.startGame(accountUser, b);
+
+
+                        int mode = Integer.valueOf(jsonObject.get("mode").getAsString());
+                        int flags = Integer.valueOf(jsonObject.get("flags").getAsString());
+
+                        System.err.println("created game" + accountUser.getName() + " " + b.getName() + " " + mode + " " + flags);
+
+                        gameInterface.startGame(accountUser, b, mode, flags);
                         // game start game game here some thing happens
+                    }
+                    else {
+                        inList.add(accountUser);
                     }
                 } else {
                     inList.remove(accountUser);
@@ -539,5 +547,26 @@ public class Server {
             message.addProperty("log", "no authentication token sent");
         }
         return message;
+    }
+
+    public JsonObject checkMe(JsonObject jsonObject) {
+        JsonElement jsonElement = jsonObject.get("authenticationToken");
+        JsonObject message = new JsonObject();
+        if (jsonElement != null) {
+            String token = jsonElement.getAsString();
+            AccountUser accountUser = players.get(token);
+            if (accountUser == null) {
+                message.addProperty("log", "your authentication token has expired");
+            } else {
+                message.addProperty("log", gameInterface.inGame(accountUser));
+            }
+        } else {
+            message.addProperty("log", "no authentication token sent");
+        }
+        return message;
+    }
+
+    public static void main(String[] args) {
+        new Server().start();
     }
 }
