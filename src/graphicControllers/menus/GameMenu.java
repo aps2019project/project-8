@@ -1128,12 +1128,7 @@ public class GameMenu extends Menu {
                     gridStrings = new String[Map.NUMBER_OF_ROWS][Map.NUMBER_OF_COLUMNS];
                     int turnNumber = 0;
 
-                    String sssss = getUIOutputAsString("shengdebao");
-
-
-                    System.err.println(sssss);
-
-                    String[] shengdeShow = sssss.split("\\n");
+                    String[] shengdeShow = getUIOutputAsString("shengdebao").split("\\n");
 
                     for (int i = 0; i < shengdeShow.length; i++) {
                         shengdeShow[i] = shengdeShow[i].trim();
