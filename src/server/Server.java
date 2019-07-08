@@ -566,4 +566,26 @@ public class Server {
         }
         return message;
     }
+
+    public JsonObject addWin(JsonObject jsonObject) {
+        JsonElement jsonElement = jsonObject.get("authenticationToken");
+        JsonObject message = new JsonObject();
+        if (jsonElement != null) {
+            String token = jsonElement.getAsString();
+            AccountUser accountUser = players.get(token);
+            if (accountUser == null) {
+                message.addProperty("log", "your authentication token has expired");
+            } else {
+                int wins = Integer.valueOf(jsonObject.get("win").getAsString());
+                int money = Integer.valueOf(jsonObject.get("money").getAsString());
+                for (int i = 0; i < wins; i++)
+                    accountUser.addWin();
+                accountUser.receiveMoney(money);
+                accountUser.saveAccount();
+            }
+        } else {
+            message.addProperty("log", "no authentication token sent");
+        }
+        return message;
+    }
 }

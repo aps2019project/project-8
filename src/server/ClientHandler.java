@@ -110,6 +110,9 @@ public class ClientHandler extends Thread {
             case "checkMe" :
                 response = server.checkMe(jsonObject);
                 break;
+            case "addWin" :
+                response = server.addWin(jsonObject);
+                break;
         }
         sendMessage(response.toString());
     }
