@@ -124,7 +124,7 @@ public class Game extends InGameMenu {
     private int numberOfFlags;
     public int turn;
     private Map map = new Map();
-    private Player[] players;
+    public Player[] players;
     private boolean[] hasAI = new boolean[2];
     private boolean hasAnyAI = false;
     public AccountUser[] accounts;

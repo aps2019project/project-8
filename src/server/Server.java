@@ -12,6 +12,7 @@ import interfaces.ShopInterface;
 import model.AccountData;
 import model.AccountUser;
 import model.CollectionItem;
+import model.Game;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -581,12 +582,51 @@ public class Server {
                 int wins = Integer.valueOf(jsonObject.get("win").getAsString());
                 int money = Integer.valueOf(jsonObject.get("money").getAsString());
 
-                System.err.println("HERE TO ADD WIN FOR " + accountUser.getName() + " " + wins + " " + money);
+//                System.err.println("HERE TO ADD WIN FOR " + accountUser.getName() + " " + wins + " " + money);
 
                 for (int i = 0; i < wins; i++)
                     accountUser.addWin();
                 accountUser.receiveMoney(money);
                 accountUser.saveAccount();
+            }
+        } else {
+            message.addProperty("log", "no authentication token sent");
+        }
+        return message;
+    }
+
+
+    public JsonObject getGameInfo(JsonObject jsonObject) {
+        JsonElement jsonElement = jsonObject.get("authenticationToken");
+        JsonObject message = new JsonObject();
+        if (jsonElement != null) {
+            String token = jsonElement.getAsString();
+            AccountUser accountUser = players.get(token);
+            if (accountUser == null) {
+                message.addProperty("log", "your authentication token has expired");
+            } else {
+                gameInterface.getGameInfo(accountUser, message);
+//                message.addProperty("log", gameInterface.getGameInfo(accountUser));
+            }
+        } else {
+            message.addProperty("log", "no authentication token sent");
+        }
+        return message;
+    }
+
+    public JsonObject getGame(JsonObject jsonObject) {
+        JsonElement jsonElement = jsonObject.get("authenticationToken");
+        JsonObject message = new JsonObject();
+        if (jsonElement != null) {
+            String token = jsonElement.getAsString();
+            AccountUser accountUser = players.get(token);
+            if (accountUser == null) {
+                message.addProperty("log", "your authentication token has expired");
+            } else {
+                Game game = gameInterface.getGame(accountUser);
+                YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
+                message = (JsonObject) yaGson.toJsonTree(game, Game.class);
+                message.addProperty("log", "success");
             }
         } else {
             message.addProperty("log", "no authentication token sent");

@@ -1,5 +1,6 @@
 package interfaces;
 
+import com.gilecode.yagson.com.google.gson.JsonObject;
 import menus.Menu;
 import model.AccountUser;
 import model.Game;
@@ -88,5 +89,17 @@ public class GameInterface {
 
     public String inGame(AccountUser accountUser) {
         return games.get(accountUser) != null ? "yes" : "no";
+    }
+
+
+    public void getGameInfo(AccountUser accountUser, JsonObject jsonObject) {
+        Game game = games.get(accountUser);
+        jsonObject.addProperty("player0", game.players[0].getName());
+        jsonObject.addProperty("player1", game.players[1].getName());
+        jsonObject.addProperty("currentPlayer", game.getCurrentPlayer().getName());
+    }
+
+    public Game getGame(AccountUser accountUser) {
+        return games.get(accountUser);
     }
 }

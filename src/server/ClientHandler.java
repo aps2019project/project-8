@@ -113,6 +113,12 @@ public class ClientHandler extends Thread {
             case "addWin" :
                 response = server.addWin(jsonObject);
                 break;
+            case "getGameInfo" :
+                response = server.getGameInfo(jsonObject);
+                break;
+            case "getGame" :
+                response = server.getGame(jsonObject);
+                break;
         }
         sendMessage(response.toString());
     }
