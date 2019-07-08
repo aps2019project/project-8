@@ -1130,6 +1130,9 @@ public class GameMenu extends Menu {
 
                     String sssss = getUIOutputAsString("shengdebao");
 
+
+                    System.err.println(sssss);
+
                     String[] shengdeShow = sssss.split("\\n");
 
                     for (int i = 0; i < shengdeShow.length; i++) {
