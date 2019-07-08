@@ -12,6 +12,7 @@ import view.NodeWrapper;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Optional;
 
 public class BattleMenu extends Menu {
     public BattleMenu() {
@@ -74,8 +75,9 @@ public class BattleMenu extends Menu {
             } catch (FileNotFoundException ignored) {
             }
             waitOnline.setText("Online");
-            waitOnline.setOnMouseClicked(e-> {
-                menus.Menu.getConnection().enterMultiplayerMenu(true);
+            waitOnline.setOnMouseClicked(e -> {
+                Optional<Integer>[] gameType = popUpGetGameType();
+                menus.Menu.getConnection().enterMultiplayerMenu(true, gameType[0].orElse(1), gameType[1].orElse(0));
                 MenuManager.getInstance().setCurrentMenu(Id.WAITING_MENU);
             });
             addComponent(waitOnline);

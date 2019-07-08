@@ -2,6 +2,7 @@ package graphicControllers.menus;
 
 import graphicControllers.Menu;
 import graphicControllers.MenuManager;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import menus.UI;
@@ -10,8 +11,10 @@ import view.GUIButton;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.nio.charset.Charset;
 
 public class WaitingMenu extends Menu {
+    private Checker checker = new Checker();
     public WaitingMenu() {
         super(Id.WAITING_MENU, "Waiting Menu", 800, 600);
         try {
@@ -36,9 +39,38 @@ public class WaitingMenu extends Menu {
         }
         cancel.setText("Cancel");
         cancel.setOnMouseClicked(e -> {
-            menus.Menu.getConnection().enterMultiplayerMenu(false);
+            checker.interrupt();
+            menus.Menu.getConnection().enterMultiplayerMenu(false, 0, 0);
             MenuManager.getInstance().setCurrentMenu(Id.CHOOSE_BATTLE_MENU);
         });
         addComponent(cancel);
+    }
+
+    @Override
+    public void refresh() {
+        checker = new Checker();
+        checker.start();
+    }
+
+    private class Checker extends Thread {
+        @Override
+        public void run() {
+            while (!interrupted()) {
+                System.out.println("hera");
+                if (menus.Menu.getConnection().inGame().equals("yes")) {
+                    Platform.runLater(() -> {
+                        MenuManager.getInstance().setCurrentMenu(Id.IN_GAME_MENU);
+                    });
+                    interrupt();
+                }
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    interrupt();
+//                    e.printStackTrace();
+                    return;
+                }
+            }
+        }
     }
 }
