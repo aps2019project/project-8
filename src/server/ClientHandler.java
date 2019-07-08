@@ -122,8 +122,8 @@ public class ClientHandler extends Thread {
         while (true) {
             try {
                 String message = in.readLine();
-                if (message != null)
-                    System.out.println("message from client : " + message);
+//                if (message != null)
+//                    System.out.println("message from client : " + message);
                 if (message == null) {
                     disconnectionFactor++;
                     try {
@@ -150,7 +150,7 @@ public class ClientHandler extends Thread {
 
     public void sendMessage(String message) {
 
-        System.out.println("message from server : " + message);
+//        System.out.println("message from server : " + message);
 
         out.println(message);
     }
