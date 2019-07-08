@@ -139,6 +139,8 @@ public class Game extends InGameMenu {
     private boolean gameEnded = false;
 
 
+
+
     public void parse(String command) {
         if (!gameEnded) {
             if (command.matches(EXIT)) {
@@ -146,8 +148,14 @@ public class Game extends InGameMenu {
 //                switchTo(Menus.MAIN_MENU);
             } else if (command.matches(SHOW_MENU))
                 help(false);
-            else if (command.matches(HELP))
-                showOptions();
+            else if (command.matches(HELP)) {
+                try {
+                    throw new Exception();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+//                showOptions();
+            }
             else if (command.matches(ENTER_GRAVEYARD)) {
 //                switchTo(Menus.GRAVEYARD_MENU);
             }
@@ -1540,9 +1548,9 @@ public class Game extends InGameMenu {
 
     public void shengdeShow() {
 
-        Player[] players = new Player[2];
-        players[1] = getCurrentPlayer();
-        players[0] = getOtherPlayer();
+//        Player[] players = new Player[2];
+//        players[1] = getCurrentPlayer();
+//        players[0] = getOtherPlayer();
 
 
         StringBuilder out = new StringBuilder();
