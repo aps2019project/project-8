@@ -1952,33 +1952,4 @@ public class GameMenu extends Menu {
         }
         return cardBar;
     }
-
-    static class Assets {
-        private static HashMap<String, Image> imageMap = new HashMap<>();
-        private static HashMap<String, Media> mediaMap = new HashMap<>();
-
-        public static Image getImage(String path) {
-            if (!imageMap.containsKey(path)) {
-                try {
-                    imageMap.put(path, new Image(new FileInputStream(path)));
-                } catch (FileNotFoundException e) {
-                    try {
-                        return new Image(new FileInputStream("images/gameIcons/gifs/test_idle.gif"));
-                    } catch (FileNotFoundException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            }
-            return imageMap.get(path);
-        }
-
-        public static Media getMedia(String path) {
-            if (!mediaMap.containsKey(path)) {
-                mediaMap.put(path, new Media(new File(path).toURI().toString()));
-            }
-            return mediaMap.get(path);
-        }
-    }
-
-
 }

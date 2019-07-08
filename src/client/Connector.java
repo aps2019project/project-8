@@ -1,6 +1,5 @@
 package client;
 
-import com.gilecode.yagson.com.google.gson.JsonArray;
 import com.gilecode.yagson.com.google.gson.JsonElement;
 import com.gilecode.yagson.com.google.gson.JsonObject;
 import com.gilecode.yagson.com.google.gson.JsonParser;
@@ -10,18 +9,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Objects;
 
 public class Connector {
 
     private static final int DEFAULT_PORT = 6666;
-    private static final String SERVER_IP = "127.0.0.1";
-    private int port;
-    private String log;
-
+    private static final String SERVER_IP = "192.168.195.133";
     Socket socket;
     BufferedReader in;
     PrintWriter out;
+    private int port;
+    private String log;
 
     public Connector() {
         port = DEFAULT_PORT; // port should be read from config file
@@ -48,7 +45,6 @@ public class Connector {
         }
         return true;
     }
-
 
 
     // login is true for logging attempt. it's false for registering
