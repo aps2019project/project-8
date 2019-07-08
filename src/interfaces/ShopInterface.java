@@ -33,6 +33,10 @@ public class ShopInterface {
 //        }
     }
 
+    public ArrayList<CollectionItem> getCollectionItems() {
+        return collectionItems;
+    }
+
 //    public ArrayList<CollectionItem> getCollectionItems() {
 //        return collectionItems;
 //    }
@@ -88,7 +92,6 @@ public class ShopInterface {
 //    }
 
 
-
     public String buy(String collectionItemName, AccountUser accountUser) {
         CollectionItem collectionItem = getCollectionItemByName(collectionItemName);
         if (collectionItem == null) {
@@ -97,6 +100,7 @@ public class ShopInterface {
         if (collectionItem.getCount() <= 0) {
             return "shop has ran out of " + collectionItemName;
         }
+        System.err.println(accountUser.getName() + " " + collectionItemName + " " + collectionItem + collectionItem.getPrice() + " " + accountUser.getMoney());
         if (accountUser.getMoney() < collectionItem.getPrice()) {
             return "not enough money";
         }
@@ -113,7 +117,7 @@ public class ShopInterface {
 
     private CollectionItem getCopy(CollectionItem collectionItem) {
         if (collectionItem instanceof Hero)
-            return new Hero((Hero)collectionItem);
+            return new Hero((Hero) collectionItem);
         if (collectionItem instanceof Minion)
             return new Minion((Minion) collectionItem);
         if (collectionItem instanceof SpellCard)
@@ -163,7 +167,8 @@ public class ShopInterface {
                 collectionItems.add(yaGson.fromJson(new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())),
                         StandardCharsets.UTF_8), Usable.class));
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     public void saveData(CollectionItem collectionItem) {
