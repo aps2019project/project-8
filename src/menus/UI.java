@@ -654,6 +654,9 @@ public class UI {
     }
 
     public static Game getGame() {
+        if (getConnection().inGame().equals("yes")) {
+            return getConnection().getGame();
+        }
         return GameMenu.getGame();
     }
 }

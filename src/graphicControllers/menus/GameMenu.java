@@ -1,5 +1,6 @@
 package graphicControllers.menus;
 
+import com.gilecode.yagson.com.google.gson.JsonObject;
 import gen.NamesAndTypes;
 import graphicControllers.Menu;
 import graphicControllers.MenuManager;
@@ -48,6 +49,35 @@ public class GameMenu extends Menu {
     private static final double BUFF_WIDTH = 10;
     private static final double BUFF_HEIGHT = 10;
     private static final int TIME_LIMIT = 600;
+
+    private class Refresher extends Thread {
+        @Override
+        public void run() {
+            while (!interrupted()) {
+                if (UI.getConnection() == null) {
+                    System.err.println("connection null");
+                } else if (UI.getConnection().inGame().equals("no")) {
+                    System.err.println("not in game");
+                }  else if (UI.getConnection().getGameInfo().get("currentPlayer") == null) {
+                    System.err.println("current player null");
+                } else if (UI.getAccount() == null) {
+                    System.err.println("account null");
+                }
+                if (!UI.getConnection().getGameInfo().get("currentPlayer").getAsString().equals(UI.getAccount().getName()))
+                    Platform.runLater(() -> refresh());
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    interrupt();
+                    return;
+                }
+            }
+        }
+    }
+
+    private Refresher refresher;
+
+    private boolean hasThread = false;
 
     static class Assets {
         private static HashMap<String, Image> imageMap = new HashMap<>();
@@ -511,6 +541,9 @@ public class GameMenu extends Menu {
             }
             if (ai || !gameEnded(out)) {
                 if (!ai && !out.equals("Successful!")) {
+
+                    System.err.println("pop up happens here?");
+
                     if (hasPopup)
                         showPopUp(out);
                     enableEvents();
@@ -747,7 +780,7 @@ public class GameMenu extends Menu {
                         e.printStackTrace();
                     }
                     Platform.runLater(() -> {
-                    //    mediaPlayer.stop();
+                        //    mediaPlayer.stop();
                         enableEvents();
                         selectedCardID = null;
                         refresh();
@@ -907,7 +940,10 @@ public class GameMenu extends Menu {
         mainMenu.setOnMouseClicked(e -> {
             UI.decide("exit");
             isInGame = false;
-            MenuManager.getInstance().setCurrentMenu(Id.MAIN_MENU);
+            if (refresher != null && !refresher.isInterrupted()) {
+                hasThread = false;
+                refresher.interrupt();
+            }            MenuManager.getInstance().setCurrentMenu(Id.MAIN_MENU);
         });
         menuButtons.addMenuComponent(mainMenu, "main_menu");
 
@@ -915,7 +951,13 @@ public class GameMenu extends Menu {
         setOnEnterAndExitEffect(graveyard, "Graveyard", "images/gameIcons/menuButtons/ui_right_glowing.png",
                 "images/gameIcons/menuButtons/ui_right_normal.png");
         graveyard.setGoalMenuID(Id.GRAVE_YARD_MENU);
-        graveyard.setOnMouseClicked(e -> isInGame = false);
+        graveyard.setOnMouseClicked(e -> {
+            isInGame = false;
+            if (refresher != null && !refresher.isInterrupted()) {
+                hasThread = false;
+                refresher.interrupt();
+            }
+        });
         menuButtons.addMenuComponent(graveyard);
 
         GUIButton collectibles = new GUIButton(140 - 10 + 20, -100 + 10 - 5, 100, 100);
@@ -1091,12 +1133,19 @@ public class GameMenu extends Menu {
 
     @Override
     public void refresh() {
+
         if (UI.getConnection().inGame().equals("no") && UI.getGame() == null)
             return;
 
         if (MenuManager.getInstance().getCurrentMenu() instanceof GameMenu) {
             isInGame = true;
         }
+
+        if (!hasThread && UI.getConnection().inGame().equals("yes")) {
+            refresher = new Refresher();
+            refresher.start();
+        }
+        hasThread = true;
 
         new Thread(() -> {
             synchronized (this) {
@@ -1184,13 +1233,23 @@ public class GameMenu extends Menu {
 
                     String friendlyHeroName = getFriendlyHeroName();
                     String opponentHeroName = getOpponentHeroName();
-
-                    if (turnNumber % 2 == 0) {
-                        firstPlayerBar = makePlayerStat(firstPlayerName, friendlyHeroName, playerOneUsableItemName, firstPlayerMana, Math.max(Integer.parseInt(firstPlayerMana), Math.min(9, (turnNumber + 1) / 2 + 2)));
-                        secondPlayerBar = makeReverseEmptyPlayerStat(secondPlayerName, opponentHeroName, playerTwoUsableItemName);
+                    if (UI.getConnection().inGame().equals("yes")) {
+                        JsonObject jsonObject = UI.getConnection().getGameInfo();
+                        if (jsonObject.get("currentPlayer").getAsString().equals(firstPlayerName)) {
+                            firstPlayerBar = makePlayerStat(firstPlayerName, friendlyHeroName, playerOneUsableItemName, firstPlayerMana, Math.max(Integer.parseInt(firstPlayerMana), Math.min(9, (turnNumber + 1) / 2 + 2)));
+                            secondPlayerBar = makeReverseEmptyPlayerStat(secondPlayerName, opponentHeroName, playerTwoUsableItemName);
+                        } else {
+                            firstPlayerBar = makeEmptyPlayerStat(firstPlayerName, friendlyHeroName, playerOneUsableItemName);
+                            secondPlayerBar = makeReversePlayerStat(secondPlayerName, opponentHeroName, playerTwoUsableItemName, secondPlayerMana, Math.max(Integer.parseInt(secondPlayerMana), Math.min(9, (turnNumber + 1) / 2 + 1)));
+                        }
                     } else {
-                        firstPlayerBar = makeEmptyPlayerStat(firstPlayerName, opponentHeroName, playerOneUsableItemName);
-                        secondPlayerBar = makeReversePlayerStat(secondPlayerName, friendlyHeroName, playerTwoUsableItemName, secondPlayerMana, Math.min(9, (turnNumber + 1) / 2 + 1));
+                        if (turnNumber % 2 == 0) {
+                            firstPlayerBar = makePlayerStat(firstPlayerName, friendlyHeroName, playerOneUsableItemName, firstPlayerMana, Math.max(Integer.parseInt(firstPlayerMana), Math.min(9, (turnNumber + 1) / 2 + 2)));
+                            secondPlayerBar = makeReverseEmptyPlayerStat(secondPlayerName, opponentHeroName, playerTwoUsableItemName);
+                        } else {
+                            firstPlayerBar = makeEmptyPlayerStat(firstPlayerName, friendlyHeroName, playerOneUsableItemName);
+                            secondPlayerBar = makeReversePlayerStat(secondPlayerName, opponentHeroName, playerTwoUsableItemName, secondPlayerMana, Math.max(Integer.parseInt(secondPlayerMana), Math.min(9, (turnNumber + 1) / 2 + 1)));
+                        }
                     }
                     cardBar = makeCardBar(firstPlayerDeckCapacity, handCardNames, handCardManaCosts);
                     gridCells = makeGridCells(gridStrings);
