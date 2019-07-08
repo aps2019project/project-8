@@ -112,15 +112,9 @@ public class ChatMenu extends Menu {
     }
 
     private void handleGetMessages() {
-        String[] newMessages = null;
-        try {
-            String out = getUIOutputAsString("get messages");
-            if (out.contains("NO NEW MESSAGES WHERE FOUND!"))
-                return;
-            newMessages = out.split("\\n");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        if (UI.getConnection() == null)
+            return;
+        String[] newMessages = UI.getConnection().getNewMessages();
         if (newMessages == null)
             return;
         for (String message: newMessages) {

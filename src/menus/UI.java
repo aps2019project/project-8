@@ -429,18 +429,19 @@ public class UI {
     }
 
     private static void actInGame(String command) {
-//        GameMenu.execute(command);
-        if (!gameEnded) {
-            if (command.matches(EXIT)) {
-                GameMenu.exit(); //mark
-                switchTo(Menus.MAIN_MENU);
-            }
+        if (getConnection().inGame() == null)
+            return;
+        GameMenu.execute(command);
+//        if (!gameEnded) {
+//            if (command.matches(EXIT)) {
+//                GameMenu.exit();
+//                switchTo(Menus.MAIN_MENU);
 //            } else if (command.matches(SHOW_MENU))
 //                GameMenu.help(false);
 //            else if (command.matches(HELP))
 //                GameMenu.showOptions();
-            else if (command.matches(ENTER_GRAVEYARD))
-                switchTo(Menus.GRAVEYARD_MENU);
+//            else if (command.matches(ENTER_GRAVEYARD))
+//                switchTo(Menus.GRAVEYARD_MENU);
 //            else if (command.matches(GAME_INFO))
 //                GameMenu.showGameInfo();
 //            else if (command.matches(SHOW_MY_MINIONS))
@@ -487,20 +488,16 @@ public class UI {
 //                GameMenu.getDead();
 //            else
 //                view.showInvalidCommandError();
-            GameMenu.checkGameCondition();
-        } else {
-            if (command.matches(END_GAME)) {
-                switchTo(Menus.MAIN_MENU);
-                gameEnded = false;
-            } else if (command.matches(HELP))
-                GameMenu.help(true);
-            else
-                view.showInvalidCommandError();
-        }
-
-        String gameResponse = getConnection().sendGameCommand(command);
-        gameResponse = gameResponse.trim();
-        System.out.println(gameResponse);
+//            GameMenu.checkGameCondition();
+//        } else {
+//            if (command.matches(END_GAME)) {
+//                switchTo(Menus.MAIN_MENU);
+//                gameEnded = false;
+//            } else if (command.matches(HELP))
+//                GameMenu.help(true);
+//            else
+//                view.showInvalidCommandError();
+//        }
     }
 
     public static int[] getCoordinates(String command) {

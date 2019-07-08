@@ -1091,9 +1091,8 @@ public class GameMenu extends Menu {
 
     @Override
     public void refresh() {
-        if (UI.getGame() == null)
+        if (UI.getConnection().inGame().equals("no") && UI.getGame() == null)
             return;
-
 
         if (MenuManager.getInstance().getCurrentMenu() instanceof GameMenu) {
             isInGame = true;
@@ -1217,6 +1216,7 @@ public class GameMenu extends Menu {
 
                 }
             });
+
         }).start();
 
 

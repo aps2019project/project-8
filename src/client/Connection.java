@@ -7,6 +7,7 @@ import model.AccountData;
 import model.AccountUser;
 import model.CollectionItem;
 
+import javax.print.DocFlavor;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -247,6 +248,17 @@ public class Connection {
         JsonObject response = sendSimpleMessage(jsonObject);
         return response.get("log").getAsString();
     }
+
+    public void addWin(int win, int money) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("requestType", "addWin");
+        jsonObject.addProperty("authenticationToken", authenticationToken);
+        jsonObject.addProperty("win", String.valueOf(win));
+        jsonObject.addProperty("money", String.valueOf(money));
+        sendSimpleMessage(jsonObject);
+    }
+
+
 
     private JsonObject sendSimpleMessage(JsonObject jsonObject) {
         out.println(jsonObject.toString());
