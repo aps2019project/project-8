@@ -1243,7 +1243,7 @@ public class Game extends InGameMenu {
         }
 
         try {
-            for (File file : new File("./gameData/Collectibles/").listFiles()) {
+            for (File file : new File("./database/CollectionItems/Collectibles/").listFiles()) {
                 YaGson yaGson = new YaGson();
                 collectibles.add(yaGson.fromJson(new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())),
                         StandardCharsets.UTF_8), Collectible.class));
@@ -1558,7 +1558,7 @@ public class Game extends InGameMenu {
 
         for (Card card : players[0].getHand().getCards()) {
 
-            out.append(String.format("%-35s", card.getName() + "(" + card.getManaCost() + ")" + "\n"));
+            out.append(String.format("%-35s", card.getName() + "(" + card.getManaCost() + ")") + "\n");
 
 //            System.out.format("%-35s", card.getName() + "(" + card.getManaCost() + ")");
         }
@@ -1630,7 +1630,7 @@ public class Game extends InGameMenu {
 //            System.out.format("%-35s", card.getName() + "(" + card.getManaCost() + ")");
         }
         out.append("\n");
-        out.append("Player 2 usable item is: \n");
+        out.append("Player 2 usable item is: ");
 
 //        System.out.println();
 //        System.out.print("Player 2 usable item is: ");
@@ -1643,6 +1643,8 @@ public class Game extends InGameMenu {
 
 //            System.out.println(players[1].getDeck().getDeckUsableItem().getName());
         }
+
+        System.err.println("shengdeshow : \n" + out.toString());
 
         ((CommandLineView) getView()).output = out;
     }

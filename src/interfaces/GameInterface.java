@@ -1,5 +1,6 @@
 package interfaces;
 
+import menus.Menu;
 import model.AccountUser;
 import model.Game;
 import model.GameType;
@@ -58,7 +59,7 @@ public class GameInterface {
         game.initiateGame();
         games.put(a, game);
         games.put(b, game);
-
+        Menu.setView(new CommandLineView());
         System.err.println("created game for players ");
 
 //        hasAI = false;
@@ -67,12 +68,16 @@ public class GameInterface {
     }
 
     public String sendCommand(AccountUser accountUser, String command) {
+        System.err.println("command from user " + accountUser.getName() + " " + command);
+
         Game game = games.get(accountUser);
         if (game == null)
             return "you are not in a game";
         ((CommandLineView) game.getView()).clean();
-        game.setView(new CommandLineView());
         game.parse(command);
+
+        System.err.println("sdfasdf :: \n\n" + ((CommandLineView) game.getView()).toString());
+
         return ((CommandLineView) game.getView()).toString();
     }
 
