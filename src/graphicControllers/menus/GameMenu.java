@@ -1091,9 +1091,8 @@ public class GameMenu extends Menu {
 
     @Override
     public void refresh() {
-        if (UI.getGame() == null)
+        if (UI.getConnection().inGame().equals("no") && UI.getGame() == null)
             return;
-
 
         if (MenuManager.getInstance().getCurrentMenu() instanceof GameMenu) {
             isInGame = true;
@@ -1129,7 +1128,9 @@ public class GameMenu extends Menu {
                     gridStrings = new String[Map.NUMBER_OF_ROWS][Map.NUMBER_OF_COLUMNS];
                     int turnNumber = 0;
 
-                    String[] shengdeShow = getUIOutputAsString("shengdebao").split("\\n");
+                    String sssss = getUIOutputAsString("shengdebao");
+
+                    String[] shengdeShow = sssss.split("\\n");
 
                     for (int i = 0; i < shengdeShow.length; i++) {
                         shengdeShow[i] = shengdeShow[i].trim();
@@ -1217,6 +1218,7 @@ public class GameMenu extends Menu {
 
                 }
             });
+
         }).start();
 
 

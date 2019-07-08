@@ -5,6 +5,7 @@ import graphicControllers.MenuManager;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
+import menus.Menus;
 import menus.UI;
 import view.GUIButton;
 
@@ -42,6 +43,7 @@ public class WaitingMenu extends Menu {
             checker.interrupt();
             menus.Menu.getConnection().enterMultiplayerMenu(false, 0, 0);
             MenuManager.getInstance().setCurrentMenu(Id.CHOOSE_BATTLE_MENU);
+            UI.switchTo(Menus.MULTIPLAYER);
         });
         addComponent(cancel);
     }
@@ -56,10 +58,10 @@ public class WaitingMenu extends Menu {
         @Override
         public void run() {
             while (!interrupted()) {
-                System.out.println("hera");
                 if (menus.Menu.getConnection().inGame().equals("yes")) {
                     Platform.runLater(() -> {
                         MenuManager.getInstance().setCurrentMenu(Id.IN_GAME_MENU);
+                        UI.switchTo(Menus.GAME_MENU);
                     });
                     interrupt();
                 }

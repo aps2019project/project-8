@@ -342,12 +342,21 @@ public class Menu {
     }
 
     protected String getUIOutputAsString(String command) {
-        PrintStream prevOut = System.out;
-        java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
-        System.setOut(new java.io.PrintStream(out));
-        UI.decide(command);
-        System.setOut(prevOut);
-        return out.toString().isEmpty() ? "Successful!" : out.toString();
+        if (UI.getConnection() != null && UI.getConnection().inGame().equals("yes")) {
+
+//            System.err.println(command);
+
+            String response = UI.getConnection().sendGameCommand(command);
+//            System.err.println(response);
+            return response;
+        } else {
+            PrintStream prevOut = System.out;
+            java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
+            System.setOut(new java.io.PrintStream(out));
+            UI.decide(command);
+            System.setOut(prevOut);
+            return out.toString().isEmpty() ? "Successful!" : out.toString();
+        }
     }
 
     private void setUpGetListItem() {
