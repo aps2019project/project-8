@@ -1558,7 +1558,7 @@ public class Game extends InGameMenu {
 
         for (Card card : players[0].getHand().getCards()) {
 
-            out.append(String.format("%-35s", card.getName() + "(" + card.getManaCost() + ")") + "\n");
+            out.append(String.format("%-35s", card.getName() + "(" + card.getManaCost() + ")"));
 
 //            System.out.format("%-35s", card.getName() + "(" + card.getManaCost() + ")");
         }
@@ -1609,7 +1609,7 @@ public class Game extends InGameMenu {
                 output += "!" + (cell.getEffects().stream().map(Buff::getPoison).reduce(Integer::sum).orElse(0));
                 output += "?" + (cell.getEffects().stream().map(Buff::getEffectHp).reduce(Integer::sum).orElse(0));
 
-                out.append(String.format("%-40s", output) + "\n");
+                out.append(String.format("%-40s", output));
 
 //                System.out.format("%-40s", output);
             }
@@ -1625,7 +1625,7 @@ public class Game extends InGameMenu {
 
 
         for (Card card : players[1].getHand().getCards()) {
-            out.append(String.format("%-35s", card.getName() + "(" + card.getManaCost() + ")") + "\n");
+            out.append(String.format("%-35s", card.getName() + "(" + card.getManaCost() + ")"));
 
 //            System.out.format("%-35s", card.getName() + "(" + card.getManaCost() + ")");
         }
@@ -1643,9 +1643,6 @@ public class Game extends InGameMenu {
 
 //            System.out.println(players[1].getDeck().getDeckUsableItem().getName());
         }
-
-        System.err.println("shengdeshow : \n" + out.toString());
-
         ((CommandLineView) getView()).output = out;
     }
 
