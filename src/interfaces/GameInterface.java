@@ -38,7 +38,7 @@ public class GameInterface {
         return "ok";
     }
 
-    public Object startGame(AccountUser a, AccountUser b, int mode, int numberOfFlags) {
+    public Game startGame(AccountUser a, AccountUser b, int mode, int numberOfFlags) {
 
         // guaranteed that a and b have a valid main deck
 
@@ -49,12 +49,18 @@ public class GameInterface {
 //            return "one account doesn't have a valid main deck";
 //
 
-        if (!checkGameParameters(mode, numberOfFlags).equals("ok"))
-            return "invalid parameters";
+//        if (!checkGameParameters(mode, numberOfFlags).equals("ok"))
+//            return "invalid parameters";
+
+
+
         Game game = new Game(a, b, GameType.get(mode), numberOfFlags);
         game.initiateGame();
         games.put(a, game);
         games.put(b, game);
+
+        System.err.println("created game for players ");
+
 //        hasAI = false;
 //        GraveyardMenu.setGame(game);
         return game;
@@ -68,5 +74,9 @@ public class GameInterface {
         game.setView(new CommandLineView());
         game.parse(command);
         return ((CommandLineView) game.getView()).toString();
+    }
+
+    public String inGame(AccountUser accountUser) {
+        return games.get(accountUser) != null ? "yes" : "no";
     }
 }

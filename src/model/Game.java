@@ -2,6 +2,7 @@ package model;
 
 import com.gilecode.yagson.YaGson;
 import menus.InGameMenu;
+import view.CommandLineView;
 //import menus.Menus;
 //import menus.UI;
 
@@ -1538,17 +1539,45 @@ public class Game extends InGameMenu {
     }
 
     public void shengdeShow() {
-        System.out.println("Turn number: " + turn);
-        System.out.println(players[0].getName() + " Mana(" + players[0].getMana() + ") deck(" + players[0].getDeck().getCards().size() + ") hand:");
+
+        Player[] players = new Player[2];
+        players[1] = getCurrentPlayer();
+        players[0] = getOtherPlayer();
+
+
+        StringBuilder out = new StringBuilder();
+
+
+
+        out.append("Turn number: " + turn + "\n");
+        out.append(players[0].getName() + " Mana(" + players[0].getMana() + ") deck(" + players[0].getDeck().getCards().size() + ") hand:" + "\n");
+
+//        System.out.println("Turn number: " + turn);
+//        System.out.println(players[0].getName() + " Mana(" + players[0].getMana() + ") deck(" + players[0].getDeck().getCards().size() + ") hand:");
+
+
         for (Card card : players[0].getHand().getCards()) {
-            System.out.format("%-35s", card.getName() + "(" + card.getManaCost() + ")");
+
+            out.append(String.format("%-35s", card.getName() + "(" + card.getManaCost() + ")" + "\n"));
+
+//            System.out.format("%-35s", card.getName() + "(" + card.getManaCost() + ")");
         }
-        System.out.println();
-        System.out.print("Player 1 usable item is: ");
+
+        out.append("\n");
+        out.append("Player 1 usable item is: \n");
+
+
+//        System.out.println();
+//        System.out.print("Player 1 usable item is: ");
+
         if (players[0].getDeck().getDeckUsableItem() == null) {
-            System.out.println("No Items selected");
+            out.append("No Items selected\n");
+
+//            System.out.println("No Items selected");
         } else {
-            System.out.println(players[0].getDeck().getDeckUsableItem().getName());
+            out.append(players[0].getDeck().getDeckUsableItem().getName() + "\n");
+
+//            System.out.println(players[0].getDeck().getDeckUsableItem().getName());
         }
 
         for (int row = 0; row < getMap().getNumberOfRows(); row++) {
@@ -1579,21 +1608,43 @@ public class Game extends InGameMenu {
                 output += ":" + numberOfFlags;
                 output += "!" + (cell.getEffects().stream().map(Buff::getPoison).reduce(Integer::sum).orElse(0));
                 output += "?" + (cell.getEffects().stream().map(Buff::getEffectHp).reduce(Integer::sum).orElse(0));
-                System.out.format("%-40s", output);
+
+                out.append(String.format("%-40s", output) + "\n");
+
+//                System.out.format("%-40s", output);
             }
-            System.out.print("\n");
+
+            out.append("\n");
+
+//            System.out.print("\n");
         }
-        System.out.println(players[1].getName() + " Mana(" + players[1].getMana() + ") deck(" + players[1].getDeck().getCards().size() + ") hand:");
+
+        out.append(players[1].getName() + " Mana(" + players[1].getMana() + ") deck(" + players[1].getDeck().getCards().size() + ") hand:" + "\n");
+
+//        System.out.println(players[1].getName() + " Mana(" + players[1].getMana() + ") deck(" + players[1].getDeck().getCards().size() + ") hand:");
+
+
         for (Card card : players[1].getHand().getCards()) {
-            System.out.format("%-35s", card.getName() + "(" + card.getManaCost() + ")");
+            out.append(String.format("%-35s", card.getName() + "(" + card.getManaCost() + ")") + "\n");
+
+//            System.out.format("%-35s", card.getName() + "(" + card.getManaCost() + ")");
         }
-        System.out.println();
-        System.out.print("Player 2 usable item is: ");
+        out.append("\n");
+        out.append("Player 2 usable item is: \n");
+
+//        System.out.println();
+//        System.out.print("Player 2 usable item is: ");
         if (players[1].getDeck().getDeckUsableItem() == null) {
-            System.out.println("No Items selected");
+            out.append("No Items selected\n");
+
+//            System.out.println("No Items selected");
         } else {
-            System.out.println(players[1].getDeck().getDeckUsableItem().getName());
+            out.append(players[1].getDeck().getDeckUsableItem().getName() + "\n");
+
+//            System.out.println(players[1].getDeck().getDeckUsableItem().getName());
         }
+
+        ((CommandLineView) getView()).output = out;
     }
 
     public int getPrize() {
@@ -1618,15 +1669,27 @@ public class Game extends InGameMenu {
     }
 
     public void getDead() {
+        StringBuilder out = new StringBuilder();
+
         dead.forEach(unit -> {
-            System.out.print("death " + unit.getName() + " " + unit.getX() + " " + unit.getY());
+
+            out.append("death " + unit.getName() + " " + unit.getX() + " " + unit.getY());
+
+//            System.out.print("death " + unit.getName() + " " + unit.getX() + " " + unit.getY());
             if (unit.getSpecialPowerTypes().stream().anyMatch(e -> e == SpecialPowerType.ON_DEATH)) {
-                System.out.println(" onDeath");
+                out.append(" onDeath");
+
+//                System.out.println(" onDeath");
             }
-            else
-                System.out.println();
+            else {
+                out.append("\n");
+
+//                System.out.println();
+            }
         });
         dead.clear();
+
+        ((CommandLineView) getView()).output = out;
     }
 
     public Player getOtherPlayer() {
