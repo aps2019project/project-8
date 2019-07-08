@@ -240,7 +240,7 @@ public class MainMenu extends Menu {
                             return;
                     }
 //                    int count = Integer.valueOf(String.valueOf(popUpGetText("count of card on server", "Next")));
-                    int count = 3;
+                    int count = getNumber("Count").orElse(5);
                     try {
                         FileWriter fileWriter = new FileWriter(new File("gameData/ManualFeatureInputLogs/" + name + ".txt"), false);
                         fileWriter.append(stringBuilder);
