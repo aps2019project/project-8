@@ -5,16 +5,15 @@ import graphicControllers.MenuManager;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.media.Media;
-import menus.UI;
 import view.GUIButton;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.nio.charset.Charset;
 
 public class WaitingMenu extends Menu {
     private Checker checker = new Checker();
+
     public WaitingMenu() {
         super(Id.WAITING_MENU, "Waiting Menu", 800, 600);
         try {
