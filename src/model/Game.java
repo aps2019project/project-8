@@ -74,6 +74,7 @@ public class Game extends InGameMenu {
             if (command.matches(EXIT)) {
                 exit(); //mark
                 switchTo(Menus.MAIN_MENU);
+                return;
             } else if (command.matches(SHOW_MENU))
                 help(false);
             else if (command.matches(HELP))
@@ -144,12 +145,14 @@ public class Game extends InGameMenu {
                 account.payMoney(getPrize());
                 account.addMatch(new Match((hasAnyAI ? null : accounts[1]), Result.WIN, LocalDateTime.now()));
                 account.addWin();
+
+                UI.getConnection().addWin(1, getPrize());
                 if (!hasAnyAI) {
                     accounts[1].addMatch(new Match(account, Result.WIN, LocalDateTime.now()));
                 }
                 accounts[1] = null;
                 view.showWinner(account, getPrize());
-                UI.endGame();
+                gameEnded = true;
                 break;
             case WIN_SECOND_PLAYER:
                 account.addMatch(new Match((hasAnyAI ? null : accounts[1]), Result.WIN, LocalDateTime.now()));
@@ -161,7 +164,7 @@ public class Game extends InGameMenu {
                 } else
                     view.alertCPUWin();
                 accounts[1] = null;
-                UI.endGame();
+                gameEnded = true;
                 break;
             default:
         }

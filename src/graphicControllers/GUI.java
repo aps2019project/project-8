@@ -58,6 +58,9 @@ public class GUI extends Application {
         initiate(menuManager);
         menuManager.setStage(primaryStage);
         menuManager.startProcessOnStage();
+        primaryStage.setOnCloseRequest(e -> {
+            System.exit(0);
+        });
     }
 
 
