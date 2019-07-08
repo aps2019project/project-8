@@ -511,7 +511,7 @@ public class Server {
                         int mode = Integer.valueOf(jsonObject.get("mode").getAsString());
                         int flags = Integer.valueOf(jsonObject.get("flags").getAsString());
 
-//                        System.err.println("created game" + accountUser.getName() + " " + b.getName() + " " + mode + " " + flags);
+                        System.err.println("created game" + accountUser.getName() + " " + b.getName() + " " + mode + " " + flags);
 
                         gameInterface.startGame(accountUser, b, mode, flags);
                         // game start game game here some thing happens

@@ -61,14 +61,15 @@ public class GameInterface {
         games.put(a, game);
         games.put(b, game);
         game.setView(new CommandLineView());
-        System.err.println("created game for players ");
+
+
+        System.err.println("game created successfully for " + a.getName() + " " + b.getName());
 //        hasAI = false;
 //        GraveyardMenu.setGame(game);
         return game;
     }
 
     public String sendCommand(AccountUser accountUser, String command) {
-        System.err.println("command from user " + accountUser.getName() + " " + command);
         Game game = games.get(accountUser);
         if (game == null)
             return "you are not in a game";
@@ -83,11 +84,12 @@ public class GameInterface {
 //        if (reverse)
 //            game.turn--;
 //            game.swap();
-        System.err.println(((CommandLineView) game.getView()).getMessages());
         return ((CommandLineView) game.getView()).getMessages();
     }
 
     public String inGame(AccountUser accountUser) {
+        System.err.println("asking game query for " + accountUser.getName() + " " + games.get(accountUser));
+
         return games.get(accountUser) != null ? "yes" : "no";
     }
 
@@ -101,5 +103,13 @@ public class GameInterface {
 
     public Game getGame(AccountUser accountUser) {
         return games.get(accountUser);
+    }
+
+    public void diconnect(AccountUser accountUser) {
+        Game game = games.get(accountUser);
+        if (game == null)
+            return;
+        for (int i = 0; i < 2; i++)
+            games.remove(game.accounts[i]);
     }
 }

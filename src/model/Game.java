@@ -85,6 +85,8 @@ public class Game extends InGameMenu {
     public static final String SHENGDEBAO = "(?i:shengdebao)";
     public static final String KILL = "(?i:kill) " + ID;
 
+    private int winner = -1;
+
     private static final int[] HERO_INITIAL_ROW = {2, 2};
     private static final int[] HERO_INITIAL_COLUMN = {0, 8};
     private static final int NUMBER_OF_FLAG_TURNS = 6;
@@ -208,9 +210,11 @@ public class Game extends InGameMenu {
                 view.showInvalidCommandError();
             checkGameCondition();
         } else {
+            if (winner != -1)
+                view.showWinner(accounts[winner], getPrize());
             if (command.matches(END_GAME)) {
 //                switchTo(Menus.MAIN_MENU);
-                gameEnded = false;
+//                gameEnded = false;
             } else if (command.matches(HELP))
                 help(true);
             else
@@ -229,31 +233,41 @@ public class Game extends InGameMenu {
     private void checkGameCondition() {
         switch (getGameState()) {
             case WIN_FIRST_PLAYER:
-                account.payMoney(getPrize());
-                account.addMatch(new Match((hasAnyAI ? null : accounts[1]), Result.WIN, LocalDateTime.now()));
-                account.addWin();
-                if (!hasAnyAI) {
-                    accounts[1].addMatch(new Match(account, Result.WIN, LocalDateTime.now()));
-                }
-                accounts[1] = null;
-                view.showWinner(account, getPrize());
+
+
+                accounts[0].addWin();
+                accounts[0].receiveMoney(getPrize());
+                accounts[0].saveAccount();
+//                account.payMoney(getPrize());
+//                account.addMatch(new Match((hasAnyAI ? null : accounts[1]), Result.WIN, LocalDateTime.now()));
+//                account.addWin();
+//                if (!hasAnyAI) {
+//                    accounts[1].addMatch(new Match(account, Result.WIN, LocalDateTime.now()));
+//                }
+//                accounts[1] = null;
+                view.showWinner(accounts[0], getPrize());
+                gameEnded = true;
+                winner = 0;
                 /*
                 UI.endGame();
                 */
                 break;
             case WIN_SECOND_PLAYER:
-                account.addMatch(new Match((hasAnyAI ? null : accounts[1]), Result.WIN, LocalDateTime.now()));
-                if (accounts[1] != null) {
+//                account.addMatch(new Match((hasAnyAI ? null : accounts[1]), Result.WIN, LocalDateTime.now()));
+//                if (accounts[1] != null) {
                     accounts[1].addWin();
-                    accounts[1].addMatch(new Match(account, Result.WIN, LocalDateTime.now()));
-                    accounts[1].payMoney(getPrize());
+//                    accounts[1].addMatch(new Match(account, Result.WIN, LocalDateTime.now()));
+                    accounts[1].receiveMoney(getPrize());
+                    accounts[1].saveAccount();
                     view.showWinner(accounts[1], getPrize());
-                } else
-                    view.alertCPUWin();
-                accounts[1] = null;
+//                } else
+//                    view.alertCPUWin();
+//                accounts[1] = null;
                 /*
                 UI.endGame();
                 */
+                gameEnded = true;
+                winner = 1;
                 break;
             default:
         }
@@ -590,12 +604,17 @@ public class Game extends InGameMenu {
     }
 
     public boolean attackTargetCardWithSelectedUnit(String targetCardID) {
+
+        System.err.println("step 1");
+
         Unit targetUnit = findUnitInGridByID(targetCardID);
         if (targetUnit == null || targetUnit.getPlayer() == getCurrentPlayer()) { // invalid card id
             if (!hasAI[turn % 2])
                 view.showInvalidCardIDError();
             return false;
         }
+
+        System.err.println("step 2");
 
         int state = attackUnitByUnit(selectedUnit, targetUnit, false);
         if (state == -1) { // has already attacked before or is stunned
@@ -604,14 +623,21 @@ public class Game extends InGameMenu {
             return false;
         }
 
+        System.err.println("step 3");
         if (state == -2) { // can't attack because
             if (!hasAI[turn % 2])
                 view.logMessage("opponent minion is unavailable for attack");
             return false;
         }
+
+        System.err.println("step 5");
+
         if (state == 1) {
             return false;
         }
+
+        System.err.println("step 4");
+
 //        if (hasAI[turn % 2])
 //            view.logMessage("attack from " + selectedUnit.getID() + " to " + targetCardID);
         checkForDeath();
