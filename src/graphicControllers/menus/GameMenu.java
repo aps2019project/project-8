@@ -47,7 +47,7 @@ public class GameMenu extends Menu {
     private static final Color textColor = Color.rgb(176, 42, 226);
     private static final double BUFF_WIDTH = 10;
     private static final double BUFF_HEIGHT = 10;
-    private static final int TIME_LIMIT = 60;
+    private static final int TIME_LIMIT = 600;
 
     static class Assets {
         private static HashMap<String, Image> imageMap = new HashMap<>();
