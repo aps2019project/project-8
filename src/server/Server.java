@@ -9,7 +9,9 @@ import gen.JsonMaker;
 import interfaces.AccountInterface;
 import interfaces.GameInterface;
 import interfaces.ShopInterface;
-import model.*;
+import model.AccountData;
+import model.AccountUser;
+import model.CollectionItem;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -512,8 +514,7 @@ public class Server {
 
                         gameInterface.startGame(accountUser, b, mode, flags);
                         // game start game game here some thing happens
-                    }
-                    else {
+                    } else {
                         inList.add(accountUser);
                     }
                 } else {
