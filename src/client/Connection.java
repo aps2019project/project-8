@@ -6,6 +6,7 @@ import com.gilecode.yagson.com.google.gson.*;
 import model.AccountData;
 import model.AccountUser;
 import model.CollectionItem;
+import model.Game;
 
 import javax.print.DocFlavor;
 import java.io.BufferedReader;
@@ -127,6 +128,7 @@ public class Connection {
         out.flush();
         try {
             String response = in.readLine();
+            System.err.println("got response from chat " + response);
             jsonObject = getAsJson(response);
             JsonArray jsonArray = (JsonArray) jsonObject.get("messages");
             return getJsonStringArray(jsonArray);
@@ -273,6 +275,22 @@ public class Connection {
             System.err.println("error occurred in fetching response from server");
             return null;
         }
+    }
+
+    public JsonObject getGameInfo() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("requestType", "getGameInfo");
+        jsonObject.addProperty("authenticationToken", authenticationToken);
+        return sendSimpleMessage(jsonObject);
+    }
+
+    public Game getGame() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("requestType", "getGame");
+        jsonObject.addProperty("authenticationToken", authenticationToken);
+        JsonObject response = sendSimpleMessage(jsonObject);
+        YaGson yaGson = new YaGson();
+        return yaGson.fromJson(response, Game.class);
     }
 
     public void closeConnection() {
