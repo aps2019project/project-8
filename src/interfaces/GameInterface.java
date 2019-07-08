@@ -72,7 +72,16 @@ public class GameInterface {
         if (game == null)
             return "you are not in a game";
         ((CommandLineView) game.getView()).clean();
-        game.parse(command);
+//        boolean reverse = false;
+//        if (!game.accounts[game.turn % 2].equals(accountUser))
+//            reverse = true;
+//        if (reverse)
+//            game.turn++;
+//            game.swap();
+        game.parse(command, accountUser);
+//        if (reverse)
+//            game.turn--;
+//            game.swap();
         System.err.println(((CommandLineView) game.getView()).getMessages());
         return ((CommandLineView) game.getView()).getMessages();
     }

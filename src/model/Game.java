@@ -122,12 +122,12 @@ public class Game extends InGameMenu {
     private HashMap<Player, ArrayList<Item>> currentItems = new HashMap<>();
     private HashMap<Player, HashMap<Item, Integer>> itemCastingTurns = new HashMap<>();
     private int numberOfFlags;
-    private int turn;
+    public int turn;
     private Map map = new Map();
     private Player[] players;
     private boolean[] hasAI = new boolean[2];
     private boolean hasAnyAI = false;
-    private AccountUser[] accounts;
+    public AccountUser[] accounts;
     private Unit selectedUnit;
     private Collectible selectedCollectible;
     private GameType gameType;
@@ -139,11 +139,11 @@ public class Game extends InGameMenu {
     private boolean gameEnded = false;
 
 
-    public void parse(String command) {
+    public void parse(String command, AccountUser accountUser) {
         if (!gameEnded) {
             if (command.matches(EXIT)) {
                 exit(); //mark
-//                switchTo(Menus.MAIN_MENU);
+//                menus.UI.switchTo(Menus.MAIN_MENU);
             } else if (command.matches(SHOW_MENU))
                 help(false);
             else if (command.matches(HELP))
@@ -153,10 +153,16 @@ public class Game extends InGameMenu {
             }
             else if (command.matches(GAME_INFO))
                 showGameInfo();
-            else if (command.matches(SHOW_MY_MINIONS))
-                showMyMinions();
-            else if (command.matches(SHOW_OPPONENT_MINIONS))
-                showOpponentMinions();
+            else if (command.matches(SHOW_MY_MINIONS)) {
+                if (accountUser.equals(accounts[turn % 2]))
+                    showMyMinions();
+                else showOpponentMinions();
+            }
+            else if (command.matches(SHOW_OPPONENT_MINIONS)) {
+                if (accountUser.equals(accounts[turn % 2]))
+                    showOpponentMinions();
+                else showMyMinions();
+            }
             else if (command.matches(SHOW_CARD_INFO))
                 showCardInfo(command.split(" ")[3]);
             else if (command.matches(SELECT_COLLECTION_ITEM))
@@ -189,7 +195,10 @@ public class Game extends InGameMenu {
             } else if (command.matches(SHOW_NEXT_CARD))
                 showNextCardInDeck();
             else if (command.matches(SHENGDEBAO)) {
-                shengdeShow();
+                if (accountUser.equals(accounts[0]))
+                    shengdeShow(0);
+                else
+                    shengdeShow(1);
             }
             else if (command.matches(KILL))
                 killInstantly(command.split(" ")[1]);
@@ -288,6 +297,17 @@ public class Game extends InGameMenu {
     }
 
 
+    public void swap() {
+        Player tempPlayer = players[1];
+        players[1] = players[0];
+        players[0] = tempPlayer;
+
+
+        AccountUser tempAccount = accounts[1];
+        accounts[1] = accounts[0];
+        accounts[0] = tempAccount;
+    }
+
     /*
     public Game(AccountUser account, AI ai, GameType gameType, int numberOfFlags) {
         this.ai = ai;
@@ -311,6 +331,8 @@ public class Game extends InGameMenu {
     }
 
     public Player getCurrentPlayer() {
+//        return players[0];
+
         if (turn % 2 == 0) {
             return players[0];
         } else {
@@ -1538,11 +1560,13 @@ public class Game extends InGameMenu {
         return availableOptions;
     }
 
-    public void shengdeShow() {
+    public void shengdeShow(int number) {
 
-        Player[] players = new Player[2];
-        players[1] = getCurrentPlayer();
-        players[0] = getOtherPlayer();
+//        Player player0 = players[0];
+//        Player player1 = players[1];
+//        Player[] players = new Player[2];
+//        players[1] = player0;
+//        players[0] = player1;
 
 
         StringBuilder out = new StringBuilder();
@@ -1550,13 +1574,13 @@ public class Game extends InGameMenu {
 
 
         out.append("Turn number: " + turn + "\n");
-        out.append(players[0].getName() + " Mana(" + players[0].getMana() + ") deck(" + players[0].getDeck().getCards().size() + ") hand:" + "\n");
+        out.append(players[number].getName() + " Mana(" + players[number].getMana() + ") deck(" + players[0].getDeck().getCards().size() + ") hand:" + "\n");
 
 //        System.out.println("Turn number: " + turn);
 //        System.out.println(players[0].getName() + " Mana(" + players[0].getMana() + ") deck(" + players[0].getDeck().getCards().size() + ") hand:");
 
 
-        for (Card card : players[0].getHand().getCards()) {
+        for (Card card : players[number].getHand().getCards()) {
 
             out.append(String.format("%-35s", card.getName() + "(" + card.getManaCost() + ")"));
 
@@ -1570,12 +1594,12 @@ public class Game extends InGameMenu {
 //        System.out.println();
 //        System.out.print("Player 1 usable item is: ");
 
-        if (players[0].getDeck().getDeckUsableItem() == null) {
+        if (players[number].getDeck().getDeckUsableItem() == null) {
             out.append("No Items selected\n");
 
 //            System.out.println("No Items selected");
         } else {
-            out.append(players[0].getDeck().getDeckUsableItem().getName() + "\n");
+            out.append(players[number].getDeck().getDeckUsableItem().getName() + "\n");
 
 //            System.out.println(players[0].getDeck().getDeckUsableItem().getName());
         }
@@ -1590,7 +1614,7 @@ public class Game extends InGameMenu {
                     CollectionItem collectionItem = (CollectionItem) cell.getContent();
                     output = collectionItem.getName();
                     if (collectionItem instanceof Unit) {
-                        if (((Unit) collectionItem).getPlayer() == players[0]) {
+                        if (((Unit) collectionItem).getPlayer() == players[number]) {
                             output = "+" + output + "+";
                             if ((collectionItem) == selectedUnit) {
                                 output = "[" + output + "]";
@@ -1619,12 +1643,12 @@ public class Game extends InGameMenu {
 //            System.out.print("\n");
         }
 
-        out.append(players[1].getName() + " Mana(" + players[1].getMana() + ") deck(" + players[1].getDeck().getCards().size() + ") hand:" + "\n");
+        out.append(players[1 - number].getName() + " Mana(" + players[1 - number].getMana() + ") deck(" + players[1 - number].getDeck().getCards().size() + ") hand:" + "\n");
 
 //        System.out.println(players[1].getName() + " Mana(" + players[1].getMana() + ") deck(" + players[1].getDeck().getCards().size() + ") hand:");
 
 
-        for (Card card : players[1].getHand().getCards()) {
+        for (Card card : players[1 - number].getHand().getCards()) {
             out.append(String.format("%-35s", card.getName() + "(" + card.getManaCost() + ")"));
 
 //            System.out.format("%-35s", card.getName() + "(" + card.getManaCost() + ")");
@@ -1634,12 +1658,12 @@ public class Game extends InGameMenu {
 
 //        System.out.println();
 //        System.out.print("Player 2 usable item is: ");
-        if (players[1].getDeck().getDeckUsableItem() == null) {
+        if (players[1 - number].getDeck().getDeckUsableItem() == null) {
             out.append("No Items selected\n");
 
 //            System.out.println("No Items selected");
         } else {
-            out.append(players[1].getDeck().getDeckUsableItem().getName() + "\n");
+            out.append(players[1 - number].getDeck().getDeckUsableItem().getName() + "\n");
 
 //            System.out.println(players[1].getDeck().getDeckUsableItem().getName());
         }
@@ -1692,6 +1716,7 @@ public class Game extends InGameMenu {
     }
 
     public Player getOtherPlayer() {
+//        return players[1];
         if (turn % 2 == 0) {
             return players[1];
         } else {
