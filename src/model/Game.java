@@ -264,7 +264,7 @@ public class Game extends InGameMenu {
         view.showCardsReadyToBePlayed(availableOptions[2]);
     }
 
-    public static void help(boolean gameEnded) {
+    public void help(boolean gameEnded) {
         if (!gameEnded)
             view.showHelp(commands);
         else
@@ -1564,7 +1564,7 @@ public class Game extends InGameMenu {
         }
 
         out.append("\n");
-        out.append("Player 1 usable item is: \n");
+        out.append("Player 1 usable item is: ");
 
 
 //        System.out.println();

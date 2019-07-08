@@ -6,11 +6,11 @@ import view.View;
 public abstract class Menu {
 
 //    protected static Connection connection;
-    protected static AccountUser account = null;
-    protected static View view = null;
+    protected AccountUser account = null;
+    protected View view = null;
 
-    public static void setView(View view) {
-        Menu.view = view;
+    public void setView(View view) {
+        this.view = view;
     }
 //
 //    public static void setConnection(Connection connection) {
@@ -29,7 +29,7 @@ public abstract class Menu {
         return view;
     }
 
-    public static void setAccount(AccountUser accountUser) {
-        Menu.account = accountUser;
+    public void setAccount(AccountUser accountUser) {
+        this.account = accountUser;
     }
 }

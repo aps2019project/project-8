@@ -10,9 +10,10 @@ import java.util.HashMap;
 public class CommandLineView implements View {
     private static final String DASH = " - ";
 
-    public StringBuilder output = new StringBuilder();
+    public StringBuilder output;
 
     public void clean() {
+        output = new StringBuilder();
     }
 
     public String getMessages() {

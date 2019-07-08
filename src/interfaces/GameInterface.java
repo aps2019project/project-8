@@ -59,9 +59,8 @@ public class GameInterface {
         game.initiateGame();
         games.put(a, game);
         games.put(b, game);
-        Menu.setView(new CommandLineView());
+        game.setView(new CommandLineView());
         System.err.println("created game for players ");
-
 //        hasAI = false;
 //        GraveyardMenu.setGame(game);
         return game;
@@ -69,16 +68,13 @@ public class GameInterface {
 
     public String sendCommand(AccountUser accountUser, String command) {
         System.err.println("command from user " + accountUser.getName() + " " + command);
-
         Game game = games.get(accountUser);
         if (game == null)
             return "you are not in a game";
         ((CommandLineView) game.getView()).clean();
         game.parse(command);
-
-        System.err.println("sdfasdf :: \n\n" + ((CommandLineView) game.getView()).toString());
-
-        return ((CommandLineView) game.getView()).toString();
+        System.err.println(((CommandLineView) game.getView()).getMessages());
+        return ((CommandLineView) game.getView()).getMessages();
     }
 
     public String inGame(AccountUser accountUser) {
