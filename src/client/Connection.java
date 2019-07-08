@@ -26,7 +26,7 @@ public class Connection {
         this.out = out;
         this.in = in;
         this.authenticationToken = authenticationToken;
-        System.err.println("made connection! :)) auth token : " + authenticationToken);
+//        System.err.println("made connection! :)) auth token : " + authenticationToken);
     }
 
     private JsonObject getAsJson(String message) {
@@ -128,7 +128,6 @@ public class Connection {
         out.flush();
         try {
             String response = in.readLine();
-            System.err.println("got response from chat " + response);
             jsonObject = getAsJson(response);
             JsonArray jsonArray = (JsonArray) jsonObject.get("messages");
             return getJsonStringArray(jsonArray);

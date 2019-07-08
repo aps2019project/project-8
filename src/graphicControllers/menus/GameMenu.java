@@ -63,7 +63,7 @@ public class GameMenu extends Menu {
                 } else if (UI.getAccount() == null) {
                     System.err.println("account null");
                 }
-                if (!UI.getConnection().getGameInfo().get("currentPlayer").getAsString().equals(UI.getAccount().getName()))
+                if (!UI.getGame().getCurrentPlayer().getName().equals(UI.getAccount().getName()))
                     Platform.runLater(() -> refresh());
                 try {
                     Thread.sleep(500);
