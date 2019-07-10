@@ -18,9 +18,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 public class Server {
 
@@ -135,7 +133,9 @@ public class Server {
 
     public void expireToken(String token) {
         System.err.println("token " + token + " has expired");
-        System.err.println("connection of user " + players.get(token).getName() + " is lost");
+        AccountUser accountUser = players.get(token);
+        System.err.println("connection of user " + accountUser.getName() + " is lost");
+        gameInterface.diconnect(accountUser);
         players.remove(token);
     }
 
@@ -235,8 +235,17 @@ public class Server {
         JsonObject jsonObject = new JsonObject();
         String[] names = accountInterface.getLeaderboard();
         JsonArray jsonArray = new JsonArray();
-        for (String name : names)
-            jsonArray.add(name);
+        boolean[] online = new boolean[names.length];
+        for (HashMap.Entry<String, AccountUser> entry : players.entrySet()) {
+            String userName = entry.getValue().getName();
+            for (int j = 0; j < names.length; j++)
+                if (names[j].indexOf(userName) == 0)
+                    online[j] = true;
+//            jsonArray.add(entry.getValue().getName());
+        }
+        for (int i = 0; i < names.length; i++) {
+            jsonArray.add(names[i] + (online[i] ? " : online" : " : offline"));
+        }
         jsonObject.add("leaderBoard", jsonArray);
         jsonObject.addProperty("log", "successfully printed leader board");
         return jsonObject;
@@ -627,6 +636,44 @@ public class Server {
                 YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
                 message = (JsonObject) yaGson.toJsonTree(game, Game.class);
                 message.addProperty("log", "success");
+            }
+        } else {
+            message.addProperty("log", "no authentication token sent");
+        }
+        return message;
+    }
+
+    public JsonObject getGames(JsonObject jsonObject) {
+        JsonElement jsonElement = jsonObject.get("authenticationToken");
+        JsonObject message = new JsonObject();
+        if (jsonElement != null) {
+            String token = jsonElement.getAsString();
+            AccountUser accountUser = players.get(token);
+            if (accountUser == null) {
+                message.addProperty("log", "your authentication token has expired");
+            } else {
+                JsonArray jsonArray = new JsonArray();
+                String[] ans = gameInterface.getGames();
+                for (String an : ans) jsonArray.add(an);
+                message.add("games", jsonArray);
+                message.addProperty("log", "successfully sent all games");
+            }
+        } else {
+            message.addProperty("log", "no authentication token sent");
+        }
+        return message;
+    }
+
+    public JsonObject showGame(JsonObject jsonObject) {
+        JsonElement jsonElement = jsonObject.get("authenticationToken");
+        JsonObject message = new JsonObject();
+        if (jsonElement != null) {
+            String token = jsonElement.getAsString();
+            AccountUser accountUser = players.get(token);
+            if (accountUser == null) {
+                message.addProperty("log", "your authentication token has expired");
+            } else {
+                message.addProperty("log", gameInterface.showGame(jsonObject.get("game").getAsString()));
             }
         } else {
             message.addProperty("log", "no authentication token sent");

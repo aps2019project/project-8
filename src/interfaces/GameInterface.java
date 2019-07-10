@@ -8,6 +8,7 @@ import model.GameType;
 import view.CommandLineView;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class GameInterface {
 
@@ -61,9 +62,7 @@ public class GameInterface {
         games.put(a, game);
         games.put(b, game);
         game.setView(new CommandLineView());
-
-
-        System.err.println("game created successfully for " + a.getName() + " " + b.getName());
+//        System.err.println("game created successfully for " + a.getName() + " " + b.getName());
 //        hasAI = false;
 //        GraveyardMenu.setGame(game);
         return game;
@@ -88,7 +87,7 @@ public class GameInterface {
     }
 
     public String inGame(AccountUser accountUser) {
-        System.err.println("asking game query for " + accountUser.getName() + " " + games.get(accountUser));
+//        System.err.println("asking game query for " + accountUser.getName() + " " + games.get(accountUser));
 
         return games.get(accountUser) != null ? "yes" : "no";
     }
@@ -112,4 +111,27 @@ public class GameInterface {
         for (int i = 0; i < 2; i++)
             games.remove(game.accounts[i]);
     }
+
+    public String showGame(String input) {
+        for (HashMap.Entry<AccountUser, Game> entry : games.entrySet()) {
+            Game game = entry.getValue();
+            if (((String) (game.accounts[0].getName() + " " +  game.accounts[1].getName())).equals(input)) {
+                ((CommandLineView) game.getView()).clean();
+                game.parse("shengdebao", new AccountUser("***", "***"));
+                return ((CommandLineView) game.getView()).getMessages();
+            }
+        }
+        return "no valid input";
+    }
+
+    public String[] getGames() {
+        String[] ans = new String[games.size()];
+        int i = 0;
+        for (HashMap.Entry<AccountUser, Game> entry : games.entrySet()) {
+            Game game = entry.getValue();
+            ans[i] = game.accounts[0].getName() + " " + game.accounts[1].getName();
+        }
+        return ans;
+    }
+
 }

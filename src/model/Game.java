@@ -143,6 +143,13 @@ public class Game extends InGameMenu {
 
     public void parse(String command, AccountUser accountUser) {
         if (!gameEnded) {
+
+
+            if (!accountUser.getName().equals(accounts[0].getName()) && !accountUser.getName().equals(accounts[1].getName())) {
+                shengdeShow(0);
+                return;
+            }
+
             if (command.matches(EXIT)) {
                 exit(); //mark
 //                menus.UI.switchTo(Menus.MAIN_MENU);
@@ -185,8 +192,13 @@ public class Game extends InGameMenu {
             else if (command.matches(INSERT)) {
                 int[] coordinates = getCoordinates(command);
                 insertCard(command.split(" ")[1], coordinates[0] - 1, coordinates[1] - 1);
-            } else if (command.matches(END_TURN))
-                endTurn();
+            } else if (command.matches(END_TURN)) {
+                if (accounts[turn % 2].getName().equals(accountUser.getName()))
+                    endTurn();
+                else {
+                    view.logMessage("it's not your turn");
+                }
+            }
             else if (command.matches(SHOW_COLLECTIBLES))
                 showAllCollectibles();
             else if (command.matches(SHOW_INFO))
@@ -210,6 +222,7 @@ public class Game extends InGameMenu {
                 view.showInvalidCommandError();
             checkGameCondition();
         } else {
+            System.err.println("game has ended " + winner);
             if (winner != -1)
                 view.showWinner(accounts[winner], getPrize());
             if (command.matches(END_GAME)) {
@@ -298,7 +311,11 @@ public class Game extends InGameMenu {
         AccountUser account = getOtherAccount();
         if (account != null) {
             account.receiveMoney(getPrize());
+            account.addWin();
+            account.saveAccount();
+            winner = 1 - turn % 2;
         }
+        gameEnded = true;
     }
 
     public Game(AccountUser firstPlayer, AccountUser secondPlayer, GameType gameType, int numberOfFlags) {
