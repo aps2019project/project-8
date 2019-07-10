@@ -114,7 +114,6 @@ public class Connection {
 
 
     private String[] getJsonStringArray(JsonArray jsonArray) {
-        System.err.println("array : "+  jsonArray);
         String[] s = new String[jsonArray.size()];
         for (int i = 0; i < s.length; i++)
             s[i] = jsonArray.get(i).getAsString();

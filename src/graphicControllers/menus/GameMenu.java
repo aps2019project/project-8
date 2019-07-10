@@ -1139,8 +1139,12 @@ public class GameMenu extends Menu {
 //        else
 //            enableEvents();
 
-        if (UI.getConnection().inGame().equals("no") && UI.getGame() == null)
+        System.err.println("came fucking here " + anotherGame);
+
+        if (!anotherGame && UI.getConnection().inGame().equals("no") && UI.getGame() == null)
             return;
+
+        System.err.println("run later ? ");
 
         if (MenuManager.getInstance().getCurrentMenu() instanceof GameMenu) {
             isInGame = true;
@@ -1152,11 +1156,12 @@ public class GameMenu extends Menu {
         }
         hasThread = true;
 
-        if (!turnChecker && UI.getGame().getCurrentPlayer().getName().equals(UI.getAccount().getName())) {
+        if (!anotherGame && !turnChecker && UI.getGame().getCurrentPlayer().getName().equals(UI.getAccount().getName())) {
             Label timer = (Label) ((NodeWrapper) menuButtons.getComponentByID("timer")).getValue();
             timer.setText(TIME_LIMIT + "");
             turnChecker = true;
         }
+
 
         new Thread(() -> {
             synchronized (this) {
@@ -1188,6 +1193,7 @@ public class GameMenu extends Menu {
                     gridStrings = new String[Map.NUMBER_OF_ROWS][Map.NUMBER_OF_COLUMNS];
                     int turnNumber = 0;
 
+                    System.err.println("came fucking herer too");;
                     String[] shengdeShow;
                     if (!anotherGame)
                         shengdeShow = getUIOutputAsString("shengdebao").split("\\n");

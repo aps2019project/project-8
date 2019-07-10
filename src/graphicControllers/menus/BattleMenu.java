@@ -120,14 +120,16 @@ public class BattleMenu extends Menu {
                 Optional<String> s = popUpGetList(choices, "Choose", "Enter a game");
                 if (s.isPresent()) {
                     String chosenGame = s.get();
+//                    if (MenuManager.getInstance().getCurrentMenu() instanceof GameMenu) {
                     MenuManager.getInstance().setCurrentMenu(Id.IN_GAME_MENU);
-                    if (MenuManager.getInstance().getCurrentMenu() instanceof GameMenu) {
-                        GameMenu gameMenu = (GameMenu) MenuManager.getInstance().getCurrentMenu();
-                        gameMenu.anotherGame = true;
-                        gameMenu.otherGame = UI.getConnection().showGame(chosenGame);
-                    } else {
-                        System.err.println("THIS SHOULD NOT HAPPEN!!!!");
-                    }
+
+                    GameMenu gameMenu = (GameMenu) MenuManager.getInstance().getCurrentMenu();
+                    gameMenu.anotherGame = true;
+                    gameMenu.otherGame = chosenGame;
+
+//                    } else {
+//                        System.err.println("THIS SHOULD NOT HAPPEN!!!!");
+//                    }
                 }
             });
             addComponent(chooseGame);
