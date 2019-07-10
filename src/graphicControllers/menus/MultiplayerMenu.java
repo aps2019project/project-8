@@ -1,5 +1,6 @@
 package graphicControllers.menus;
 
+import client.Connection;
 import graphicControllers.Menu;
 import graphicControllers.MenuManager;
 import javafx.application.Platform;
@@ -15,11 +16,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import menus.UI;
 import model.AccountUser;
+import view.GUIButton;
 import view.NodeWrapper;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -62,6 +65,14 @@ public class MultiplayerMenu extends Menu {
             vBox.setAlignment(Pos.CENTER);
             addComponent(new NodeWrapper(scrollPane));
         }).start();
+
+        GUIButton chooseGame = new GUIButton(windowHeight - 50, windowWidth - 100, 40, 100);
+        chooseGame.setOnMouseClicked(e -> {
+            String[] multipleChoiceString = UI.getConnection().getGames();
+            ArrayList<String> choices = new ArrayList<>(Arrays.asList(multipleChoiceString));
+            popUpGetList(choices, "Choose", "Enter a game");
+        });
+        addComponent(chooseGame);
     }
 
     @Override
