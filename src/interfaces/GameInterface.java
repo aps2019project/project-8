@@ -130,8 +130,19 @@ public class GameInterface {
         for (HashMap.Entry<AccountUser, Game> entry : games.entrySet()) {
             Game game = entry.getValue();
             ans[i] = game.accounts[0].getName() + " " + game.accounts[1].getName();
+            i++;
         }
         return ans;
     }
 
+
+    public Game getPeopleGame(String input) {
+        for (HashMap.Entry<AccountUser, Game> entry : games.entrySet()) {
+            Game game = entry.getValue();
+            if (((String) (game.accounts[0].getName() + " " +  game.accounts[1].getName())).equals(input)) {
+                return game;
+            }
+        }
+        return null;
+    }
 }

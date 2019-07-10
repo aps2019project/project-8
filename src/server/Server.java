@@ -221,8 +221,6 @@ public class Server {
             } else {
                 String collectionItemName = jsonObject.get("collectionItemName").getAsString();
                 message.addProperty("count", shopInterface.getItemCount(collectionItemName));
-                if (collectionItemName.contains("7headed"))
-                    System.err.println("sending item count " + collectionItemName + " " + shopInterface.getItemCount(collectionItemName));
                 message.addProperty("log", "successful action");
             }
         } else {
@@ -591,8 +589,6 @@ public class Server {
                 int wins = Integer.valueOf(jsonObject.get("win").getAsString());
                 int money = Integer.valueOf(jsonObject.get("money").getAsString());
 
-//                System.err.println("HERE TO ADD WIN FOR " + accountUser.getName() + " " + wins + " " + money);
-
                 for (int i = 0; i < wins; i++)
                     accountUser.addWin();
                 accountUser.receiveMoney(money);
@@ -674,6 +670,26 @@ public class Server {
                 message.addProperty("log", "your authentication token has expired");
             } else {
                 message.addProperty("log", gameInterface.showGame(jsonObject.get("game").getAsString()));
+            }
+        } else {
+            message.addProperty("log", "no authentication token sent");
+        }
+        return message;
+    }
+
+    public JsonObject getPeopleGame(JsonObject jsonObject) {
+        JsonElement jsonElement = jsonObject.get("authenticationToken");
+        JsonObject message = new JsonObject();
+        if (jsonElement != null) {
+            String token = jsonElement.getAsString();
+            AccountUser accountUser = players.get(token);
+            if (accountUser == null) {
+                message.addProperty("log", "your authentication token has expired");
+            } else {
+                Game game = gameInterface.getPeopleGame(jsonObject.get("game").getAsString());
+                YaGson yaGson = new YaGsonBuilder().setPrettyPrinting().create();
+                message = (JsonObject) yaGson.toJsonTree(game, Game.class);
+                message.addProperty("log", "success");
             }
         } else {
             message.addProperty("log", "no authentication token sent");
