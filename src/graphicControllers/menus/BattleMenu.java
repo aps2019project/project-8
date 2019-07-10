@@ -117,7 +117,11 @@ public class BattleMenu extends Menu {
             chooseGame.setOnMouseClicked(e -> {
                 String[] multipleChoiceString = UI.getConnection().getGames();
                 ArrayList<String> choices = new ArrayList<>(Arrays.asList(multipleChoiceString));
-                popUpGetList(choices, "Choose", "Enter a game");
+                Optional<String> s = popUpGetList(choices, "Choose", "Enter a game");
+                if (s.isPresent()) {
+                    String chosenGame = s.get();
+                    // blah blah!
+                }
             });
             addComponent(chooseGame);
         }).start();
