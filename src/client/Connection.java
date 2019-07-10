@@ -304,6 +304,7 @@ public class Connection {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("requestType", "showGame");
         jsonObject.addProperty("authenticationToken", authenticationToken);
+        jsonObject.addProperty("game", input);
         JsonObject response = sendSimpleMessage(jsonObject);
         return response.get("log").getAsString();
     }

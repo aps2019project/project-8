@@ -62,7 +62,7 @@ public class GameMenu extends Menu {
 //        }
 
             while (!interrupted()) {
-                if (!UI.getGame().getCurrentPlayer().getName().equals(UI.getAccount().getName()))
+                if (anotherGame || !UI.getGame().getCurrentPlayer().getName().equals(UI.getAccount().getName()))
                     Platform.runLater(GameMenu.this::refresh);
                 try {
                     Thread.sleep(500);
@@ -134,6 +134,11 @@ public class GameMenu extends Menu {
     private String selectedCardID;
     private int numberOfDisable = 0;
     private boolean isInGame;
+
+
+    public boolean anotherGame = false;
+    public String otherGame = "";
+
     public GameMenu() {
         super(Id.IN_GAME_MENU, "Game Menu", windowDefaultWidth, windowDefaultHeight);
         getView().getScene().setOnKeyPressed(event -> {
@@ -1139,7 +1144,7 @@ public class GameMenu extends Menu {
             isInGame = true;
         }
 
-        if (!hasThread && UI.getConnection().inGame().equals("yes")) {
+        if (!hasThread && (anotherGame || UI.getConnection().inGame().equals("yes"))) {
             refresher = new Refresher();
             refresher.start();
         }
@@ -1181,7 +1186,10 @@ public class GameMenu extends Menu {
                     gridStrings = new String[Map.NUMBER_OF_ROWS][Map.NUMBER_OF_COLUMNS];
                     int turnNumber = 0;
 
-                    String[] shengdeShow = getUIOutputAsString("shengdebao").split("\\n");
+                    String[] shengdeShow;
+                    if (!anotherGame)
+                        shengdeShow = getUIOutputAsString("shengdebao").split("\\n");
+                    else shengdeShow = UI.getConnection().showGame(otherGame).split("\\n");
 
                     for (int i = 0; i < shengdeShow.length; i++) {
                         shengdeShow[i] = shengdeShow[i].trim();
