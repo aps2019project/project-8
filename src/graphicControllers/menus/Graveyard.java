@@ -70,6 +70,8 @@ public class Graveyard extends Menu {
         vBox.setAlignment(Pos.CENTER);
         vBox.setFillWidth(true);
         scrollPane.setContent(vBox);
+
+
         int size = UI.getGame().getCurrentPlayer().getGraveYard().size();
         for (int i = 0; i < (size + 1) / 2; i++) {
             HBox hBox = new HBox();

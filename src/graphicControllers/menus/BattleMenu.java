@@ -122,10 +122,10 @@ public class BattleMenu extends Menu {
                     String chosenGame = s.get();
 //                    if (MenuManager.getInstance().getCurrentMenu() instanceof GameMenu) {
                     MenuManager.getInstance().setCurrentMenu(Id.IN_GAME_MENU);
-
                     GameMenu gameMenu = (GameMenu) MenuManager.getInstance().getCurrentMenu();
                     gameMenu.anotherGame = true;
                     gameMenu.otherGame = chosenGame;
+                    gameMenu.refresh();
 
 //                    } else {
 //                        System.err.println("THIS SHOULD NOT HAPPEN!!!!");

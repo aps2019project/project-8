@@ -1299,7 +1299,8 @@ public class GameMenu extends Menu {
         }).start();
 
 
-        handleDeathAnimation();
+        if (!anotherGame)
+            handleDeathAnimation();
     }
 
     private void stopAnimations() {
