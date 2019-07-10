@@ -12,6 +12,8 @@ import view.NodeWrapper;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 public class BattleMenu extends Menu {
@@ -101,6 +103,25 @@ public class BattleMenu extends Menu {
                 }
             });
             addComponent(loadLastGame);
+
+            GUIButton chooseGame = new GUIButton(windowWidth / 2 - 170.0 / 2, windowHeight / 2 + 2 * 5 + 2 * 50 + 50,
+                    170, 50);
+            try {
+                chooseGame.setImage(new Image(new FileInputStream("./images/buttons/button_secondary@2x.png")));
+                chooseGame.setActiveImage(new Image(new FileInputStream("./images/buttons/button_secondary_glow@2x.png")));
+                chooseGame.setSound(new Media(new File("sfx/sfx_ui_menu_hover.m4a").toURI().toString()));
+                chooseGame.setText("Games");
+            } catch (FileNotFoundException ignored) {
+            }
+
+            chooseGame.setOnMouseClicked(e -> {
+                String[] multipleChoiceString = UI.getConnection().getGames();
+                ArrayList<String> choices = new ArrayList<>(Arrays.asList(multipleChoiceString));
+                popUpGetList(choices, "Choose", "Enter a game");
+            });
+            addComponent(chooseGame);
         }).start();
+
+
     }
 }

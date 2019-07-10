@@ -66,13 +66,7 @@ public class MultiplayerMenu extends Menu {
             addComponent(new NodeWrapper(scrollPane));
         }).start();
 
-        GUIButton chooseGame = new GUIButton(windowHeight - 50, windowWidth - 100, 40, 100);
-        chooseGame.setOnMouseClicked(e -> {
-            String[] multipleChoiceString = UI.getConnection().getGames();
-            ArrayList<String> choices = new ArrayList<>(Arrays.asList(multipleChoiceString));
-            popUpGetList(choices, "Choose", "Enter a game");
-        });
-        addComponent(chooseGame);
+
     }
 
     @Override
