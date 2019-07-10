@@ -308,7 +308,6 @@ public class Connection {
         return response.get("log").getAsString();
     }
 
-
     public void closeConnection() {
         try {
             in.close();
