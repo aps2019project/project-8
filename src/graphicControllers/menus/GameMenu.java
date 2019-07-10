@@ -307,6 +307,8 @@ public class GameMenu extends Menu {
     }
 
     private synchronized void handleEndTurn() {
+        if (anotherGame)
+            return;
         if (!UI.getGame().getCurrentPlayer().getName().equals(UI.getAccount().getName()))
             return;
 
