@@ -16,7 +16,7 @@ public class MenuManager {
      */
     private Stage stage;
     private Menu currentMenu;
-    private Map<Integer, Menu> menusIDs = new HashMap<>();
+    public Map<Integer, Menu> menusIDs = new HashMap<>();
 
     private Optional[] gameMode = new Optional[]{Optional.empty(), Optional.empty()};
 

@@ -940,10 +940,12 @@ public class GameMenu extends Menu {
         mainMenu.setOnMouseClicked(e -> {
             UI.decide("exit");
             isInGame = false;
+            anotherGame = false;
             if (refresher != null && !refresher.isInterrupted()) {
                 hasThread = false;
                 refresher.interrupt();
             }            MenuManager.getInstance().setCurrentMenu(Id.MAIN_MENU);
+
         });
         menuButtons.addMenuComponent(mainMenu, "main_menu");
 
@@ -1139,12 +1141,8 @@ public class GameMenu extends Menu {
 //        else
 //            enableEvents();
 
-        System.err.println("came fucking here " + anotherGame);
-
         if (!anotherGame && UI.getConnection().inGame().equals("no") && UI.getGame() == null)
             return;
-
-        System.err.println("run later ? ");
 
         if (MenuManager.getInstance().getCurrentMenu() instanceof GameMenu) {
             isInGame = true;
@@ -1193,7 +1191,6 @@ public class GameMenu extends Menu {
                     gridStrings = new String[Map.NUMBER_OF_ROWS][Map.NUMBER_OF_COLUMNS];
                     int turnNumber = 0;
 
-                    System.err.println("came fucking herer too");;
                     String[] shengdeShow;
                     if (!anotherGame)
                         shengdeShow = getUIOutputAsString("shengdebao").split("\\n");

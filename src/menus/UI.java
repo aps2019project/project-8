@@ -5,6 +5,7 @@ import client.Connection;
 import client.Connector;
 import com.gilecode.yagson.YaGson;
 import gen.JsonMaker;
+import graphicControllers.MenuManager;
 import model.AI;
 import model.AccountUser;
 import model.Game;
@@ -16,6 +17,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 //This is hamid
@@ -657,6 +660,16 @@ public class UI {
         if (getConnection().inGame().equals("yes")) {
             return getConnection().getGame();
         }
+        for (Map.Entry<Integer, graphicControllers.Menu> entry : MenuManager.getInstance().menusIDs.entrySet()) {
+            graphicControllers.Menu menu = entry.getValue();
+            if (menu instanceof graphicControllers.menus.GameMenu) {
+                if (((graphicControllers.menus.GameMenu) menu).anotherGame) {
+                    return getConnection().getPeopleGame(((graphicControllers.menus.GameMenu) menu).otherGame);
+                }
+            }
+        }
+
         return GameMenu.getGame();
     }
+
 }

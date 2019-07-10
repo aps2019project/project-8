@@ -309,6 +309,16 @@ public class Connection {
         return response.get("log").getAsString();
     }
 
+    public Game getPeopleGame(String input) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("requestType", "getPeopleGame");
+        jsonObject.addProperty("authenticationToken", authenticationToken);
+        jsonObject.addProperty("game", input);
+        JsonObject response = sendSimpleMessage(jsonObject);
+        YaGson yaGson = new YaGson();
+        return yaGson.fromJson(response, Game.class);
+    }
+
     public void closeConnection() {
         try {
             in.close();
