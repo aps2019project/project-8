@@ -292,6 +292,23 @@ public class Connection {
         return yaGson.fromJson(response, Game.class);
     }
 
+    public String[] getGames() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("requestType", "getGames");
+        jsonObject.addProperty("authenticationToken", authenticationToken);
+        JsonObject response = sendSimpleMessage(jsonObject);
+        return getJsonStringArray((JsonArray) response.get("games"));
+    }
+
+    public String showGame(String input) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("requestType", "showGame");
+        jsonObject.addProperty("authenticationToken", authenticationToken);
+        JsonObject response = sendSimpleMessage(jsonObject);
+        return response.get("log").getAsString();
+    }
+
+
     public void closeConnection() {
         try {
             in.close();

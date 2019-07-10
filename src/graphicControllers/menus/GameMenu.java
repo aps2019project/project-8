@@ -42,25 +42,30 @@ public class GameMenu extends Menu {
     private static final Color textColor = Color.rgb(176, 42, 226);
     private static final double BUFF_WIDTH = 10;
     private static final double BUFF_HEIGHT = 10;
-    private static final int TIME_LIMIT = 600;
+    private static final int TIME_LIMIT = 20;
+
+
 
     private class Refresher extends Thread {
         @Override
         public void run() {
+//            while (!interrupted()) {
+//                if (!UI.getGame().getCurrentPlayer().getName().equals(UI.getAccount().getName()))
+//                    Platform.runLater(GameMenu.this::refresh);
+//                try {
+//                    Thread.sleep(2000);
+//                } catch (InterruptedException e) {
+//                    interrupt();
+//                    return;
+//                }
+//            }
+//        }
+
             while (!interrupted()) {
-                if (UI.getConnection() == null) {
-                    System.err.println("connection null");
-                } else if (UI.getConnection().inGame().equals("no")) {
-                    System.err.println("not in game");
-                }  else if (UI.getConnection().getGameInfo().get("currentPlayer") == null) {
-                    System.err.println("current player null");
-                } else if (UI.getAccount() == null) {
-                    System.err.println("account null");
-                }
                 if (!UI.getGame().getCurrentPlayer().getName().equals(UI.getAccount().getName()))
                     Platform.runLater(GameMenu.this::refresh);
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
                     interrupt();
                     return;
@@ -72,6 +77,7 @@ public class GameMenu extends Menu {
     private Refresher refresher;
 
     private boolean hasThread = false;
+    private boolean turnChecker = false;
 
     static class Assets {
         private static HashMap<String, Image> imageMap = new HashMap<>();
@@ -157,15 +163,16 @@ public class GameMenu extends Menu {
         isRecording = false;
     }
 
-    private void setUpEndTurnTimer() {
-        new Thread(() -> {
+    class TurnTimer extends Thread {
+        @Override
+        public void run() {
             while (true) {
                 try {
                     Thread.sleep((long) (1000 / speedCoefficient));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                if (isInGame) {
+                if (isInGame && turnChecker) {
                     Platform.runLater(() -> {
                         Label timer = (Label) ((NodeWrapper) menuButtons.getComponentByID("timer")).getValue();
                         timer.setText(Integer.toString(Integer.parseInt(timer.getText()) - 1));
@@ -175,7 +182,13 @@ public class GameMenu extends Menu {
                     });
                 }
             }
-        }).start();
+        }
+    }
+
+    TurnTimer turnTimer = new TurnTimer();
+
+    private void setUpEndTurnTimer() {
+        turnTimer.start();
     }
 
     private void setUpBackGround() {
@@ -289,12 +302,15 @@ public class GameMenu extends Menu {
     }
 
     private synchronized void handleEndTurn() {
+        if (!UI.getGame().getCurrentPlayer().getName().equals(UI.getAccount().getName()))
+            return;
+
+
         String out = getUIOutputAsString("end turn");
         out = out.trim();
         if (!gameEnded(out)) {
+            turnChecker = false;
             refresh();
-            Label timer = (Label) ((NodeWrapper) menuButtons.getComponentByID("timer")).getValue();
-            timer.setText(TIME_LIMIT + "");
             String[] commands = out.split("\\n");
             for (String s : commands) {
                 s = s.trim();
@@ -523,12 +539,6 @@ public class GameMenu extends Menu {
             }
             if (ai || !gameEnded(out)) {
                 if (!ai && !out.equals("Successful!")) {
-
-                    System.err.println("pop up happens here?");
-                    showPopUp("test");
-                    showPopUp(out);
-                    showPopUp("test");
-
                     if (hasPopup)
                         showPopUp(out);
                     enableEvents();
@@ -1134,6 +1144,12 @@ public class GameMenu extends Menu {
             refresher.start();
         }
         hasThread = true;
+
+        if (!turnChecker && UI.getGame().getCurrentPlayer().getName().equals(UI.getAccount().getName())) {
+            Label timer = (Label) ((NodeWrapper) menuButtons.getComponentByID("timer")).getValue();
+            timer.setText(TIME_LIMIT + "");
+            turnChecker = true;
+        }
 
         new Thread(() -> {
             synchronized (this) {

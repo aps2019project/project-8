@@ -1,6 +1,7 @@
 package graphicControllers.menus;
 
 import graphicControllers.Menu;
+import graphicControllers.MenuManager;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -37,15 +38,15 @@ public class ChatMenu extends Menu {
         @Override
         public void run() {
             while (!interrupted()) {
-                if (UI.getConnection() == null) {
-                    System.err.println("connection null");
-                } else if (UI.getConnection().inGame().equals("no")) {
-                    System.err.println("not in game");
-                }  else if (UI.getConnection().getGameInfo().get("currentPlayer") == null) {
-                    System.err.println("current player null");
-                } else if (UI.getAccount() == null) {
-                    System.err.println("account null");
-                }
+//                if (UI.getConnection() == null) {
+//                    System.err.println("connection null");
+//                } else if (UI.getConnection().inGame().equals("no")) {
+//                    System.err.println("not in game");
+//                }  else if (UI.getConnection().getGameInfo().get("currentPlayer") == null) {
+//                    System.err.println("current player null");
+//                } else if (UI.getAccount() == null) {
+//                    System.err.println("account null");
+//                }
                 Platform.runLater(ChatMenu.this::handleGetMessages);
                 try {
                     Thread.sleep(1000);
@@ -145,7 +146,7 @@ public class ChatMenu extends Menu {
     }
 
     private void handleGetMessages() {
-        if (UI.getConnection() == null)
+        if (UI.getConnection() == null || !(MenuManager.getInstance().getCurrentMenu() instanceof ChatMenu))
             return;
         String[] newMessages = UI.getConnection().getNewMessages();
         if (newMessages == null)

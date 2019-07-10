@@ -26,7 +26,7 @@ public class Connector {
 
     private boolean connectToSever() {
         try {
-            socket = new Socket(SERVER_IP, DEFAULT_PORT);
+            socket = new Socket("localhost", DEFAULT_PORT);
         } catch (IOException e) {
             e.printStackTrace();
             log = "unable to connect to game server";
