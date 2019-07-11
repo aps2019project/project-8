@@ -13,7 +13,7 @@ import java.net.Socket;
 public class Connector {
 
     private static final int DEFAULT_PORT = 6666;
-    private static final String SERVER_IP = "192.168.195.133";
+    private static final String SERVER_IP = "172.20.9.214";
     Socket socket;
     BufferedReader in;
     PrintWriter out;
